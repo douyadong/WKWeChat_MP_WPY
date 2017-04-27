@@ -1,12 +1,26 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/login/index",
+    "pages/buy/index",
+    "pages/sell/index",
+    "pages/xf/detail",
+    "pages/esf/detail",
+    "pages/estate/detail",
+    "pages/agent/detail",
+    "pages/comment/list",
+    "pages/comment/write"
   ],
   "window":{
+    "backgroundColor":"#f0f0f0",
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "navigationBarTitleText": "悟空找房+",
+    "navigationBarTextStyle":"black",
+    "enablePullDownRefresh":true
+  },
+  "networkTimeout":{
+    "request":30000,
+    "uploadFile":30000
   }
 }
