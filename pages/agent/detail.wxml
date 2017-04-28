@@ -1,6 +1,22 @@
-<!--logs.wxml-->
-<view class="container log-list">
-  <block wx:for="{{logs}}" wx:for-item="log" wx:key="*this">
-    <text class="log-item">{{index + 1}}. {{log}}</text>
-  </block>
+<view class="panel">
+  <view class="panel-bd">
+    <view class="row">
+      <view class="row-hd">熟悉商圈：</view>
+      <view class="row-bd">长宁区虹桥、古北、仙霞板块、虹桥路</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">自我介绍：</view>
+      <view class="row-bd">五年从业经验，促成超过100笔交易，安家置业请选择我！</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">成交故事：</view>
+      <view class="row-bd">王先生看中一套静安区的900万的房子，在帮他和房东多次沟通后，王先生顺利买到房源。</view>
+    </view>
+  </view>
 </view>
+<view class="gap"></view>
+<view class="panel">
+  <view class="panel-hd">用户评价(28)</view>
+  <view class="separator"></view>
+</view>
+<view class="gap"></view>
