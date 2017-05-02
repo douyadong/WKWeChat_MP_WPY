@@ -1,0 +1,41 @@
+<template name="sources">
+  <view class="sources">
+    <view class="source">
+      <image mode="aspectFill" src="https://img.wkzf.com/05642f0d2b284bd28798904d1fd1b5bf.ML"  class="thumbnail"></image>
+      <view class="param title">09年次新房南北通透两居室</view>
+      <view class="param fit-height">
+        <text>2室2厅1卫 2200㎡</text>
+        <text class="money">920万</text>
+      </view>
+      <view class="param fit-height">
+        <text>浦东 花木</text>
+        <text class="price">45400元/㎡</text>
+      </view>
+      <view class="param highlights">
+        <text class="selected">精选</text>
+        <text>满五唯一</text>
+        <text>地铁</text>
+        <text>近学校</text>
+      </view>
+    </view>
+    <view class="separator"></view>
+    <view class="source clearfix">
+      <image mode="aspectFill" src="https://img.wkzf.com/05642f0d2b284bd28798904d1fd1b5bf.ML"  class="thumbnail"></image>
+      <view class="param title">09年次新房南北通透两居室</view>
+      <view class="param fit-height">
+        <text>2室2厅1卫 2200㎡</text>
+        <text class="money">920万</text>
+      </view>
+      <view class="param fit-height">
+        <text>浦东 花木</text>
+        <text class="price">45400元/㎡</text>
+      </view>
+      <view class="param highlights">
+        <text class="selected">精选</text>
+        <text>满五唯一</text>
+        <text>地铁</text>
+        <text>近学校</text>
+      </view>
+    </view>
+  </view>
+</template>

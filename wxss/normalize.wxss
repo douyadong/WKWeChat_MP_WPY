@@ -1,0 +1,40 @@
+/*
+页面
+*/
+page{
+  background-color:#f0f0f0;
+}
+/*
+两个panel中间的间隙
+*/
+.gap{  
+  height:20rpx;
+}
+/*
+分割线
+*/
+.separator{
+  border-top:1rpx solid #f3f3f3;
+  height:1rpx;  
+}
+/*
+圆头像
+*/
+.head-portrait{
+  border-radius:200rpx;
+}
+/*
+清除浮动
+*/
+.clearfix:after{
+  clear : both ;
+  content : " " ;
+  display : block ;
+  font-size : 0 ;
+  height : 0 ;    
+  visibility : hidden ;
+}
+.fit-height{
+  overflow : auto ;
+  zoom : 1 ;
+}

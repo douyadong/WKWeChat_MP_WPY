@@ -1,0 +1,22 @@
+<template name="comments">
+  <view class="comments">
+    <view class="comment">
+      <view class="star">
+        <text class="wk_iconfont icon-star"></text>
+        <text class="wk_iconfont icon-star"></text>
+      </view>
+      <view class="content">服务态度很好，感觉非常靠谱的一个经纪人！</view>
+      <view class="params">买家 王先生 | 2015-03-08</view>
+    </view>
+    <view class="separator"></view> 
+    <view class="comment">
+      <view class="star"></view>
+      <view class="content">很热情，很了解房源信息 </view>
+      <view class="params">买家 王先生 | 2015-03-08</view>
+    </view>
+    <view class="btn-group">      
+      <button size="default" type="default" class="more">查看更多</button>
+      <button size="default" type="default">我来评价</button>
+    </view>
+  </view>
+</template>
