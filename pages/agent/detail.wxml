@@ -46,12 +46,12 @@
       <text>房源熟悉 [ 23 ]</text>
       <text class="bad">不太专业 [ 1 ]</text>
     </view>
-    <import src="../common/comments.wxml"/>
+    <import src="../components/comments.wxml"/>
     <template is="comments"/>
   </view>
 </view>
 <view class="source-hd">看看我推荐的好房源吧</view>
 <view class="panel">
-  <import src="../common/sources.wxml"/>
-  <template is="sources"/>
+  <import src="../components/esf-sources.wxml"/>
+  <template is="esf-sources"/>
 </view>
