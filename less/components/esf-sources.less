@@ -1,0 +1,51 @@
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：components -> esf-sources.less (二手房源)
+ 3. 作者：zhaohuagang@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.esf-sources {
+  .separator{
+    margin-left : 30rpx ;
+  }
+  .source{
+    padding : 30rpx ;
+    .thumbnail {
+      float : left ;
+      height : 170rpx ;
+      width : 260rpx ;
+    }
+    .param {
+      color : @lighter-font-color ;
+      font-size : @smaller-font-size ;
+      line-height : 36rpx ;
+      margin-left : 282rpx ;
+    }
+    .title {
+      color : @default-font-color ;
+      font-size : @large-font-size ;
+      line-height : 44rpx ;
+      .text-ellipsis() ;
+    }
+    .money {
+      color : @red-font-color ;
+      font-size : @large-font-size ;
+    }
+    .money , .price {
+      float : right ;
+    }
+    .tags {
+      text {
+        background-color : @light-gray-color ;
+        .border-radius(6rpx) ;
+        display : inline-block ;
+        font-size : @mini-font-size ;
+        margin-right : 10rpx ;
+        padding : 4rpx 14rpx ;
+      }
+      .selected {
+        background-color : @blue-font-color ;
+        color : @white-font-color ;
+      }
+    }
+  }
+}
