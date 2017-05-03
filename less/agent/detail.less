@@ -5,6 +5,9 @@
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 @import "../variables.less" ;
 @import "../mixins.less" ;
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+概要部分
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 .summary {
     .head-portrait {
         height : 120rpx ;
@@ -33,39 +36,47 @@
             padding : 0 15rpx ;
         }
     }
-    .row-hd {  
-        width : 140rpx ;  
-    }
-    .row-bd {   
-        margin-left : 150rpx ;  
-    }
+    .row {
+        .clearfix() ;
+        .row-hd {  
+            width : 140rpx ;  
+        }
+        .row-bd {   
+            margin-left : 150rpx ;  
+        }
+    }    
 } 
-
-.scores{
-    color : @lighter-font-color ;
-    font-size : @default-font-size ;
-    .points {
-        color : @default-font-color ;
-        font-size : @great-font-size ;
-    }
-}
-
-.subjects {
-    text {
-        background-color : #e0f0ef ;
-        .border-radius(8rpx) ;
-        color : @default-font-color ;
-        display : inline-block ;
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+评价部分
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.rate {
+    .scores{
+        color : @lighter-font-color ;
         font-size : @default-font-size ;
-        margin : 0 18rpx 18rpx 0 ;
-        padding : 10rpx 24rpx ;
+        .points {
+            color : @default-font-color ;
+            font-size : @great-font-size ;
+        }
     }
-    .bad{
-        background-color : @light-gray-color ;
-        color : @light-font-color ;
+    .tags {
+        text {
+            background-color : #e0f0ef ;
+            .border-radius(8rpx) ;
+            color : @default-font-color ;
+            display : inline-block ;
+            font-size : @default-font-size ;
+            margin : 0 18rpx 18rpx 0 ;
+            padding : 10rpx 24rpx ;
+        }
+        .bad{
+            background-color : @light-gray-color ;
+            color : @light-font-color ;
+        }
     }
 }
-
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+二手房源部分
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 .source-hd {
   color : @default-font-color ;
   font-size : @small-font-size ;

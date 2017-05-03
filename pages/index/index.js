@@ -18,7 +18,7 @@ Page({
   //事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
-      url: '../esf/detail'
+      url: '../login/index'
     })
   },
   onLoad: function () {
