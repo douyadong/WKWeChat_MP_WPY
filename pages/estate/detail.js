@@ -23,7 +23,7 @@ Page({
       "type":"img"
     }],
     estateExpert:{//小区专家
-      name:"",
+      name:"",      
       id:"",
       cellphone:""
     },
@@ -76,11 +76,10 @@ Page({
       cellphone:"133*****2365",
       labels:["",""],
       content:"南北通透，黄金楼层，满五唯一，精装修。",
-      createDate:""+(new Date()),
+      createDate:"2016-03-01 12:02",
       upCount:"20",
       downCount:"11"
-    }];
-    v[0].createDate = "" + (new Date());
+    }];    
     this.setData({
       comments:v
     })    
