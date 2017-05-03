@@ -7,10 +7,14 @@
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+  <view class="navigator">
+    <navigator url="/pages/agent/detail?id=2">登录页</navigator>
+    <navigator url="/pages/xf/detail?id=2">新房详情页</navigator>
+    <navigator url="/pages/estate/detail?id=2">小区详情页</navigator>
+    <navigator url="/pages/esf/detail?id=2">二手房详情页</navigator>
+    <navigator url="/pages/agent/detail?id=2">经纪人详情页</navigator>
+    <navigator url="/pages/buy/index">买房</navigator>
+    <navigator url="/pages/sell/index">卖房</navigator>
+    <navigator url="/pages/comment/list">小区评论</navigator>    
   </view>
 </view>
