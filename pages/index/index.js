@@ -9,7 +9,24 @@ Page({
   //事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
-      url: '../logs/logs'
+      url: '../login/index'
+    })
+  },
+  back:function(){
+    wx.navigateBack({
+      delta: 1, // 回退前 delta(默认为1) 页面
+      success: function(res){
+        console.log('navigate back success...');
+        // success
+      },
+      fail: function(res) {
+        // fail
+        console.log('navigate back fails...');
+      },
+      complete: function(res) {
+        // complete
+        console.log('navigate back completes...');
+      }
     })
   },
   onLoad: function () {

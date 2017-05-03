@@ -1,12 +1,13 @@
 {
   "pages":[
+    "pages/estate/detail",
     "pages/index/index",
     "pages/login/index",
     "pages/buy/index",
     "pages/sell/index",
     "pages/xf/detail",
     "pages/esf/detail",
-    "pages/estate/detail",
+   
     "pages/agent/detail",
     "pages/comment/list",
     "pages/comment/write"

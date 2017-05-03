@@ -1,6 +1,119 @@
-<!--logs.wxml-->
-<view class="container log-list">
-  <block wx:for="{{logs}}" wx:for-item="log" wx:key="*this">
-    <text class="log-item">{{index + 1}}. {{log}}</text>
-  </block>
+<view style="background-color:white">
+  <swiper interval="2000" style="width:100%;height:56.3vw">  
+      <swiper-item style="position:relative" wx:for="{{imgUrls}}">      
+        <video wx:if="{{item.type=='video'}}" src="{{item.url}}" style="width:100%;height:56.3vw" controls>
+        
+        </video>
+        <image bindtap="preview" data-img-url="{{item.url}}" wx:if="{{item.type=='img'}}" src="{{item.url}}" style="width:100%" mode="widthFix">
+
+        </image>
+        <view style="position:absolute;right:40rpx;bottom:30rpx;border-radius:30rpx;background-color:black;color:white;padding:6rpx;padding-left:30rpx;padding-right:30rpx;font-size:24rpx;opacity:0.6">
+          {{index + 1}}/{{imgUrls.length}}
+        </view>
+      </swiper-item>
+    
+  </swiper>
+  <view style="padding:30rpx;">
+    <view style="width:100rpx;heigth:100rpx;float:left">
+      <image src="http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL" style="width:100%;height:100rpx;border-radius:50%;float:left;"/>
+    </view>
+    <view style="float:left;padding-top:20rpx;padding-left:20rpx;background-color:white">
+      <text style="font-size:36rpx">王小五</text>
+      <text style="margin-left:20rpx;font-size:36rpx;color:gray">小区专家</text>    
+    </view>
+    <view style="float:right;padding-top:20rpx">
+      <icon type="success" bindtap="call"></icon>
+    </view>
+    <view style="clear:both"></view>
+  </view>
+</view>
+<view id="content">
+  <view class="item">
+    <text class="label">所属板块</text>
+    <text class="text">长宁区 古北</text>
+  </view>
+  <view class="item">
+    <text class="label">产权年限</text>
+    <text class="text">70年</text>
+  </view>
+  <view class="item">
+    <text class="label">竣工年代</text>
+    <text class="text">1997年</text>
+  </view>
+  <view class="item">
+    <text class="label">房屋总数</text>
+    <text class="text">234户</text>
+  </view>
+  <view class="item">
+    <text class="label">物业类型</text>
+    <text class="text">普通住宅</text>
+  </view>
+  <view class="item">
+    <text class="label">物业费</text>
+    <text class="text">2元/m²</text>   
+  </view>
+  <view class="item">
+    <text class="label">绿化率</text>
+    <text class="text">29%</text>
+  </view>
+  <view class="item">
+    <text class="label">容积率</text>
+    <text class="text">2.8</text>
+  </view>
+  <view class="item">
+    <text class="label">物业公司</text>
+    <text class="text">好管家物业管理公司</text>
+  </view>
+  <view class="item">
+    <text class="label">开发商</text>
+    <text class="text">好管家物业管理有限公司公司有限</text>
+  </view>
+  <view class="hr">
+  </view>
+  <view class="item">
+    <text class="label">地铁</text>
+    <text class="text">9号线、10号线</text>
+  </view>
+  <view class="item">
+    <text class="label">学校</text>
+    <text class="text">华师大附小、管弄新村小学、管弄新村小学、管弄新村小学</text>
+  </view>
+</view>
+
+<view id="comments">
+  <view id="comments-header">
+    用户评论
+  </view>
+  <view class="comment" wx:for="{{comments}}">
+    <view class="comment-header">
+      <image src="{{item.photo}}" class="comment-photo" />
+      <view class="comment-header-inner">
+      <text class="cellphone">{{item.cellphone}}</text>
+      <text class="label-good">优评</text>
+      <text class="label-owner">业主</text>
+      </view>
+      <view style="clear:both"></view>
+    </view>
+    <view class="comment-body">
+      {{item.content}}
+    </view>
+    <view class="comment-footer">
+      <text class="comment-date">{{item.createDate}}</text>
+      <text class="comment-down">{{item.downCount}}d</text>
+      <text class="comment-up">{{item.upCount}}u</text>      
+    </view>
+  </view>
+  <view id="comments-footer">
+    <button type="default" size="mini" class="btn-more" bindtap="showLoading">
+      查看更多
+    </button>
+    <button type="default" size="mini" class="btn-comment" bindtap="hideLoading">
+      我来点评
+    </button>
+  </view>
+</view>
+
+<view id="locationAndAround">
+  <view class="h1">位置及周边</view>
+  <map id="map" longitude="113.324520" latitude="23.099994" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{false}}" bindmarkertap="markertap" polyline="{{false}}" bindregionchange="regionchange" show-location style="width: 100%; height: 300px;"></map>
 </view>
