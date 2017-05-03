@@ -1,26 +1,29 @@
 {
-  "pages":[
-    "pages/estate/detail",
+  "pages": [
+    "pages/agent/detail",
     "pages/index/index",
     "pages/login/index",
     "pages/buy/index",
     "pages/sell/index",
     "pages/xf/detail",
+    "pages/buy/index",
+    "pages/buy/price",
+    "pages/buy/houseType",
     "pages/esf/detail",
-   
+    "pages/estate/detail",
     "pages/comment/list",
     "pages/comment/write"
   ],
-  "window":{
-    "backgroundColor":"#f0f0f0",
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundColor": "#f0f0f0",
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "悟空找房+",
-    "navigationBarTextStyle":"black",
-    "enablePullDownRefresh":true
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
   },
-  "networkTimeout":{
-    "request":30000,
-    "uploadFile":30000
+  "networkTimeout": {
+    "request": 30000,
+    "uploadFile": 30000
   }
 }

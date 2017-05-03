@@ -1,6 +1,150 @@
-<!--logs.wxml-->
-<view class="container log-list">
-  <block wx:for="{{logs}}" wx:for-item="log" wx:key="*this">
-    <text class="log-item">{{index + 1}}. {{log}}</text>
+<!--detail.wxml  二手房详情页-->
+<!--swiper-->
+<view id="swiper">
+<swiper circular="{{true}}" indicator-dots="{{indicatorDots}}"
+  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="getSwiperCurrentPage">
+  	 <swiper-item>
+       <video poster="{{postImageUrl}}" id="myVideo" src="{{videoUrl}}" controls></video>
+    </swiper-item>
+  	<block wx:for="{{imgUrls}}" wx:key="unique">
+    <swiper-item bindtap="preview"> 
+      <image src="{{item}}" class="slide-image"/>
+    </swiper-item>
   </block>
+</swiper>
+<view id="numBox">
+	<text>{{swiperCurrent}}</text>/<text>{{swiperTotal}}</text>
 </view>
+</view>
+
+<view class="panel">
+	<view class="title panel-hd">精装修,南北通户型，有钥匙可看房</view>
+	<view class="panel-bd">
+		<view class="houseDetail">
+			<view class="layout left">
+				<text class="caption">总价</text>
+				<text>2100 万</text>
+			</view>
+			<view class="layout center">
+				<text class="caption">户型</text>
+				<text>4室2厅2卫</text>
+			</view>
+			<view class="layout right">
+				<text class="caption">建筑面积</text>
+				<text>234.00 ㎡</text>
+			</view>
+		</view>
+		<view class="tags">
+			<text class="jx">精选</text>
+			<text class="mwwy">满五唯一</text>
+			<text class="dt">地铁</text>
+			<text class="jxx">近学校</text>
+			<text class="nbtt">南北通透</text>
+			<text class="xs">新上</text>
+		</view>
+		<!--房源基本信息-->
+		<view class="titlecon">
+			<view class="item">
+				<view>
+					<text class="caption">单价</text>
+					<text>89744 元/㎡</text>
+				</view>
+				<view>
+					<text class="caption">首付</text>
+					<text>735万</text>
+				</view>
+			</view>
+			<view class="item">
+				<view>
+					<text class="caption">月供</text>
+					<text>72444元</text>
+				</view>
+				<view>
+					<text class="caption">年代</text>
+					<text>2005 年  </text>
+				</view>
+			</view>
+			<view class="item">
+				<view>
+					<text class="caption">类型</text>
+					<text>公寓</text>
+				</view>
+				<view>
+					<text class="caption">楼层</text>
+					<text>低区 / 3层  </text>
+				</view>
+			</view>
+			<view class="item">
+				<view>
+					<text class="caption">装修</text>
+					<text>精装</text>
+				</view>
+				<view>
+					<text class="caption">朝向</text>
+					<text>南北 </text>
+				</view>
+			</view>
+		</view>
+		<!--小区周边-->
+		<view class="areaAround">
+			<view class="row">
+				<view class="row-hd">小区</view>
+				<view class="row-bd">阳光新城</view>
+				<text class="arrow"> > </text>
+			</view>
+			<view class="row">
+				<view class="row-hd">地铁</view>
+				<view class="row-bd">2号线 7号线</view>
+			</view>
+			<view class="row">
+				<view class="row-hd">学校</view>
+				<view class="row-bd">华师大附小,管弄新村小,管弄新村小学,管弄新村小学</view>
+			</view>
+		</view>
+	</view>
+</view>
+<view class="gap"></view>
+<!--基本信息-->
+<view class="panel basicBox">
+	<text class="report">举报</text>
+	<view class="panel-hd title">基本信息</view>
+	<view class="panel-bd">
+		<view class="item">
+		<text class="caption">主要卖点</text>
+		<text>静安寺商圈,南京路商圈，中山公园商圈</text>
+	</view>
+	<view class="item">
+		<text class="caption">业主心态</text>
+		<text>业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态</text>
+	</view>
+	<view class="item">
+		<text class="caption">周边配套</text>
+		<text>周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套</text>
+	</view>
+	</view>
+</view>
+<view class="gap"></view>
+<!--小区信息-->
+<view class="panel estate">
+	<view class="panel-hd">小区信息</view>
+	<view class="panel-bd">
+		<view class="item">
+			<text class="arrow"> > </text>
+			<view class="item-hd">
+				<image src="https://img.wkzf.com/b7bcb9ead0634bc191970b97267b335e.DW"></image>
+			</view>
+			<view class="item-bd">
+				<view class="caption">虹东小区 M11 金座</view>
+				<view>1993 年竣工 | 150户</view>
+				<view>虹桥路996弄</view>
+			</view>
+		</view>
+	</view>
+	<!--在售房源-->
+	<view class="panel-bd houseLink">
+		<view>在售房源</view>
+		<view><text>4套 </text><text> > </text> 
+		</view>
+	</view>
+</view>
+<!--用户评论-->

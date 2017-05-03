@@ -1,0 +1,6 @@
+<template name="tc-combine">
+  <view class="row">
+    <view class="row-hd">{{title}}：</view>
+    <view class="row-bd">{{content}}</view>
+  </view>
+</template>
