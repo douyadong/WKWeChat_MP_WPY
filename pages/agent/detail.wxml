@@ -2,6 +2,7 @@
 <import src="../components/comments.wxml"/>
 <import src="../components/esf-sources.wxml"/>
 <import src="../components/tc-combine.wxml"/>
+<import src="../components/legend-hd.wxml"/>
 <!--经纪人概要部分-->
 <view class="panel summary">
   <view class="panel-bd">
@@ -34,7 +35,7 @@
   <view class="panel-bd">  
     <view class="scores">
       <text>综合得分：</text>
-      <text class="points">{{rate.scores}}</text>
+      <text class="points">4.5</text>
     </view>
     <view class="gap"></view>    
     <view class="tags">
@@ -47,5 +48,7 @@
   </view>
 </view>
 <!--房源部分-->
-<view class="source-hd">看看我推荐的好房源吧</view>
-<view class="panel"><template is="esf-sources" data="{{esfSources}}" /></view>
+<template is="legend-hd" data="{{...esfSourcesHd}}" />
+<view class="panel">
+  <template is="esf-sources" data="{{esfSources}}" />
+</view>

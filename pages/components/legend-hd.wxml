@@ -1,0 +1,6 @@
+<template name="legend-hd">
+  <view class="legend-hd">
+    <view class="bg-line"></view>
+    <text>{{title}}</text>
+  </view>
+</template>

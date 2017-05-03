@@ -29,7 +29,8 @@ Page({
         "location":"浦东 花木",
         "price":"45800"
       }
-    ]
+    ] ,
+    "esfSourcesHd":{"title":"看看我推荐的好房源吧"}
   },
   onLoad: function () {
     
