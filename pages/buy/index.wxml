@@ -1,6 +1,39 @@
-<!--logs.wxml-->
-<view class="container log-list">
-  <block wx:for="{{logs}}" wx:for-item="log" wx:key="*this">
-    <text class="log-item">{{index + 1}}. {{log}}</text>
-  </block>
-</view>
+  <view class="wrapper">
+      <view class="content">
+        <view class="box main">
+            <view class="row" data-url="/pages/buy/price" bindtap="handleRedirect">
+              <view>
+                  <text class="type">总价</text>
+                  <text class="text">{{currentPrice.text}}</text>
+              </view>
+              <view class="wk_iconfont icon-arrowR"></view>
+            </view>
+            <view class="row" data-url="/pages/buy/houseType" bindtap="handleRedirect">
+                <view>
+                  <text class="type">户型</text>
+                  <text class="text">{{currentHouseType.text}}</text>
+                </view>
+                <view class="wk_iconfont icon-arrowR"></view>
+            </view>
+            <view class="row last">
+              <view class="location">
+                  <text class="type" style="flex-shrink:0;">位置</text>
+                  <view>
+                     <view class="location-item">宝山区</view>
+                     <view class="location-item">长宁区</view>
+                     <view class="btn add go_page" data-back="confirm">添加</view>
+                     <view class="btn clear" bindtap="clearLocation">清除</view>
+                  </view>
+              </view>
+            </view>
+        </view> 
+        <view>
+        <view class="subTitle">我喜欢的房源特色（多选）</view>
+          <view class="box feature">
+              <view class="tag {{(index+1)%3==0?'last':''}} {{index<3?'first-row':''}} {{item.selected?'selected':''}}" wx:key="{{index}}" wx:for="{{houseFeatures}}" data-id="{{item.id}}" data-type="{{item.type}}" data-index="{{index}}" bindtap="chooseHouseFeature">{{item.text}}</view>
+          </view>
+        </view>
+      </view>
+  
+      <button type="primary" size="default" class="next">下一步</button>
+  </view>

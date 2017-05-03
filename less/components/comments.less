@@ -3,31 +3,69 @@
  2. 文件名称：components -> comments.less (评论)
  3. 作者：zhaohuagang@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
 .comments {
-  .comment {
-    view {
-      font-size : @default-font-size ;
-      line-height : 50rpx ;
+    .comment {
+        view {
+            font-size: @default-font-size ;
+            line-height: 50rpx;
+        }
+        .params {
+            color: @light-font-color ;
+            font-size : @small-font-size ;      
+        }
+        .comment-hd {
+            .comment-hd-inner {
+                float: left;
+                padding-top: 20rpx;
+                padding-left: 20rpx;
+
+                .cellphone {
+                  margin-right: 30rpx;
+                }
+            } 
+            .comment-photo {
+              width: 80rpx;
+              height: 80rpx;
+              border-radius: 50%;
+              float: left;              
+            }           
+        }
+        
+        .comment-bd {
+            padding-top: 10rpx;
+            padding-right: 20rpx;
+            font-size: 32rpx;
+        }
+        .comment-ft {
+            margin-top: 20rpx;
+            margin-bottom: 20rpx;
+            font-size: 26rpx;
+            .comment-up {
+                float: right;
+                margin-right: 26rpx;
+                border: 1rpx solid red;
+            }
+            .comment-down {
+                float: right;
+                border: 1rpx solid red;
+            }
+        }
     }
-    .params {
-      color : @light-font-color ;
-      font-size : @small-font-size ;      
-    }
-  }
-  .btn-group {
-    .flex() ;
+      .btn-group {
+        .flex();
     navigator {
-      background-color : @lighter-gray-color ;  
-      .border-radius(6rpx) ;
+            background-color: @lighter-gray-color ;
+            .border-radius(6rpx);
       border : none ;
-      color : @navigator-active-color ;
-      flex : 1 ;
-      font-size : @default-font-size ;
-      line-height : 90rpx ;
+            color: @navigator-active-color ;
+            flex: 1;
+            font-size: @default-font-size ;
+            line-height: 90rpx;
       text-align : center ;
+        }
+        .more {
+            margin-right: 30rpx;
+        }
     }
-    .more {
-      margin-right : 30rpx ;
-    }
-  }
 }
