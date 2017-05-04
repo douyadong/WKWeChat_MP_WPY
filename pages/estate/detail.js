@@ -3,6 +3,7 @@ var util = require('../../utils/util.js')
 
 Page({
   data: {
+    now:"",
     imgUrls:[{
       url:"http://v.wkzf.com/f789568828984978a6ebe32db70cb13bWV.mp4",
       "type":"video"
@@ -69,6 +70,37 @@ Page({
     
   },
   onShow:function(){
+    var that = this;
+    var now;
+    wx.getStorage({
+      key: 'now',
+      success: function(res){
+        // success
+        now = res.data;
+        that.setData({now:now});
+      },
+      fail: function(res) {
+        // fail
+        now = new Date() + "";
+        that.setData({now:now});
+        wx.setStorage({
+          key: 'now',
+          data: now,
+          success: function(res){
+            // success
+          },
+          fail: function(res) {
+            // fail
+          },
+          complete: function(res) {
+            // complete
+          }
+        })
+      },
+      complete: function(res) {
+        // complete
+      }
+    })
     console.log('onShow...');
 
     var v = [{
@@ -137,6 +169,7 @@ Page({
 
   },
   showLoading:function(){
+    wx.showModal({title:"sdf",content:'<image src="http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL"/>'});
     /*如果页面中同时有多个异步请求，分别调用wx.showLoading和wx.hideLoading会出现问题
       多次调用wx.showLoading没有一点问题，始终只会有一个loading出现。问题在于，有多于
       一个异步操作时，有一个完成就会调用wx.hideLoading，但是此时并不能保证所有的异步操
