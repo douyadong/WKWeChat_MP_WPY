@@ -92,7 +92,8 @@ Page({
   },
   submit: function (event) {
     wx.setStorageSync('buy_price', this.data.currentPrice)
-    wx.navigateBack({url: '/pages/buy/index'})
+    // wx.navigateBack({url: '/pages/buy/index'})
+    wx.navigateTo({url: '/pages/buy/houseType'})
   },
   resetData: function () {
     var that = this

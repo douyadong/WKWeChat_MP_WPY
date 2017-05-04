@@ -7,39 +7,58 @@
  @import "../variables.less";
  @import "../mixins.less";
  .panel {
+    color:@default-font-color;
+    font-size:32rpx;
      .panel-bd {
          .row {
+             margin-bottom:40rpx;
              .row-hd {
-                 width: 140rpx;
+                 width: 128rpx;                 
+                 color:@light-font-color;
+                 font-size:32rpx;
              }
              .row-bd {
-                 margin-left: 150rpx;
+                 margin-left: 152rpx;   
+                 font-size:32rpx;              
              }
          }
      }
  }
+
+ .separator{
+    margin-top:40rpx;
+    margin-bottom:40rpx;
+ }
+
+
  
  .expert-info {
      padding: 30rpx;
      line-height:1;
+     font-size:32rpx;
      .photo {
-         width: 100rpx;
-         heigth: 100rpx;
+         width: 80rpx;
+         heigth: 80rpx;
          float: left;
          image {
              width: 100%;
-             height: 100rpx;
+             height: 80rpx;
              border-radius: 50%;
          }
      }
      .name {
          float: left;
-         padding-top: 30rpx;
+         padding-top: 24rpx;
          padding-left: 20rpx;
-         background-color: white
+         background-color: white;
+
+         .estate-expert{
+         	margin-left:15rpx;
+         	color:@light-font-color;
+         }
      }
      .cellphone{
-     	float:right;padding-top:30rpx
+     	float:right;padding-top:20rpx
      }
  }
  

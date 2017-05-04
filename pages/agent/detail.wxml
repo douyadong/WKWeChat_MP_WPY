@@ -21,7 +21,7 @@
         <text>长宁区好经纪人</text>
         <text>普陀区好经纪人</text>
         <text>卢湾区好经纪人</text>
-        <text>黄埔区好经纪人</text>
+        <text>黄埔区好经纪人</text>        
       </view>
     </view>
     <block wx:for="{{summary}}">
