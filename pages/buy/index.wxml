@@ -21,7 +21,7 @@
                   <view>
                      <view class="location-item">宝山区</view>
                      <view class="location-item">长宁区</view>
-                     <view class="btn add go_page" data-back="confirm">添加</view>
+                     <view class="btn add" data-url="/pages/buy/location" bindtap="handleRedirect">添加</view>
                      <view class="btn clear" bindtap="clearLocation">清除</view>
                   </view>
               </view>
