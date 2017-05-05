@@ -1,0 +1,22 @@
+<template name="xf-sources">
+  <view class="xf-sources">
+    <block wx:for="{{xfSources}}">
+    <view class="source">
+      <image mode="aspectFill" src="{{item.thumbnail}}" class="thumbnail"></image>
+      <view class="param title">{{item.title}}</view>
+      <view class="param fit-height">
+        <text>{{item.area}}</text>
+        <text class="price">{{item.price}}元/㎡</text>
+      </view>
+      <view class="param">{{item.location}}</view>
+      <view class="param tags">
+        <text>即将开盘</text>
+        <text>地铁</text>
+        <text>有优惠</text>
+        <text>有视频</text>
+      </view>
+    </view>
+    <view class="separator" wx:if="{{index < xfSources.length-1}}"></view>
+    </block>    
+  </view>
+</template>
