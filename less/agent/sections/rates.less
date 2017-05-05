@@ -1,0 +1,48 @@
+ /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：agent -> sections -> rates.less (用户评价部分)
+ 3. 作者：zhaohuagang@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.rates {
+    .panel-bd {
+        padding-left : @common-margin ;
+        padding-right : @common-margin ;
+    }
+    .scores{
+        color : @lighter-font-color ;
+        font-size : @default-font-size ;
+        margin-bottom :  @gap-dimension ;
+        .iconfont {
+            color : @star-color ;
+        }
+        .points {
+            color : @default-font-color ;
+            font-size : @great-font-size ; 
+            margin-left :  @gap-dimension ;      
+        }
+    }
+    .tags {
+        margin-bottom :  @gap-dimension ;
+        text {
+            background-color : #e0f0ef ;
+            .border-radius(8rpx) ;
+            color : @default-font-color ;
+            display : inline-block ;
+            font-size : @small-font-size ;
+            margin : 0 10rpx 10rpx 0 ;
+            padding : 12rpx 20rpx ;
+        }
+        .bad{
+            background-color : @light-gray-color ;
+            color : @light-font-color ;
+        }
+    }    
+    .write {
+        background-color : @lighter-gray-color ;
+        .border-radius(6rpx) ;
+        color : @dark-blue-font-color ;
+        font-size : @default-font-size ;
+        line-height : 90rpx ;
+        text-align : center ;
+    }
+}

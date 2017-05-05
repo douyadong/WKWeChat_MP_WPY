@@ -1,0 +1,29 @@
+<view class="panel card">
+  <view class="panel-bd">
+    <view class="row">
+      <view class="row-hd">
+        <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
+      </view>
+      <view class="row-bd">
+        <text class="agent-name">王小五</text>
+        <text class="result">成交100套</text>
+        <text class="iconfont icon-renzheng"></text>
+        <text class="result">通过认证</text>
+      </view>      
+      <view class="row-bd tags">
+        <text>长宁区</text>
+        <text>普陀区</text>
+        <text>卢湾区</text>
+        <text>黄埔区</text>        
+      </view>
+    </view>
+    <view class="row">
+      <view class="row-hd">电话：</view>
+      <view class="row-bd"><text class="phone">189-9876-9098</text></view>
+    </view>  
+    <view class="row">
+      <view class="row-hd">公司：</view>
+      <view class="row-bd">志远地产</view>
+    </view>     
+  </view>
+</view>
