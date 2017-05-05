@@ -57,5 +57,9 @@
 <!--房源部分-->
 <template is="legend-hd" data="{{...sourcesHd}}" />
 <view class="panel">
+  <view class="tabs">
+    <view class="on first">新房</view>
+    <view>二手房</view>    
+  </view>
   <template is="esf-sources" data="{{esfSources}}" />
 </view>
