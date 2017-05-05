@@ -1,5 +1,7 @@
 // logs.js
 var util = require('../../utils/util.js')
+var res = require('./mock').interestInfo
+
 Page({
   data: {
     prices: [{
@@ -104,59 +106,71 @@ Page({
       selected: false
     }],
     currentPrice: {
-      id: '0',
-      min: '0',
-      max: '0',
-      text: '不限'
+      min: '',
+      max: '',
+      text: '请选择总价范围'
     },
     currentHouseType: {
-      id: '0',
-      text: '不限'
+      id: '',
+      text: '请选择户型'
     },
     currentHouseFeatures: [],
-    currentLocation: ''
+    currentLocation: [],
+    loaded: false
   },
   onLoad: function () {
-    // let that = this
-    // let priceId = wx.getStorageSync('buy_price')
-    // let houseTypeId = wx.getStorageSync('buy_houseType')
+    let that = this
+    let data = res.data
 
-    // this.data.houseTypes.forEach(item => {
-    //   if (item.id == houseTypeId) {
-    //     that.currentHouseType = item
-    //   }
-    // })
+    console.log('onLoad.....')
 
-    // this.data.prices.forEach(item => {
-    //   if (item.id == priceId) {
-    //     that.currentPrice = item
-    //   }
-    // })
+    this.data.loaded = true
+    wx.showNavigationBarLoading()
 
-    // this.setData({'currentPrice': this.currentPrice})
-    // this.setData({'currentHouseType': this.currentHouseType})
+    setTimeout(function () {
+      this.data.currentPrice.min = data.startPrice
+      this.data.currentPrice.max = data.endPrice
+
+      this.data.prices.forEach(item => {
+        if (item.min == data.startPrice && item.max == data.endPrice) {
+          this.data.currentPrice.text = item.text
+          wx.setStorageSync('buy_price', item.id)
+        }
+      })
+
+      this.setData({'currentPrice': this.data.currentPrice})
+
+      wx.hideNavigationBarLoading()
+    }.bind(this), 2000)
   },
   onShow: function () {
-    let that = this
-    let priceId = wx.getStorageSync('buy_price')
-    let houseTypeId = wx.getStorageSync('buy_houseType')
+    if (!this.data.loaded) {
+      console.log('onShow.....')
 
-    this.data.houseTypes.forEach(item => {
-      if (item.id == houseTypeId) {
-        that.currentHouseType = item
-      }
-    })
+      let that = this
+      let priceId = wx.getStorageSync('buy_price')
+      let houseTypeId = wx.getStorageSync('buy_houseType')
 
-    this.data.prices.forEach(item => {
-      if (item.id == priceId) {
-        that.currentPrice = item
-      }
-    })
+      console.log('onShow')
 
-    this.setData({'currentPrice': this.currentPrice})
-    this.setData({'currentHouseType': this.currentHouseType})
+      this.data.houseTypes.forEach(item => {
+        if (item.id == houseTypeId) {
+          that.currentHouseType = item
+        }
+      })
+
+      this.data.prices.forEach(item => {
+        if (item.id == priceId) {
+          that.currentPrice = item
+        }
+      })
+
+      this.setData({'currentPrice': this.currentPrice})
+      this.setData({'currentHouseType': this.currentHouseType})
+    }
   },
   handleRedirect: function (e) {
+    this.data.loaded = false
     wx.navigateTo({url: e.target.dataset.url})
   },
   chooseHouseFeature: function (event) {
