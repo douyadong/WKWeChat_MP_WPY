@@ -1,20 +1,36 @@
 <!--index.wxml-->
-<view class="container">
-  <view  bindtap="bindViewTap" class="userinfo">
-    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+<view class="page">
+  <view class="searchNav">
+    <view class="city">上海</view>
+    <view class="searchBox">
+      <view class="search"></view>
+    </view>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+
+  <view class="buySell">
+      <view class="list">
+        <view class="circular buyCircular"></view>
+        <view class="text">我要卖房</view>
+      </view>
+      <view class="list">
+        <view class="circular sellCircular"></view>
+        <view class="text">我要买房</view>
+      </view>
   </view>
-  <view class="navigator">
-    <navigator url="/pages/agent/detail?id=2">登录页</navigator>
-    <navigator url="/pages/xf/detail?id=2">新房详情页</navigator>
-    <navigator url="/pages/estate/detail?id=2">小区详情页</navigator>
-    <navigator url="/pages/esf/detail?id=2">二手房详情页</navigator>
-    <navigator url="/pages/agent/detail?id=2">经纪人详情页</navigator>
-    <navigator url="/pages/buy/index">买房</navigator>
-    <navigator url="/pages/sell/index">卖房</navigator>
-    <navigator url="/pages/comment/list">小区评论</navigator>    
+
+  <view class="screenList">
+      <view class="list">区域</view>
+      <view class="list">综合排序</view>
+      <view class="list">更多</view>
   </view>
+  <view class="agentListBox">
+      <!-- list.wxml -->
+      <include src="agentList/list.wxml"/>
+  </view>
+
+  <block wx:for="{{newList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
+    <view> 
+      <text wx:for="{{list}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'red':''}}">{{li.text}}</text>
+    </view>
+  </block>
 </view>

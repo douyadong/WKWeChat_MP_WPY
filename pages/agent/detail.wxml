@@ -32,7 +32,13 @@
 <view class="gap"></view>
 <!--用户评价部分-->
 <view class="panel rate">
-  <view class="panel-hd">用户评价(28)</view>  
+  <view class="panel-hd">
+    <view class="head">用户评价</view>
+    <navigator class="assistant" url="/pages/agent/rateList">
+      <text>28</text>
+      <text class="iconfont icon-arrow-r"></text>
+    </navigator>
+  </view>  
   <view class="panel-bd">  
     <view class="scores">
       <text>综合得分：</text>
@@ -51,5 +57,9 @@
 <!--房源部分-->
 <template is="legend-hd" data="{{...sourcesHd}}" />
 <view class="panel">
+  <view class="tabs">
+    <view class="on first">新房</view>
+    <view>二手房</view>    
+  </view>
   <template is="esf-sources" data="{{esfSources}}" />
 </view>
