@@ -1,0 +1,83 @@
+.agentList{
+    width: 100%;
+    height: 180rpx;
+    background-color: #fff;
+    border-bottom: 1px #E4E4E4 solid;
+    position: relative;
+    .portrait{
+        width: 120rpx;
+        height: 120rpx;
+        position: absolute;
+        margin-top: 30rpx;
+        margin-left: 30rpx;
+        overflow: hidden;
+        image{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        .tag{
+            width: 50rpx;
+            height: 20rpx;
+            position: absolute;
+            z-index: 10;
+            bottom: 0rpx;
+            right: 15rpx;
+            background-image: url('https://cdn.wkzf.com/wkwap_fe/img/sprite/agent/tag_small.png');
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+        }
+    }
+    .content{
+        height: 100%;
+        padding-left: 170rpx;
+        position: relative;
+        .left{
+            width: 390rpx;
+            height: 100%;
+            float: left;
+            overflow: hidden;
+            .title{
+                width: 100%;
+                font-size: 36rpx;
+                color: #4E4E4E;
+                font-weight: bold;
+                text-overflow:ellipsis;
+                overflow:hidden;
+                white-space:nowrap;
+                margin-top: 35rpx;
+            }
+            .company,.businessCenter{
+                width: 100%;
+                font-size: 30rpx;
+                color: #4E4E4E;
+                text-overflow:ellipsis;
+                overflow:hidden;
+                white-space:nowrap;
+                margin-top: 5rpx;
+            }
+            .bubbles{
+                width: 100%;
+                text-overflow:ellipsis;
+                overflow:hidden;
+                white-space:nowrap;
+                margin-top: 5rpx;
+                text{
+                    background: #F5F5F5;
+                    border-radius: 10rpx;
+                    font-size: 24rpx;
+                    padding: 10rpx;
+                    margin-right: 20rpx;
+                }
+            }
+        }
+        .right{
+            width:100rpx;
+            height: 100%;
+            background-color: blueviolet;
+            float: right;
+            margin-right: 60rpx;
+            overflow: hidden;
+        }
+    }
+}

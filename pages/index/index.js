@@ -1,19 +1,38 @@
 //index.js
+function HighlightTransform(data) {
+    let newList = [];
+      for(let i=0;i<data.length;i++){
+          let texts = data[i].text.split(data[i].key);
+          let t = '';
+          for(let j=0;j<texts.length;j++){
+            if(j<texts.length-1){
+              t+=texts[j]+'@'+data[i].key+'@';
+            }else{
+              t+=texts[j]
+            }
+          }
+          let arr = t.split('@');
+          let list = [];
+          for(let k=0;k<arr.length;k++){
+          	list.push({
+              text:arr[k],
+              isgl:(arr[k] == data[i].key)
+            });
+          }
+          newList.push(list);
+      }
+      return  newList;
+}
+
+
+
+
+
 //获取应用实例
 var app = getApp()
 Page({
   data: {
-    motto: 'Hello World',
-    userInfo: {},
-     imgUrls: [
-      'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
-    ],
-    indicatorDots: false,
-    autoplay: false,
-    interval: 5000,
-    duration: 1000
+    newList:[]
   },
   //事件处理函数
   bindViewTap: function() {
@@ -22,14 +41,21 @@ Page({
     })
   },
   onLoad: function () {
-    console.log('onLoad')
-    var that = this
-    //调用应用实例的方法获取全局数据
-    app.getUserInfo(function(userInfo){
-      //更新数据
-      that.setData({
-        userInfo:userInfo
-      })
+    var that = this;
+    //后台返回的数据
+    let list = [
+        {
+          text:"微信小程序开发中,不知道小程序好不好",
+          key:"小程序"
+        },
+        {
+          text:"2017小程序火了",
+          key:"小程序"
+        }
+    ];
+
+    this.setData({
+      newList:HighlightTransform(list)
     })
   }
 })
