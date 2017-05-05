@@ -2,11 +2,13 @@
 <!--导入公共模板-->
 <import src="../components/swiper.wxml"/>
 <import src="../components/esf-sources.wxml"/>
+<import src="../components/house-comment.wxml"/>
 <!--swiper-->
 <template is="swiper" data="{{imgUrls}}" />
-
 <view class="panel">
-	<view class="title panel-hd">精装修,南北通户型，有钥匙可看房</view>
+	<view class="panel-hd no-border">
+		<view class="title head">精装修,南北通户型，有钥匙可看房</view>
+	</view>
 	<view class="panel-bd">
 		<view class="houseDetail">
 			<view class="layout left">
@@ -19,7 +21,7 @@
 			</view>
 			<view class="layout right">
 				<text class="caption">建筑面积</text>
-				<text>234.00 ㎡</text>
+				<text>234 ㎡</text>
 			</view>
 		</view>
 		<view class="esftags">
@@ -30,6 +32,7 @@
 			<text class="nbtt">南北通透</text>
 			<text class="xs">新上</text>
 		</view>
+		<view class="separator"></view>
 		<!--房源基本信息-->
 		<view class="titlecon">
 			<view class="item">
@@ -73,12 +76,13 @@
 				</view>
 			</view>
 		</view>
+		<view class="separator"></view>
 		<!--小区周边-->
 		<view class="areaAround">
 			<view class="row">
 				<view class="row-hd">小区</view>
 				<view class="row-bd">阳光新城</view>
-				<text class="arrow"> > </text>
+				<text class="arrow iconfont icon-arrow-r"> </text>
 			</view>
 			<view class="row">
 				<view class="row-hd">地铁</view>
@@ -88,6 +92,7 @@
 				<view class="row-hd">学校</view>
 				<view class="row-bd">华师大附小,管弄新村小,管弄新村小学,管弄新村小学</view>
 			</view>
+			
 		</view>
 	</view>
 </view>
@@ -95,7 +100,9 @@
 <!--基本信息-->
 <view class="panel basicBox">
 	<text class="report">举报</text>
-	<view class="panel-hd title">基本信息</view>
+	<view class="panel-hd">
+		<view class="head">基本信息</view>
+	</view>
 	<view class="panel-bd">
 		<view class="item">
 		<text class="caption">主要卖点</text>
@@ -109,15 +116,20 @@
 		<text class="caption">周边配套</text>
 		<text>周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套</text>
 	</view>
+	<view class="row">
+		<navigator class="button gray" url="#">查看更多</navigator>
+	</view>
 	</view>
 </view>
 <view class="gap"></view>
 <!--小区信息-->
 <view class="panel estate">
-	<view class="panel-hd">小区信息</view>
+	<view class="panel-hd">
+		<view class="head">小区信息</view>
+	</view>
 	<view class="panel-bd">
 		<view class="item">
-			 <icon class="iconfont icon-arrow-r arrow" size="20"/>
+			 <icon class="arrow iconfont icon-arrow-r"/>
 			<view class="item-hd">
 				<image src="https://img.wkzf.com/b7bcb9ead0634bc191970b97267b335e.DW"></image>
 			</view>
@@ -137,38 +149,22 @@
 </view>
 <!--用户评论-->
 <view class="panel">
-  <view class="panel-hd">用户评论</view>
+ <view class="panel-hd">
+    <view class="head">用户评价</view>
+    <navigator class="assistant" url="#">
+      <text>6</text>
+      <text class="iconfont icon-arrow-r"></text>
+    </navigator>
+  </view> 
   <view class="panel-bd">
-    <view class="comments">
-    <view class="comment" wx:for="{{comments}}">
-      <view class="comment-hd">
-        <image src="{{item.photo}}" class="comment-photo" />
-        <view class="comment-hd-inner">
-        <text class="cellphone">{{item.cellphone}}</text>
-        <text class="label-good">优评</text>
-        <text class="label-owner">业主</text>
+    <view class="house-comments">
+        <template is="house-comment" data="{{comments}}" />
+        <view class="btn-group">
+          <navigator url="/pages/comment/write" bindtap="hideLoading">
+            我来点评
+          </navigator>
         </view>
-        <view style="clear:both"></view>
-      </view>
-      <view class="comment-bd">
-        {{item.content}}
-      </view>
-      <view class="comment-ft">
-        <text class="comment-date">{{item.createDate}}</text>
-        <text class="comment-down">{{item.downCount}}d</text>
-        <text class="comment-up">{{item.upCount}}u</text>      
-      </view>
     </view>
-    <view class="btn-group">
-    <button type="default" size="default" class="more" bindtap="showLoading">
-      查看更多
-    </button>
-    <button type="default" size="default" class="btn-comment" bindtap="hideLoading">
-      我来点评
-    </button>
-  </view>
-  </view>
-  
   </view>
 </view>
 <view class="gap"></view>

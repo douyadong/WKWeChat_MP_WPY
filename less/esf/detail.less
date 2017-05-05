@@ -6,16 +6,33 @@
  
  @import "../variables.less";
  @import "../mixins.less";
-
+ /*******************按钮样式*********************/
+ 
+ .btn {
+     background-color: @lighter-gray-color ;
+     .border-radius(6rpx);
+     border: none;
+     color: @navigator-active-color ;
+     flex: 1;
+     font-size: 28rpx;
+     line-height: 90rpx;
+     text-align: center;
+     margin-top: 20rpx;
+ }
  /******************房屋详情********************/
+ 
  .panel {
-     .title {
-         font-size: 40rpx;
-         font-weight: 600;
+     .panel-hd {
+         &.no-border {
+             border-bottom: none;
+         }
+         .title {
+             font-size: 40rpx;
+             font-weight: 600;
+         }
      }
      .houseDetail {
          display: flex;
-         margin-top: 30rpx;
          .left {
              flex: 1;
          }
@@ -33,11 +50,12 @@
              text {
                  color: #F95355;
                  display: block;
-                 font-size: 36rpx;
+                 font-size: 38rpx;
              }
              .caption {
                  color: @light-font-color;
                  font-size: 26rpx;
+                 padding-bottom: 10rpx;
              }
          }
      }
@@ -46,13 +64,12 @@
  
  .esftags {
      padding: 30rpx 0;
-     font-size: 24rpx;
-     border-bottom: 2rpx solid @separator-color;
+     font-size: 20rpx;
      text {
          padding: 6rpx;
          border-radius: 4rpx;
          display: inline-block;
-         margin-right: 10rpx;
+         margin-right: 20rpx;
      }
      .jx {
          background: #4081D6;
@@ -83,7 +100,6 @@
  
  .titlecon {
      margin-top: 30rpx;
-     border-bottom: 1px solid @separator-color;
      padding-bottom: 20rpx;
      .item {
          display: flex;
@@ -105,11 +121,14 @@
  
  .panel {
      .areaAround {
+         margin-top: 30rpx;
          position: relative;
          .arrow {
              position: absolute;
-             right: 30rpx;
+             right: 0;
              top: 0rpx;
+             color: @navigator-active-color;
+             font-size: 26rpx;
          }
          .row {
              .row-hd {
@@ -129,12 +148,12 @@
      position: relative;
      .report {
          background: #f6f6f6;
-         color: #92A7C3;
+         color: @navigator-active-color;
          position: absolute;
          right: 30rpx;
          font-size: 24rpx;
          padding: 6rpx 12rpx;
-         top: 30rpx;
+         top: 26rpx;
      }
      .item {
          font-size: 32rpx;
@@ -158,13 +177,16 @@
          font-size: 32rpx;
          position: relative;
          .arrow {
+             color: @navigator-active-color;
+             font-size: 26rpx;
              position: absolute;
              right: 20rpx;
              top: 50%;
+             margin-top: -13rpx;
          }
          .item-hd {
              image {
-                 height: 170rpx;
+                 height: 160rpx;
                  width: 240rpx;
              }
          }

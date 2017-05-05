@@ -29,6 +29,22 @@ Page({
             createDate: "2015-10-06 12:10",
             upCount: "20",
             downCount: "11"
+        },{
+            photo: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
+            cellphone: "133*****2365",
+            labels: ["", ""],
+            content: "南北通透，黄金楼层，满五唯一，精装修。",
+            createDate: "2015-10-06 12:10",
+            upCount: "20",
+            downCount: "11"
+        },{
+            photo: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
+            cellphone: "133*****2365",
+            labels: ["", ""],
+            content: "南北通透，黄金楼层，满五唯一，精装修。",
+            createDate: "2015-10-06 12:10",
+            upCount: "20",
+            downCount: "11"
         }],
         "esfSources": [{
             "thumbnail": "https://img.wkzf.com/e13cc00ccbb547f9b7e63454535cabb0.ML",
