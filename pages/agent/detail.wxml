@@ -34,10 +34,10 @@
 <view class="panel rate">
   <view class="panel-hd">
     <view class="head">用户评价</view>
-    <view class="assistant">
+    <navigator class="assistant" url="/pages/agent/rateList">
       <text>28</text>
-      <text class="iconfont icon-"></text>
-    </view>
+      <text class="iconfont icon-arrow-r"></text>
+    </navigator>
   </view>  
   <view class="panel-bd">  
     <view class="scores">
