@@ -11,48 +11,6 @@ Page({
         "money":453,
         "location":"浦东 花木",
         "price":"45800"
-      },
-      {
-        "thumbnail":"https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
-        "title":"精装修 随时可以看房子",
-        "layout":"2室2厅2卫",
-        "area":136,
-        "money":453,
-        "location":"浦东 花木",
-        "price":"45800"
-      },
-      {
-        "thumbnail":"https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
-        "title":"精装修 随时可以看房子",
-        "layout":"2室2厅2卫",
-        "area":136,
-        "money":453,
-        "location":"浦东 花木",
-        "price":"45800"
-      },{
-        "thumbnail":"https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
-        "title":"精装修 随时可以看房子",
-        "layout":"2室2厅2卫",
-        "area":136,
-        "money":453,
-        "location":"浦东 花木",
-        "price":"45800"
-      },{
-        "thumbnail":"https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
-        "title":"精装修 随时可以看房子",
-        "layout":"2室2厅2卫",
-        "area":136,
-        "money":453,
-        "location":"浦东 花木",
-        "price":"45800"
-      },{
-        "thumbnail":"https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
-        "title":"精装修 随时可以看房子",
-        "layout":"2室2厅2卫",
-        "area":136,
-        "money":453,
-        "location":"浦东 花木",
-        "price":"45800"
       }
     ]
   },

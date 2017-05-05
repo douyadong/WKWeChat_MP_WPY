@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/estate/detail",
     "pages/agent/detail",
     "pages/index/index",    
     "pages/login/index",
@@ -13,7 +14,7 @@
     "pages/buy/success",
     "pages/buy/recommend",
     "pages/esf/detail",
-    "pages/estate/detail",
+    
     "pages/comment/list",
     "pages/comment/write"
   ],

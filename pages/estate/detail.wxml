@@ -1,19 +1,8 @@
-<view>
-  {{now}}
-</view>
+<!--导入公共模板-->
+<import src="../components/swiper.wxml"/>
+<import src="../components/house-comment.wxml"/>
 <view class="panel">
-  <swiper interval="2000">  
-      <swiper-item style="position:relative" wx:for="{{imgUrls}}">      
-        <video wx:if="{{item.type=='video'}}" src="{{item.url}}" controls>
-        
-        </video>
-        <image bindtap="preview" data-img-url="{{item.url}}" wx:if="{{item.type=='img'}}" src="{{item.url}}" mode="widthFix">
-        </image>
-        <view class="index">
-          {{index + 1}}/{{imgUrls.length}}
-        </view>
-      </swiper-item>    
-  </swiper>
+  <template is="swiper" data="{{imgUrls}}" />
   <view class="expert-info">
     <view class="photo">
       <image src="http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL"/>
@@ -94,38 +83,22 @@
 <view class="gap"></view>
 
 <view class="panel">
-  <view class="panel-hd">用户评论</view>
+ <view class="panel-hd">
+    <view class="head">用户评价</view>
+    <navigator class="assistant" url="#">
+      <text>6</text>
+      <text class="iconfont icon-arrow-r"></text>
+    </navigator>
+  </view> 
   <view class="panel-bd">
     <view class="house-comments">
-    <view class="comment" wx:for="{{comments}}">
-      <view class="comment-hd">
-        <image src="{{item.photo}}" class="comment-photo" />
-        <view class="comment-hd-inner">
-        <text class="cellphone">{{item.cellphone}}</text>
-        <text class="label-good">优评</text>
-        <text class="label-owner">业主</text>
+        <template is="house-comment" data="{{comments}}" />
+        <view class="btn-group">
+          <navigator url="/pages/comment/write" bindtap="hideLoading">
+            我来点评
+          </navigator>
         </view>
-        <view style="clear:both"></view>
-      </view>
-      <view class="comment-bd">
-        {{item.content}}
-      </view>
-      <view class="comment-ft">
-        <text class="comment-date">{{item.createDate}}</text>
-        <text class="comment-down">{{item.downCount}}d</text>
-        <text class="comment-up">{{item.upCount}}u</text>      
-      </view>
     </view>
-    <view class="btn-group">
-    <navigator class="more" url="/pages/estate/list" bindtap="showLoading">
-      查看更多
-    </navigator>
-    <navigator url="/pages/comment/write" bindtap="hideLoading">
-      我来点评
-    </navigator>
-  </view>
-  </view>
-  
   </view>
 </view>
 
