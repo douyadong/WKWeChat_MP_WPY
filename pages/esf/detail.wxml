@@ -1,17 +1,9 @@
 <!--detail.wxml  二手房详情页-->
-<view class="sprite gopng_cmonkey"></view>
-
+<!--导入公共模板-->
+<import src="../components/swiper.wxml"/>
 <import src="../components/esf-sources.wxml"/>
 <!--swiper-->
-<swiper interval="2000">  
-      <swiper-item style="position:relative" wx:for="{{imgUrls}}">      
-        <image bindtap="preview" data-img-url="{{item.url}}" wx:if="{{item.type=='img'}}" src="{{item.url}}" mode="widthFix">
-        </image>
-        <view class="index">
-          {{index + 1}}/{{imgUrls.length}}
-        </view>
-      </swiper-item>    
-  </swiper>
+<template is="swiper" data="{{imgUrls}}" />
 
 <view class="panel">
 	<view class="title panel-hd">精装修,南北通户型，有钥匙可看房</view>

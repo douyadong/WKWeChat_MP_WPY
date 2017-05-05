@@ -3,19 +3,22 @@ var util = require('../../utils/util.js')
 Page({
     data: {
         imgUrls: [{
-            url: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
+            url: "https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL",
+            "type": "video"
+        }, {
+            url: "https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL",
             "type": "img"
         }, {
-            url: "https://img.wkzf.com/a236825f9cdb45a69bd0b2a8c959a2e1.DL",
+            url: "https://img.wkzf.com/d3cb48985d2b47949a6ce982d1bf1ca3.DL",
             "type": "img"
         }, {
-            url: "https://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
+            url: "https://img.wkzf.com/7490de2c618c4e129572accad3adc51e.DL",
             "type": "img"
         }, {
-            url: "https://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
+            url: "https://img.wkzf.com/3410510d92b84f3798bed69c494e0e22.DL",
             "type": "img"
         }, {
-            url: "https://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
+            url: "https://img.wkzf.com/1580f8be571d4c3d88c77839cd73d38a.DL",
             "type": "img"
         }],
         comments: [{
@@ -27,26 +30,23 @@ Page({
             upCount: "20",
             downCount: "11"
         }],
-        "esfSources":[
-      {
-        "thumbnail":"https://img.wkzf.com/e13cc00ccbb547f9b7e63454535cabb0.ML",
-        "title":"精装修 随时可以看房子",
-        "layout":"2室2厅2卫",
-        "area":136,
-        "money":453,
-        "location":"浦东 花木",
-        "price":"45800"
-      },
-      {
-        "thumbnail":"https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
-        "title":"精装修 随时可以看房子",
-        "layout":"2室2厅2卫",
-        "area":136,
-        "money":453,
-        "location":"浦东 花木",
-        "price":"45800"
-      }
-    ]
+        "esfSources": [{
+            "thumbnail": "https://img.wkzf.com/e13cc00ccbb547f9b7e63454535cabb0.ML",
+            "title": "精装修 随时可以看房子",
+            "layout": "2室2厅2卫",
+            "area": 136,
+            "money": 453,
+            "location": "浦东 花木",
+            "price": "45800"
+        }, {
+            "thumbnail": "https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
+            "title": "精装修 随时可以看房子",
+            "layout": "2室2厅2卫",
+            "area": 136,
+            "money": 453,
+            "location": "浦东 花木",
+            "price": "45800"
+        }]
     },
     //swiper获取当前页
     preview: function(event) {
