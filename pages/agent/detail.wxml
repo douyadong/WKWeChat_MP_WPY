@@ -32,7 +32,13 @@
 <view class="gap"></view>
 <!--用户评价部分-->
 <view class="panel rate">
-  <view class="panel-hd">用户评价(28)</view>  
+  <view class="panel-hd">
+    <view class="head">用户评价</view>
+    <view class="assistant">
+      <text>28</text>
+      <text class="iconfont icon-"></text>
+    </view>
+  </view>  
   <view class="panel-bd">  
     <view class="scores">
       <text>综合得分：</text>

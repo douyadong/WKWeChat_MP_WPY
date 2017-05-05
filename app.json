@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/index/index",
     "pages/agent/detail",
+    "pages/index/index",    
     "pages/login/index",
     "pages/sell/index",
     "pages/xf/detail",
