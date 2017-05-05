@@ -1,190 +1,185 @@
 <!--detail.wxml  二手房详情页-->
 <!--导入公共模板-->
-<import src="../components/swiper.wxml"/>
-<import src="../components/esf-sources.wxml"/>
-<import src="../components/house-comment.wxml"/>
+<import src="../components/swiper.wxml" />
+<import src="../components/esf-sources.wxml" />
+<import src="../components/house-comment.wxml" />
 <!--swiper-->
 <template is="swiper" data="{{imgUrls}}" />
 <view class="panel">
-	<view class="panel-hd no-border">
-		<view class="title head">精装修,南北通户型，有钥匙可看房</view>
-	</view>
-	<view class="panel-bd">
-		<view class="houseDetail">
-			<view class="layout left">
-				<text class="caption">总价</text>
-				<text>2100 万</text>
-			</view>
-			<view class="layout center">
-				<text class="caption">户型</text>
-				<text>4室2厅2卫</text>
-			</view>
-			<view class="layout right">
-				<text class="caption">建筑面积</text>
-				<text>234 ㎡</text>
-			</view>
-		</view>
-		<view class="esftags">
-			<text class="jx">精选</text>
-			<text class="mwwy">满五唯一</text>
-			<text class="dt">地铁</text>
-			<text class="jxx">近学校</text>
-			<text class="nbtt">南北通透</text>
-			<text class="xs">新上</text>
-		</view>
-		<view class="separator"></view>
-		<!--房源基本信息-->
-		<view class="titlecon">
-			<view class="item">
-				<view>
-					<text class="caption">单价</text>
-					<text>89744 元/㎡</text>
-				</view>
-				<view>
-					<text class="caption">首付</text>
-					<text>735万</text>
-				</view>
-			</view>
-			<view class="item">
-				<view>
-					<text class="caption">月供</text>
-					<text>72444元</text>
-				</view>
-				<view>
-					<text class="caption">年代</text>
-					<text>2005 年  </text>
-				</view>
-			</view>
-			<view class="item">
-				<view>
-					<text class="caption">类型</text>
-					<text>公寓</text>
-				</view>
-				<view>
-					<text class="caption">楼层</text>
-					<text>低区 / 3层  </text>
-				</view>
-			</view>
-			<view class="item">
-				<view>
-					<text class="caption">装修</text>
-					<text>精装</text>
-				</view>
-				<view>
-					<text class="caption">朝向</text>
-					<text>南北 </text>
-				</view>
-			</view>
-		</view>
-		<view class="separator"></view>
-		<!--小区周边-->
-		<view class="areaAround">
-			<view class="row">
-				<view class="row-hd">小区</view>
-				<view class="row-bd">阳光新城</view>
-				<text class="arrow iconfont icon-arrow-r"> </text>
-			</view>
-			<view class="row">
-				<view class="row-hd">地铁</view>
-				<view class="row-bd">2号线 7号线</view>
-			</view>
-			<view class="row">
-				<view class="row-hd">学校</view>
-				<view class="row-bd">华师大附小,管弄新村小,管弄新村小学,管弄新村小学</view>
-			</view>
-			
-		</view>
-	</view>
+    <view class="title head">精装修,南北通户型，有钥匙可看房</view>
+    <view class="panel-bd lr-padding">
+        <view class="houseDetail">
+            <view class="layout left">
+                <text class="caption">总价</text>
+                <text>2100 万</text>
+            </view>
+            <view class="layout center">
+                <text class="caption">户型</text>
+                <text>4室2厅2卫</text>
+            </view>
+            <view class="layout right">
+                <text class="caption">建筑面积</text>
+                <text>234 ㎡</text>
+            </view>
+        </view>
+        <view class="esftags">
+            <text class="jx">精选</text>
+            <text class="mwwy">满五唯一</text>
+            <text class="dt">地铁</text>
+            <text class="jxx">近学校</text>
+            <text class="nbtt">南北通透</text>
+            <text class="xs">新上</text>
+        </view>
+        <view class="separator"></view>
+        <!--房源基本信息-->
+        <view class="titlecon">
+            <view class="item">
+                <view>
+                    <text class="caption">单价</text>
+                    <text>89744 元/㎡</text>
+                </view>
+                <view>
+                    <text class="caption">首付</text>
+                    <text>735万</text>
+                </view>
+            </view>
+            <view class="item">
+                <view>
+                    <text class="caption">月供</text>
+                    <text>72444元</text>
+                </view>
+                <view>
+                    <text class="caption">年代</text>
+                    <text>2005 年 </text>
+                </view>
+            </view>
+            <view class="item">
+                <view>
+                    <text class="caption">类型</text>
+                    <text>公寓</text>
+                </view>
+                <view>
+                    <text class="caption">楼层</text>
+                    <text>低区 / 3层 </text>
+                </view>
+            </view>
+            <view class="item">
+                <view>
+                    <text class="caption">装修</text>
+                    <text>精装</text>
+                </view>
+                <view>
+                    <text class="caption">朝向</text>
+                    <text>南北 </text>
+                </view>
+            </view>
+        </view>
+        <view class="separator"></view>
+        <!--小区周边-->
+        <view class="areaAround">
+            <view class="row">
+                <view class="row-hd">小区</view>
+                <view class="row-bd">阳光新城</view>
+                <text class="arrow iconfont icon-arrow-r"> </text>
+            </view>
+            <view class="row">
+                <view class="row-hd">地铁</view>
+                <view class="row-bd">2号线 7号线</view>
+            </view>
+            <view class="row">
+                <view class="row-hd">学校</view>
+                <view class="row-bd">华师大附小,管弄新村小,管弄新村小学,管弄新村小学</view>
+            </view>
+        </view>
+    </view>
 </view>
 <view class="gap"></view>
 <!--基本信息-->
 <view class="panel basicBox">
-	<text class="report">举报</text>
-	<view class="panel-hd">
-		<view class="head">基本信息</view>
-	</view>
-	<view class="panel-bd">
-		<view class="item">
-		<text class="caption">主要卖点</text>
-		<text>静安寺商圈,南京路商圈，中山公园商圈</text>
-	</view>
-	<view class="item">
-		<text class="caption">业主心态</text>
-		<text>业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态</text>
-	</view>
-	<view class="item">
-		<text class="caption">周边配套</text>
-		<text>周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套</text>
-	</view>
-	<view class="row">
-		<navigator class="button gray" url="#">查看更多</navigator>
-	</view>
-	</view>
+    <text class="report">举报</text>
+    <view class="panel-hd">
+        <view class="head">基本信息</view>
+    </view>
+    <view class="panel-bd lr-padding">
+        <view class="item">
+            <text class="caption">主要卖点</text>
+            <text>静安寺商圈,南京路商圈，中山公园商圈</text>
+        </view>
+        <view class="item">
+            <text class="caption">业主心态</text>
+            <text>业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态</text>
+        </view>
+        <view class="item">
+            <text class="caption">周边配套</text>
+            <text>周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套</text>
+        </view>
+        <navigator class="button gray" url="#">查看更多</navigator>
+    </view>
 </view>
 <view class="gap"></view>
 <!--小区信息-->
 <view class="panel estate">
-	<view class="panel-hd">
-		<view class="head">小区信息</view>
-	</view>
-	<view class="panel-bd">
-		<view class="item">
-			 <icon class="arrow iconfont icon-arrow-r"/>
-			<view class="item-hd">
-				<image src="https://img.wkzf.com/b7bcb9ead0634bc191970b97267b335e.DW"></image>
-			</view>
-			<view class="item-bd">
-				<view class="caption">虹东小区 M11 金座</view>
-				<view>1993 年竣工 | 150户</view>
-				<view>虹桥路996弄</view>
-			</view>
-		</view>
-	</view>
-	<!--在售房源-->
-	<view class="houseLink">
-		<view>在售房源</view>
-		<view><text>4套 </text><text> > </text> 
-		</view>
-	</view>
-</view>
-<!--用户评论-->
-<view class="panel">
- <view class="panel-hd">
-    <view class="head">用户评价</view>
-    <navigator class="assistant" url="#">
-      <text>6</text>
-      <text class="iconfont icon-arrow-r"></text>
-    </navigator>
-  </view> 
-  <view class="panel-bd">
-    <view class="house-comments">
-        <template is="house-comment" data="{{comments}}" />
-        <view class="btn-group">
-          <navigator url="/pages/comment/write" bindtap="hideLoading">
-            我来点评
-          </navigator>
+    <view class="panel-hd">
+        <view class="head">小区信息</view>
+    </view>
+    <view class="panel-bd lr-padding">
+        <view class="item">
+            <icon class="arrow iconfont icon-arrow-r" />
+            <view class="item-hd">
+                <image src="https://img.wkzf.com/b7bcb9ead0634bc191970b97267b335e.DW"></image>
+            </view>
+            <view class="item-bd">
+                <view class="caption">虹东小区 M11 金座</view>
+                <view>1993 年竣工 | 150户</view>
+                <view>虹桥路996弄</view>
+            </view>
         </view>
     </view>
-  </view>
+    <!--在售房源-->
+    <view class="panel-hd houseLink">
+        <view class="head">在售房源</view>
+        <navigator class="assistant" url="#">
+            <text>6套</text>
+            <text class="iconfont icon-arrow-r"></text>
+        </navigator>
+    </view>
+    <!--用户评论-->
+    <view class="panel-hd">
+        <view class="head">用户评价</view>
+        <navigator class="assistant" url="#">
+            <text>6</text>
+            <text class="iconfont icon-arrow-r"></text>
+        </navigator>
+    </view>
+    <view class="panel-bd lr-padding">
+        <view class="house-comments">
+            <template is="house-comment" data="{{comments}}" />
+            <view class="btn-group">
+                <navigator url="/pages/comment/write" bindtap="hideLoading">
+                    我来评价
+                </navigator>
+            </view>
+        </view>
+    </view>
 </view>
 <view class="gap"></view>
 <!--位置及周边-->
 <view class="panel">
-	<view class="panel-hd">位置及周边</view>
-	<view class="panel-bd">
-		<map id="map" longitude="113.324520" latitude="23.099994" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{false}}" bindmarkertap="markertap" polyline="{{false}}" bindregionchange="regionchange" show-location style="width: 100%; height: 300px;"></map>
-	</view>
+    <view class="panel-hd">
+        <view class="head">位置及周边</view>
+    </view>
+    <map id="map" longitude="113.324520" latitude="23.099994" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{false}}" bindmarkertap="markertap" polyline="{{false}}" bindregionchange="regionchange" show-location style="width: 100%; height: 300px;"></map>
 </view>
 <view class="gap"></view>
 <!--相似房源-->
 <view class="panel">
-	<view class="panel-hd">相似房源</view>
+    <view class="panel-hd">
+        <view class="head">相似房源推荐</view>
+    </view>
 </view>
-<view class="panel">
-	<template is="esf-sources" data="{{esfSources}}" />
-	<view class="showMoreBtn">
-		<button type="default" size="default" class="more">查看更多</button>
-	</view>
+<view class="panel esf-list">
+    <template is="esf-sources" data="{{esfSources}}" />
+    <view class="row">
+    	<navigator class="button gray" url="#">查看更多</navigator>
+    </view>
 </view>
-
-
