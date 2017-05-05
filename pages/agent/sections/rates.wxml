@@ -1,0 +1,31 @@
+<import src="../../components/agent-rates.wxml"/>
+<view class="panel rates">
+  <view class="panel-hd">
+    <view class="head">用户评价</view>
+    <navigator class="assistant" url="/pages/agent/rateList">
+      <text>28</text>
+      <text class="iconfont icon-arrow-r"></text>
+    </navigator>
+  </view>  
+  <view class="panel-bd">  
+    <view class="scores">
+      <text>综合得分：</text>
+      <text class="iconfont icon-star-all"></text>
+      <text class="iconfont icon-star-all"></text>
+      <text class="iconfont icon-star-all"></text>
+      <text class="iconfont icon-star-all"></text>
+      <text class="iconfont icon-star-half"></text>
+      <text class="points">4.5</text>
+    </view>     
+    <view class="tags">
+      <text>诚信可靠 23 </text>
+      <text>为用户着想 23 </text>
+      <text>房源熟悉 23 </text>
+      <text class="bad">不太专业 1 </text>
+    </view>
+    <view class="separator"></view>
+    <template is="agent-rates" data="{{agentRates}}" />
+    <view class="gap"></view>
+    <navigator url="pages/agent/writeRate" class="button gray">我来评价</navigator>
+  </view>
+</view>

@@ -1,0 +1,18 @@
+<template name="agent-rates">
+  <view class="agent-rates">
+    <block wx:for="{{agentRates}}">
+      <view class="rate">
+        <view class="star">
+          <text class="iconfont icon-star-all"></text>
+          <text class="iconfont icon-star-all"></text>
+          <text class="iconfont icon-star-all"></text>
+          <text class="iconfont icon-star-all"></text>
+          <text class="iconfont icon-star-half"></text>      
+        </view>
+        <view class="content">{{item.content}}</view>
+        <view class="params">{{item.client}} | {{item.date}}</view>
+      </view>
+      <view class="separator" wx:if="{{index < agentRates.length-1}}"></view>
+    </block>
+  </view>
+</template>
