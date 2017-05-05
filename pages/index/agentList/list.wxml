@@ -7,13 +7,16 @@
         <view class="left">
             <view class="title">王小五</view>
             <view class="company">志远地产</view>
+            <view class="businessCenter">熟悉商圈：世纪大道、虹桥、唐镇、虹桥、唐镇</view>
             <!--
             <view class="businessCenter">熟悉商圈：世纪大道、虹桥、唐镇、虹桥、唐镇</view>
             -->
+            <!--
             <view class="bubbles">
                 <text>长宁区好经纪人</text>
                 <text>长宁区好经纪人</text>
             </view>
+            -->
         </view>
         <view class="right">111111111111111111111111111</view>
     </view>
