@@ -1,6 +1,7 @@
 <!--导入公共模板-->
 <import src="../components/comments.wxml"/>
 <import src="../components/esf-sources.wxml"/>
+<import src="../components/xf-sources.wxml"/>
 <import src="../components/tc-combine.wxml"/>
 <import src="../components/legend-hd.wxml"/>
 <!--经纪人概要部分-->
@@ -20,7 +21,7 @@
         <text>长宁区好经纪人</text>
         <text>普陀区好经纪人</text>
         <text>卢湾区好经纪人</text>
-        <text>黄埔区好经纪人</text>
+        <text>黄埔区好经纪人</text>        
       </view>
     </view>
     <block wx:for="{{summary}}">
@@ -48,7 +49,7 @@
   </view>
 </view>
 <!--房源部分-->
-<template is="legend-hd" data="{{...esfSourcesHd}}" />
+<template is="legend-hd" data="{{...sourcesHd}}" />
 <view class="panel">
   <template is="esf-sources" data="{{esfSources}}" />
 </view>

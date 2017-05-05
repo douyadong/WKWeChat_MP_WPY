@@ -1,21 +1,17 @@
 <!--detail.wxml  二手房详情页-->
+<view class="sprite gopng_cmonkey"></view>
+
+<import src="../components/esf-sources.wxml"/>
 <!--swiper-->
-<view id="swiper">
-<swiper circular="{{true}}" indicator-dots="{{indicatorDots}}"
-  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="getSwiperCurrentPage">
-  	 <swiper-item>
-       <video poster="{{postImageUrl}}" id="myVideo" src="{{videoUrl}}" controls></video>
-    </swiper-item>
-  	<block wx:for="{{imgUrls}}" wx:key="unique">
-    <swiper-item bindtap="preview"> 
-      <image src="{{item}}" class="slide-image"/>
-    </swiper-item>
-  </block>
-</swiper>
-<view id="numBox">
-	<text>{{swiperCurrent}}</text>/<text>{{swiperTotal}}</text>
-</view>
-</view>
+<swiper interval="2000">  
+      <swiper-item style="position:relative" wx:for="{{imgUrls}}">      
+        <image bindtap="preview" data-img-url="{{item.url}}" wx:if="{{item.type=='img'}}" src="{{item.url}}" mode="widthFix">
+        </image>
+        <view class="index">
+          {{index + 1}}/{{imgUrls.length}}
+        </view>
+      </swiper-item>    
+  </swiper>
 
 <view class="panel">
 	<view class="title panel-hd">精装修,南北通户型，有钥匙可看房</view>
@@ -34,7 +30,7 @@
 				<text>234.00 ㎡</text>
 			</view>
 		</view>
-		<view class="tags">
+		<view class="esftags">
 			<text class="jx">精选</text>
 			<text class="mwwy">满五唯一</text>
 			<text class="dt">地铁</text>
@@ -129,7 +125,7 @@
 	<view class="panel-hd">小区信息</view>
 	<view class="panel-bd">
 		<view class="item">
-			<text class="arrow"> > </text>
+			 <icon class="iconfont icon-arrow-r arrow" size="20"/>
 			<view class="item-hd">
 				<image src="https://img.wkzf.com/b7bcb9ead0634bc191970b97267b335e.DW"></image>
 			</view>
@@ -141,10 +137,66 @@
 		</view>
 	</view>
 	<!--在售房源-->
-	<view class="panel-bd houseLink">
+	<view class="houseLink">
 		<view>在售房源</view>
 		<view><text>4套 </text><text> > </text> 
 		</view>
 	</view>
 </view>
 <!--用户评论-->
+<view class="panel">
+  <view class="panel-hd">用户评论</view>
+  <view class="panel-bd">
+    <view class="comments">
+    <view class="comment" wx:for="{{comments}}">
+      <view class="comment-hd">
+        <image src="{{item.photo}}" class="comment-photo" />
+        <view class="comment-hd-inner">
+        <text class="cellphone">{{item.cellphone}}</text>
+        <text class="label-good">优评</text>
+        <text class="label-owner">业主</text>
+        </view>
+        <view style="clear:both"></view>
+      </view>
+      <view class="comment-bd">
+        {{item.content}}
+      </view>
+      <view class="comment-ft">
+        <text class="comment-date">{{item.createDate}}</text>
+        <text class="comment-down">{{item.downCount}}d</text>
+        <text class="comment-up">{{item.upCount}}u</text>      
+      </view>
+    </view>
+    <view class="btn-group">
+    <button type="default" size="default" class="more" bindtap="showLoading">
+      查看更多
+    </button>
+    <button type="default" size="default" class="btn-comment" bindtap="hideLoading">
+      我来点评
+    </button>
+  </view>
+  </view>
+  
+  </view>
+</view>
+<view class="gap"></view>
+<!--位置及周边-->
+<view class="panel">
+	<view class="panel-hd">位置及周边</view>
+	<view class="panel-bd">
+		<map id="map" longitude="113.324520" latitude="23.099994" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{false}}" bindmarkertap="markertap" polyline="{{false}}" bindregionchange="regionchange" show-location style="width: 100%; height: 300px;"></map>
+	</view>
+</view>
+<view class="gap"></view>
+<!--相似房源-->
+<view class="panel">
+	<view class="panel-hd">相似房源</view>
+</view>
+<view class="panel">
+	<template is="esf-sources" data="{{esfSources}}" />
+	<view class="showMoreBtn">
+		<button type="default" size="default" class="more">查看更多</button>
+	</view>
+</view>
+
+

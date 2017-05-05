@@ -1,0 +1,72 @@
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：components -> house-comments.less (新房、二手房和小区的评论)
+ 3. 作者：tangxuyang@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+.house-comments {
+    .comment {
+        color:@default-font-color;
+        view {
+            font-size: @default-font-size ;
+            line-height: 50rpx;
+        }        
+        .comment-hd {
+            .comment-hd-inner {
+                font-size:32rpx;
+                float: left;
+                padding-top: 0rpx;
+                padding-left: 10rpx;
+
+                .cellphone {
+                  margin-right: 30rpx;
+                  color:@light-font-color;
+                }
+            } 
+            .comment-photo {
+              width: 60rpx;
+              height: 60rpx;
+              border-radius: 50%;
+              float: left;              
+            }           
+        }        
+        .comment-bd {
+            padding-top: 10rpx;
+            padding-right: 20rpx;
+            font-size: 32rpx;
+            line-height: 1;
+        }
+        .comment-ft {
+            margin-top: 20rpx;
+            margin-bottom: 20rpx;
+            font-size: 28rpx;
+            color:@light-font-color;
+            .comment-up {
+                float: right;
+                margin-right: 26rpx;
+                border: 1rpx solid red;
+            }
+            .comment-down {
+                float: right;
+                border: 1rpx solid red;
+            }
+        }
+    }
+      .btn-group {
+        margin-top:40rpx;
+        .flex();
+    navigator {
+            background-color: @lighter-gray-color ;
+            .border-radius(6rpx);
+      border : none ;
+            color: @navigator-active-color ;
+            flex: 1;
+            font-size: @default-font-size ;
+            line-height: 90rpx;
+      text-align : center ;
+        }
+        .more {
+            margin-right: 30rpx;
+        }
+    }
+}

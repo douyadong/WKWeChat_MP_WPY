@@ -1,4 +1,6 @@
-
+<view>
+  {{now}}
+</view>
 <view class="panel">
   <swiper interval="2000">  
       <swiper-item style="position:relative" wx:for="{{imgUrls}}">      
@@ -6,7 +8,6 @@
         
         </video>
         <image bindtap="preview" data-img-url="{{item.url}}" wx:if="{{item.type=='img'}}" src="{{item.url}}" mode="widthFix">
-
         </image>
         <view class="index">
           {{index + 1}}/{{imgUrls.length}}
@@ -19,7 +20,7 @@
     </view>
     <view class="name">
       <text>王小五</text>
-      <text>小区专家</text>    
+      <text class="estate-expert">小区专家</text>    
     </view>
     <view class="cellphone">
       <icon type="success" bindtap="call"></icon>
@@ -78,9 +79,14 @@
       <view class="row-hd">地铁</view>
       <view class="row-bd">9号线、10号线</view>
     </view>
-    <view class="row clearfix">
+    <view class="row">
       <view class="row-hd">学校</view>
       <view class="row-bd">华师大附小、管弄新村小学、管弄新村小学、管弄新村小学</view>
+    </view>
+    <view class="separator"></view>
+    <view class="" style="margin-top:-10rpx;">
+      <text>在售房源</text>
+      <navigator style="float:right" url="url">4 套 ></navigator>
     </view>
   </view>
 </view>
@@ -90,7 +96,7 @@
 <view class="panel">
   <view class="panel-hd">用户评论</view>
   <view class="panel-bd">
-    <view class="comments">
+    <view class="house-comments">
     <view class="comment" wx:for="{{comments}}">
       <view class="comment-hd">
         <image src="{{item.photo}}" class="comment-photo" />
@@ -111,12 +117,12 @@
       </view>
     </view>
     <view class="btn-group">
-    <button type="default" size="default" class="more" bindtap="showLoading">
+    <navigator class="more" url="/pages/estate/list" bindtap="showLoading">
       查看更多
-    </button>
-    <button type="default" size="default" class="btn-comment" bindtap="hideLoading">
+    </navigator>
+    <navigator url="/pages/comment/write" bindtap="hideLoading">
       我来点评
-    </button>
+    </navigator>
   </view>
   </view>
   
