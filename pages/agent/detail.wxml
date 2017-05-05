@@ -6,3 +6,5 @@
 <include src="sections/rates.wxml"/>
 <!--房源部分-->
 <include src="sections/sources.wxml"/>
+<!--没有合适的房源的时候的处理-->
+<view class="no-sources">没有合适的房源？告诉我您的需求立即匹配房源</view>
