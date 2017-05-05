@@ -6,135 +6,123 @@
  
  @import "../variables.less";
  @import "../mixins.less";
+ @import "../components/buy-pannel.less";
  page {
      height: 100%;
-     .wrapper {
-         padding: 30rpx;
-         height: 100%;
-         background-image: url('https://cdn.wkzf.com/wkwap_fe/img/source/housingDemand/bg.png?v=1492154734142');
+ }
+ 
+ .box {
+     background: #FFFFFF;
+     box-shadow: 0 4rpx 4rpx 0 rgba(109, 189, 255, 0.23);
+     border-radius: 10rpx;
+     &.main {
+         margin-top: 30rpx;
+         margin-bottom: 48rpx;
+     }
+     .row {
+         border-bottom: 1px solid #B9D9F3;
+         display: flex;
+         justify-content: space-between;
+         align-items: baseline;
+         padding: 30rpx 24rpx;
+         font-size: 32rpx;
+         view {
+             flex-shrink: 0;
+         }
+         &.last {
+             border-bottom: none;
+         }
+         .type {
+             margin-right: 48rpx;
+             color: @light-font-color;
+         }
+         .text {
+             width: 300rpx;
+             .text-ellipsis();
+             color: #76B4E8;
+         }
+         .icon-arrow-r {
+             color: @light-font-color;
+             font-size: 28rpx;
+         }
+         .location {
+             display: flex;
+             justify-content: space-between;
+             align-items: baseline;
+             .type {
+                 flex-shrink: 0;
+             }
+             .location-item {
+                 margin-bottom: 20rpx;
+                 border-radius: 12rpx;
+                 background-color: #F5F5F5;
+                 color: #76B4E7;
+                 font-size: 28rpx;
+                 display: inline-block;
+                 margin-right: 10rpx;
+                 padding: 8rpx 28rpx;
+             }
+             .btn {
+                 border: 1px solid #6CA6F1;
+                 border-radius: 12rpx;
+                 background-color: #fff;
+                 color: #6CA6F1;
+                 display: inline-block;
+                 font-size: 28rpx;
+                 margin-right: 10rpx;
+                 padding: 7rpx 28rpx;
+             }
+         }
+     }
+ }
+ 
+ .subTitle {
+     color: #76B4E8;
+     font-size: 28rpx;
+     margin-bottom: 28rpx;
+ }
+ 
+ .features {
+     position: relative;
+     .monkey {
+         position: absolute;
+         background-image: url("https://cdn.wkzf.com/wkwap_fe/img/source/housingDemand/monkey.png");
          background-size: 100% auto;
          background-repeat: no-repeat;
-         display: flex;
-         flex-direction: column;
-         justify-content: space-between;
-         .box {
-             background: #FFFFFF;
-             box-shadow: 0 4rpx 4rpx 0 rgba(109, 189, 255, 0.23);
-             border-radius: 10rpx;
-             &.main {
-                 margin-top: 30rpx;
-                 margin-bottom: 48rpx;
-             }
-             .row {
-                 border-bottom: 1px solid #B9D9F3;
-                 display: flex;
-                 justify-content: space-between;
-                 align-items: baseline;
-                 padding: 30rpx 24rpx;
-                 font-size: 32rpx;
-                 view{
-                     flex-shrink: 0;
-                 }
-                 &.last {
-                     border-bottom: none;
-                 }
-                 .type {
-                     margin-right: 48rpx;
-                     color: @light-font-color;
-                 }
-                 .text {
-                     width: 300rpx;
-                     .text-ellipsis();
-                     color: #76B4E8;
-                 }
-                 .icon-arrowR {
-                     color: @light-font-color;
-                     font-size: 28rpx;
-                 }
-                 .location {
-                     display: flex;
-                     justify-content: space-between;
-                     align-items: baseline;
-                     .type {
-                         flex-shrink: 0;
-                     }
-                     .location-item {
-                         margin-bottom: 20rpx;
-                         border-radius: 12rpx;
-                         background-color: #F5F5F5;
-                         color: #76B4E7;
-                         font-size: 28rpx;
-                         display: inline-block;
-                         margin-right: 10rpx;
-                         padding: 8rpx 28rpx;
-                     }
-                     .btn {
-                         border: 1px solid #6CA6F1;
-                         border-radius: 12rpx;
-                         background-color: #fff;
-                         color: #6CA6F1;
-                         display: inline-block;
-                         font-size: 28rpx;
-                         margin-right: 10rpx;
-                         padding: 7rpx 28rpx;
-                     }
-                 }
-             }
-         }
-         .subTitle {
+         width: 82rpx;
+         height: 110rpx;
+         right: 50rpx;
+         top: -76rpx;
+         z-index: 1;
+     }
+     .box {
+         padding: 40rpx 20rpx;
+         text-align: center;
+         position: relative;
+         z-index: 10;
+         .tag {
+             border-radius: 12rpx;
+             border: 1px solid #9FCADA;
              color: #76B4E8;
              font-size: 28rpx;
-             margin-bottom: 28rpx;
-         }
-         .features {
-             position: relative;
-             .monkey {
-                 position: absolute;
-                 background-image: url("https://cdn.wkzf.com/wkwap_fe/img/source/housingDemand/monkey.png");
-                 background-size: 100% auto;
-                 background-repeat: no-repeat;
-                 width: 82rpx;
-                 height: 110rpx;
-                 right: 50rpx;
-                 top: -76rpx;
-                 z-index: 1;
+             display: inline-block;
+             line-height: 60rpx;
+             height: 60rpx;
+             width: 186rpx;
+             margin-right: 30rpx;
+             text-align: center;
+             &.selected {
+                 background: #FFFFFF;
+                 border: 2rpx solid #6CA6F1;
+                 box-shadow: 0 4rpx 4prx 0 rgba(109, 189, 255, 0.23);
+                 color: #4081D6;
              }
-             .box {
-                 padding: 40rpx 20rpx;
-                 text-align: center;
-                 position: relative;
-                 z-index: 10;
-                 .tag {
-                     border-radius: 12rpx;
-                     border: 1px solid #9FCADA;
-                     color: #76B4E8;
-                     font-size: 28rpx;
-                     display: inline-block;
-                     line-height: 60rpx;
-                     height: 60rpx;
-                     width: 186rpx;
-                     margin-right: 30rpx;
-                     text-align: center;
-                     &.selected {
-                         background: #FFFFFF;
-                         border: 2rpx solid #6CA6F1;
-                         box-shadow: 0 4rpx 4prx 0 rgba(109, 189, 255, 0.23);
-                         color: #4081D6;
-                     }
-                     &.first-row {
-                         margin-bottom: 30rpx
-                     }
-                     &.last {
-                         margin-right: 0;
-                     }
-                 }
+             &.first-row {
+                 margin-bottom: 30rpx
              }
-         }
-         button {
-             width: 100%;
-             border-radius: 10rpx;
-             background-color: @blue-font-color !important;
-             margin-bottom: 75rpx;
+             &.last {
+                 margin-right: 0;
+             }
          }
      }
  }
