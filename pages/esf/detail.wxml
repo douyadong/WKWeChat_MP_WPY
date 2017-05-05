@@ -1,4 +1,6 @@
 <!--detail.wxml  二手房详情页-->
+<view class="sprite gopng_cmonkey"></view>
+
 <import src="../components/esf-sources.wxml"/>
 <!--swiper-->
 <swiper interval="2000">  
@@ -123,7 +125,7 @@
 	<view class="panel-hd">小区信息</view>
 	<view class="panel-bd">
 		<view class="item">
-			 <icon class="iconfont icon-arrowR arrow" size="20"/>
+			 <icon class="iconfont icon-arrow-r arrow" size="20"/>
 			<view class="item-hd">
 				<image src="https://img.wkzf.com/b7bcb9ead0634bc191970b97267b335e.DW"></image>
 			</view>
@@ -196,4 +198,5 @@
 		<button type="default" size="default" class="more">查看更多</button>
 	</view>
 </view>
+
 
