@@ -1,6 +1,17 @@
-<!--logs.wxml-->
-<view class="container log-list">
-  <block wx:for="{{logs}}" wx:for-item="log" wx:key="*this">
-    <text class="log-item">{{index + 1}}. {{log}}</text>
-  </block>
+<import src="../components/detail-foot.wxml" />
+<view class="section">
+    <view class="titleShadow"></view>
+    <form class="commentForm" bindsubmit="bindFormSubmit">
+        <view class="commentTextarea">
+            <textarea placeholder="说说房子所在的小区…" auto-focus name="textarea" />
+        </view>
+        <view class="chooseImage">
+            <view class="chooseButton" bindtap="chooseImg">选择图片</view>
+            <view wx:for="{{uploadImages}}" wx:key="ind" wx:for-item="item">
+                <image src=""></image> 
+            </view>   
+        </view>
+        <button class="commentSubmit" form-type="submit"> 提交 </button>
+    </form>
+    <template is="detail-foot" data="{{...agentInfo}}"/>
 </view>

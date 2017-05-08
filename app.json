@@ -2,7 +2,7 @@
   "pages": [
     "pages/estate/detail",
     "pages/agent/detail",     
-    "pages/index/index",    
+    "pages/index/index", 
     "pages/login/index",
     "pages/sell/index",
     "pages/xf/detail",
@@ -14,7 +14,6 @@
     "pages/buy/success",
     "pages/buy/recommend",
     "pages/esf/detail",
-    
     "pages/comment/list",
     "pages/comment/write"
   ],
