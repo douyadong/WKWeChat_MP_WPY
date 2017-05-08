@@ -1,0 +1,15 @@
+  <!--swiper组件-->
+  <template name="swiper">
+  <swiper interval="2000">  
+      <swiper-item wx:for="{{imgUrls}}">      
+        <view class="play" wx:if="{{item.type=='video'}}">
+          <text class="iconfont icon-play"></text>
+        </view>
+        <image bindtap="preview" data-img-url="{{item.url}}"src="{{item.url}}" mode="widthFix">
+        </image>
+        <view class="index">
+          {{index + 1}}/{{imgUrls.length}}
+        </view>
+      </swiper-item>    
+  </swiper>
+</template>

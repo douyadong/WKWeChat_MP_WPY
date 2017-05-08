@@ -5,72 +5,18 @@
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 @import "../variables.less" ;
 @import "../mixins.less" ;
-/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-概要部分
------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-.summary {
-    .head-portrait {
-        height : 120rpx ;
-        width : 120rpx ;
-    }
-    .agent-name {
-        color : @default-font-color ;
-        font-size : @larger-font-size ;
-    }
-    .result {
-        color : @lighter-font-color ;
-        font-size : @small-font-size ;
-    }
-    .company-name {
-        color : @lighter-font-color ;
-        font-size : @default-font-size ;
-    }
-    .tags {
-        text {
-            background-color : @light-gray-color ;
-            .border-radius(6rpx) ;
-            color : @lighter-font-color ;
-            display : inline-block ;
-            font-size : @mini-font-size ;
-            margin : 10rpx 10rpx 0 0 ;
-            padding : 0 15rpx ;
-        }
-    }
-    .row {
-        .clearfix() ;
-        .row-hd {  
-            width : 140rpx ;  
-        }
-        .row-bd {   
-            margin-left : 150rpx ;  
-        }
-    }    
-} 
-/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-评价部分
------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-.rate {
-    .scores{
-        color : @lighter-font-color ;
-        font-size : @default-font-size ;
-        .points {
-            color : @default-font-color ;
-            font-size : @great-font-size ;
-        }
-    }
-    .tags {
-        text {
-            background-color : #e0f0ef ;
-            .border-radius(8rpx) ;
-            color : @default-font-color ;
-            display : inline-block ;
-            font-size : @default-font-size ;
-            margin : 0 18rpx 18rpx 0 ;
-            padding : 10rpx 24rpx ;
-        }
-        .bad{
-            background-color : @light-gray-color ;
-            color : @light-font-color ;
-        }
-    }
+@import "./sections/card.less" ;
+@import "./sections/summary.less" ;
+@import "./sections/rates.less" ;
+.no-sources {
+    background-color : #EEF1F5 ;
+    box-shadow : inset 0 1px 0 0 #E1E5E8 ;
+    bottom : 100rpx ;
+    color : @default-font-color ;
+    font-size : @small-font-size ;
+    left : 0 ;
+    line-height : 60rpx ;
+    padding-left : 26rpx ;
+    position : fixed ;
+    width : 100% ;
 }

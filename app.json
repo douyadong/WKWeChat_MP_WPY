@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/comment/write", 
-    "pages/agent/detail", 
     "pages/index/index",
+    "pages/agent/detail",
+    "pages/estate/detail",
     "pages/login/index",
     "pages/sell/index",
     "pages/xf/detail",
@@ -14,8 +14,8 @@
     "pages/buy/success",
     "pages/buy/recommend",
     "pages/esf/detail",
-    "pages/estate/detail",
-    "pages/comment/list"
+    "pages/comment/list",
+    "pages/comment/write"
   ],
   "window": {
     "backgroundColor": "#f0f0f0",
