@@ -1,3 +1,5 @@
+<import src="../components/develop.wxml" />
+
 <!--index.wxml-->
 <view class="page">
   <view class="searchNav">
@@ -33,4 +35,6 @@
       <text wx:for="{{list}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'red':''}}">{{li.text}}</text>
     </view>
   </block>
+  
+  <template is="developBox" />
 </view>
