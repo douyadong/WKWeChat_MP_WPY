@@ -9,7 +9,7 @@ var gulpSequence = require("gulp-sequence") ;
 需要编译到css目录下对应目录的less文件路径定义
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 var lessPath = [
-    "less/*/*.less" ,    
+    "less/*/*.less" ,
     "!less/mixins/*.less" ,
     "!less/variables/*.less" ,
     "!less/components/*.less"    

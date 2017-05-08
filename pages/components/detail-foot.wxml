@@ -1,0 +1,36 @@
+<template name="detail-foot">
+<view class="detail-foot">
+    <view class="agent">
+        <view class="pic">
+            <view class="img">
+                <image style="width:68rpx; height: 68rpx;" mode="aspectFill" src="{{agentImage}}"></image>
+            </view>
+            <view class="tag"></view>
+        </view>
+        <view class="con">
+            <view class="name">{{agentName}}</view>
+            <view class="company">{{agentCompany}}</view>
+        </view>
+    </view>
+    <view class="agentContact">
+        <view class="tel" bindtap="phoneClick">
+            <view class="iconfont icon-telkf"></view>
+            电话咨询
+        </view>
+        <view class="wechat" bindtap="wechatClick">
+            <view class="iconfont icon-wxkf"></view>
+            添加微信
+        </view>
+    </view>
+    <view class="agentCodeShadow" id="agentCodeShadow" hidden="{{isShowWXCode}}" bindtap="hideClick" bindtouchmove="eventPreventDefault">
+        <view class="agentCodeBox" id="agentCodeBox" catchtap="stopEvent">
+            <view class="agentCodeImg">
+                <image src="{{agentCodeImg}}"></image>
+            </view>
+            <view class="part">长按识别二维码</view>
+            <view class="part">微信号：{{agentWechatNum}}</view>
+            <view class="part2">无法识别请搜索微信号码添加</view>
+        </view>
+    </view>
+</view>
+</template>
