@@ -77,26 +77,28 @@
         <view class="separator"></view>
         <!--小区周边-->
         <view class="areaAround">
-            <view class="row">
-                <view class="row-hd">小区</view>
-                <view class="row-bd">阳光新城</view>
-                <text class="arrow iconfont icon-arrow-r"> </text>
-            </view>
-            <view class="row">
-                <view class="row-hd">地铁</view>
-                <view class="row-bd">2号线 7号线</view>
-            </view>
-            <view class="row">
-                <view class="row-hd">学校</view>
-                <view class="row-bd">华师大附小,管弄新村小,管弄新村小学,管弄新村小学</view>
-            </view>
+            <navigator url="/pages/estate/detail">
+                <view class="row">
+                    <view class="row-hd">小区</view>
+                    <view class="row-bd">阳光新城</view>
+                    <text class="arrow iconfont icon-arrow-r"> </text>
+                </view>
+                <view class="row">
+                    <view class="row-hd">地铁</view>
+                    <view class="row-bd">2号线 7号线</view>
+                </view>
+                <view class="row">
+                    <view class="row-hd">学校</view>
+                    <view class="row-bd">华师大附小,管弄新村小,管弄新村小学,管弄新村小学</view>
+                </view>
+            </navigator>
         </view>
     </view>
 </view>
 <view class="gap"></view>
 <!--基本信息-->
 <view class="panel basicBox">
-    <text class="report">举报</text>
+    <navigator url="/pages/report/write" class="report">举报</navigator>
     <view class="panel-hd">
         <view class="head">基本信息</view>
     </view>
@@ -180,6 +182,6 @@
 <view class="panel esf-list">
     <template is="esf-sources" data="{{esfSources}}" />
     <view class="row">
-    	<navigator class="button gray" url="#">查看更多</navigator>
+        <navigator class="button gray" url="#">查看更多</navigator>
     </view>
 </view>
