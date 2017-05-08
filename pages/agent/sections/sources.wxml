@@ -1,0 +1,11 @@
+<import src="../../components/esf-sources.wxml"/>
+<import src="../../components/xf-sources.wxml"/>
+<import src="../../components/legend-hd.wxml"/>
+<template is="legend-hd" data="{{...sourcesHd}}" />
+<view class="panel">
+  <view class="tabs">
+    <view class="on">新房</view>
+    <view class="last">二手房</view>    
+  </view>
+  <template is="esf-sources" data="{{esfSources}}" />
+</view>

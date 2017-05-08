@@ -1,55 +1,10 @@
-<!--导入公共模板-->
-<import src="../components/comments.wxml"/>
-<import src="../components/esf-sources.wxml"/>
-<import src="../components/xf-sources.wxml"/>
-<import src="../components/tc-combine.wxml"/>
-<import src="../components/legend-hd.wxml"/>
+<!--经纪人名片部分-->
+<include src="sections/card.wxml"/>
 <!--经纪人概要部分-->
-<view class="panel summary">
-  <view class="panel-bd">
-    <view class="row">
-      <view class="row-hd">
-        <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
-      </view>
-      <view class="row-bd">
-        <text class="agent-name">王小五</text>
-        <text class="result">成交100套</text>
-        <text class="result">通过认证</text>
-      </view>
-      <view class="row-bd company-name">志远地产</view>
-      <view class="row-bd tags">
-        <text>长宁区好经纪人</text>
-        <text>普陀区好经纪人</text>
-        <text>卢湾区好经纪人</text>
-        <text>黄埔区好经纪人</text>        
-      </view>
-    </view>
-    <block wx:for="{{summary}}">
-      <template is="tc-combine" data="{{...item}}" />
-    </block>   
-  </view>
-</view>
-<view class="gap"></view>
+<include src="sections/summary.wxml"/>
 <!--用户评价部分-->
-<view class="panel rate">
-  <view class="panel-hd">用户评价(28)</view>  
-  <view class="panel-bd">  
-    <view class="scores">
-      <text>综合得分：</text>
-      <text class="points">4.5</text>
-    </view>
-    <view class="gap"></view>    
-    <view class="tags">
-      <text>诚信可靠 [ 23 ]</text>
-      <text>为用户着想 [ 23 ]</text>
-      <text>房源熟悉 [ 23 ]</text>
-      <text class="bad">不太专业 [ 1 ]</text>
-    </view>    
-    <template is="comments" data="{{comments}}" />
-  </view>
-</view>
+<include src="sections/rates.wxml"/>
 <!--房源部分-->
-<template is="legend-hd" data="{{...sourcesHd}}" />
-<view class="panel">
-  <template is="esf-sources" data="{{esfSources}}" />
-</view>
+<include src="sections/sources.wxml"/>
+<!--没有合适的房源的时候的处理-->
+<view class="no-sources">没有合适的房源？告诉我您的需求立即匹配房源</view>

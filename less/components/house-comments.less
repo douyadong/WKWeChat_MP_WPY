@@ -5,31 +5,40 @@
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 .house-comments {
+    .separator {
+        margin-bottom: 30rpx;
+    }
     .comment {
-        color:@default-font-color;
+        color: @default-font-color;
         view {
             font-size: @default-font-size ;
             line-height: 50rpx;
-        }        
+        }
         .comment-hd {
             .comment-hd-inner {
-                font-size:32rpx;
+                font-size: 32rpx;
                 float: left;
                 padding-top: 0rpx;
                 padding-left: 10rpx;
-
                 .cellphone {
-                  margin-right: 30rpx;
-                  color:@light-font-color;
+                    margin-right: 30rpx;
+                    color: @light-font-color;
                 }
-            } 
+                .icon-youping {
+                    color: #F95355;
+                }
+                .icon-yezhu {
+                    margin-left: 6rpx;
+                    color: @blue-font-color;
+                }
+            }
             .comment-photo {
-              width: 60rpx;
-              height: 60rpx;
-              border-radius: 50%;
-              float: left;              
-            }           
-        }        
+                width: 60rpx;
+                height: 60rpx;
+                border-radius: 50%;
+                float: left;
+            }
+        }
         .comment-bd {
             padding-top: 10rpx;
             padding-right: 20rpx;
@@ -40,30 +49,27 @@
             margin-top: 20rpx;
             margin-bottom: 20rpx;
             font-size: 28rpx;
-            color:@light-font-color;
+            color: @light-font-color;
             .comment-up {
                 float: right;
-                margin-right: 26rpx;
-                border: 1rpx solid red;
-            }
-            .comment-down {
-                float: right;
-                border: 1rpx solid red;
+                &.active {
+                    color: @blue-font-color;
+                }
             }
         }
     }
-      .btn-group {
-        margin-top:40rpx;
+    .btn-group {
+        margin-top: 40rpx;
         .flex();
-    navigator {
+        navigator {
             background-color: @lighter-gray-color ;
             .border-radius(6rpx);
-      border : none ;
+            border: none;
             color: @navigator-active-color ;
             flex: 1;
-            font-size: @default-font-size ;
+            font-size: 28rpx;
             line-height: 90rpx;
-      text-align : center ;
+            text-align: center;
         }
         .more {
             margin-right: 30rpx;
