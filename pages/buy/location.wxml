@@ -2,10 +2,81 @@
     <view class="content">
         <view class="header">
             <view class="title">您理想的位置？</view>
-            <view class="icon cloud"></view>
-            <view class="icon monkey"></view>
+            <view class="sprite sprite-cloud"></view>
+            <view class="sprite sprite-cmonkey"></view>
         </view>
-       
+
+        <view class="area-box">
+            <view class="list district">
+                <view class="item active selected">
+                    <text class="dot"></text>
+                    <text class="text">宝山区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">长宁区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">徐汇区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">徐汇区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">长宁区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">徐汇区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">徐汇区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">长宁区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">徐汇区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">徐汇区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">长宁区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">徐汇区</text>
+                </view>
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">徐汇区</text>
+                </view>
+            </view>
+            <view class="list block">
+                <view class="item selected">
+                    <text class="dot"></text>
+                    <text class="text">长宁</text>
+                </view>    
+                <view class="item selected">
+                    <text class="dot"></text>
+                    <text class="text">虹桥块</text>
+                </view>  
+                <view class="item">
+                    <text class="dot"></text>
+                    <text class="text">古北板块</text>
+                </view>  
+            </view>
+        </view>
+
     </view>
     <button type="primary" size="default" bindtap="submit">确认</button>
 </view>

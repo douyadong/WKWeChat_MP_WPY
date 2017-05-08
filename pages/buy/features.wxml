@@ -2,8 +2,8 @@
     <view class="content">
         <view class="header">
             <view class="title">您理想的特色？</view>
-            <view class="icon cloud"></view>
-            <view class="icon monkey"></view>
+            <view class="sprite sprite-cloud"></view>
+            <view class="sprite sprite-cmonkey"></view>
         </view>
        
     </view>
