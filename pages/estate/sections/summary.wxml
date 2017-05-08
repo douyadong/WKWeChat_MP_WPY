@@ -1,0 +1,62 @@
+<view class="panel summary">
+  <view class="panel-bd">
+    <view class="row">
+      <view class="row-hd">所属板块</view>
+      <view class="row-bd">长宁区 古北</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">产权年限</view>
+      <view class="row-bd">70年</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">竣工年代</view>
+      <view class="row-bd">1997年</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">房屋总数</view>
+      <view class="row-bd">234户</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">物业类型</view>
+      <view class="row-bd">普通住宅</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">物业费</view>
+      <view class="row-bd">2元/m²</view>   
+    </view>
+    <view class="row">
+      <view class="row-hd">绿化率</view>
+      <view class="row-bd">29%</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">容积率</view>
+      <view class="row-bd">2.8</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">物业公司</view>
+      <view class="row-bd">好管家物业管理公司</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">开发商</view>
+      <view class="row-bd">好管家物业管理有限公司公司有限</view>
+    </view>
+    <view class="separator"></view>
+    <view class="row">
+      <view class="row-hd">地铁</view>
+      <view class="row-bd">9号线、10号线</view>
+    </view>
+    <view class="row">
+      <view class="row-hd">学校</view>
+      <view class="row-bd">华师大附小、管弄新村小学、管弄新村小学、管弄新村小学</view>
+    </view>         
+  </view>
+  <view class="separator"></view> 
+  <view class="extendable">
+    <view class="head">在售房源</view>
+    <navigator url="/pages/agent/rateList" class="assistant">
+      <text>4 套</text>
+      <text class="iconfont icon-arrow-r"></text>
+    </navigator>
+  </view>  
+</view>
+<view class="gap"></view>
