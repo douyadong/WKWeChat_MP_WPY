@@ -20,9 +20,9 @@
   </view>
 
   <view class="screenList">
-      <view class="list">区域</view>
-      <view class="list">综合排序</view>
-      <view class="list">更多</view>
+      <view class="list {{blue0?'blue':''}}" bindtap="showScreenList" data-index="0">区域<text class="iconfont icon-arrow-down down {{isRotate0 ? 'down90':''}}"></text></view>
+      <view class="list {{blue1?'blue':''}}" bindtap="showScreenList" data-index="1">综合排序<text class="iconfont icon-arrow-down down {{isRotate1 ? 'down90':''}}"></text></view>
+      <view class="list {{blue2?'blue':''}}" bindtap="showScreenList" data-index="2">更多<text class="iconfont icon-arrow-down down {{isRotate2 ? 'down90':''}}"></text></view>
   </view>
   <view class="agentListBox">
       <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
