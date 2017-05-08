@@ -18,6 +18,14 @@
             </view>
             -->
         </view>
-        <view class="right">111111111111111111111111111</view>
+        <view class="right">
+            <view class="starNumber">
+                <text class="iconfont icon-star-all star"></text>
+                <text class="number">4.7</text>
+            </view>
+            <view class="evaluateNumber">
+                <text class="number">280</text>人评价
+            </view>    
+        </view>
     </view>
 </view>
