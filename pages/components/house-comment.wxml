@@ -1,13 +1,12 @@
 <template name="house-comment">
 	<view class="comment" wx:for="{{comments}}">
-      <view class="comment-hd">
+      <view class="comment-hd clearfix">
         <image src="{{item.photo}}" class="comment-photo" />
         <view class="comment-hd-inner">
         <text class="cellphone">{{item.cellphone}}</text>
         <text class="iconfont icon-youping"></text>
         <text class="iconfont icon-yezhu"></text>
-        </view>
-        <view style="clear:both"></view>
+        </view>        
       </view>
       <view class="comment-bd">
         {{item.content}}
