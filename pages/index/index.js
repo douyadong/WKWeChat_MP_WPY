@@ -32,6 +32,7 @@ function HighlightTransform(data) {
 var app = getApp()
 Page({
   data: {
+    agentList:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
     newList:[]
   },
   //事件处理函数
