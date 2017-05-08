@@ -4,176 +4,65 @@
  3. 作者：tangxuyang@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
  
- @import "../variables.less";
- @import "../mixins.less";
- .panel {
-    color:@default-font-color;
-    font-size:32rpx;
+ @import "../variables.less" ;
+ @import "../mixins.less" ;
+  .expert-info {
+     .clearfix() ;
+     padding : 0 @common-margin ;
+     view {
+         line-height : 140rpx ;
+     }
+     text {
+         font-size : @large-font-size ;
+     }
+     .call {
+         float : right ;         
+         .icon-tel {
+             color : @blue-font-color ;     
+             font-size : @larger-font-size ;
+         }
+     }
+     .outline {
+         float : left ;
+         image , text {
+             color : @default-font-color ;
+             vertical-align : middle ;
+         }
+         .head-portrait {
+             height : 80rpx ;
+             margin-right : @gap-dimension ;
+             width : 80rpx ;
+         }
+         .position {
+             color : @light-font-color ;
+             margin-left : @gap-dimension ;
+         }
+     }
+ }
+ 
+ .summary {
+     .separator {
+        margin : 0 @common-margin ;
+     }
      .panel-bd {
          .row {
-             margin-bottom:40rpx;
+             .row-hd , .row-bd {
+                 line-height : 56rpx ;
+             }
              .row-hd {
-                 width: 128rpx;                 
-                 color:@light-font-color;
-                 font-size:32rpx;
+                 width : 128rpx ;                 
+                 color : @light-font-color ;                 
              }
              .row-bd {
-                 margin-left: 152rpx;   
-                 font-size:32rpx;              
+                 margin-left : 152rpx ;                        
              }
          }
      }
  }
-
- .separator{
-    margin-top:40rpx;
-    margin-bottom:40rpx;
- }
-
-
  
- .expert-info {
-     padding: 30rpx;
-     line-height:1;
-     font-size:32rpx;
-     .photo {
-         width: 80rpx;
-         heigth: 80rpx;
-         float: left;
-         image {
-             width: 100%;
-             height: 80rpx;
-             border-radius: 50%;
-         }
+ .comments {
+     .panel-bd {
+         padding-left : @common-margin ;
+         padding-right : @common-margin ;
      }
-     .name {
-         float: left;
-         padding-top: 24rpx;
-         padding-left: 20rpx;
-         background-color: white;
-
-         .estate-expert{
-         	margin-left:15rpx;
-         	color:@light-font-color;
-         }
-     }
-     .cellphone{
-     	float:right;padding-top:20rpx
-     }
- }
- 
- #content,
- #locationAndAround,
- #comments {
-     padding: 30rpx;
-     margin-top: 20rpx;
-     background-color: white;
- }
- 
- #comments .comment {
-     border-top: 1rpx solid gray;
-     padding-top: 40rpx;
-     margin-bottom: 40rpx;
- }
- 
- #comments .comment-header {}
- 
- #comments .comment-header-inner {
-     float: left;
-     padding-top: 20rpx;
-     padding-left: 20rpx;
- }
- 
- #comments .comment-photo {
-     width: 80rpx;
-     height: 80rpx;
-     border-radius: 50%;
-     float: left;
-     border: 1rpx solid blue;
- }
- 
- #comments .cellphone {
-     margin-right: 30rpx;
- }
- 
- #comments .comment-body {
-     padding-top: 20rpx;
-     padding-right: 20rpx;
-     font-size: 32rpx;
- }
- 
- #comments .comment-footer {
-     margin-top: 20rpx;
-     margin-bottom: 20rpx;
-     font-size: 26rpx;
- }
- 
- #comments .comment-up {
-     float: right;
-     margin-right: 26rpx;
-     border: 1rpx solid red;
- }
- 
- #comments .comment-down {
-     float: right;
-     border: 1rpx solid red;
- }
- 
- #comments .label-good {}
- 
- #coments .label-owner {}
- 
- #comments #footer {}
- 
- #comments button {
-     width: 48%;
-     padding-top: 20rpx;
-     padding-bottom: 20rpx;
- }
- 
- #comments .btn-more {
-     margin-right: 2%;
- }
- 
- #comments .btn-comment {
-     margin-left: 2%;
- }
- 
- .h1,
- .h2,
- .h3,
- .h4,
- .h5,
- .h6 {
-     font-weight: 500;
- }
- 
- .h1 {
-     font-size: 36rpx;
-     margin: 18rpx 0rpx;
- }
- 
- .h2 {
-     font-size: 32rpx;
-     margin: 16rpx 0rpx;
- }
- 
- .h3 {
-     font-size: 28rpx;
-     margin: 14rpx 0rpx;
- }
- 
- .h4 {
-     font-size: 24rpx;
-     margin: 12rpx 0rpx;
- }
- 
- .h5 {
-     font-size: 20rpx;
-     margin: 10rpx 0rpx;
- }
- 
- .h6 {
-     font-size: 18rpx;
-     margin: 9rpx 0rpx;
  }

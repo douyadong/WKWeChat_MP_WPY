@@ -11,32 +11,67 @@ page{
     overflow-y: auto;
     position: relative;
     //搜索
-    .searchNav{
+    .searchNavBox{
         width: 100%;
-        height: 90rpx;
-        background-color: rosybrown;
-        position: relative;
-        box-shadow: #000 -5px 0 5px -5px, #000 0px 5px 5px -5px,#000 5px 0 5px -5px;
-        .city{
-           width: 150rpx;
-           height: 100%;
-           position: absolute;
-           background-color: chocolate;
-        }
-        .searchBox{
-            height: 100%;
-            background-color: royalblue;
-            padding-left: 150rpx;
-            overflow: hidden;
-            .search{
-                width: 90%;
-                height: 50rpx;
-                margin: 0 auto;
-                background-color: red;
-                margin-top: 20rpx;
+        height: 95rpx;
+        background-color: #fff;
+        .searchNav{
+            width: 100%;
+            height: 90rpx;
+            position: relative;
+            box-shadow: rgba(0,0,0,0.3) -5px 0 5px -5px, rgba(0,0,0,0.3) 0px 5px 5px -5px,rgba(0,0,0,0.3) 5px 0 5px -5px;
+            .city{
+                width: 140rpx;
+                height: 100%;
+                position: absolute;
+                overflow: hidden;
+                color: #4E4E4E;
+                .cityName{
+                        display: inline-block;
+                        margin-top: 30rpx;
+                        margin-left: 30rpx;
+                        font-size: 28rpx;
+                        letter-spacing: 0;
+                }
+                .down{
+                    position: absolute;
+                    margin-left: -10rpx;
+                    margin-top: 32rpx;
+                }
+            }
+            .searchBox{
+                height: 100%;
+                padding-left: 110rpx;
+                overflow: hidden;
+                .search{
+                    width: 90%;
+                    height: 56rpx;
+                    margin: 0 auto; 
+                    margin-top: 18rpx;
+                    background-color: #F0F0F0;
+                    border-radius: 6rpx;
+                    position: relative;
+                    overflow: hidden;
+                    .searchIcon{
+                        display: inline-block;
+                        margin-top: 12rpx;
+                        margin-left: 40rpx;
+                        color: #4E4E4E;;
+                    }
+                    .searchText{
+                        font-size: 24rpx;
+                        color: #4E4E4E;
+                        letter-spacing: 0;
+                        display: inline-block;
+                        margin-left: 10rpx;
+                        position: absolute;
+                        margin-top: 12rpx;
+                    }
+                }
             }
         }
     }
+    
     //买卖
     .buySell{
         width: 100%;
@@ -116,6 +151,19 @@ page{
             color: #4E4E4E;
             line-height: 3;
             text-align: center;
+            .down{
+                position: absolute;
+                margin-left:-4rpx;
+                margin-top:7rpx;
+                -webkit-transition: all 0.5s;
+                -webkit-transform-origin:50% 48%;
+            }
+            .down90{
+                -webkit-transform:rotate(180deg);
+            }
+        }
+        .blue{
+            color: #4081D6;
         }
     }
     //显示经纪列表
