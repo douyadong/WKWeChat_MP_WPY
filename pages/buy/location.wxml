@@ -8,72 +8,16 @@
 
         <view class="area-box">
             <view class="list district">
-                <view class="item active selected">
+                <view wx:key="{{item.id}}" wx:for="{{areaList}}" class="item {{item.active?'active':''}} {{item.selected?'selected':''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="chooseArea">
                     <text class="dot"></text>
-                    <text class="text">宝山区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">长宁区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">徐汇区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">徐汇区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">长宁区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">徐汇区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">徐汇区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">长宁区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">徐汇区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">徐汇区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">长宁区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">徐汇区</text>
-                </view>
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">徐汇区</text>
+                    <text class="text">{{item.name}}</text>
                 </view>
             </view>
             <view class="list block">
-                <view class="item selected">
+                <view wx:key="{{item.id}}" wx:for="{{blockList}}" class="item {{item.selected?'selected':''}} {{item.hidden?'hidden':''}}" data-id="{{item.id}}" data-pid="{{item.pid}}" data-index="{{index}}" data-p-index="{{item.pIndex}}" bindtap="chooseBlock">
                     <text class="dot"></text>
-                    <text class="text">长宁</text>
-                </view>    
-                <view class="item selected">
-                    <text class="dot"></text>
-                    <text class="text">虹桥块</text>
-                </view>  
-                <view class="item">
-                    <text class="dot"></text>
-                    <text class="text">古北板块</text>
-                </view>  
+                    <text class="text">{{item.name}}</text>
+                </view>
             </view>
         </view>
 

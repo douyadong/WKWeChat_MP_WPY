@@ -30,17 +30,21 @@ function HighlightTransform(data) {
 
 //获取应用实例
 var app = getApp()
+
 Page({
   data: {
-    newList:[]
+    agentList:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
+    newList:[],
+    //点击筛选，设置三角行旋转
+    isRotate0:false,
+    isRotate1:false,
+    isRotate2:false,
+    //点击筛选，设置文本变色
+    blue0:false,
+    blue1:false,
+    blue2:false
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../login/index'
-    })
-  },
-  onLoad: function () {
+  onLoad(){
     var that = this;
     //后台返回的数据
     let list = [
@@ -57,5 +61,49 @@ Page({
     this.setData({
       newList:HighlightTransform(list)
     })
+  },
+  developLink:function(e){
+    if(e.target.id==="1"){
+      wx.navigateTo({
+        url: '../comment/write'
+      })
+    }else if(e.target.id==="2"){
+      wx.navigateTo({
+        url: '../comment/list'
+      })
+    }else if(e.target.id==="3"){
+
+    }
+  },
+  //事件处理函数
+  bindViewTap() {
+    wx.navigateTo({
+      url: '../login/index'
+    })
+  },
+  showScreenList(event){
+    let index = parseInt(event.currentTarget.dataset.index);
+    if(index == 0){//区域
+      this.setData({
+        isRotate0:true
+      })
+      this.setData({
+        blue0:true
+      })
+    }else if(index == 1){//综合排序
+      this.setData({
+        isRotate1:true
+      })
+      this.setData({
+        blue1:true
+      })
+    }else if(index == 2){//更多
+      this.setData({
+        isRotate2:true
+      })
+      this.setData({
+        blue2:true
+      })
+    }
   }
 })
