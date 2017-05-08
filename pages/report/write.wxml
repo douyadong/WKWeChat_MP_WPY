@@ -1,4 +1,19 @@
 <!--举报虚假房源-->
 <view class="panel">
-	
+	<view class="title">请选择举报原因(可多选):</view>
+	<view class="panel-bd reason">
+		<view bindtap="changereason1" class="{{reason1 ? 'active':''}}">房源不存在</view>
+		<view bindtap="changereason2" class="{{reason2 ? 'active':''}}">房源已出售</view>
+		<view bindtap="changereason3" class="{{reason3 ? 'active':''}}">价格不真实</view>
+		<view bindtap="changereason4" class="{{reason4 ? 'active':''}}">图片不真实</view>
+		<view bindtap="changereason5" class="{{reason5 ? 'active':''}}">其他</view>
+	</view>
 </view>
+<view class="gap"></view>
+<view class="panel">
+	<view class="title">补充说明(300字):</view>
+	<view class="panel-bd reason">
+  		<textarea placeholder-class="placeholder" placeholder="详细描述..." value="{{des}}" bindinput="listenerDesInput"/>
+	</view>
+</view>
+<view bindtap="submit" class="button blue">提交</view>

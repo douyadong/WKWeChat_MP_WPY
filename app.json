@@ -15,7 +15,6 @@
     "pages/buy/success",
     "pages/buy/recommend",
     "pages/esf/detail",
-    
     "pages/comment/list",
     "pages/comment/write"
   ],

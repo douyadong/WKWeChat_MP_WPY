@@ -1,0 +1,14 @@
+<!--导入公共模板-->
+<import src="../../components/swiper.wxml"/>
+<view class="panel">
+  <template is="swiper" data="{{imgUrls}}" />
+  <view class="expert-info">
+    <view class="call"><text class="iconfont icon-tel"></text></view>
+    <view class="outline">
+      <image src="http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL" class="head-portrait"/>
+      <text>王小五</text>
+      <text class="position">小区专家</text>
+    </view>   
+  </view>
+</view>
+<view class="gap"></view>

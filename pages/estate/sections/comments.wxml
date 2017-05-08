@@ -1,0 +1,21 @@
+<import src="../../components/house-comment.wxml"/>
+<view class="panel comments">
+ <view class="panel-hd">
+    <view class="head">用户评论</view>
+    <navigator class="assistant" url="#">
+      <text>6</text>
+      <text class="iconfont icon-arrow-r"></text>
+    </navigator>
+  </view> 
+  <view class="panel-bd">
+    <view class="house-comments">
+        <template is="house-comment" data="{{comments}}" />
+        <view class="btn-group">
+          <navigator url="/pages/comment/write" bindtap="hideLoading">
+            我来点评
+          </navigator>
+        </view>
+    </view>
+  </view>
+</view>
+<view class="gap"></view>

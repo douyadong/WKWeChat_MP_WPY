@@ -1,0 +1,40 @@
+ /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：report -> write.less (举报)
+ 3. 作者：yinqin@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+ 
+ @import "../variables.less";
+ @import "../mixins.less";
+ .panel {
+     padding: 30rpx 30rpx 0;
+ }
+ 
+ .reason {
+     view {
+         display: inline-block;
+         background-color: @light-gray-color;
+         font-size: 28rpx;
+         color: @default-font-color ;
+         padding: 10rpx 30rpx;
+         &.active {
+             color: @blue-font-color;
+         }
+         margin-right:30rpx;
+         margin-bottom:30rpx;
+     }
+     textarea {
+         background-color: @light-gray-color;
+         width: 100%;
+         height: 400rpx;
+         padding: 10rpx 0 10rpx 10rpx;
+     }
+ }
+ 
+ .placeholder {
+     color: @light-font-color;
+     font-size: 28rpx;
+ }
+.button{
+    margin:200rpx 30rpx 30rpx;
+}
