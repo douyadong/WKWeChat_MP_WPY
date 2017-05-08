@@ -1,8 +1,8 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/agent/detail",
-    "pages/estate/detail",    
-    "pages/index/index",    
+    "pages/estate/detail",
     "pages/login/index",
     "pages/sell/index",
     "pages/xf/detail",
@@ -14,7 +14,6 @@
     "pages/buy/success",
     "pages/buy/recommend",
     "pages/esf/detail",
-    
     "pages/comment/list",
     "pages/comment/write"
   ],
