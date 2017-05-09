@@ -26,8 +26,5 @@ App({
   },
   globalData:{
     userInfo:null
-  },
-  apiUrl:{
-
   }
 })

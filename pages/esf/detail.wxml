@@ -98,7 +98,7 @@
 <view class="gap"></view>
 <!--基本信息-->
 <view class="panel basicBox">
-    <navigator url="/pages/report/write" class="report">举报</navigator>
+    <navigator url="/pages/report/write?houseId={{houseId}}" class="report">举报</navigator>
     <view class="panel-hd">
         <view class="head">基本信息</view>
     </view>

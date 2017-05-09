@@ -17,6 +17,9 @@
     "pages/buy/success",
     "pages/buy/recommend",
     "pages/esf/detail",
+    "pages/esf/list",
+    "pages/report/write",
+    "pages/common/video",
     "pages/comment/write"
   ],
   "window": {
