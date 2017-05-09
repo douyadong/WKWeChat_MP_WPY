@@ -1,6 +1,8 @@
 {
   "pages": [
-    "pages/agent/detail", 
+    "pages/agent/writeRate",    
+    "pages/agent/rateList",    
+    "pages/agent/detail",      
     "pages/estate/detail",        
     "pages/index/index", 
     "pages/login/index",
