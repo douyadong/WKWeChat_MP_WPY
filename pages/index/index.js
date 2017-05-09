@@ -68,6 +68,19 @@ Page({
       newList:HighlightTransform(list)
     })
   },
+  developLink:function(e){
+    if(e.target.id==="1"){
+      wx.navigateTo({
+        url: '../comment/write'
+      })
+    }else if(e.target.id==="2"){
+      wx.navigateTo({
+        url: '../comment/list'
+      })
+    }else if(e.target.id==="3"){
+
+    }
+  },
   //事件处理函数
   bindViewTap() {
     wx.navigateTo({

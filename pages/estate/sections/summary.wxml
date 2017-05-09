@@ -54,7 +54,7 @@
   <view class="extendable">
     <view class="head">在售房源</view>
     <navigator url="/pages/agent/rateList" class="assistant">
-      <text>4 套</text>
+      <text>{{houseCountOnSale}} 套</text>
       <text class="iconfont icon-arrow-r"></text>
     </navigator>
   </view>  
