@@ -3,14 +3,3 @@
 <view class="panel">
 	<template is="esf-sources" data="{{esfSources}}" />
 </view>
-
-
-<!--雪碧图集合-->
-<view class="sprite sprite-cmonkey"></view>
-<view class="sprite sprite-monkey"></view>
-<view class="sprite sprite-bus"></view>
-<view class="sprite sprite-school"></view>
-<view class="sprite sprite-cloud"></view>
-<view class="sprite sprite-technolog"></view>
-<view class="sprite sprite-light"></view>
-<view class="sprite sprite-jingu"></view>
