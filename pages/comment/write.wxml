@@ -1,13 +1,13 @@
 <import src="../components/detail-foot.wxml" />
 <view class="section">
     <view class="titleShadow"></view>
-    <form class="commentForm" bindsubmit="bindFormSubmit">
+    <form class="commentForm">
         <view class="commentTextarea">
-            <textarea placeholder="说说房子所在的小区…" auto-focus name="textarea" />
+            <textarea placeholder="说说房子所在的小区…" auto-focus name="textarea" bindblur="bindblur" />
         </view>
         <view class="chooseImage">
             <view class="chooseButton" bindtap="chooseImg">
-            <view class="iconfont icon-wxkf"></view>
+            <view class="iconfont icon-zhaopian"></view>
             选择图片
             </view>
             <view class="imgItem" wx:for="{{uploadImages}}" wx:for-index="index" wx:for-item="item">
@@ -15,7 +15,7 @@
                 <image mode="aspectFill" src="{{item}}"></image>
             </view>   
         </view>
-        <button class="commentSubmit" form-type="submit"> 提交 </button>
+        <view class="commentSubmit" bindtap="bindFormSubmit"> 提交 </view>
     </form>
     <template is="detail-foot" data="{{...agentInfo}}"/>
 </view>

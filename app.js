@@ -26,5 +26,23 @@ App({
   },
   globalData:{
     userInfo:null
+  },
+  isLogin:function(){//判断是否登录了小程序
+    var userInfo = wx.getStorageSync('userInfo');
+    if(!userInfo){
+      //当前页的地址
+      //var returnUrl = this.getCurrentPage().__route__;
+      wx.navigateTo({
+        url: '/pages/login/index',//'/pages/login/index?returnUrl='+returnUrl,
+        success: function(res){          
+        },
+        fail: function(res) {          
+        },
+        complete: function(res) {          
+        }
+      })
+    }    
+
+    return true;
   }
 })

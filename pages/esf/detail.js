@@ -1,5 +1,6 @@
 //detail.js
-var util = require('../../utils/util.js')
+var util = require('../../utils/util.js');
+var app = getApp();
 Page({
     data: {
         houseId:'1465823', //房源ID
@@ -79,10 +80,5 @@ Page({
         //基本信息查看更多按钮点击事件 tofo
     },
     onLoad: function() {
-        this.setData({
-            logs: (wx.getStorageSync('logs') || []).map(function(log) {
-                return util.formatTime(new Date(log))
-            })
-        })
     }
 })

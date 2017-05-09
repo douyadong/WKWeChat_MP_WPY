@@ -2,15 +2,19 @@ var util = require('../../utils/util.js')
 var $ = require('../../utils/extend.js')
 var detailfoot = require('../../utils/detailfoot.js')
 
+var total = [],
+    textareaValue = "";
+
 var params = $.extend(true,{},{
     data: {
-        "uploadImages":[]
+        "uploadImages":[],
+        "uploadTextarea":""
     },
     onLoad: function() {
 
     },
-    bindFormSubmit: function(e) {
-        console.log(e.detail.value.textarea)
+    bindblur: function(e){
+        textareaValue = e.detail.value;
     },
     chooseImg: function(e) {
         var _this = this;
@@ -44,8 +48,37 @@ var params = $.extend(true,{},{
             "uploadImages":currentFilePaths
         })
     },
-    uploadFile:function(){
+    uploadFile:function(file,i){
+        var _this = this;
+        wx.uploadFile({
+            url:'',
+            filePath: file[i],//这里是多个不行tempFilePaths[0]这样可以
+            name: 'file',
+            success: function(res){
+                var obj = new Object(),
+                    data = res.data;
+                obj.id = i;
+                obj.src = data;
 
+                if((i+1)!=file.length){
+                    total.push(obj);
+                    _this.uploadFile(file,i+1);
+                }else{
+                    total.push(obj);
+                }
+            }
+        })
+    },
+    bindFormSubmit: function(e) {
+        console.log(this.data)
+        wx.showToast({
+            icon: "loading",
+            title: "正在上传"
+        })
+        if(this.data.currentFilePaths.length>0){
+            this.uploadFile(this.data.currentFilePaths,0)
+        }
+        
     }
 },detailfoot)
 

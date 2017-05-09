@@ -1,8 +1,10 @@
-var app = getApp();
-var util = require('../../utils/util.js')
+var util = require('../../utils/util.js');
+var $ = require('../../utils/extend.js');
+var houseComment = require('../components/house-comment.js');
+var request = require('../../utils/request.js');
 
-Page({
-    data: {
+var params = $.extend(true,{},{
+     data: {
         now: "",
         imgUrls: [{
             url: "https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL",
@@ -26,7 +28,7 @@ Page({
         estateExpert: { //小区专家
             name: "",
             id: "",
-            cellphone: ""
+            cellphone: "18856693"
         },
         info: {
             town: "", //所属板块
@@ -58,94 +60,76 @@ Page({
             phoneNumber: this.data.estateExpert && this.data.estateExpert.cellphone
         })
     } ,
-     
-    toComment: function() {
-        wx.navigateTo({ url: '/pages/index/index' });
-    },
     preview: function(event) {
         console.log(event);
         wx.previewImage({
             current: event.target.dataset.imgUrl, // 当前显示图片的http链接
-            urls: ["https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL"] // 需要预览的图片http链接列表
+            urls: this.data.imgUrls.filter(function(item){return item.type==='img'}).map(function(item){return item.url})// 需要预览的图片http链接列表
+        })
+    },
+    callExport:function(){  
+        console.log(this.url);      
+        wx.makePhoneCall({
+          phoneNumber: this.data.estateExpert.cellphone,
+          success: function(res) {
+            // success
+          }
         })
     },
     onLoad: function() {
-
+              
     },
     onShow: function() {
-        var that = this;
-        var now;
-        wx.getStorage({
-            key: 'now',
-            success: function(res) {
-                // success
-                now = res.data;
-                that.setData({ now: now });
-            },
-            fail: function(res) {
-                // fail
-                now = new Date() + "";
-                that.setData({ now: now });
-                wx.setStorage({
-                    key: 'now',
-                    data: now,
-                    success: function(res) {
-                        // success
-                    },
-                    fail: function(res) {
-                        // fail
-                    },
-                    complete: function(res) {
-                        // complete
-                    }
-                })
-            },
-            complete: function(res) {
-                // complete
-            }
-        })
-        console.log('onShow...');
-
         var v = [{
+            commentId:"1",
             photo: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
             cellphone: "133*****2365",
             labels: ["", ""],
             content: "南北通透，黄金楼层，满五唯一，精装修。",
             createDate: "2016-03-01 12:02",
             upCount: "20",
-            downCount: "11"
+            downCount: "11",
+            isActive:false
         },{
+            commentId:"2",
             photo: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
             cellphone: "133*****2365",
             labels: ["", ""],
             content: "南北通透，黄金楼层，满五唯一，精装修。",
             createDate: "2016-03-01 12:02",
             upCount: "20",
-            downCount: "11"
+            downCount: "11",
+            isActive:false
         },{
+            commentId:"3",
             photo: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
             cellphone: "133*****2365",
             labels: ["", ""],
             content: "南北通透，黄金楼层，满五唯一，精装修。",
             createDate: "2016-03-01 12:02",
             upCount: "20",
-            downCount: "11"
+            downCount: "11",
+            isActive:false
         },{
+            commentId:"4",
             photo: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
             cellphone: "133*****2365",
             labels: ["", ""],
             content: "南北通透，黄金楼层，满五唯一，精装修。",
             createDate: "2016-03-01 12:02",
             upCount: "20",
-            downCount: "11"
+            downCount: "11",
+            isActive:false
         },{
+            commentId:"5",
             photo: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
             cellphone: "133*****2365",
             labels: ["", ""],
             content: "南北通透，黄金楼层，满五唯一，精装修。",
             createDate: "2016-03-01 12:02",
             upCount: "20",
-            downCount: "11"
+            downCount: "11",
+            isActive:false
         }];
         this.setData({
             comments: v
@@ -178,47 +162,7 @@ Page({
                 wx.hideLoading();
             }
         })
-    },
-    getComments: function() { //获取小区评论，如果放在小区详情接口里，这个方法就不需要了
-        var that = this;
-        wx.showLoading();
-        wx.request({
-            url: app.urls.commentsUrl,
-            data: { //todo:此处需要根据接口定义提供调用参数
-
-            },
-            method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-            // header: {}, // 设置请求的 header
-            success: function(res) {
-                // success
-                //todo:
-            },
-            fail: function(res) {
-                // fail
-            },
-            complete: function(res) {
-                // complete
-                wx.hideLoading();
-            }
-        })
-
-    },
-    showLoading: function() {
-        wx.showModal({ title: "sdf", content: '<image src="http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL"/>' });
-        /*如果页面中同时有多个异步请求，分别调用wx.showLoading和wx.hideLoading会出现问题
-          多次调用wx.showLoading没有一点问题，始终只会有一个loading出现。问题在于，有多于
-          一个异步操作时，有一个完成就会调用wx.hideLoading，但是此时并不能保证所有的异步操
-          作都结束了，但是只要调用wx.hideLoading，loading就会消失。    
-        */
-        this.data.loadingCount++;
-        wx.showLoading();
-    },
-    hideLoading: function() {
-        if (this.data.loadingCount > 0) {
-            this.data.loadingCount--;
-            if (this.data.loadingCount === 0) {
-                wx.hideLoading();
-            }
-        }
     }
-})
+},houseComment)
+
+Page(params)

@@ -7,8 +7,14 @@ module.exports ={
             "agentPhoneNum":'13989890909',
             "agentWechatNum":'13989890909',
             "agentCodeImg":"https://imgwater.oss.aliyuncs.com/67d28c90288a43238d311f2942d4f029",
-            'isShowWXCode':true
+            'isShowWXCode':true,
+            "hasWechatNum":true
         }
+	},
+	c_agentClick:function(e){
+		wx.navigateTo({
+	        url: '../agent/detail'
+      	})
 	},
 	c_wechatClick:function(e){
 		this.setData({
