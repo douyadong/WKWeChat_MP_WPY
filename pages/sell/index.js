@@ -1,14 +1,13 @@
-//logs.js
+//index.js
 var util = require('../../utils/util.js')
 Page({
-  data: {
-    logs: []
-  },
-  onLoad: function () {
-    this.setData({
-      logs: (wx.getStorageSync('logs') || []).map(function (log) {
-        return util.formatTime(new Date(log))
-      })
-    })
-  }
+    data: {},
+    call: function() {
+        wx.makePhoneCall({
+            phoneNumber: '400-821-5385' //仅为示例，并非真实的电话号码
+        })
+    },
+    onLoad: function() {
+
+    }
 })

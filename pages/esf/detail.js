@@ -46,7 +46,7 @@ Page({
             upCount: "20",
             downCount: "11"
         }],
-        "esfSources": [{
+        esfSources: [{
             "thumbnail": "https://img.wkzf.com/e13cc00ccbb547f9b7e63454535cabb0.ML",
             "title": "精装修 随时可以看房子",
             "layout": "2室2厅2卫",
@@ -71,6 +71,9 @@ Page({
             current: event.target.dataset.imgUrl, // 当前显示图片的http链接
             urls: ["http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL", "https://img.wkzf.com/a236825f9cdb45a69bd0b2a8c959a2e1.DL"] // 需要预览的图片http链接列表
         })
+    },
+    showMoreBasicInfo:function(){
+        //基本信息查看更多按钮点击事件 tofo
     },
     onLoad: function() {
         this.setData({

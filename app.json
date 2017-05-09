@@ -1,32 +1,34 @@
 {
-  "pages": [
-    "pages/agent/detail", 
-    "pages/estate/detail",        
-    "pages/index/index", 
-    "pages/login/index",
-    "pages/sell/index",
-    "pages/xf/detail",
-    "pages/buy/index",
-    "pages/buy/price",
-    "pages/buy/houseType",
-    "pages/buy/location",
-    "pages/buy/features",
-    "pages/buy/success",
-    "pages/buy/recommend",
-    "pages/esf/detail",
-    "pages/comment/list",
-    "pages/comment/write"
-  ],
-  "window": {
-    "backgroundColor": "#f0f0f0",
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "悟空找房+",
-    "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
-  },
-  "networkTimeout": {
-    "request": 30000,
-    "uploadFile": 30000
-  }
+    "pages": [
+        "pages/agent/detail",
+        "pages/estate/detail",
+        "pages/index/index",
+        "pages/login/index",
+        "pages/sell/index",
+        "pages/xf/detail",
+        "pages/buy/index",
+        "pages/buy/price",
+        "pages/buy/houseType",
+        "pages/buy/location",
+        "pages/buy/features",
+        "pages/buy/success",
+        "pages/buy/recommend",
+        "pages/esf/detail",
+        "pages/esf/list",
+        "pages/report/write",
+        "pages/comment/list",
+        "pages/comment/write"
+    ],
+    "window": {
+        "backgroundColor": "#f0f0f0",
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "悟空找房+",
+        "navigationBarTextStyle": "black",
+        "enablePullDownRefresh": true
+    },
+    "networkTimeout": {
+        "request": 30000,
+        "uploadFile": 30000
+    }
 }

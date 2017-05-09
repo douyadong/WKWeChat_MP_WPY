@@ -115,7 +115,17 @@
             <text class="caption">周边配套</text>
             <text>周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套</text>
         </view>
-        <navigator class="button gray" url="#">查看更多</navigator>
+        <view class="">
+            <view class="item">
+                <text class="caption">更多信息1</text>
+                <text>更多信息更多信息更多信息更多信息</text>
+            </view>
+            <view class="item">
+                <text class="caption">更多信息2</text>
+                <text>更多信息更多信息更多信息更多信息</text>
+            </view>
+        </view>
+        <view class="button gray" bindtap="showMoreBasicInfo">查看更多</view>
     </view>
 </view>
 <view class="gap"></view>
@@ -125,34 +135,41 @@
         <view class="head">小区信息</view>
     </view>
     <view class="panel-bd lr-padding">
-        <view class="item">
-            <icon class="arrow iconfont icon-arrow-r" />
-            <view class="item-hd">
-                <image src="https://img.wkzf.com/b7bcb9ead0634bc191970b97267b335e.DW"></image>
+        <navigator url="/pages/estate/detail">
+            <view class="item">
+                <icon class="arrow iconfont icon-arrow-r" />
+                <view class="item-hd">
+                    <image src="https://img.wkzf.com/b7bcb9ead0634bc191970b97267b335e.DW"></image>
+                </view>
+                <view class="item-bd">
+                    <view class="caption">虹东小区 M11 金座</view>
+                    <view>1993 年竣工 | 150户</view>
+                    <view>虹桥路996弄</view>
+                </view>
             </view>
-            <view class="item-bd">
-                <view class="caption">虹东小区 M11 金座</view>
-                <view>1993 年竣工 | 150户</view>
-                <view>虹桥路996弄</view>
-            </view>
-        </view>
+        </navigator>
     </view>
     <!--在售房源-->
-    <view class="panel-hd houseLink">
-        <view class="head">在售房源</view>
-        <navigator class="assistant" url="#">
-            <text>6套</text>
-            <text class="iconfont icon-arrow-r"></text>
-        </navigator>
-    </view>
+    <navigator url="/pages/esf/list" class="house-link ">
+        <view class="panel-hd">
+            <view class="head">在售房源</view>
+            <view class="assistant">
+                <text>6套</text>
+                <text class="iconfont icon-arrow-r"></text>
+            </view>
+        </view>
+    </navigator>
     <!--用户评论-->
-    <view class="panel-hd">
-        <view class="head">用户评价</view>
-        <navigator class="assistant" url="#">
-            <text>6</text>
-            <text class="iconfont icon-arrow-r"></text>
-        </navigator>
-    </view>
+    <navigator url="/pages/comment/write" class="house-link ">
+        <view class="panel-hd">
+            <view class="head">用户评价</view>
+            <view class="assistant">
+                <text>6</text>
+                <text class="iconfont icon-arrow-r"></text>
+            </view>
+        </view>
+        <view class="separator"></view>
+    </navigator>
     <view class="panel-bd lr-padding">
         <view class="house-comments">
             <template is="house-comment" data="{{comments}}" />
@@ -182,6 +199,6 @@
 <view class="panel esf-list">
     <template is="esf-sources" data="{{esfSources}}" />
     <view class="row">
-        <navigator class="button gray" url="#">查看更多</navigator>
+        <navigator class="button gray" url="/pages/esf/list">查看更多</navigator>
     </view>
 </view>
