@@ -1,5 +1,6 @@
 {
   "pages": [ 
+    "pages/comment/list",
     "pages/index/index",
     "pages/agent/writeRate",    
     "pages/agent/rateList",    
@@ -16,7 +17,6 @@
     "pages/buy/success",
     "pages/buy/recommend",
     "pages/esf/detail",
-    "pages/comment/list",
     "pages/comment/write"
   ],
   "window": {
