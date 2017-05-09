@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="page">
+<view class="page {{isScroll ? 'noScroll':''}}">
   <view class="searchNavBox">
     <view class="searchNav">
       <view class="city"><text class="cityName">上海</text><text class="iconfont icon-arrow-down down"></text></view>
@@ -19,11 +19,52 @@
       </view>
   </view>
 
-  <view class="screenList">
-      <view class="list {{blue0?'blue':''}}" bindtap="showScreenList" data-index="0">区域<text class="iconfont icon-arrow-down down {{isRotate0 ? 'down90':''}}"></text></view>
-      <view class="list {{blue1?'blue':''}}" bindtap="showScreenList" data-index="1">综合排序<text class="iconfont icon-arrow-down down {{isRotate1 ? 'down90':''}}"></text></view>
-      <view class="list {{blue2?'blue':''}}" bindtap="showScreenList" data-index="2">更多<text class="iconfont icon-arrow-down down {{isRotate2 ? 'down90':''}}"></text></view>
+  <view class="screenListBox">
+    <view class="screenList">
+        <view class="list {{blue0?'blue':''}}" bindtap="showScreenList" data-index="0">区域<text class="iconfont icon-arrow-down down {{isRotate0 ? 'down90':''}}"></text></view>
+        <view class="list {{blue1?'blue':''}}" bindtap="showScreenList" data-index="1">综合排序<text class="iconfont icon-arrow-down down {{isRotate1 ? 'down90':''}}"></text></view>
+        <view class="list {{blue2?'blue':''}}" bindtap="showScreenList" data-index="2">更多<text class="iconfont icon-arrow-down down {{isRotate2 ? 'down90':''}}"></text></view>
+    </view>
+    <!--遮罩-->
+    <view class="maskBox {{isShowMask ? 'showMaskBox' : ''}}" bindtap="hideMaskBox"></view>
+    <view class="region {{isShowRegion ? 'showRegion' : ''}}">
+        <view class="regionListBox">
+            <view class="regionList white">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+            <view class="regionList">不限</view>
+        </view>
+        <view class="plateListBox">
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+            <view class="plateList">不限</view>
+        </view>
+    </view>
   </view>
+  
   <view class="agentListBox">
       <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
           <!-- list.wxml -->

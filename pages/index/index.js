@@ -35,6 +35,8 @@ Page({
   data: {
     agentList:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}],
     newList:[],
+    //设置页面默认可以滚动
+    isScroll:false,
     //点击筛选，设置三角行旋转
     isRotate0:false,
     isRotate1:false,
@@ -42,7 +44,11 @@ Page({
     //点击筛选，设置文本变色
     blue0:false,
     blue1:false,
-    blue2:false
+    blue2:false,
+    //控制区域是否显示
+    isShowMask:false,
+    //显示区域
+    isShowRegion:false
   },
   onLoad(){
     var that = this;
@@ -70,27 +76,36 @@ Page({
   },
   showScreenList(event){
     let index = parseInt(event.currentTarget.dataset.index);
+    this.setData({
+      isScroll:true
+    })
     if(index == 0){//区域
       this.setData({
-        isRotate0:true
-      })
-      this.setData({
-        blue0:true
+        isRotate0:true,
+        blue0:true,
+        isShowMask:true,
+        isShowRegion:true
       })
     }else if(index == 1){//综合排序
       this.setData({
-        isRotate1:true
+        isRotate1:true,
+        blue1:true,
+        isShowMask:true
       })
-      this.setData({
-        blue1:true
-      })
+
     }else if(index == 2){//更多
       this.setData({
-        isRotate2:true
-      })
-      this.setData({
-        blue2:true
+        isRotate2:true,
+        blue2:true,
+        isShowRegion:true
       })
     }
+  },
+  hideMaskBox(event){
+    this.setData({
+        isShowMask:false,
+        isScroll:false,
+        isShowRegion:false
+    })
   }
 })
