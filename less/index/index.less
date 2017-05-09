@@ -4,6 +4,7 @@ page{
     overflow: hidden;
     position: relative;
 }
+
 .page{
     width: 100%;
     height: 100%;
@@ -54,7 +55,7 @@ page{
                     overflow: hidden;
                     .searchIcon{
                         display: inline-block;
-                        margin-top: 12rpx;
+                        margin-top: 15rpx;
                         margin-left: 40rpx;
                         color: #4E4E4E;;
                     }
@@ -65,7 +66,7 @@ page{
                         display: inline-block;
                         margin-left: 10rpx;
                         position: absolute;
-                        margin-top: 12rpx;
+                        margin-top: 17rpx;
                     }
                 }
             }
@@ -134,38 +135,100 @@ page{
         }
     }
     //筛选
-    .screenList{
+    .screenListBox{
         width: 100%;
-        height: 90rpx;
-        background-color: #fff;
-        border-bottom: 1px #E4E4E4 solid;
-        margin-top: 20rpx;
-        display: -webkit-box;
-        position: relative;
-        .list{
-            height: 100%;
-            -webkit-box-flex: 1;
-            overflow: hidden;
+        height: auto;
+        background-color: #fff; 
+        .screenList{
+            width: 100%;
+            height: 90rpx;
+            background-color: #fff;
+            border-bottom: 1px #E4E4E4 solid;
+            margin-top: 20rpx;
+            display: -webkit-box;
             position: relative;
-            font-size: 32rpx;
-            color: #4E4E4E;
-            line-height: 3;
-            text-align: center;
-            .down{
-                position: absolute;
-                margin-left:-4rpx;
-                margin-top:7rpx;
-                -webkit-transition: all 0.5s;
-                -webkit-transform-origin:50% 48%;
+            .list{
+                height: 100%;
+                -webkit-box-flex: 1;
+                overflow: hidden;
+                position: relative;
+                font-size: 32rpx;
+                color: #4E4E4E;
+                line-height: 3;
+                text-align: center;
+                .down{
+                    position: absolute;
+                    margin-left:-4rpx;
+                    margin-top:-2rpx;
+                    -webkit-transition: all 0.5s;
+                    -webkit-transform-origin:50% 50%;
+                }
+                .down90{
+                    -webkit-transform:rotate(180deg);
+                }
             }
-            .down90{
-                -webkit-transform:rotate(180deg);
+            .blue{
+                color: #4081D6;
             }
         }
-        .blue{
-            color: #4081D6;
+        .maskBox{
+            width: 100%;
+            height: 4000rpx;
+            background-color: rgba(0,0,0,0.3);
+            position: absolute;
+            z-index: 2;
+            display: none;
+        }
+        .showMaskBox{
+            display: block;
+        }
+        .region{
+            width: 100%;
+            height: 550rpx;
+            position: absolute;
+            z-index: 2;
+            display: none;
+            .regionListBox{
+                background-color: #F5F5F5;
+                width: 40%;
+                height: 100%;
+                float: left;
+                overflow-y: auto;
+                .regionList{
+                    width: 100%;
+                    height: 88rpx;
+                    font-size: 28rpx;
+                    color: #1C3300;
+                    letter-spacing:8rpx;
+                    line-height:  88rpx;
+                    text-indent: 60rpx;
+                }
+                .white{
+                    background-color: #FFFFFF;
+                }
+            }
+            .plateListBox{
+                background-color: #FFFFFF;
+                width: 60%;
+                height: 100%;
+                float: left;
+                overflow-y: auto;
+                .plateList{
+                    width: 100%;
+                    height: 88rpx;
+                    font-size: 28rpx;
+                    color: #1C3300;
+                    letter-spacing:8rpx;
+                    line-height:  88rpx;
+                    text-indent: 60rpx;
+                }
+            }
+        }
+        .showRegion{
+            display: block;
         }
     }
+    
     //显示经纪列表
     .agentListBox{
         width: 100%;
@@ -176,32 +239,6 @@ page{
         color: red;
     }
 }
-
-.developBox{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 150rpx;
-    background: #fff;
-    .developTitle{
-        display: block;
-        width: 100%;
-        height: 49rpx;
-        font-size: 24rpx;
-        line-height: 49rpx;
-        padding-left: 30rpx;
-        border-bottom: 1rpx solid #ddd;
-    }
-    .developNavBar{
-        width: 100%;
-        display: flex;
-        .itemBar{
-            flex:1;
-            height: 100rpx;
-            font-size: 32rpx;
-            line-height: 100rpx;
-            text-align: center;
-        }
-    }
+.noScroll{
+    overflow-y: hidden;
 }
-
