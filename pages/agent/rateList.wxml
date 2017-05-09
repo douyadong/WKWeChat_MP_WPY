@@ -1,0 +1,26 @@
+<import src="../components/agent-rates.wxml"/>
+<view class="scores">  
+  <text>综合得分：</text>
+  <text class="iconfont icon-star-all"></text>
+  <text class="iconfont icon-star-all"></text>
+  <text class="iconfont icon-star-all"></text>
+  <text class="iconfont icon-star-all"></text>
+  <text class="iconfont icon-star-half"></text>
+  <text class="points">4.5</text>      
+</view>
+<view class="tags">
+  <view><text>礼貌热情[23]</text></view>
+  <view><text>比较专业[23]</text></view>
+  <view><text>熟悉房源[23]</text></view>
+  <view><text>仪表整洁[23]</text></view>
+  <view><text>诚实可信[23]</text></view>
+  <view><text class="bad">不够专业[23]</text></view>    
+</view>
+<view class="rates">
+  <view class="separator"></view>
+  <template is="agent-rates" data="{{agentRates}}" />
+</view>
+<view class="legend-hd">
+    <view class="bg-line"></view>
+    <text>没有更多了</text>
+</view>

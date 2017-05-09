@@ -4,12 +4,21 @@
  3. 作者：tangxuyang@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
+.separator {
+    border-color: @separator-color ;
+}
+
 .house-comments {
+    margin-top: -30rpx;
     .comment {
+        padding-top: 36rpx;
         color: @default-font-color;
         view {
             font-size: @default-font-size ;
             line-height: 50rpx;
+        }
+        .separator {
+            border-color: @separator-color ;
         }
         .comment-hd {
             .comment-hd-inner {
@@ -44,7 +53,7 @@
         }
         .comment-ft {
             margin-top: 20rpx;
-            margin-bottom: 20rpx;
+            margin-bottom: 36rpx;
             font-size: 28rpx;
             color: @light-font-color;
             .comment-up {

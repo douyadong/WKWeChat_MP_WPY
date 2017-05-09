@@ -1,1 +1,1 @@
-/* pages/sell/index.wxss */
+page{background-color:#fff}image{width:100%}.button{margin:60rpx 0;font-size:32rpx}

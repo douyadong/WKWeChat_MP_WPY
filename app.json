@@ -1,8 +1,10 @@
 {
-  "pages": [
+  "pages": [ 
     "pages/index/index",
-    "pages/agent/detail",
-    "pages/estate/detail",  
+    "pages/agent/writeRate",    
+    "pages/agent/rateList",    
+    "pages/agent/detail",      
+    "pages/estate/detail",
     "pages/login/index",
     "pages/sell/index",
     "pages/xf/detail",
