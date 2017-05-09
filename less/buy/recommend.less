@@ -3,3 +3,35 @@
  2. 文件名称：buy -> recommend.less (我要买房-为您推荐页)
  3. 作者：yuxiaochen@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+@import "../variables.less";
+@import "../mixins.less";
+page {
+    padding: 0 @common-margin @common-margin @common-margin;
+    .title {
+        color: @light-font-color;
+        font-size: @default-font-size;
+        height: 70rpx;
+        line-height: 70rpx;
+    }
+    .info {
+        background-color: @white-font-color;
+        padding: @gap-dimension @common-margin;
+        .row {
+            display: flex;
+            justify-content: space-between;
+            .content {
+                text {
+                    background-color: #f5f5f5;
+                    color: @default-font-color;
+                    font-size: @default-font-size;
+                    padding: 8rpx @gap-dimension;
+                }
+            }
+        }
+    }
+
+    .button{
+        width:100%;
+    }
+}
