@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/agent/qrcode",    
     "pages/agent/writeRate",    
     "pages/agent/rateList",    
     "pages/agent/detail",      
