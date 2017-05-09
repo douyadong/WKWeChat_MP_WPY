@@ -2,6 +2,9 @@
 var util = require('../../utils/util.js')
 Page({
     data: {
+        houseId:'1465823', //房源ID
+        district:'长宁', //区域
+        town:'古北区',//板块
         imgUrls: [{
             url: "https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL",
             "type": "video"
