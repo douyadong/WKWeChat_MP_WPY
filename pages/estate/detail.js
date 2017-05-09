@@ -1,8 +1,9 @@
-var app = getApp();
 var util = require('../../utils/util.js')
+var $ = require('../../utils/extend.js')
+var houseComment = require('../components/house-comment.js')
 
-Page({
-    data: {
+var params = $.extend(true,{},{
+     data: {
         now: "",
         imgUrls: [{
             url: "https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL",
@@ -26,7 +27,7 @@ Page({
         estateExpert: { //小区专家
             name: "",
             id: "",
-            cellphone: ""
+            cellphone: "18856693"
         },
         info: {
             town: "", //所属板块
@@ -58,54 +59,25 @@ Page({
             phoneNumber: this.data.estateExpert && this.data.estateExpert.cellphone
         })
     } ,
-     
-    toComment: function() {
-        wx.navigateTo({ url: '/pages/index/index' });
-    },
     preview: function(event) {
         console.log(event);
         wx.previewImage({
             current: event.target.dataset.imgUrl, // 当前显示图片的http链接
-            urls: ["https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL"] // 需要预览的图片http链接列表
+            urls: this.data.imgUrls.filter(function(item){return item.type==='img'}).map(function(item){return item.url})// 需要预览的图片http链接列表
+        })
+    },
+    callExport:function(){        
+        wx.makePhoneCall({
+          phoneNumber: this.data.estateExpert.cellphone,
+          success: function(res) {
+            // success
+          }
         })
     },
     onLoad: function() {
-
+        var hc = new HouseComments({url:"http://www.baidu.com"});        
     },
     onShow: function() {
-        var that = this;
-        var now;
-        wx.getStorage({
-            key: 'now',
-            success: function(res) {
-                // success
-                now = res.data;
-                that.setData({ now: now });
-            },
-            fail: function(res) {
-                // fail
-                now = new Date() + "";
-                that.setData({ now: now });
-                wx.setStorage({
-                    key: 'now',
-                    data: now,
-                    success: function(res) {
-                        // success
-                    },
-                    fail: function(res) {
-                        // fail
-                    },
-                    complete: function(res) {
-                        // complete
-                    }
-                })
-            },
-            complete: function(res) {
-                // complete
-            }
-        })
-        console.log('onShow...');
-
         var v = [{
             photo: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
             cellphone: "133*****2365",
@@ -221,4 +193,6 @@ Page({
             }
         }
     }
-})
+},houseComment)
+
+Page(params)
