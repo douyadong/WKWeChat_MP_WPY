@@ -14,13 +14,12 @@ module.exports = {
    * @param  {} showTitle 加载中提示文案
    * @param  {} showMask  加载是否显示遮罩层
    * @param  {} method  请求方法，默认为'GET'
-   * @param  {} data  请求数据
    * @param  {} dataType='json' 默认为 json。如果设置了 dataType 为 json，则会尝试对响应的数据做一次 JSON.parse
    * @param  {} success 请求成功的回调函数
    * @param  {} fail 请求失败的回调函数
    * @param  {} complete  请求执行的finally 函数
    */
-  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='加载中...', showMask=false, method='GET', data, dataType='json', success, fail, complete}) {
+  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='数据加载中...', showMask=false, method='GET', data,dataType='json', success, fail, complete}) {
     let url = apiUrl.get(module, action)
 
     showBarLoading && wx.showNavigationBarLoading()
@@ -36,8 +35,8 @@ module.exports = {
       {
         url,
         method,
-        dataType,
         data,
+        dataType,
         success: function (res) {
           if (res.statusCode == '200' && res.data.status == '1') {
             typeof success == 'function' && success(res.data)
