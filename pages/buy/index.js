@@ -1,6 +1,9 @@
-// logs.js
-var util = require('../../utils/util.js')
-var res = require('./mock').interestInfo
+/**
+ * @desc 我要买房-首页
+ * @author:yuxiaochen@lifang.com
+ */
+const areaInfo = require('./mock').areaInfo.data
+const request = require('../../utils/request')
 
 Page({
   data: {
@@ -114,64 +117,174 @@ Page({
       id: '',
       text: '请选择户型'
     },
+    areaList: [],
+    blockList: [],
+    superAreaObject: null,
     currentHouseFeatures: [],
-    currentLocation: [],
+    currentLocationStr: '请选择位置',
     loaded: false
   },
   onLoad: function () {
     let that = this
-    let data = res.data
-
-    console.log('onLoad.....')
 
     this.data.loaded = true
-    wx.showNavigationBarLoading()
 
-    setTimeout(function () {
-      this.data.currentPrice.min = data.startPrice
-      this.data.currentPrice.max = data.endPrice
+    this.getData(function (res) {
+      let data = res.data
+      // 价格信息
+      that.setPrice(data.startPrice, data.endPrice)
 
-      this.data.prices.forEach(item => {
-        if (item.min == data.startPrice && item.max == data.endPrice) {
-          this.data.currentPrice.text = item.text
-          wx.setStorageSync('buy_price', item.id)
-        }
-      })
+      // 户型信息
+      that.setHouseType(data.bedRoomSum)
 
-      this.setData({'currentPrice': this.data.currentPrice})
+      // 位置信息
+      that.setLocation(data.townIdLists)
 
-      wx.hideNavigationBarLoading()
-    }.bind(this), 2000)
+      // 房源特色信息
+      that.setHouseFeatures(data.houseFeature)
+    })
   },
   onShow: function () {
     if (!this.data.loaded) {
-      console.log('onShow.....')
-
       let that = this
-      let priceId = wx.getStorageSync('buy_price')
+      let price = wx.getStorageSync('buy_price')
       let houseTypeId = wx.getStorageSync('buy_houseType')
+      let selectedBlockList = wx.getStorageSync('buy_location')
 
-      console.log('onShow')
+      this.setPrice(price.min, price.max)
 
-      this.data.houseTypes.forEach(item => {
-        if (item.id == houseTypeId) {
-          that.currentHouseType = item
-        }
-      })
+      this.setHouseType(houseTypeId)
 
-      this.data.prices.forEach(item => {
-        if (item.id == priceId) {
-          that.currentPrice = item
-        }
-      })
-
-      this.setData({'currentPrice': this.currentPrice})
-      this.setData({'currentHouseType': this.currentHouseType})
+      this.setLocation(selectedBlockList)
     }
   },
   handleRedirect: function (e) {
     this.data.loaded = false
-    wx.navigateTo({url: e.target.dataset.url})
+    wx.navigateTo({url: e.currentTarget.dataset.url})
+  },
+  setPrice: function (startPrice, endPrice) {
+    let that = this
+
+    this.data.prices.forEach(item => {
+      if (item.min == startPrice && item.max == endPrice) {
+        this.data.currentPrice = item
+        wx.setStorageSync('buy_price', item)
+        that.setData({'currentPrice': that.data.currentPrice})
+      }
+    })
+  },
+  setHouseType: function (bedRoomSum) {
+    let that = this
+
+    this.data.houseTypes.forEach(item => {
+      if (item.id == bedRoomSum) {
+        that.data.currentHouseType = item
+        wx.setStorageSync('buy_houseType', item.id)
+        that.setData({'currentHouseType': that.data.currentHouseType})
+      }
+    })
+  },
+  setLocation: function (townList) {
+    let that = this
+    let locationStr,location = []
+    let allCheckedAreas = []
+
+    // 转换data
+    this.convertData(areaInfo)
+
+    this.data.blockList.forEach(oBlock1 => {
+      townList.forEach(oBlock2 => {
+        if (oBlock1.id == oBlock2.id) {
+          oBlock1.selected = true
+          that.data.superAreaObject[oBlock1.pid]++
+          if (that.data.superAreaObject[oBlock1.pid + '_count'] == that.data.superAreaObject[oBlock1.pid]) {
+            location.push(oBlock1.pName)
+            allCheckedAreas.push(oBlock1.pid)
+          }
+        }
+      })
+    })
+
+    this.data.blockList.forEach(oBlock => {
+      if (!allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
+        location.push(oBlock.name)
+      }
+    })
+
+    locationStr = location.join('、')
+    if (locationStr.length >= 15) {
+      locationStr = locationStr.substr(0, 15)
+      if (locationStr[locationStr.length - 1] == '、') {
+        locationStr = locationStr.substr(0, locationStr.length - 1)
+      }
+      locationStr += ' ...'
+    }
+
+    wx.setStorageSync('buy_location', townList)
+    this.setData({'currentLocationStr': locationStr })
+  },
+  setHouseFeatures: function (featuresList) {
+    let that = this
+
+    this.data.houseFeatures.forEach(item => {
+      featuresList.forEach(oFeature => {
+        if (oFeature.featureId == item.id) {
+          item.selected = true
+        }
+      })
+    })
+
+    this.setData({'houseFeatures': this.data.houseFeatures})
+  },
+  convertData: function (data) {
+    let that = this
+    let superAreaObject = {}
+    let areaList = [],blockList = [],index = 0
+
+    data.forEach(oData => {
+      let oArea = {}
+      oArea.id = oData.id
+      oArea.index = index
+      oArea.name = oData.name
+      oArea.subList = that.genBlockList(oData.subList, index, oData.id, oData.name)
+      oArea.count = oArea.subList.length
+      areaList.push(oArea)
+      index++
+    })
+
+    // get all block list and make superAreaObject
+    areaList.forEach(oData => {
+      superAreaObject[oData.id] = 0
+      superAreaObject[oData.id + '_count'] = oData.count
+      oData.subList.forEach(oBlock => {
+        blockList.push(oBlock)
+      })
+    })
+
+    this.data.areaList = areaList
+    this.data.blockList = blockList
+    this.data.superAreaObject = superAreaObject
+  },
+  genBlockList: function (originData, pIndex, pid, pName) {
+    let blockList = []
+
+    originData.forEach(oBlock => {
+      if (oBlock.towns && oBlock.towns.length) {
+        oBlock.towns.forEach(oTown => {
+          let oBlock = {}
+          oBlock.pid = pid
+          oBlock.pIndex = pIndex
+          oBlock.pName = pName
+          oBlock.id = oTown.id
+          oBlock.name = oTown.name
+          oBlock.selected = false
+          oBlock.hidden = true
+          blockList.push(oBlock)
+        })
+      }
+    })
+
+    return blockList
   },
   chooseHouseFeature: function (event) {
     let tmpFeature = this.data.houseFeatures[event.target.dataset.index]
@@ -179,6 +292,18 @@ Page({
 
     this.setData({'houseFeatures': this.data.houseFeatures})
   },
-  getData: function (cd) {},
-  clearLocation: function (event) {}
+  getData: function (callback) {
+    let res = require('./mock').interestInfo
+
+    request.fetch({
+      'module': 'buy',
+      'action': 'getDetails',
+      'showLoading': true,
+      success: function (res) {
+        console.log(res)
+      }
+    })
+
+    callback(res)
+  }
 })

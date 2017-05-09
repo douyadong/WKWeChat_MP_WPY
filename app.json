@@ -1,6 +1,9 @@
 {
   "pages": [
-    "pages/agent/detail", 
+    "pages/agent/qrcode",    
+    "pages/agent/writeRate",    
+    "pages/agent/rateList",    
+    "pages/agent/detail",      
     "pages/estate/detail",        
     "pages/index/index", 
     "pages/login/index",
@@ -14,6 +17,9 @@
     "pages/buy/success",
     "pages/buy/recommend",
     "pages/esf/detail",
+    "pages/esf/list",
+    "pages/report/write",
+    "pages/common/video",
     "pages/comment/list",
     "pages/comment/write"
   ],

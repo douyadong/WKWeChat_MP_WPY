@@ -56,8 +56,7 @@ Page({
   },
   submit: function (event) {
     wx.setStorageSync('buy_houseType', this.data.currentHouseType)
-    // wx.redirectTo({url: '/pages/buy/index'})
-    wx.navigateTo({url: '/pages/buy/location'})
+    wx.navigateBack({url: '/pages/buy/index'})
   },
   resetData: function () {
     var that = this
