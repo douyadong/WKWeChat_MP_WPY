@@ -10,6 +10,9 @@ const url = {
   },
   'estate':{
     'zan':''
+  },
+  'esf':{
+  	'getDetails':''
   }
 }
 
