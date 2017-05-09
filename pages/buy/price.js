@@ -1,6 +1,8 @@
 /**
  * @desc 我要买房-价格选择
+ * @author:yuxiaochen@lifang.com
  */
+
 Page({
   data: {
     items: [{
@@ -67,15 +69,16 @@ Page({
     currentPrice: 0
   },
   onLoad: function () {
-    let priceId = wx.getStorageSync('buy_price') || 0
+    let that=this;
+    let price = wx.getStorageSync('buy_price')
 
     this.data.items.forEach(item => {
-      if (item.id == priceId) {
+      if (item.id == price.id) {
+        that.data.currentPrice=item;
         item.selected = true
       }
     })
 
-    this.setData({currentPrice: priceId})
     this.setData({items: this.data.items})
   },
   choose: function (event) {
@@ -84,7 +87,7 @@ Page({
     let tmpObj = this.data.items[event.target.dataset.index]
     tmpObj.selected = true
 
-    this.data.currentPrice = tmpObj.id
+    this.data.currentPrice = tmpObj
 
     this.setData({
       items: this.data.items

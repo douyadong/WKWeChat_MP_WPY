@@ -26,6 +26,6 @@
     <view class="separator"></view>
     <template is="agent-rates" data="{{agentRates}}" />
     <view class="gap"></view>
-    <navigator url="pages/agent/writeRate" class="button gray">我来评价</navigator>
+    <navigator url="/pages/agent/writeRate" class="button gray">我来评价</navigator>
   </view>
 </view>

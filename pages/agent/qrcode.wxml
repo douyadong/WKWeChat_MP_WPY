@@ -1,0 +1,7 @@
+<view class="tips">经纪人微信号码已复制到剪切板</view>
+<view class="dialog">
+  <view><image src=""></image></view>
+  <text>长按识别二维码</text>
+  <text>微信号：13989890909</text>
+  <text class="memo">无法识别请搜索微信号码添加</text>
+</view>
