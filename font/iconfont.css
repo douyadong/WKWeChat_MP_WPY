@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1494316905336'); /* IE9*/
-  src: url('iconfont.eot?t=1494316905336#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1494316905336') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1494316905336') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1494316905336#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1494329924587'); /* IE9*/
+  src: url('iconfont.eot?t=1494329924587#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1494329924587') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1494329924587') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1494329924587#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -26,6 +26,8 @@
 .icon-search:before { content: "\e60d"; }
 
 .icon-ditie:before { content: "\e614"; }
+
+.icon-more:before { content: "\e622"; }
 
 .icon-cai:before { content: "\e643"; }
 
