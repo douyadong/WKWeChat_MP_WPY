@@ -13,17 +13,17 @@
         </view>
     </view>
     <view class="agentContact">
-        <view class="tel" bindtap="phoneClick">
+        <view class="tel" bindtap="c_phoneClick">
             <view class="iconfont icon-telkf"></view>
             电话咨询
         </view>
-        <view class="wechat" bindtap="wechatClick">
+        <view class="wechat" bindtap="c_wechatClick">
             <view class="iconfont icon-wxkf"></view>
             添加微信
         </view>
     </view>
-    <view class="agentCodeShadow" id="agentCodeShadow" hidden="{{isShowWXCode}}" bindtap="hideClick" bindtouchmove="eventPreventDefault">
-        <view class="agentCodeBox" id="agentCodeBox" catchtap="stopEvent">
+    <view class="agentCodeShadow" id="agentCodeShadow" hidden="{{isShowWXCode}}" bindtap="c_hideClick" bindtouchmove="eventPreventDefault">
+        <view class="agentCodeBox" id="agentCodeBox" catchtap="c_stopEvent">
             <view class="agentCodeImg">
                 <image src="{{agentCodeImg}}"></image>
             </view>

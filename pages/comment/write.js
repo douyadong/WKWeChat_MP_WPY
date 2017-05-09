@@ -23,14 +23,29 @@ var params = $.extend(true,{},{
                 var tempFilePaths = res.tempFilePaths,
                     currentFilePaths = _this.data.uploadImages;
                 if(tempFilePaths.length+currentFilePaths.length > 3){
-                    return;
+                    wx.showToast({
+                        title: '只能上传3张图片'
+                    })
                 }else{
+                    currentFilePaths=currentFilePaths.concat(tempFilePaths);
+                    _this.setData({
+                        "uploadImages":currentFilePaths
+                    })
                 }
-                _this.setData({
-                    "uploadImages":res.tempFilePaths
-                })
             }
         })
+    },
+    deletImageItem:function(e){
+        console.log(e.currentTarget.dataset.id)
+        var currentFilePaths = this.data.uploadImages,
+            index = e.currentTarget.dataset && e.currentTarget.dataset.id;
+        currentFilePaths.splice(index,1);
+        this.setData({
+            "uploadImages":currentFilePaths
+        })
+    },
+    uploadFile:function(){
+
     }
 },detailfoot)
 

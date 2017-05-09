@@ -1,6 +1,9 @@
 <!--logs.wxml-->
-<view class="container log-list">
-  <block wx:for="{{logs}}" wx:for-item="log" wx:key="*this">
-    <text class="log-item">{{index + 1}}. {{log}}</text>
-  </block>
+<import src="../components/house-comment.wxml" />
+
+<view class="titleShadow"></view>
+<view class="section">
+    <scroll-view class="house-comments" scroll-y="true" lower-threshold="100" bindscrolltolower="loadMore">
+        <template is="house-comment" data="{{comments}}"/>
+    </scroll-view>
 </view>

@@ -6,9 +6,12 @@
             <textarea placeholder="说说房子所在的小区…" auto-focus name="textarea" />
         </view>
         <view class="chooseImage">
-            <view class="chooseButton" bindtap="chooseImg">选择图片</view>
+            <view class="chooseButton" bindtap="chooseImg">
+            <view class="iconfont icon-wxkf"></view>
+            选择图片
+            </view>
             <view class="imgItem" wx:for="{{uploadImages}}" wx:for-index="index" wx:for-item="item">
-                <view class="deletItem" id="deletImage-{{index}}" bindtap="deletImageItem"></view>
+                <icon class="deletItem" data-id="{{index}}" bindtap="deletImageItem" type="clear" size="15" color="rgba(78,78,78)"/>
                 <image mode="aspectFill" src="{{item}}"></image>
             </view>   
         </view>
