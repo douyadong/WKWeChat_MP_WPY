@@ -1,6 +1,6 @@
 {
   "pages": [ 
-    "pages/comment/list",
+    "pages/comment/write",
     "pages/index/index",
     "pages/agent/writeRate",    
     "pages/agent/rateList",    
@@ -20,7 +20,7 @@
     "pages/esf/list",
     "pages/report/write",
     "pages/common/video",
-    "pages/comment/write"
+    "pages/comment/list"
   ],
   "window": {
     "backgroundColor": "#f0f0f0",
