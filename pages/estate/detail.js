@@ -34,18 +34,54 @@ var params = $.extend(true, {}, {
             "data": {
                 subEstateId: that.data.subEstateId
             },
-            "success": function (data) {  
-                //打点数据
-                data.estateInfo.markers = [{
-                    //iconPath: "/resources/others.png",
-                    id: 0,
-                    latitude: data.estateInfo.latitude,
-                    longitude: data.estateInfo.longitude,
-                    width: 50,
-                    height: 50
-                    }];              
+            "success": function (data) {
+                var e = data.estateInfo;
+
+                var estateInfo = {
+                    district:e.district,
+                    town:e.town,
+                    propertyRight:e.propertyRight,
+                    completed:e.completed,
+                    totalHouse:e.totalHouse,
+                    propertyType:e.propertyType,
+                    propertyCharges:e.propertyCharges,
+                    greenRate:e.greenRate,
+                    volumeRate:e.volumeRate,
+                    propertyCompany:e.propertyCompany,
+                    developers:e.developers,
+                    subwayName:e.subwayName,
+                    schoolName:e.schoolName,
+                    sellhouseCount:e.sellhouseCount,
+                    longitude:e.longitude,
+                    latitude:e.latitude,
+                    markers:[{
+                        //iconPath: "/resources/others.png",
+                        id: 0,
+                        latitude: data.estateInfo.latitude,
+                        longitude: data.estateInfo.longitude,
+                        width: 50,
+                        height: 50
+                    }]
+                };
+                var comments = e.comment;
+                var agent = data.agent;
+                var imgUrls = [];
+
+                /*
+                if(e.videoUrl){//todo:后端没有提供
+                    imgUrls.push({url:e.videoUrl,type='video'});
+                }*/  
+
+                if(e.imgList && e.imgList.length){
+                    e.imgList.forEach(function(item){
+                        imgUrls.push({url:item});
+                    });
+                }                            
                 that.setData({                    
-                    data
+                    estateInfo,
+                    comments,
+                    commentsCount:e.comment.amount,
+                    imgUrls
                 });
             }
         });

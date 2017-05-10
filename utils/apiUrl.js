@@ -13,10 +13,13 @@ const url = {
   },
   'estate':{
     'zan':'/wxmpEstate/upOrDownEstateComment.rest',
-    'detail':'/wxmpEstate/estateDetail.rest'
+    'detail':'/wxmpEstate/estateDetail.rest',
+    'sellingList':'/wxmpEstate/estateSellingHouseList.rest'
   },
   'esf':{
-  	'getDetails':''
+  	'getDetails':'/wxmpOldHouseDetail/getOldHouseDetail.rest',
+    'similar':'/wxmpOldHouseDetail/getSimilarList.rest',
+    'agentInfo':'/wxmpAgent/getSimpleAgent.rest'
   }
 }
 

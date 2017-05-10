@@ -2,6 +2,7 @@
 var util = require('../../utils/util.js');
 var $ = require('../../utils/extend.js');
 var houseComment = require('../components/house-comment.js');
+var swiper = require('../components/swiper.js');
 var request = require('../../utils/request.js');
 var app = getApp();
 var params = $.extend(true,{},{
@@ -12,6 +13,7 @@ var params = $.extend(true,{},{
         town:'古北区',//板块
         imgUrls: [{
             url: "https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL",
+            videoUrl:"http://v.wkzf.com/fe5b05415e74492f93752219333d443bWV.mp4",
             "type": "video"
         }, {
             url: "https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL",
@@ -73,45 +75,15 @@ var params = $.extend(true,{},{
             "price": "45800"
         }]
     },
-    //swiper获取当前页
-    preview: function(event) {
-        console.log(event);
-        wx.previewImage({
-            current: event.target.dataset.imgUrl, // 当前显示图片的http链接
-            urls: ["http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL", "https://img.wkzf.com/a236825f9cdb45a69bd0b2a8c959a2e1.DL"] // 需要预览的图片http链接列表
-        })
-    },
     showMoreBasicInfo:function(){
         //基本信息查看更多按钮点击事件 tofo
     },
-    getEstateInfo: function() { //获取二手房详情
-        var that = this;
-        wx.showLoading();
-        wx.request({
-            url: app.urls.estateInfoUrl,
-            data: { //todo:此处需要根据接口定义提供调用参数
-
-            },
-            method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-            // header: {}, // 设置请求的 header
-            success: function(res) {
-                // success
-                //todo:此处需要把接口返回的数据转换成需要的格式，并调用that.setData()...
-
-            },
-            fail: function(res) {
-                // fail
-                //todo:错误提示
-            },
-            complete: function(res) {
-                // complete        
-                wx.hideLoading();
-            }
-        })
+    getDetail: function() { //获取二手房详情
+        
     },
     onLoad: function() {
     }
-},houseComment)
+},houseComment,swiper);
 
 
 Page(params)

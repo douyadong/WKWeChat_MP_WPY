@@ -30,7 +30,7 @@
     </view>
     <view class="row">
       <view class="row-hd">容积率</view>
-      <view class="row-bd">{{estateInfo.valumeRate}}</view>
+      <view class="row-bd">{{estateInfo.volumeRate}}</view>
     </view>
     <view class="row">
       <view class="row-hd">物业公司</view>
@@ -53,7 +53,7 @@
   <view class="separator"></view> 
   <view class="extendable">
     <view class="head">在售房源</view>
-    <navigator url="/pages/agent/rateList" class="assistant">
+    <navigator url="/pages/esf/list?subEstateId={{subEstateId}}" class="assistant">
       <text>{{estateInfo.sellhouseCount}} 套</text>
       <text class="iconfont icon-arrow-r"></text>
     </navigator>

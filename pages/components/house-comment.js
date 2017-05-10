@@ -6,8 +6,19 @@ var app = getApp();
 module.exports = {
   /*
     data:{
-      comments:[{}],
-      commentTotal:integer
+      comments:[{
+        "pkid": 1079,
+        "subEstateId": 0,
+        "upAmount": 0,
+        "downAmount": 0,
+        "comment": "丰田天",
+        "createTimeStr": "2017-03-23 16:04:52",
+        "orderLevel": null,
+        "isUp": 0,
+        "isDown": 0,
+        "imgList": null,
+        "landlord": 0
+      }]
     }
   */
 
@@ -22,6 +33,7 @@ module.exports = {
       return;
     }    
     
+    //调用赞接口
     /*request.fetch({
       "module":"estate",
       "action":"zan",
@@ -32,13 +44,13 @@ module.exports = {
       },
       "showLoading":true,
       success:function(data){
-        //更新赞个数，并设置isActive  
+        //更新赞个数，并设置isUp  
         var comments = self.data.comments;
         var itemInComments = comments.filter(function(c){
-          return c.commentId == item.commentId;
+          return c.pkid == item.pkid;
         })[0];    
-        itemInComments.isActive = true;
-        itemInComments.upCount = data.upCount;
+        itemInComments.isUp = 1;
+        itemInComments.upAmount = data.upAmount;
         self.setData({comments:comments});  
       }
     });*/
@@ -47,7 +59,7 @@ module.exports = {
   hc_previewImage:function(event){//图片预览
     var currentImg = event.currentTarget.dataset.imgUrl;
     var commentId = event.currentTarget.dataset.commentId;
-    var imgList = this.data.estateInfo.comment.commentList.filter(function(item){return item.pkid == commentId})[0].imgList;
+    var imgList = this.data.comments.filter(function(item){return item.pkid == commentId})[0].imgList;
     wx.previewImage({
       current: currentImg,
       urls: imgList
