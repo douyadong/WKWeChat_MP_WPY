@@ -3,6 +3,8 @@
  * @author:yuxiaochen@lifang.com
  */
 
+const appInstance = getApp()
+
 Page({
   data: {
     items: [{
@@ -66,20 +68,35 @@ Page({
       max: 0,
       selected: false
     }],
-    currentPrice: 0
+    currentPrice: {}
   },
-  onLoad: function () {
-    let that=this;
+  onShow: function () {
+    let that = this
     let price = wx.getStorageSync('buy_price')
 
-    this.data.items.forEach(item => {
-      if (item.id == price.id) {
-        that.data.currentPrice=item;
-        item.selected = true
+    if (price.id == '-1') {
+      that.data.currentPrice = {
+        id: '0',
+        text: '不限',
+        min: 0,
+        max: 0,
+        selected: true
       }
-    })
+
+      that.data.items[9].selected = true
+    }else {
+      this.data.items.forEach(item => {
+        if (item.id == price.id) {
+          item.selected = true
+          that.data.currentPrice = item
+        }
+      })
+    }
 
     this.setData({items: this.data.items})
+  },
+  onHide: function () {
+    appInstance.loaded=true;
   },
   choose: function (event) {
     this.resetData()
@@ -94,6 +111,7 @@ Page({
     })
   },
   submit: function (event) {
+    appInstance.loaded=true;
     wx.setStorageSync('buy_price', this.data.currentPrice)
     wx.navigateBack({url: '/pages/buy/index'})
   },
