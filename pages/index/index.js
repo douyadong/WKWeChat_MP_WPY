@@ -2,8 +2,7 @@
 let _ = require('../../utils/extend.js')
 //筛选区域脚本
 let screen = require('./screen/template.js')
-//区域模拟数据
-let mock = require('./../buy/mock.js')
+
 //获取应用实例
 let app = getApp()
 let main = {
@@ -15,14 +14,25 @@ let main = {
       url: event.currentTarget.dataset.pagename
     })
   },
+  init(){
+    //地理定位
+    wx.getLocation({
+      type: 'wgs84',
+      success: function(res) {
+        var latitude = res.latitude
+        var longitude = res.longitude
+        var speed = res.speed
+        var accuracy = res.accuracy
+        console.info(latitude);
+      },
+      fail:function(res) {
+        console.log("点击取消");
+      }
+    })
+  },
   onLoad(){
-    var that = this;
-    //模拟数据-获取区域列表
-    setTimeout(()=>{
-      this.setData({
-        regionList:mock.areaInfo.data
-      })
-    },1000);
+    this.init();
+    this.templateInit();
   },
   //滚动到底部异步加载经纪人列表
   onReachBottom(){

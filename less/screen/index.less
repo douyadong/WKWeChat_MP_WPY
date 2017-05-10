@@ -9,6 +9,8 @@ page{
     width: 100%;
     height: 100%;
     overflow-y: auto;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
     .screenBox{
         width: 100%;
         height: 90rpx;
@@ -33,14 +35,19 @@ page{
             .screenInputBox{
                 padding-left: 80rpx;
                 .screenPlaceholder{
+                    height: 50rpx;
+                    line-height: 50rpx;
                     font-size: 26rpx;
                     color: #4E4E4E;
-                    letter-spacing: 0;
+                    letter-spacing: 0; 
                 }
                 .screenInput{
+                    height: 50rpx;
+                    line-height: 50rpx;
                     font-size: 26rpx;
                     color: #4081D6;
-                    letter-spacing: 0;
+                    letter-spacing: 0; 
+                    //background-color: red;
                 }
             }
         }
@@ -55,7 +62,55 @@ page{
     .listBox{
         padding-left: 30rpx;
         background-color: #ffffff;
-        .list{
+        position: relative;
+        .agentList{
+            width: 100%;
+            height: 100rpx;
+            position: relative;
+            border-bottom: 1rpx #E4E4E4 solid;
+            .portrait{
+                width: 70rpx;
+                height: 70rpx;
+                //background-color: red;
+                border-radius: 50%;
+                overflow: hidden;
+                position: absolute;
+                top:15rpx;
+                .portraitImg{
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            .details{
+                padding-left: 80rpx;
+                overflow: hidden;
+                position: relative;
+                .nameAndVip{
+                    margin-top: 15rpx;
+                    .name{
+                        font-size: 32rpx;
+                    }
+                    .vip{
+                        background: #FBE69A;
+                        border-radius: 6rpx;
+                        font-size: 20rpx;
+                        color: #CE8000;
+                        padding: 5rpx;
+                        position: absolute;
+                        margin-left: 5rpx;
+                    }
+                }
+                .city{
+                    font-size: 24rpx;
+                    color: #999999;
+                    letter-spacing: 0;
+                    .cityName{
+                        margin-right: 20rpx;
+                    }
+                }
+            }
+        }
+        .regionList{
             width: 100%;
             height: 90rpx;
             font-size: 32rpx;
