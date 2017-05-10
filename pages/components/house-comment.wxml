@@ -13,7 +13,7 @@
       </view>
       <view class="comment-ft">
         <text class="comment-date">{{item.createDate}}</text>
-        <text class="comment-up active"><text class="iconfont icon-zan"></text> {{item.upCount}}</text>      
+        <text class="comment-up {{item.isActive?'active':''}}" bindtap="_zan" data-item="{{item}}"><text class="iconfont icon-zan"></text> {{item.upCount}}</text>      
       </view>
       <view wx:if="{{index+1 != comments.length}}" class="separator"></view>
     </view>

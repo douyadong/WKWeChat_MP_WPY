@@ -16,26 +16,9 @@ Page({
     let that = this
     let matchIndexArray = []
 
-    wx.setStorageSync('buy_location', interestInfo.data.townIdLists)
-
     // todo:请求接口获取接口地址
     this.convertData(res.data)
 
-    // selectedBlockList.forEach(oBlock1 => {
-    //   that.data.blockList.forEach(oBlock2 => {
-    //     if (oBlock1.id == oBlock2.id) {
-    //       if (!matchIndexArray.includes(oBlock2.pIndex)) {
-    //         matchIndexArray.push(oBlock2.pIndex)
-    //       }
-    //       oBlock2.selected = true
-    //     superAreaObject[oBlock2.pid + '_blocks'].push(oBlock2.id)
-    //     superAreaObject[oBlock2.pid]++
-    //     if (superAreaObject[oBlock2.pid + '_count'] == superAreaObject[oBlock2.pid]) {
-    //       district_array.push({ id: oBlock2.pid, townName: oBlock2.pName })
-    //     }
-    //     }
-    //   })
-    // })
     matchIndexArray = this.getMatchIndexArray()
     this.setArea(matchIndexArray)
     this.setBlock()
@@ -107,22 +90,27 @@ Page({
   },
   getMatchIndexArray: function () {
     let that = this
-    let matchIndexArray = []
+    let matchIndexArray = [],allCheckedAreas = []
     let selectedBlockList = wx.getStorageSync('buy_location')
     let superAreaObject = this.data.superAreaObject
 
-    selectedBlockList.forEach(oBlock1 => {
-      that.data.blockList.forEach(oBlock2 => {
+    this.data.blockList.forEach(oBlock1 => {
+      selectedBlockList.forEach(oBlock2 => {
         if (oBlock1.id == oBlock2.id) {
-          if (!matchIndexArray.includes(oBlock2.pIndex)) {
-            matchIndexArray.push(oBlock2.pIndex)
+          if (!matchIndexArray.includes(oBlock1.pIndex)) {
+            matchIndexArray.push(oBlock1.pIndex)
           }
-          oBlock2.selected = true
-          superAreaObject[oBlock2.pid]++
-        }else {
-          oBlock2.selected = false
+          oBlock1.selected = true
+          superAreaObject[oBlock1.pid]++
+          if (superAreaObject[oBlock1.pid + '_count'] == superAreaObject[oBlock1.pid]) {
+            allCheckedAreas.push(oBlock1.pIndex)
+          }
         }
       })
+    })
+
+    allCheckedAreas.forEach(item => {
+      that.data.areaList[item].allChecked = true
     })
 
     return matchIndexArray
@@ -151,28 +139,31 @@ Page({
     let currentArea = this.data.currentArea
     let unlimitedBlock = this.data.blockList[0]
     let filtered = []
+    let selectedBlockList = wx.getStorageSync('buy_location')
 
     filtered = this.data.blockList.filter(item => {
       return item.pid == currentArea.id && item.selected
     })
 
-    that.data.blockList.forEach(item => {
-      if (item.id != '0' /*不限*/) {
-        if (item.pid == that.data.currentArea.id) {
-          item.hidden = false
+    this.data.blockList.forEach(oBlock1 => {
+      if (oBlock1.id != '0' /*不限*/) {
+        if (oBlock1.pid == that.data.currentArea.id) {
+          oBlock1.hidden = false
         }else {
-          item.hidden = true
+          oBlock1.hidden = true
         }
       }else {
-        item.hidden = false
+        oBlock1.hidden = false
       }
     })
 
-    if (filtered.length == currentArea.subList.length) {
+    if (currentArea.allChecked) {
       unlimitedBlock.selected = true
       filtered.forEach(item => {
         item.selected = false
       })
+    }else {
+      unlimitedBlock.selected = false
     }
 
     this.setData({blockList: this.data.blockList})
@@ -196,8 +187,10 @@ Page({
             item.selected = false
           })
           unlimitedBlock.selected = true
+          this.data.areaList[currentArea.index].allChecked = true
         }else {
           unlimitedBlock.selected = false
+          this.data.areaList[currentArea.index].allChecked = false
         }
         this.data.areaList[currentArea.index].selected = true
       }else {
@@ -212,8 +205,10 @@ Page({
             item.selected = false
           }
         })
+        this.data.areaList[currentArea.index].allChecked = true
         this.data.areaList[currentArea.index].selected = true
       }else {
+        this.data.areaList[currentArea.index].allChecked = false
         this.data.areaList[currentArea.index].selected = false
       }
     }
@@ -238,12 +233,42 @@ Page({
     this.setData({'areaList': this.data.areaList})
 
     this.setBlock()
-
-    console.log(this.data.blockList[17].selected)
   },
   submit: function (e) {
-    let id=e.currentTarget.dataset.id;
+    let towns = []
+    let areaList = this.data.areaList
+    let blockList = this.data.blockList
 
-    wx.navigateTo({url: '/pages/buy/features'})
+    let allCheckedAreas = areaList.map(item => {
+      if (item.allChecked) {
+        return item.id
+      }else {
+        return ''
+      }
+    })
+
+    areaList.forEach(item => {
+      if (item.allChecked) {
+        item.subList.forEach(oTown => {
+          towns.push({
+            id: oTown.id,
+            townName: oTown.name
+          })
+        })
+      }
+    })
+
+    blockList.forEach(oBlock => {
+      if (!allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
+        towns.push({
+          id: oBlock.id,
+          townName: oBlock.name
+        })
+      }
+    })
+
+    wx.setStorageSync('buy_location', towns)
+    
+    wx.navigateBack({url: '/pages/buy/index'})
   }
 })

@@ -1,60 +1,85 @@
 //logs.js
 var util = require('../../utils/util.js')
 Page({
-  data: {
-    reason1:false,
-    reason2:false,
-    reason3:false,
-    reason4:false,
-    reason5:false,
-    des:""
-  },
-  changereason1:function(){
-  	this.setData({
-  		reason1:!this.data.reason1
-  	})
-  },
-  changereason2:function(){
-  	this.setData({
-  		reason2:!this.data.reason2
-  	})
-  },
-  changereason3:function(){
-  	this.setData({
-  		reason3:!this.data.reason3
-  	})
-  },
-  changereason4:function(){
-  	this.setData({
-  		reason4:!this.data.reason4
-  	})
-  },
-  changereason5:function(){
-  	this.setData({
-  		reason5:!this.data.reason5
-  	})
-  },
-  listenerDesInput:function(e){
-  	console.log(e.detail.value);
-  	this.data.des = e.detail.value;
-  },
-  submit:function(){
-  	wx.request({
-  		url:'',
-  		data:{
-  			reason1:this.data.reason1,
-  			reason2:this.data.reason2,
-  			reason3:this.data.reason3,
-  			reason4:this.data.reason4,
-  			reason5:this.data.reason5,
-  			des:this.data.res
-  		},
-  		success:function(res){
-  			console.log("request success");
-  		}
-  	})
-  },
-  onLoad: function () {
-    
-  }
+    data: {
+        houseId: '',
+        notExist: 0,
+        hasSold: 0,
+        priceNotReal: 0,
+        imgNotReal: 0,
+        othreReason: 0,
+        memo: ""
+    },
+    changenotExist: function() {
+        this.setData({
+            notExist: !this.data.notExist
+        })
+    },
+    changehasSold: function() {
+        this.setData({
+            hasSold: !this.data.hasSold
+        })
+    },
+    changepriceNotReal: function() {
+        this.setData({
+            priceNotReal: !this.data.priceNotReal
+        })
+    },
+    changeimgNotReal: function() {
+        this.setData({
+            imgNotReal: !this.data.imgNotReal
+        })
+    },
+    changeothreReason: function() {
+        this.setData({
+            othreReason: !this.data.othreReason
+        })
+    },
+    listenerDesInput: function(e) {
+        console.log(e.detail.value);
+        this.data.des = e.detail.value;
+    },
+    submit: function() {
+        var requestData = {
+            houseId: this.data.houseId,
+            notExist: this.data.notExist,
+            hasSold: this.data.hasSold,
+            priceNotReal: this.data.priceNotReal,
+            imgNotReal: this.data.imgNotReal,
+            othreReason: this.data.othreReason,
+            memo: this.data.memo
+        };
+        console.log(requestData);
+        if (requestData.notExist || requestData.hasSold || requestData.priceNotReal || requestData.imgNotReal || requestData.othreReason || requestData.memo) {
+            if (requestData.memo.length <= 300) {
+                wx.request({
+                    url: '',
+                    data: requestData,
+                    success: function(res) {
+                        console.log("request success");
+                        wx.navigateBack({
+                            delta: 1
+                        })
+                    }
+                })
+            } else {
+                wx.showModal({
+                    content: '补充说明不能超过300字',
+                    showCancel: false,
+                    confirmColor: '#4081D6'
+                })
+            }
+        } else {
+            wx.showModal({
+                content: '请选择举报原因或者填写补充说明',
+                showCancel: false,
+                confirmColor: '#4081D6'
+            });
+        }
+    },
+    onLoad: function(options) {
+        this.setData({
+            houseId: options.houseId
+        })
+    }
 })
