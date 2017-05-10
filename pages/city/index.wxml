@@ -1,0 +1,28 @@
+<view class="page">
+  <!--城市切换-->
+  <view class="citySwitch">
+    <view class="dividingLine"></view>
+    <view class="switchList {{showCityIndex == 0 ? 'actionSwitchList':''}}" data-index="0" bindtap="switchList">国内</view>
+    <view class="switchList {{showCityIndex == 1 ? 'actionSwitchList':''}}" data-index="1" bindtap="switchList">国际</view>
+  </view>
+  <view class="cityList {{showCityIndex == 0 ? 'showCityList':''}}">
+      <view class="default">定位城市</view>
+      <view class="defaultCity" bindtap="selectedCity">{{locationCity}}</view>
+      <view class="default">全部城市</view>
+      <view class="allListBox">
+        <block wx:for="{{domesticCitys}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
+            <view class="allList {{ domesticCitys.length-1 == index ? 'lastList':''}}" data-cityid="{{list.cityId}}" bindtap="selectedCity">{{list.cityName}}</view>
+        </block>
+      </view>
+  </view>
+  <view class="cityList {{showCityIndex == 1 ? 'showCityList':''}}">
+      <view class="default">定位城市</view>
+      <view class="defaultCity">{{InternationalCity}}</view>
+      <view class="default">全部城市</view>
+      <view class="allListBox">
+        <block wx:for="{{InternationalCitys}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
+            <view class="allList {{ InternationalCitys.length-1 == index ? 'lastList':''}}" data-cityid="{{list.cityId}}" bindtap="selectedCity">{{list.cityName}}</view>
+        </block>
+      </view>
+  </view>
+</view>

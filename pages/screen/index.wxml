@@ -1,0 +1,27 @@
+<view class="page">
+    <view class="screenBox">
+        <view class="screen">
+            <text class="iconfont icon-search searchIcon"></text>
+            <view class="screenInputBox">
+                <input placeholder="请输入经纪人名或地区名" auto-focus placeholder-class="screenPlaceholder" class="screenInput" bindinput="inputEvent" bindconfirm="completeEvent"/>
+            </view>
+        </view>
+    </view>
+    <view class="default">经纪人</view>
+    <view class="listBox">
+        <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
+            <view class="list {{agentList.length-1 == index ? 'lastList':''}}"> 
+                <text wx:for="{{list}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'highlight':''}}">{{li.text}}</text>
+            </view>
+        </block> 
+    </view>
+    <view class="more" bindtap="moreAgent">更多经纪人</view>
+    <view class="default">地区</view>
+    <view class="listBox">
+        <block wx:for="{{regionList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
+            <view class="list {{regionList.length-1 == index ? 'lastList':''}}"> 
+                <text wx:for="{{list}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'highlight':''}}">{{li.text}}</text>
+            </view>
+        </block>   
+    </view>
+</view>
