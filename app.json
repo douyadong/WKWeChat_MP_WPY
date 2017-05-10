@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/agent/rateList", 
-    "pages/comment/write",
-    "pages/index/index",
+    "pages/xf/detail",
+    "pages/agent/rateList",
+    "pages/agent/qrcode",
     "pages/agent/writeRate",    
     "pages/agent/detail",      
     "pages/estate/detail",

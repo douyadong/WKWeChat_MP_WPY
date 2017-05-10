@@ -1,0 +1,28 @@
+<view class="panel features">
+  <view class="panel-hd">
+    <view class="head">项目特色</view>    
+  </view> 
+  <view class="panel-bd lr-padding">
+    <view class="feature">
+      <text class="sprite sprite-bus"></text>
+      <text class="title">交通</text>
+      <text class="desc">紧邻虹桥综合交通枢纽与国家会展中心，是核心区临高铁首排项目。</text>
+    </view>
+    <view class="feature">
+      <text class="sprite sprite-light"></text>
+      <text class="title">配套</text>
+      <text class="desc">紧邻虹桥综合交通枢纽与国家会展中心，是核心区临高铁首排项目。</text>
+    </view>
+    <view class="feature">
+      <text class="sprite sprite-school"></text>
+      <text class="title">学校</text>
+      <text class="desc">紧邻虹桥综合交通枢纽与国家会展中心，是核心区临高铁首排项目。</text>
+    </view>
+    <view class="feature">
+      <text class="sprite sprite-technolog"></text>
+      <text class="title">智能科技</text>
+      <text class="desc">紧邻虹桥综合交通枢纽与国家会展中心，是核心区临高铁首排项目。</text>
+    </view>
+  </view>
+</view>
+<view class="gap"></view>

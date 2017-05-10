@@ -1,17 +1,117 @@
 <!--pages/buy/recommend.wxml-->
 
-<view>
-    <text class="title">购房意向</text>
+<view class="wrapper">
+    <view class="title">购房意向</view>
     <view class="info">
         <view class="row">
             <view class="content">
                 <text>200 - 250 万</text>
                 <text>三室</text>
             </view>
+            <view class="link">
+                <text>修改</text>
+                <view class="iconfont icon-arrow-r"></view>
+            </view>
         </view>
-        <view class="row location">
+        <view class="location">
+            回到首页回到首页回到首页回到首页回到首页回到首页
         </view>
     </view>
+    <view class="title">以下经纪人会主动与您联系</view>
+    <view class="agent-list">
+        <navigator url="" class="item">
+            <view class="main">
+                <view class="img-box">
+                    <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
+                    <view class="sprite sprite-jingu"></view>
+                </view>
+                <view class="content">
+                    <view class="name-info">
+                        <text class="name">王小五</text>
+                        <text class="company">志远地产</text>
+                    </view>
+                    <view class="tips">
+                        根据您选的长宁地区推荐
+                    </view>
+                </view>
+            </view>
+            <view class="tel">
+                <view class="iconfont icon-tel"></view>
+            </view>
+        </navigator>
+        <navigator url="" class="item last">
+            <view class="main">
+                <view class="img-box">
+                    <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
+                    <view class="sprite sprite-jingu"></view>
+                </view>
+                <view class="content">
+                    <view class="name-info">
+                        <text class="name">王小五</text>
+                        <text class="company">志远地产</text>
+                    </view>
+                    <view class="tips">
+                        根据您选的长宁地区推荐
+                    </view>
+                </view>
+            </view>
+            <view class="tel">
+                <view class="iconfont icon-tel"></view>
+            </view>
+        </navigator>
+    </view>
+    <view class="title">更多推荐</view>
+    <view class="agent-list more">
+        <navigator url="" class="item">
+            <view class="main">
+                <view class="img-box">
+                    <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
+                    <view class="sprite sprite-jingu"></view>
+                </view>
+                <view class="content">
+                    <view class="name-info">
+                        <text class="name">王小五</text>
+                        <text class="company">志远地产</text>
+                    </view>
+                    <view class="tips">
+                        根据您选的长宁地区推荐
+                    </view>
+                </view>
+            </view>
+            <view class="tel">
+                <view class="iconfont icon-tel"></view>
+            </view>
+        </navigator>
+        <navigator url="" class="item last">
+            <view class="main">
+                <view class="img-box">
+                    <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
+                    <view class="sprite sprite-jingu"></view>
+                </view>
+                <view class="content">
+                    <view class="name-info">
+                        <text class="name">王小五</text>
+                        <text class="company">志远地产</text>
+                    </view>
+                    <view class="tips">
+                        根据您选的长宁地区推荐
+                    </view>
+                </view>
+            </view>
+            <view class="tel">
+                <view class="iconfont icon-tel"></view>
+            </view>
+        </navigator>
 
+        <button class="button gray">查看更多</button>
+    </view>
+</view>
+
+ <view class="footer">
+    <view class="tips">
+        <text>若经纪人长时间未与您联系，可致电：</text><text class="tel" bindtap="call" data-text='400-821-5365'>400-821-5365</text>
+        <view class="tips">在悟空找房APP可查看更多</view>
+    </view>  
+    
     <button class="button blue">回到首页</button>
 </view>

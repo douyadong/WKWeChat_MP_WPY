@@ -1,0 +1,45 @@
+ /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：xf -> sections -> layouts.less (新房详情户型部分)
+ 3. 作者：zhaohuagang@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.layouts {
+    .panel-bd {
+        overflow : hidden ;
+    }    
+    .layout {
+        display : inline-block ;
+        margin-right : 50rpx ;
+        image {
+            display : block ;
+            height : 184rpx ;
+            margin-bottom : 10rpx ;
+            width : 248rpx ;
+        }
+        view {
+            .clearfix() ;
+            text {
+                display : block ;
+                line-height : 36rpx ;
+            }
+            .layout-name , .layout-desc {
+                float : left ;
+            }
+            .money , .area {
+                float : right ;
+            }
+            .layout-desc , .area {
+                color : @lighter-font-color ;
+                font-size : @small-font-size ;
+            }
+            .layout-name {
+                color : #636363 ;
+                font-size : 26rpx ;
+            }
+            .money {
+                color : @red-font-color ;
+                font-size : 26rpx ;
+            }
+        }
+    }
+}
