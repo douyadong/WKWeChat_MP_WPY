@@ -1,34 +1,21 @@
-<view class="panel summary">
+<view class="panel infos">
+<view class="panel-hd">
+    <view class="head">楼盘信息</view>    
+  </view> 
   <view class="panel-bd lr-padding">
-    <text class="head">新城金郡 M11 金座三期花园</text>
-    <text class="highlight">临近中环，性价比之王</text>
-    <view class="price-series">
-      <text class="price">36509 元／㎡</text>
-      <text>[ 参考价格 ]</text>
+    <view class="short-items">
+      <view class="item"><text class="title">产权年限</text><text class="desc">70 年</text></view>
+      <view class="item"><text class="title">规划户数</text><text class="desc">302 户</text></view>
+      <view class="item"><text class="title">装修标准</text><text class="desc">精装修</text></view>
+      <view class="item"><text class="title">物业类型</text><text class="desc">住宅住宅</text></view>
     </view>
-    <view class="tags">
-      <text class="openning">即将开盘</text>
-      <text class="subway">地铁</text>
-      <text class="promotion">有优惠</text>
-      <text class="video">有视频</text>
-    </view>
-    <view class="date">开盘时间：2016 - 06 - 23    交房时间：2016 - 09 - 20</view>
     <view class="separator"></view>
+    <view class="long-items">
+      <view class="item"><text class="title">规划车位</text><text class="desc">地下321个 地上102个</text></view>
+      <view class="item"><text class="title">楼盘地址</text><text class="desc">长宁区虹桥路996弄45号绿地百年房地产有限公司</text></view>
+      <view class="item"><text class="title">开发商</text><text class="desc">绿地百年房地产有限公司</text></view>      
+    </view>
+    <navigator class="button gray">查看更多</navigator>
   </view>  
-  <view class="promotions lr-padding">
-    <view class="promotion">
-      <text class="iconfont icon-hui"></text>
-      <text>悟空优惠，付 1000 抵 5000 税费</text>
-    </view>
-    <view class="promotion">
-      <text class="iconfont icon-hui"></text>
-      <text>悟空优惠，付 1000 抵 5000 税费</text>
-    </view>
-    <view class="promotion">
-      <text class="iconfont icon-hui"></text>
-      <text>悟空优惠，付 1000 抵 5000 税费</text>
-    </view>
-    <navigator class="iconfont icon-more" url="/pages/xf/promotions"></navigator>
-  </view>
 </view>
 <view class="gap"></view>
