@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/xf/detail",
     "pages/agent/qrcode",    
     "pages/agent/writeRate",    
     "pages/agent/rateList",    

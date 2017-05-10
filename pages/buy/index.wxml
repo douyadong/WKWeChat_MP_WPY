@@ -19,7 +19,7 @@
             <view class="row last" data-url="/pages/buy/location" bindtap="handleRedirect">
                 <view data-url="/pages/buy/location" catchtap="handleRedirect">
                   <text class="type">位置</text>
-                  <text class="text">{{currentLocationStr}}</text>
+                  <text class="text">{{currentLocationStr==''?'请选择位置':currentLocationStr}}</text>
                 </view>
                 <view class="iconfont icon-arrow-r"></view>
             </view>
@@ -34,5 +34,5 @@
           </view>
         </view>
   
-      <button type="primary" size="default" class="next">完成</button>
+      <button type="primary" size="default" class="next" bindtap="submit">完成</button>
   </view>

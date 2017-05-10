@@ -1,0 +1,43 @@
+<view class="panel layouts">
+  <view class="panel-hd">
+    <view class="head">在售户型</view>    
+  </view>
+  <view class="panel-bd lr-padding">
+    <view style="width:1000rpx">
+      <view class="layout">
+        <image src="https://imgwater.oss.aliyuncs.com/465b4ac31c1c46eb906ee48f05dba22b.I500_280"></image>
+        <view>
+          <text class="layout-name">B1户型</text>
+          <text class="money">2580万起</text>
+        </view>
+        <view>
+          <text class="layout-desc">3室1厅1卫</text>
+          <text class="area">100㎡</text>
+        </view>
+      </view>
+      <view class="layout">
+        <image src="https://imgwater.oss.aliyuncs.com/465b4ac31c1c46eb906ee48f05dba22b.I500_280"></image>
+        <view>
+          <text class="layout-name">B1户型</text>
+          <text class="money">2580万起</text>
+        </view>
+        <view>
+          <text class="layout-desc">3室1厅1卫</text>
+          <text class="area">100㎡</text>
+        </view>
+      </view>
+      <view class="layout">
+        <image src="https://imgwater.oss.aliyuncs.com/465b4ac31c1c46eb906ee48f05dba22b.I500_280"></image>
+        <view>
+          <text class="layout-name">B1户型</text>
+          <text class="money">2580万起</text>
+        </view>
+        <view>
+          <text class="layout-desc">3室1厅1卫</text>
+          <text class="area">100㎡</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="gap"></view>

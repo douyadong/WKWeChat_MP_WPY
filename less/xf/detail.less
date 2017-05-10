@@ -1,0 +1,161 @@
+ /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：xf -> detail.less (新房详情)
+ 3. 作者：zhaohuagang@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+ 
+ @import "../variables.less";
+ @import "../mixins.less";
+.summary {
+    .head {
+        color : @default-font-color ;
+        display : block ;
+        font-size : @great-font-size ;
+        line-height : 50rpx ;
+    }
+    .highlight {
+        color : @light-font-color ;
+         display : block ;
+        font-size : @small-font-size ;
+        line-height : 40rpx ;
+    }
+    .price-series {
+        color : @light-font-color ;
+        font-size : @small-font-size ;
+        line-height : 70rpx ;
+        .price {
+            color : @red-font-color  ;
+            font-size : @greater-font-size ;
+        }
+    }
+    .tags {
+        text {
+            .border-radius(6rpx) ;
+            display : inline-block ;
+            font-size : @mini-font-size ;
+            line-height : 32rpx ;
+            margin-right : 18rpx ;
+            padding : 0 8rpx ;
+            text-align : center ;
+        }
+        .openning {
+            background-color : #cee3ff ;
+            color : @blue-font-color ;
+        }
+        .subway {
+            background-color : #ffe795 ;
+            color : #d28310 ;
+        }
+        .promotion {
+            background-color : #ffe5cf ;
+            color : #db792a ;
+        }
+        .video {
+            background-color : #c4e9c7 ;
+            color : #3f8d46 ;
+        }
+    }
+    .date {
+        color : @light-font-color ;
+        font-size : @small-font-size ;
+        line-height : 40rpx ;
+        margin : 10rpx 0 @gap-dimension 0 ;
+    }
+}
+
+.promotions {
+    padding-bottom : @common-margin ;
+    position : relative ;
+    .promotion {
+        .icon-hui {
+            color : @red-font-color ;
+            font-size : @great-font-size ;
+            margin-right : @gap-dimension ;
+        }
+        text {
+            color : @default-font-color ;
+            font-size : @large-font-size ;
+            vertical-align : center ;
+        }
+    }
+    .icon-more {
+        background-color : @lighter-gray-color ;
+        .border-radius(6rpx) ;
+        color : @dark-blue-font-color ;
+        display : block ;
+        font-size : @small-font-size ;
+        height : 40rpx ;
+        line-height : 40rpx ;
+        margin-right : @common-margin ;
+        position : absolute ;
+        right : 0 ;
+        top : 60rpx ;
+        width : 50rpx ;
+    }
+}
+
+.presses {
+    .press {
+        margin-bottom : @common-margin ;
+        text {
+            display : block ;
+        }
+        .title {
+            color : @default-font-color ;
+            font-size : @large-font-size ;
+            font-weight : 400 ;
+            line-height : 60rpx ;
+            .text-ellipsis() ;
+        }
+        .desc {
+            color : #000 ;
+            font-size : @large-font-size ;
+            line-height : 50rpx ;
+        }
+        .date {
+            color : @light-font-color ;
+            font-size : @small-font-size ;
+        }
+    }
+}
+
+.layouts {
+    .panel-bd {
+        overflow : hidden ;
+    }    
+    .layout {
+        display : inline-block ;
+        margin-right : 50rpx ;
+        image {
+            display : block ;
+            height : 184rpx ;
+            margin-bottom : 10rpx ;
+            width : 248rpx ;
+        }
+        view {
+            .clearfix() ;
+            text {
+                display : block ;
+                line-height : 36rpx ;
+            }
+            .layout-name , .layout-desc {
+                float : left ;
+            }
+            .money , .area {
+                float : right ;
+            }
+            .layout-desc , .area {
+                color : @lighter-font-color ;
+                font-size : @small-font-size ;
+            }
+            .layout-name {
+                color : #636363 ;
+                font-size : 26rpx ;
+            }
+            .money {
+                color : @red-font-color ;
+                font-size : 26rpx ;
+            }
+        }
+    }
+}
