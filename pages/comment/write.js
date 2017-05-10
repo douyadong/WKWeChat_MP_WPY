@@ -1,6 +1,7 @@
 var util = require('../../utils/util.js')
 var $ = require('../../utils/extend.js')
-var detailfoot = require('../../utils/detailfoot.js')
+var detailfoot = require('../components/detailfoot.js')
+var app = getApp();
 
 var total = [],
     textareaValue = "";
@@ -11,7 +12,7 @@ var params = $.extend(true,{},{
         "uploadTextarea":""
     },
     onLoad: function() {
-
+        app.isLogin();
     },
     bindblur: function(e){
         textareaValue = e.detail.value;
@@ -65,20 +66,32 @@ var params = $.extend(true,{},{
                     _this.uploadFile(file,i+1);
                 }else{
                     total.push(obj);
+                    wx.hideToast();  //隐藏Toast
+                    _this.uploadFormSubmit();
                 }
+            },
+            fail: function (e) {
+                wx.showModal({
+                    title: '提示',
+                    content: '第'+i+'张图片上传失败',
+                    showCancel: true
+                })
             }
         })
     },
+    uploadFormSubmit:function(){
+
+    },
     bindFormSubmit: function(e) {
-        console.log(this.data)
         wx.showToast({
             icon: "loading",
             title: "正在上传"
-        })
+        });
         if(this.data.currentFilePaths.length>0){
             this.uploadFile(this.data.currentFilePaths,0)
+        }else{
+            this.uploadFormSubmit()
         }
-        
     }
 },detailfoot)
 

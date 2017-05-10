@@ -17,9 +17,12 @@ module.exports ={
       	})
 	},
 	c_wechatClick:function(e){
-		this.setData({
+		wx.navigateTo({
+	        url: '../agent/qrcode'
+      	})
+		/*this.setData({
 	      	'agentInfo.isShowWXCode':false
-	    })
+	    })*/
 	},
 	c_phoneClick:function(){
 		var _this = this;

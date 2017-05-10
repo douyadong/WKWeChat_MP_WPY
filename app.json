@@ -1,9 +1,9 @@
 {
-  "pages": [ 
+  "pages": [
+    "pages/agent/rateList", 
     "pages/comment/write",
     "pages/index/index",
     "pages/agent/writeRate",    
-    "pages/agent/rateList",    
     "pages/agent/detail",      
     "pages/estate/detail",
     "pages/login/index",
