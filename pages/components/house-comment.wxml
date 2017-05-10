@@ -1,7 +1,7 @@
 <template name="house-comment">
 	<view class="comment" wx:for="{{comments}}">
       <view class="comment-hd clearfix">
-        <image src="{{item.guest.avatar.url}}" class="comment-photo" />
+        <image mode="aspectFill" src="{{item.guest.avatar.url}}" class="comment-photo" />
         <view class="comment-hd-inner">
         <text class="cellphone">{{item.guest.guestPhoneNum}}</text>
         <text class="iconfont icon-youping" wx:if="{{item.orderLevel==10}}"></text>

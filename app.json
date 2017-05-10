@@ -1,12 +1,17 @@
 {
   "pages": [
+    "pages/index/index",
+    "pages/city/index",
+    "pages/logon/index",
+    "pages/screen/index",
+    "pages/agent/detail",
+    "pages/estate/detail",      
     "pages/xf/detail",
-    "pages/agent/qrcode",    
+    "pages/agent/rateList",
+    "pages/agent/qrcode",
     "pages/agent/writeRate",    
-    "pages/agent/rateList",    
     "pages/agent/detail",      
-    "pages/estate/detail",        
-    "pages/index/index", 
+    "pages/estate/detail",
     "pages/login/index",
     "pages/sell/index",
     "pages/xf/detail",
@@ -21,8 +26,7 @@
     "pages/esf/list",
     "pages/report/write",
     "pages/common/video",
-    "pages/comment/list",
-    "pages/comment/write"
+    "pages/comment/list"
   ],
   "window": {
     "backgroundColor": "#f0f0f0",

@@ -23,7 +23,6 @@
       <text>房源熟悉 23 </text>
       <text class="bad">不太专业 1 </text>
     </view>
-    <view class="separator"></view>
     <template is="agent-rates" data="{{agentRates}}" />
     <view class="gap"></view>
     <navigator url="/pages/agent/writeRate" class="button gray">我来评价</navigator>

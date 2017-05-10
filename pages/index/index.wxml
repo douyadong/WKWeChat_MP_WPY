@@ -4,9 +4,9 @@
 <view class="page {{isScroll ? 'noScroll':''}}">
   <view class="searchNavBox">
     <view class="searchNav">
-      <view class="city"><text class="cityName">上海</text><text class="iconfont icon-arrow-down down"></text></view>
+      <view class="city" data-pagename="../city/index" bindtap="goPage"><text class="cityName">上海</text><text class="iconfont icon-arrow-down down"></text></view>
       <view class="searchBox">
-        <view class="search"><text class="iconfont icon-search searchIcon"></text><text class="searchText">搜索小区或地址</text></view>
+        <view class="search" data-pagename="../screen/index" bindtap="goPage"><text class="iconfont icon-search searchIcon"></text><text class="searchText">搜索小区或地址</text></view>
       </view>
     </view>
   </view>
@@ -20,65 +20,20 @@
         <view class="text">我要买房</view>
       </view>
   </view>
-
-  <view class="screenListBox">
-    <view class="screenList">
-        <view class="list {{blue0?'blue':''}}" bindtap="showScreenList" data-index="0">区域<text class="iconfont icon-arrow-down down {{isRotate0 ? 'down90':''}}"></text></view>
-        <view class="list {{blue1?'blue':''}}" bindtap="showScreenList" data-index="1">综合排序<text class="iconfont icon-arrow-down down {{isRotate1 ? 'down90':''}}"></text></view>
-        <view class="list {{blue2?'blue':''}}" bindtap="showScreenList" data-index="2">更多<text class="iconfont icon-arrow-down down {{isRotate2 ? 'down90':''}}"></text></view>
-    </view>
-    <!--遮罩-->
-    <view class="maskBox {{isShowMask ? 'showMaskBox' : ''}}" bindtap="hideMaskBox"></view>
-    <view class="region {{isShowRegion ? 'showRegion' : ''}}">
-        <view class="regionListBox">
-            <view class="regionList white">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-            <view class="regionList">不限</view>
-        </view>
-        <view class="plateListBox">
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-            <view class="plateList">不限</view>
-        </view>
-    </view>
-  </view>
-  
+  <!-- 筛选 -->
+  <include src="screen/template.wxml"/>
+  <!-- 经纪人列表 -->
   <view class="agentListBox">
       <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-          <!-- list.wxml -->
           <include src="agentList/list.wxml"/>
       </block>
   </view>
-
+  <!-- 高亮 -->
+  <!--
   <block wx:for="{{newList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
     <view> 
       <text wx:for="{{list}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'red':''}}">{{li.text}}</text>
     </view>
   </block>
-  
-  <template is="developBox" />
+  -->
 </view>

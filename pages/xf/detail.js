@@ -20,8 +20,24 @@ var params = {
     }, {
       url: "https://img.wkzf.com/1580f8be571d4c3d88c77839cd73d38a.DL",
       "type": "img"
-    }]
-  },
+    }],
+    "xfSources": [
+      {
+        "thumbnail": "https://img.wkzf.com/e13cc00ccbb547f9b7e63454535cabb0.ML",
+        "title": "翠湖天地御园",
+        "area": "78㎡-120㎡",
+        "location": "浦东 花木",
+        "price": "45800"
+      },
+      {
+        "thumbnail": "https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
+        "title": "翠湖天地御园",
+        "area": "78㎡-120㎡",
+        "location": "浦东 花木",
+        "price": "45800"
+      }
+    ]
+  },  
   onLoad: function () {
 
   }
