@@ -6,7 +6,10 @@ const domain = 'https://m.wkzf.com'
 
 const url = {
   'buy': {
-    'getDetails': '/esf/moreList.rest?offset=10&pinyin=shanghai&_=14943219'
+    'getDetails': '/esf/moreList.rest?offset=10&pinyin=shanghai&_=14943219',
+    'add':"/addInterestRecord.rest",
+    'edit':'/updateInterestRecord.rest',
+    'getAgentList':''
   },
   'estate':{
     'zan':''

@@ -4,6 +4,7 @@
  */
 const areaInfo = require('./mock').areaInfo.data
 const request = require('../../utils/request')
+const appInstance = getApp()
 
 Page({
   data: {
@@ -121,14 +122,18 @@ Page({
     blockList: [],
     superAreaObject: null,
     currentHouseFeatures: [],
-    currentLocationStr: '请选择位置',
+    currentLocationStr: '',
     loaded: false
   },
   onLoad: function () {
     let that = this
 
-    this.data.loaded = true
+    // clear buy localStorge
+    wx.removeStorageSync('buy_price')
+    wx.removeStorageSync('buy_houseType')
+    wx.removeStorageSync('buy_location')
 
+    // get data
     this.getData(function (res) {
       let data = res.data
       // 价格信息
@@ -143,6 +148,8 @@ Page({
       // 房源特色信息
       that.setHouseFeatures(data.houseFeature)
     })
+
+    this.data.loaded = true
   },
   onShow: function () {
     if (!this.data.loaded) {
@@ -192,36 +199,38 @@ Page({
     // 转换data
     this.convertData(areaInfo)
 
-    this.data.blockList.forEach(oBlock1 => {
-      townList.forEach(oBlock2 => {
-        if (oBlock1.id == oBlock2.id) {
-          oBlock1.selected = true
-          that.data.superAreaObject[oBlock1.pid]++
-          if (that.data.superAreaObject[oBlock1.pid + '_count'] == that.data.superAreaObject[oBlock1.pid]) {
-            location.push(oBlock1.pName)
-            allCheckedAreas.push(oBlock1.pid)
+    if (townList && townList.length) {
+      this.data.blockList.forEach(oBlock1 => {
+        townList.forEach(oBlock2 => {
+          if (oBlock1.id == oBlock2.id) {
+            oBlock1.selected = true
+            that.data.superAreaObject[oBlock1.pid]++
+            if (that.data.superAreaObject[oBlock1.pid + '_count'] == that.data.superAreaObject[oBlock1.pid]) {
+              location.push(oBlock1.pName)
+              allCheckedAreas.push(oBlock1.pid)
+            }
           }
+        })
+      })
+
+      this.data.blockList.forEach(oBlock => {
+        if (!allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
+          location.push(oBlock.name)
         }
       })
-    })
 
-    this.data.blockList.forEach(oBlock => {
-      if (!allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
-        location.push(oBlock.name)
+      locationStr = location.join('、')
+      if (locationStr.length >= 15) {
+        locationStr = locationStr.substr(0, 15)
+        if (locationStr[locationStr.length - 1] == '、') {
+          locationStr = locationStr.substr(0, locationStr.length - 1)
+        }
+        locationStr += ' ...'
       }
-    })
 
-    locationStr = location.join('、')
-    if (locationStr.length >= 15) {
-      locationStr = locationStr.substr(0, 15)
-      if (locationStr[locationStr.length - 1] == '、') {
-        locationStr = locationStr.substr(0, locationStr.length - 1)
-      }
-      locationStr += ' ...'
+      wx.setStorageSync('buy_location', townList)
+      this.setData({'currentLocationStr': locationStr })
     }
-
-    wx.setStorageSync('buy_location', townList)
-    this.setData({'currentLocationStr': locationStr })
   },
   setHouseFeatures: function (featuresList) {
     let that = this
@@ -305,5 +314,81 @@ Page({
     })
 
     callback(res)
+  },
+  submit: function () {
+    let that = this
+    let guestId,bedRoomSum,sellPriceStart,sellPriceEnd,townIdStr
+    let selectedBlockList = [],houseFeatureLists = []
+    let requestData = {}
+
+    if (!that.data.currentPrice.min) {
+      wx.showModal({
+        content: '请选择总价范围',
+        cancelText: '关闭'
+      })
+      return false
+    }
+
+    if (!that.data.currentHouseType.id) {
+      wx.showModal({
+        content: '请选择户型',
+        cancelText: '关闭'
+      })
+      return false
+    }
+
+    if (!that.data.currentHouseType.id) {
+      wx.showModal({
+        content: '请选择户型',
+        cancelText: '关闭'
+      })
+      return false
+    }
+
+    if (!that.data.currentLocationStr.id) {
+      wx.showModal({
+        content: '请选择户型',
+        cancelText: '关闭'
+      })
+      return false
+    }
+
+    //判断是否登录
+    appInstance.isLogin();
+
+    // 构造请求数据
+    requestData.guestId = guestId
+    requestData.sellPriceStart = this.data.currentPrice.min
+    requestData.sellPriceEnd = this.data.currentPrice.max
+    requestData.bedRoomSum = this.data.currentHouseType.id
+
+    this.data.blockList.forEach(item => {
+      if (item.selected) {
+        selectedBlockList.push(item.id)
+      }
+    })
+
+    requestData.townIdStr = selectedBlockList.join(',')
+
+    this.data.houseFeatures.forEach(item => {
+      if (item.selected) {
+        houseFeatureLists.push(item.id)
+      }
+    })
+
+    if (houseFeatureLists.length) {
+      requestData.houseFeatureLists = houseFeatureLists
+    }
+
+    // request.fetch({
+    //   module:"buy",
+    //   action:"add",
+    //   data:requestData,
+    //   method:'post',
+    //   success:function(res){
+
+    //   }
+    // })
+
   }
 })
