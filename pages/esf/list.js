@@ -58,7 +58,7 @@ Page({
             area:item.areaStr,
             money:item.totalPrice,
             location:item.district+" "+item.town,
-            price:item.unitPrice,
+            price:item.unitPrice
           }
         });
 

@@ -7,6 +7,7 @@ var request = require('../../utils/request.js');
 var app = getApp();
 var params = $.extend(true,{},{
     data: {
+        isCollapsed:true,//基本信息收起
         houseId:'1465823', //房源ID
         agentId:'1245',
         district:'长宁', //区域
@@ -75,13 +76,65 @@ var params = $.extend(true,{},{
             "price": "45800"
         }]
     },
-    showMoreBasicInfo:function(){
-        //基本信息查看更多按钮点击事件 tofo
+    toggleMoreBasicInfo:function(){
+        //基本信息查看更多按钮点击事件
+        this.setData({
+            isCollapsed:!this.data.isCollapsed
+        });
     },
     getDetail: function() { //获取二手房详情
-        
+        var that = this;
+        request.fetch({
+            module:'esf',
+            action:'getDetail',
+            data:{
+                houseId:this.data.houseId,
+                agentId:this.data.agentId
+            },
+            success:function(data){
+                var newData = {};
+                var h = data.data.h;
+                var e = data.data.estate;
+                var fileds = ['houseTitle','totalPrice','areaStr','houseChild','unitPrice','advancePayment','mortgage','completed','houseType','floorDesc','decorationStr','orientationStr','sellPoint','ownerMotivation','aroundSupport','houseTypeDesc','estateDesc','taxDesc','otherIntroduce','isTopHouse','fullYears','onlyOne','isSubwayHouse','isSchoolHouse','orientation','isNewOnStore'];
+                fields.forEach(function(item){
+                    newData[item] = h[item];
+                });
+
+                fields = ['estateId','subEstateId','estateName','subwayName','schoolName','completedStr','totalHouseCount','estateAddr','sameEstateHouseAmount','longitude','latitude'];
+                fields.forEach(function(item){
+                    newData[item] = e[item];
+                });
+
+                newData.markers = [{
+                    //iconPath: "/resources/others.png",
+                    id: 0,
+                    latitude: e.latitude,
+                    longitude: e.longitude,
+                    width: 50,
+                    height: 50
+                }];
+                
+                newData.comments = e.comment.commentList;//评论
+                newData.commentsCount = e.comment.ammount;
+                newData.esfSources= data.data.sameTownHouseList.map(function(item){
+                    return {
+                        thumbnail:item.houseImgUrl,
+                        title:item.houseTitle,
+                        layout:item.houseChild,
+                        area:item.areaStr,
+                        money:item.totalPrice,
+                        location:item.district+" "+item.town,
+                        price:item.unitPrice
+                    }
+                });//相似房源列表
+
+                that.setData(newData);
+            }
+        });
     },
-    onLoad: function() {
+    onLoad: function(options) {
+        this.data.houseId = options.houseId;
+        this.data.agentId = options.agentId;
     }
 },houseComment,swiper);
 
