@@ -4,5 +4,7 @@
  */
 
 Page({
-    
+  handleRedirect: function () {
+    wx.redirectTo({url: '/pages/index/index'})
+  }
 })

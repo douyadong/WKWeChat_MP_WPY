@@ -1,0 +1,13 @@
+<view class="panel poster">
+  <view class="panel-hd">
+    <view class="head">楼盘画报</view>    
+  </view> 
+  <view class="panel-bd lr-padding">
+    <text class="title">看恒大佘山首府 218 平别墅 品生活味道</text>
+    <text class="time">2015-12-11 12:39:12</text>
+    <image mode="aspectFit" src="https://imgwater.oss.aliyuncs.com/7288068197b24fd2880b71c156fa86c4.I640_360"></image>
+    <text class="desc">恒大佘山首府，着笔于大虹桥辐射核心圈，依托虹桥国际恒大佘山首府，着笔于大虹桥辐射核心圈依托虹桥国际。</text>
+    <navigator class="button gray">查看更多</navigator>
+  </view>  
+</view>
+<view class="gap"></view>

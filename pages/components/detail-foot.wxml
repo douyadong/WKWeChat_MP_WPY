@@ -1,34 +1,32 @@
 <template name="detail-foot">
 <view class="detail-foot">
-    <view class="agent">
+    <view class="agent" bindtap="c_df_agentClick">
         <view class="pic">
-            <view class="img">
-                <image style="width:68rpx; height: 68rpx;" mode="aspectFill" src="{{agentImage}}"></image>
-            </view>
+            <image class="img" mode="aspectFill" src="{{headRoundImgUrl}}"></image>
             <view class="tag"></view>
         </view>
         <view class="con">
             <view class="name">{{agentName}}</view>
-            <view class="company">{{agentCompany}}</view>
+            <view class="company">{{abbreviation}}</view>
         </view>
     </view>
     <view class="agentContact">
-        <view class="tel" bindtap="phoneClick">
+        <view class="tel" bindtap="c_df_phoneClick">
             <view class="iconfont icon-telkf"></view>
             电话咨询
         </view>
-        <view class="wechat" bindtap="wechatClick">
+        <view class="wechat" bindtap="c_df_wechatClick" wx:if="{{agentWChatId}}">
             <view class="iconfont icon-wxkf"></view>
             添加微信
         </view>
     </view>
-    <view class="agentCodeShadow" id="agentCodeShadow" hidden="{{isShowWXCode}}" bindtap="hideClick" bindtouchmove="eventPreventDefault">
-        <view class="agentCodeBox" id="agentCodeBox" catchtap="stopEvent">
+    <view class="agentCodeShadow" id="agentCodeShadow" hidden="{{isShowWXCode}}" bindtap="c_df_hideClick" bindtouchmove="eventPreventDefault">
+        <view class="agentCodeBox" id="agentCodeBox" catchtap="c_df_stopEvent">
             <view class="agentCodeImg">
-                <image src="{{agentCodeImg}}"></image>
+                <image src="{{agentWChartQRImgUrl}}"></image>
             </view>
             <view class="part">长按识别二维码</view>
-            <view class="part">微信号：{{agentWechatNum}}</view>
+            <view class="part">微信号：{{weChatQRImgKey}}</view>
             <view class="part2">无法识别请搜索微信号码添加</view>
         </view>
     </view>

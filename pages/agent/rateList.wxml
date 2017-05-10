@@ -1,0 +1,28 @@
+<import src="../components/agent-rates.wxml"/>
+
+<view class="titleShadow"></view>
+<scroll-view class="comment-list" scroll-y="true" lower-threshold="100" bindscrolltolower="loadMore">
+  <view class="scores">  
+    <text class="label">综合得分：</text>
+    <block wx:for="{{simpleAgentCommentTag.shi}}" wx:key="*this">
+        <text class="iconfont icon-star-all"></text>
+    </block>
+    <text wx:if="{{simpleAgentCommentTag.hasSmall}}" class="iconfont icon-star-half"></text>
+    <block wx:for="{{simpleAgentCommentTag.kong}}" wx:key="*this">
+        <text class="iconfont icon-star-empty"></text>
+    </block>
+    <text class="points">{{simpleAgentCommentTag.objScore}}</text>      
+  </view>
+  <view class="tags">
+    <block wx:for="{{simpleAgentCommentTag.tags}}" wx:key="*this">
+        <view><text class="{{item.type===2?'bad':''}}">{{item.label}}[{{item.count}}]</text></view>
+    </block> 
+  </view>
+  <view class="rates">
+    <template is="agent-rates" data="{{simpleAgentCommentList}}" />
+  </view>
+  <view class="legend-hd" wx:if="{{simpleAgentCommentList.length<10}}">
+      <view class="bg-line"></view>
+      <text>没有更多了</text>
+  </view>
+</scroll-view>

@@ -1,0 +1,24 @@
+<view class="panel presses">
+  <view class="panel-hd">
+    <view class="head">楼盘动态</view>    
+  </view>  
+  <view class="panel-bd lr-padding">  
+    <view class="press">
+      <text class="title">静安府样板间已开放，预计 7 月中下旬开盘敬请期待</text>
+      <text class="desc">7月4日最新消息：静安府样板间已开放，预计月中下旬开盘。首开产品为平四房具体价格、优惠待定。</text>
+      <text class="date">2016-07-07</text>
+    </view>
+    <view class="press">
+      <text class="title">静安府样板间已开放，预计 7 月中下旬开盘敬请期待</text>
+      <text class="desc">7月4日最新消息：静安府样板间已开放，预计月中下旬开盘。首开产品为平四房具体价格、优惠待定。</text>
+      <text class="date">2016-07-07</text>
+    </view>
+    <view class="press">
+      <text class="title">静安府样板间已开放，预计 7 月中下旬开盘敬请期待</text>
+      <text class="desc">7月4日最新消息：静安府样板间已开放，预计月中下旬开盘。首开产品为平四房具体价格、优惠待定。</text>
+      <text class="date">2016-07-07</text>
+    </view>
+    <navigator class="button gray">查看更多</navigator>
+  </view>
+</view>
+<view class="gap"></view>

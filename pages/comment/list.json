@@ -1,3 +1,5 @@
 {
-    "navigationBarTitleText": "查看启动日志"
+  "navigationBarTitleText": "小区列表",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": false
 }
