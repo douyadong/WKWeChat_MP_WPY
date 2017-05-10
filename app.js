@@ -1,4 +1,7 @@
 //app.js
+wx.showLLL = function(){
+  11
+}
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
@@ -27,19 +30,14 @@ App({
   globalData:{
     userInfo:null
   },
-  isLogin:function(){//判断是否登录了小程序
+  isLogin:function(needRedirect=true){//判断是否登录了小程序
     var userInfo = wx.getStorageSync('userInfo');
     if(!userInfo){
       //当前页的地址
       //var returnUrl = this.getCurrentPage().__route__;
+      if(!needRedirect){return false;}
       wx.navigateTo({
-        url: '/pages/login/index',//'/pages/login/index?returnUrl='+returnUrl,
-        success: function(res){          
-        },
-        fail: function(res) {          
-        },
-        complete: function(res) {          
-        }
+        url: '/pages/login/index'//'/pages/login/index?returnUrl='+returnUrl
       })
     }    
 

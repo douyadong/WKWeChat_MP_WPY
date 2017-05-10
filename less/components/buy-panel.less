@@ -3,40 +3,48 @@
  2. 文件名称：buy -> common.less (我要买房-容器样式)
  3. 作者：yuxiaochen@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-.wrapper {
-     padding: 30rpx;
-     height: 100%;
-     background-image: url('https://cdn.wkzf.com/wkwap_fe/img/source/housingDemand/bg.png?v=1492154734142');
-     background-size: 100% auto;
-     display: flex;
-     flex-direction: column;
-     justify-content: space-between;
-     .header {
-         margin-top: 120rpx;
-         margin-bottom: 74rpx;
-         position: relative;
-         .sprite {
-             position: absolute;
-         }
-         .sprite-cloud {
-             left: 60rpx;
-             top: -40rpx;
-         }
-         .sprite-cmonkey {
-             right: 50rpx;
-             top: -100rpx;
-         }
-         .title {
-             text-align: center;
-             color: #4081d6;
-             font-size: 46rpx;
-         }
-     }
 
-     button {
-         width: 100%;
-         border-radius: 10rpx;
-         background-color: #4081D6 !important;
-         margin-bottom: 75rpx;
-     }
- }
+page {
+    height: 100%;
+}
+
+.wrapper {
+    height: 100%;
+    padding: 30rpx;
+    background-image: url('http://img.wkzf.com/d3bb14fd5fec48c49c3fe7ad397b034d');
+    background-size: 100% auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .header {
+        margin-top: 120rpx;
+        margin-bottom: 74rpx;
+        position: relative;
+        .sprite {
+            position: absolute;
+        }
+        .sprite-cloud {
+            left: 60rpx;
+            top: -40rpx;
+        }
+        .sprite-cmonkey {
+            right: 50rpx;
+            top: -100rpx;
+        }
+        .title {
+            text-align: center;
+            color: #4081d6;
+            font-size: 46rpx;
+        }
+    }
+
+    .button {
+        position: fixed;
+        // width: 100%;
+        bottom: 30rpx;
+        left:30rpx;
+        right:30rpx;
+        text-align: center;
+        font-size: 32rpx;
+    }
+}

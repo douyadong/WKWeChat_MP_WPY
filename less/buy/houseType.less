@@ -4,30 +4,34 @@
  3. 作者：yuxiaochen@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
  
+ @import "../variables.less";
+ @import "../mixins.less";
  @import "../components/buy-panel.less";
-
- page {
+ .wrapper {
      height: 100%;
-     .row-list {
-         text-align: center;
-         .item {
-             background-color: #fff;
-             border-radius: 6rpx;
-             color: #76B4E8;
-             font-size: 36rpx;
-             height: 110rpx;
-             display: inline-block;
+     .content {
+         .row-list {
              text-align: center;
-             line-height: 110rpx;
-             width: 266rpx;
-             margin-bottom: 38rpx;
-             &.left {
-                 margin-right: 40rpx;
-             }
-             &.selected {
-                 color: #4081D6;
-                 border: 5rpx solid #6CA6F1;
-                 box-shadow: 0 4rpx 4rpx 0 rgba(109, 189, 255, 0.23);
+             .item {
+                 background-color: #fff;
+                 border-radius: 6rpx;
+                 color: #76B4E8;
+                 font-size: 36rpx;
+                 height: 110rpx;
+                 display: inline-block;
+                 text-align: center;
+                 line-height: 110rpx;
+                 width: 266rpx;
+                 margin-bottom: 38rpx;
+                 box-shadow: 0 4px 4px 0 rgba(110, 189, 255, 0.23);
+                 &.left {
+                     margin-right: 40rpx;
+                 }
+                 &.selected {
+                     .border-radius(12rpx);
+                     color: #4081D6;
+                     border: 4rpx solid #6CA6F1;
+                 }
              }
          }
      }

@@ -20,7 +20,8 @@
                 </view>
             </view>
         </view>
-
     </view>
-    <button type="primary" size="default" bindtap="submit">确认</button>
+    <button type="primary" class="button blue" bindtap="submit">确认</button>
 </view>
+
+

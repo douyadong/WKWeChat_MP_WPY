@@ -2,7 +2,7 @@
 <view class="panel comments">
  <view class="panel-hd">
     <view class="head">用户评论</view>
-    <navigator class="assistant" url="#">
+    <navigator class="assistant" url="/pages/comment/list?subEstateId={{subEstateId}}">
       <text>{{commentsCount}}</text>
       <text class="iconfont icon-arrow-r"></text>
     </navigator>
@@ -11,7 +11,7 @@
     <view class="house-comments">
         <template is="house-comment" data="{{comments}}" />
         <view class="btn-group">
-          <navigator url="/pages/comment/write">
+          <navigator url="/pages/comment/write?subEstateId={{subEstateId}}">
             我来点评
           </navigator>
         </view>
