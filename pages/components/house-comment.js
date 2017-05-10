@@ -11,7 +11,7 @@ module.exports = {
     }
   */
 
-  _zan:function(event){//赞
+  hc_zan:function(event){//赞
     console.log(app.getCurrentPage());
     var self = this;
     var item = event.currentTarget.dataset.item;
@@ -44,8 +44,13 @@ module.exports = {
     });*/
   },
 
-  _previewImage:function(){//图片预览
-
+  hc_previewImage:function(event){//图片预览
+    var currentImg = event.currentTarget.dataset.imgUrl;
+    var commentId = event.currentTarget.dataset.commentId;
+    var imgList = this.data.estateInfo.comment.commentList.filter(function(item){return item.pkid == commentId})[0].imgList;
+    wx.previewImage({
+      current: currentImg,
+      urls: imgList
+    })
   }
-
 };

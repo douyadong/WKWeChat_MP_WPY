@@ -31,7 +31,8 @@ Page({
             content: "南北通透，黄金楼层，满五唯一，精装修。",
             createDate: "2015-10-06 12:10",
             upCount: "20",
-            downCount: "11"
+            downCount: "11",
+            imgList:['https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL','https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL','https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL']
         },{
             photo: "http://img.wkzf.com/5cbf79533866496bbec1cb60b28dce75.DL",
             cellphone: "133*****2365",

@@ -3,6 +3,6 @@
     <view class="head">位置及周边</view>    
   </view>  
   <view>
-    <map id="map" longitude="113.324520" latitude="23.099994" scale="14" markers="{{false}}"   show-location></map>
+    <map id="map" longitude="{{estateInfo.longitude}}" latitude="{{estateInfo.latitude}}" scale="14" markers="{{estateInfo.markers}}"   show-location></map>
   </view>  
 </view>

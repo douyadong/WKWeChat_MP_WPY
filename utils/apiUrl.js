@@ -9,7 +9,8 @@ const url = {
     'getDetails': '/esf/moreList.rest?offset=10&pinyin=shanghai&_=14943219'
   },
   'estate':{
-    'zan':''
+    'zan':'/wxmpEstate/upOrDownEstateComment.rest',
+    'detail':'/wxmpEstate/estateDetail.rest'
   }
 }
 
