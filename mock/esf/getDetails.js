@@ -1,11 +1,11 @@
-module.cxports = {
+ï»¿module.cxports = {
     "status": 1,
     "count": 0,
-    "message": "»ñÈ¡¶şÊÖ·¿ÏêÇéĞÅÏ¢³É¹¦",
+    "message": "è·å–äºŒæ‰‹æˆ¿è¯¦æƒ…ä¿¡æ¯æˆåŠŸ",
     "data": {
         "house": {
-            "district": "ËÉ½­Çø",
-            "town": "ãôãş",
+            "district": "æ¾æ±ŸåŒº",
+            "town": "æ³—æ³¾",
             "houseVideoResponse": null,
             "imgList": [
                 "https://imgwater-test.oss.aliyuncs.com/4bc8a0356ca849ad90b51051b5ba1e2a.DL",
@@ -36,11 +36,11 @@ module.cxports = {
             "houseState": 2,
             "cityId": 43,
             "encryptHouseId": "b3adf34606144dc6",
-            "houseTitle": "½ğ¸Û»¨Ô° ",
+            "houseTitle": "é‡‘æ¸¯èŠ±å›­ ",
             "houseId": 1460256,
             "totalPrice": "0",
-            "houseChild": "2ÊÒ2Ìü1ÎÀ",
-            "areaStr": "120.00 ©O",
+            "houseChild": "2å®¤2å…1å«",
+            "areaStr": "120.00 ã¡",
             "isTopHouse": 1,
             "isStorePush": 2,
             "commAgent": 0,
@@ -54,10 +54,10 @@ module.cxports = {
             "advancePayment": "0",
             "mortgage": "0",
             "completed": "1980",
-            "houseType": "¹«Ô¢",
-            "floorDesc": "¸ßÇø / 14²ã",
-            "decorationStr": "¼ò×°",
-            "orientationStr": "¶«",
+            "houseType": "å…¬å¯“",
+            "floorDesc": "é«˜åŒº / 14å±‚",
+            "decorationStr": "ç®€è£…",
+            "orientationStr": "ä¸œ",
             "sellPoint": "jsjshshdjsjdhdhdjddid",
             "ownerMotivation": "duuddjdjdididiidhdhhdjdd",
             "aroundSupport": "sushehewhdhduueudjded",
@@ -65,26 +65,26 @@ module.cxports = {
             "estateDesc": null,
             "taxDesc": null,
             "otherIntroduce": "",
-            "subEstateInitName": "ºá¸ÛÂ·155Åª ºá¸ÛÂ·633ºÅ ¹ÅÂ¥¹«Â·348Åª",
+            "subEstateInitName": "æ¨ªæ¸¯è·¯155å¼„ æ¨ªæ¸¯è·¯633å· å¤æ¥¼å…¬è·¯348å¼„",
             "sellTimeStr": "2016-04-21",
             "seeHouseCompleteAmount": 0,
             "schoolName": null,
-            "metroInfo": "9ºÅÏß",
+            "metroInfo": "9å·çº¿",
             "firstImg": "https://imgwater-test.oss.aliyuncs.com/4bc8a0356ca849ad90b51051b5ba1e2a.DL"
         },
         "estate": {
             "estateId": 21061,
-            "estateName": "½ğ¸Û»¨Ô°",
+            "estateName": "é‡‘æ¸¯èŠ±å›­",
             "subEstateId": "16990",
             "encryptSubEstateId": "b1b474183ba0a5d6",
-            "subwayName": "9ºÅÏß",
+            "subwayName": "9å·çº¿",
             "schoolName": null,
             "estateImgUrl": "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
             "completed": "1980",
             "completedStr": "1980",
             "totalHouseCount": 0,
-            "totalHouse": "0»§",
-            "estateAddr": "ºá¸ÛÂ·155Åª ºá¸ÛÂ·633ºÅ ¹ÅÂ¥¹«Â·348Åª",
+            "totalHouse": "0æˆ·",
+            "estateAddr": "æ¨ªæ¸¯è·¯155å¼„ æ¨ªæ¸¯è·¯633å· å¤æ¥¼å…¬è·¯348å¼„",
             "sameEstateHouseAmount": 3,
             "comment": {
                 "subEstateId": 16990,
@@ -95,7 +95,7 @@ module.cxports = {
                         "subEstateId": 0,
                         "upAmount": 0,
                         "downAmount": 0,
-                        "comment": "·áÌïÌì",
+                        "comment": "ä¸°ç”°å¤©",
                         "createTimeStr": "2017-03-23 16:04:52",
                         "orderLevel": null,
                         "isUp": 0,
@@ -191,15 +191,15 @@ module.cxports = {
         "sameTownHouseList": [
             {
                 "houseId": 1465832,
-                "houseTitle": "ãôãşÏéºÍ¹«Ô¢Ò»ÆÚ ",
-                "houseChild": "3ÊÒ1Ìü1ÎÀ",
-                "areaStr": "120.00©O",
+                "houseTitle": "æ³—æ³¾ç¥¥å’Œå…¬å¯“ä¸€æœŸ ",
+                "houseChild": "3å®¤1å…1å«",
+                "areaStr": "120.00ã¡",
                 "totalPrice": "586",
-                "district": "ËÉ½­Çø",
-                "town": "ãôãş",
+                "district": "æ¾æ±ŸåŒº",
+                "town": "æ³—æ³¾",
                 "unitPrice": "48833",
                 "tagList": [
-                    "µØÌú"
+                    "åœ°é“"
                 ],
                 "boutique": 0
             }
@@ -207,7 +207,7 @@ module.cxports = {
         "sameTownTotalCount": 1,
         "agent": {
             "agentId": 100321,
-            "agentName": "ÁõĞ¡",
+            "agentName": "åˆ˜å°",
             "agentMobile": "18811112222",
             "headRoundImgKey": "53056dcde0ff41cea97b170543e3c087",
             "headRoundImgUrl": "https://imgwater-test.oss.aliyuncs.com/53056dcde0ff41cea97b170543e3c087",

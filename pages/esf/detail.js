@@ -85,6 +85,7 @@ var params = $.extend(true,{},{
     getDetail: function() { //获取二手房详情
         var that = this;
         request.fetch({
+            mock:true,
             module:'esf',
             action:'getDetail',
             data:{
@@ -135,6 +136,8 @@ var params = $.extend(true,{},{
     onLoad: function(options) {
         this.data.houseId = options.houseId;
         this.data.agentId = options.agentId;
+
+        this.getDetail();
     }
 },houseComment,swiper);
 

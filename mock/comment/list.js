@@ -34,8 +34,8 @@ module.exports = {
 				}
 			},
 			"imgList": [
-				'https://img.wkzf.com/f776bae5187a46898f5750bc68ac4339.DL',
-				'https://img.wkzf.com/0207844ddfa34cdf965d963a816907f8.DL'
+				'http://imgwater-test.oss.aliyuncs.com/ff70910a8e2349e2a2e93cea864c05a7',
+				'http://imgwater-test.oss.aliyuncs.com/ff70910a8e2349e2a2e93cea864c05a7'
 			],
 			"landlord": 0
 		}, {

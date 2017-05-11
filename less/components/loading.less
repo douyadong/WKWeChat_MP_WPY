@@ -1,0 +1,38 @@
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：components -> loading.less (全局的loading组件)
+ 3. 作者：yuxiaochen@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+.mask_transparent {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.wk_loading {
+    width: 220rpx;
+    height: 220rpx;
+    min-height: 220rpx;
+    position: fixed;
+    left: 50%;
+    margin-left: -110rpx;
+    top: 30%;
+    background: hsla(0, 0%, 7%, .7);
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    z-index: 2000;
+    image {
+        margin-top: 50rpx;
+        margin-bottom: 20rpx;
+        width: 80rpx;
+        height: 80rpx;
+    }
+    .text {
+        font-size: 28rpx;
+    }
+}

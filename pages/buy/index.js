@@ -133,7 +133,13 @@ Page({
     superAreaObject: null,
     currentHouseFeatures: [],
     currentLocationStr: '',
-    loaded: false
+    loaded: false,
+    loading: {
+      show: false
+    },
+    tips: {
+      show: false
+    }
   },
   onLoad: function () {
     let that = this
@@ -186,11 +192,9 @@ Page({
       this.setLocation(selectedBlockList)
     }
   },
-  onHide: function () {
-   
-  },
+  onHide: function () {},
   handleRedirect: function (e) {
-    this.data.loaded = false;
+    this.data.loaded = false
     wx.navigateTo({url: e.currentTarget.dataset.url})
   },
   setPrice: function (startPrice, endPrice) {
@@ -346,11 +350,12 @@ Page({
     let selectedBlockList = [],houseFeatureLists = []
     let requestData = {}
 
-    if (!that.data.currentPrice.min.toString()) {
-      wx.showModal({
-        content: '请选择总价范围',
-        cancelText: '关闭'
-      })
+    if (that.data.currentPrice.min=="-1") {
+      // wx.showModal({
+      //   content: '请选择总价范围',
+      //   cancelText: '关闭'
+      // })
+      appInstance.showTips('请选择总价范围')
       return false
     }
 

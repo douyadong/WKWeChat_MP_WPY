@@ -47,7 +47,7 @@
                         "downAmount": 0,
                         "comment": "丰田天",
                         "createTimeStr": "2017-03-23 16:04:52",
-                        "orderLevel": null,
+                        "orderLevel": 10,
                         "isUp": 0,
                         "isDown": 0,
                         "guest": {
@@ -69,7 +69,7 @@
                             }
                         },
                         "imgList": null,
-                        "landlord": 0
+                        "landlord": 1
                     },
                     {
                         "pkid": 1038,

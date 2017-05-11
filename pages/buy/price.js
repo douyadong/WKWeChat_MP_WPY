@@ -96,7 +96,7 @@ Page({
     this.setData({items: this.data.items})
   },
   onHide: function () {
-    appInstance.loaded=true;
+    
   },
   choose: function (event) {
     this.resetData()
@@ -111,7 +111,6 @@ Page({
     })
   },
   submit: function (event) {
-    appInstance.loaded=true;
     wx.setStorageSync('buy_price', this.data.currentPrice)
     wx.navigateBack({url: '/pages/buy/index'})
   },
