@@ -1,5 +1,5 @@
 /**
- * @desc:悟空找房-请求帮助类
+ * @desc:悟空找房小程序-请求方法定义
  * @author:yuxiaochen@lifang.com
  */
 
@@ -26,7 +26,10 @@ module.exports = {
     showBarLoading && wx.showNavigationBarLoading()
     
     if (showLoading) {
-      appInstance.showLoading(showTitle);
+      wx.showToast({
+        icon:'loading',
+        title:showTitle
+      })
     }
 
     if(mock){
@@ -53,7 +56,7 @@ module.exports = {
         },
         complete: function () {
           showBarLoading && wx.hideNavigationBarLoading()
-          showLoading && appInstance.hideLoading()
+          showLoading && wx.hideToast();
           typeof complete == 'function' && complete()
         }
       })
