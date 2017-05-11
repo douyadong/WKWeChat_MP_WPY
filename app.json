@@ -9,7 +9,6 @@
     "pages/agent/writeRate",    
     "pages/agent/detail",      
     "pages/estate/detail",
-    "pages/login/index",
     "pages/sell/index",
     "pages/xf/detail",
     "pages/buy/index",
