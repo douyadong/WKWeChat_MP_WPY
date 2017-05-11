@@ -93,7 +93,7 @@ var params = $.extend(true,{},{
             },
             success:function(data){
                 var newData = {};
-                var h = data.data.h;
+                var h = data.data.house;
                 var e = data.data.estate;
                 var fileds = ['houseTitle','totalPrice','areaStr','houseChild','unitPrice','advancePayment','mortgage','completed','houseType','floorDesc','decorationStr','orientationStr','sellPoint','ownerMotivation','aroundSupport','houseTypeDesc','estateDesc','taxDesc','otherIntroduce','isTopHouse','fullYears','onlyOne','isSubwayHouse','isSchoolHouse','orientation','isNewOnStore'];
                 fields.forEach(function(item){

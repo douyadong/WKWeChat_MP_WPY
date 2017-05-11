@@ -19,7 +19,7 @@ module.exports = {
    * @param  {} fail 请求失败的回调函数
    * @param  {} complete  请求执行的finally 函数
    */
-  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='数据加载中...', showMask=false, method='GET', data,dataType='json', success, fail, complete}) {
+  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='数据加载中...', showMask=false, method='GET', data,dataType='json', success, fail, complete,mock=false}) {
     let url = apiUrl.get(module, action)
 
     showBarLoading && wx.showNavigationBarLoading()
@@ -29,6 +29,12 @@ module.exports = {
         title: showTitle,
         mask: showMask
       })
+    }
+
+    if(mock){
+      var data = require(`../mock/${module}/${action}.js`);
+      success(data);
+      return;
     }
 
     wx.request(
