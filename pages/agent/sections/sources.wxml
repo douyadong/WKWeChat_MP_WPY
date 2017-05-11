@@ -1,11 +1,25 @@
-<import src="../../components/esf-sources.wxml"/>
-<import src="../../components/xf-sources.wxml"/>
-<import src="../../components/legend-hd.wxml"/>
-<template is="legend-hd" data="{{...sourcesHd}}" />
+<view class="legend-hd">
+  <view class="bg-line"></view>
+  <text>看看我推荐的好房源吧</text>
+</view>
 <view class="panel">
-  <view class="tabs">
+  <view class="tabs" wx:if="{{recommendType === 3}}">
     <view class="on">新房</view>
     <view class="last">二手房</view>    
   </view>
-  <template is="esf-sources" data="{{esfSources}}" />
+  <block wx:if="{{recommendType === 2}}">
+    <import src="../../components/esf-sources.wxml"/>
+    <template is="esf-sources" data="{{esfSources}}" />
+  </block>
+  <block wx:elif="{{recommendType === 1}}">
+    <import src="../../components/xf-sources.wxml"/>
+    <template is="xf-sources" data="{{xfSources}}" />
+  </block>
+  <block wx:elif="{{recommendType === 3}}">
+    <import src="../../components/esf-sources.wxml"/>
+    <import src="../../components/xf-sources.wxml"/>
+    <template is="esf-sources" data="{{esfSources}}" />
+    <template is="xf-sources" data="{{xfSources}}" />
+  </block>
 </view>
+<view class="no-sources">没有合适的房源？告诉我您的需求立即匹配房源</view>

@@ -1,6 +1,6 @@
-var $ = require('../../utils/extend.js');
-var detailfoot = require('../../utils/detailfoot.js');
-var params = {
+import $ from "../../utils/extend.js" ;
+import detailfoot from "../components/detailfoot.js" ;
+let params = {
   data: {    
     "agentRates":[
       {"content":"服务态度很好，感觉非常靠谱的一个经纪人！以后买房子还是要找他的！","client":"王先生","date":"2017-05-03"},
@@ -49,5 +49,5 @@ var params = {
     
   }
 } ;
-params=$.extend(true,{},params,detailfoot);
-Page(params);
+params = $.extend( true , {} , params , detailfoot ) ;
+Page(params) ;

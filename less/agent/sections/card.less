@@ -22,10 +22,19 @@
     text {
         vertical-align : middle ;
     }
-    .head-portrait {
-        height : 120rpx ;
-        width : 120rpx ;
+    .portrait-container {
+        position : relative ;
+        .head-portrait {
+            height : 120rpx ;
+            width : 120rpx ;
+        }
+        .sprite-jingu {
+            bottom : 0 ;
+            left : 60rpx ;
+            position : absolute ;
+        }
     }
+    
     .icon-renzheng {
         color : #69d6d6 ;
         margin : 0 10rpx ;
@@ -53,4 +62,5 @@
         color : @blue-font-color ;
         font-size : @larger-font-size ;
     }
+    
 }
