@@ -24,9 +24,9 @@ module.exports = {
     let url = apiUrl.get(module, action)
 
     showBarLoading && wx.showNavigationBarLoading()
-
+    
     if (showLoading) {
-      appInstance.showLoading(showLoading,showTitle);
+      appInstance.showLoading(showTitle);
     }
 
     if(mock){

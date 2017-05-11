@@ -136,6 +136,9 @@ Page({
     loaded: false,
     loading: {
       show: false
+    },
+    tips: {
+      show: false
     }
   },
   onLoad: function () {
@@ -151,12 +154,6 @@ Page({
     that.setPrice(-1, -1)
     that.setHouseType('')
     that.setLocation([])
-
-    appInstance.showLoading();
-
-    setTimeout(function(){
-      appInstance.hideLoading()
-    },3000)
 
     // get data
     // this.getData(function (res) {
@@ -353,11 +350,12 @@ Page({
     let selectedBlockList = [],houseFeatureLists = []
     let requestData = {}
 
-    if (!that.data.currentPrice.min.toString()) {
-      wx.showModal({
-        content: '请选择总价范围',
-        cancelText: '关闭'
-      })
+    if (that.data.currentPrice.min=="-1") {
+      // wx.showModal({
+      //   content: '请选择总价范围',
+      //   cancelText: '关闭'
+      // })
+      appInstance.showTips('请选择总价范围')
       return false
     }
 
