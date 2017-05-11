@@ -1,5 +1,6 @@
 //工具方法
 let _ = require('../../utils/extend.js')
+var request = require('../../utils/request.js');
 //筛选区域脚本
 let filterAgentList = require('./filterAgentList/filterAgentList.js')
 
@@ -32,7 +33,16 @@ let main = {
   },
   onLoad(){
     this.init();
-    this.templateInit();
+    let _this = this;
+    request.fetch({
+        mock:true,
+        module:'index',
+        action:'getCityAreasInfo',
+        data:{},
+        success:function(data){
+             _this.filterAgentListInit(data.data);
+        }
+    }); 
   },
   //滚动到底部异步加载经纪人列表
   onReachBottom(){

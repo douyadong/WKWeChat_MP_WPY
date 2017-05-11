@@ -43,38 +43,33 @@ module.exports = {
     moreActionId:-1
   },
   //组件初始化
-  templateInit(){
-    //获取区域模块数据
-    //模拟数据-获取区域列表
-    setTimeout(()=>{
-        let regionList = mock.areaInfo.data;
-        this.setData({
-          regionList:regionList
-        })
-        //板块列表
-        let plateList = [];
-        //遍历区
-        for(let i=0;i<regionList.length;i++){
-            plateList.push({
-              id:regionList[i].id,
-              towns:[]
-            });
-        }
-        for(let i=0;i<regionList.length;i++){
-            if(parseInt(regionList[i].id) ==  parseInt(plateList[i].id)){
-              let subLists = regionList[i].subList;
-              for(let j=0;j<subLists.length;j++){
-                let towns = subLists[j].towns;
-                for(let k=0;k<towns.length;k++){
-                  plateList[i].towns.push(towns[k]);
-                }
+  filterAgentListInit(regionList){
+      this.setData({
+        regionList:regionList
+      })
+      //板块列表
+      let plateList = [];
+      //遍历区
+      for(let i=0;i<regionList.length;i++){
+          plateList.push({
+            id:regionList[i].id,
+            towns:[]
+          });
+      }
+      for(let i=0;i<regionList.length;i++){
+          if(parseInt(regionList[i].id) ==  parseInt(plateList[i].id)){
+            let subLists = regionList[i].subList;
+            for(let j=0;j<subLists.length;j++){
+              let towns = subLists[j].towns;
+              for(let k=0;k<towns.length;k++){
+                plateList[i].towns.push(towns[k]);
               }
             }
-        }
-        this.setData({
-          plateList:plateList
-        })
-    },1000);
+          }
+      }
+      this.setData({
+        plateList:plateList
+      })
   },
   //显示不同的筛选列表
   showScreenList(event){
