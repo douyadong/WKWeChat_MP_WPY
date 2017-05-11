@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/esf/detail",
+    "pages/estate/detail",
     "pages/index/index",
     "pages/xf/detail",
     "pages/xf/infos",
@@ -19,8 +21,8 @@
     "pages/buy/features",
     "pages/buy/success",
     "pages/buy/recommend",
-    "pages/estate/detail",
-    "pages/esf/detail",
+    
+   
     "pages/esf/list",
     "pages/sell/index",
     "pages/city/index",

@@ -1,48 +1,48 @@
-module.exports = {
+ï»¿module.exports = {
     "status": 1,
     "count": 0,
-    "message": "»ñÈ¡Ğ¡ÇøÔÚÊÛ·¿Ô´ĞÅÏ¢³É¹¦",
+    "message": "è·å–å°åŒºåœ¨å”®æˆ¿æºä¿¡æ¯æˆåŠŸ",
     "data": [
         {
             "houseId": 1465523,
-            "houseTitle": "½ğ¸Û»¨Ô° ",
-            "houseChild": "3ÊÒ1Ìü1ÎÀ",
-            "areaStr": "68.00©O",
+            "houseTitle": "é‡‘æ¸¯èŠ±å›­ ",
+            "houseChild": "3å®¤1å…1å«",
+            "areaStr": "68.00ã¡",
             "totalPrice": "210",
-            "district": "ËÉ½­Çø",
-            "town": "ãôãş",
+            "district": "æ¾æ±ŸåŒº",
+            "town": "æ³—æ³¾",
             "unitPrice": "30882",
             "tagList": [
-                "¾«Ñ¡",
-                "µØÌú"
+                "ç²¾é€‰",
+                "åœ°é“"
             ],
             "boutique": 1
         },
         {
             "houseId": 1460256,
-            "houseTitle": "½ğ¸Û»¨Ô° ",
-            "houseChild": "2ÊÒ2Ìü1ÎÀ",
-            "areaStr": "120.00©O",
+            "houseTitle": "é‡‘æ¸¯èŠ±å›­ ",
+            "houseChild": "2å®¤2å…1å«",
+            "areaStr": "120.00ã¡",
             "totalPrice": "0",
-            "district": "ËÉ½­Çø",
-            "town": "ãôãş",
+            "district": "æ¾æ±ŸåŒº",
+            "town": "æ³—æ³¾",
             "unitPrice": "30083",
             "tagList": [
-                "µØÌú"
+                "åœ°é“"
             ],
             "boutique": 0
         },
         {
             "houseId": 1465633,
-            "houseTitle": "Íµ¿Õ»¶Ó­ÄúÌå³ôÒ»¼±¿´¿´",
-            "houseChild": "3ÊÒ1Ìü1ÎÀ",
-            "areaStr": "88.00©O",
+            "houseTitle": "å·ç©ºæ¬¢è¿æ‚¨ä½“è‡­ä¸€æ€¥çœ‹çœ‹",
+            "houseChild": "3å®¤1å…1å«",
+            "areaStr": "88.00ã¡",
             "totalPrice": "880",
-            "district": "ËÉ½­Çø",
-            "town": "ãôãş",
+            "district": "æ¾æ±ŸåŒº",
+            "town": "æ³—æ³¾",
             "unitPrice": "100000",
             "tagList": [
-                "µØÌú"
+                "åœ°é“"
             ],
             "boutique": 0
         }

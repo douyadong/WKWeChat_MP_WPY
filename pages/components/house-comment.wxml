@@ -9,13 +9,13 @@
         </view>        
       </view>
       <view class="comment-bd">
-        {{item.content}}
+        {{item.comment}}
         <view class="comment-images" wx:if="{{item.imgList&&item.imgList.length>0}}">
           <image wx:key="*this" wx:for="{{item.imgList}}" wx:for-item="image" wx:for-index="imageIndex" src="{{image}}" class="{{imageIndex==2?'last':''}}" bindtap="hc_previewImage" data-img-url="{{image}}" data-comment-id="{{item.piid}}"></image>
         </view>
       </view>
       <view class="comment-ft">
-        <text class="comment-date">{{item.createDate}}</text>
+        <text class="comment-date">{{item.createTimeStr}}</text>
         <text class="comment-up {{item.isUp==1?'active':''}}" bindtap="hc_zan" data-item="{{item}}"><text class="iconfont icon-zan"></text> {{item.upAmount}}</text>      
       </view>
       <view wx:if="{{index+1 != comments.length}}" class="separator"></view>
