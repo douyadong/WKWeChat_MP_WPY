@@ -1,4 +1,4 @@
-<view class="agentList" data-pagename="../agent/rateList" bindtap="goPage">
+<view class="agentList" data-pagename="../agent/detail" bindtap="goPage">
     <view class="portrait">
         <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/7f39b89cdd8e4acc85feec1898f3146a"/>
         <view class="tag"></view>
