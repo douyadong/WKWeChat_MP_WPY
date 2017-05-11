@@ -1,0 +1,9 @@
+<template name="loading">
+    <block wx:if="{{loading.show}}">
+        <view class="mask_transparent"></view>
+        <view class="wk_loading">
+            <image src="http://img.wkzf.com/6a637faab0d340a99ffb9db4411ee9e0"></image>
+            <view class="text">{{loading.title}}</view>
+        </view>
+    </block>  
+</template>

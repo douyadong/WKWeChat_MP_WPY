@@ -1,3 +1,9 @@
+<!--loading模板-->
+<import src="../components/loading.wxml"/>
+
+<!--tips模板-->
+<import src="../components/tips.wxml"/>
+
 <view class="wrapper"> 
     <view class="content">
         <view class="subTitle">基本信息</view>
@@ -36,3 +42,5 @@
     </view>
     <button type="primary" class="button blue" bindtap="submit">完成</button>
 </view>
+<template is="loading" data="{{loading}}" />
+<template is="tips" data="{{tips}}" />
