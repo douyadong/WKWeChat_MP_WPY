@@ -1,6 +1,6 @@
-<view class="agentList">
+<view class="agentList" data-pagename="../agent/rateList" bindtap="goPage">
     <view class="portrait">
-        <image src="https://imgwater.oss.aliyuncs.com/7f39b89cdd8e4acc85feec1898f3146a"/>
+        <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/7f39b89cdd8e4acc85feec1898f3146a"/>
         <view class="tag"></view>
     </view>
     <view class="content">
