@@ -1,5 +1,5 @@
 <template name="house-comment">
-	<view class="comment" wx:for="{{comments}}">
+	<view class="comment" wx:for="{{comments}}" wx:key="*this">
       <view class="comment-hd clearfix">
         <image mode="aspectFill" src="{{item.guest.avatar.url}}" class="comment-photo" />
         <view class="comment-hd-inner">

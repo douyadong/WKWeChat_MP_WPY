@@ -8,12 +8,10 @@
     "pages/xf/posters",
     "pages/xf/presses",    
     "pages/xf/promotions",
-
     "pages/agent/detail",    
     "pages/agent/qrcode",
     "pages/agent/rateList",
     "pages/agent/writeRate",
-
     "pages/buy/index",
     "pages/buy/price",
     "pages/buy/houseType",
@@ -21,19 +19,15 @@
     "pages/buy/features",
     "pages/buy/success",
     "pages/buy/recommend",
-
     "pages/estate/detail",
     "pages/esf/detail",
     "pages/esf/list",
     "pages/sell/index",
-    
     "pages/city/index",
     "pages/logon/index",
     "pages/screen/index",
-
     "pages/comment/list",
     "pages/comment/write",
-    
     "pages/report/write",
     "pages/common/video"
     

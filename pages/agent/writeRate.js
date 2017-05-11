@@ -1,53 +1,195 @@
 var $ = require('../../utils/extend.js');
-var detailfoot = require('../../utils/detailfoot.js');
+var app = getApp();
+Array.prototype.indexOf = function(val) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i] == val) return i;
+    }
+    return -1;
+};
+
+var status = [{},{
+        "score":1,
+        "text":'非常不满意，指出不足'
+    },{
+        "score":2,
+        "text":'不满意，指出不足'
+    },{
+        "score":3,
+        "text":'服务一般，指出不足'
+    },{
+        "score":4,
+        "text":'比较满意，指出不足'
+    },{
+        "score":5,
+        "text":'非常满意，夸夸经纪人吧'
+    }
+];
+var labels = [];
+
 var params = {
-  data: {    
-    "agentRates":[
-      {"content":"服务态度很好，感觉非常靠谱的一个经纪人！以后买房子还是要找他的！","client":"王先生","date":"2017-05-03"},
-      {"content":"很热情，很了解房源信息 ","client":"李先生","date":"2017-04-28"},
-      {"content":"感觉专业技能还有待于提高啊！","client":"张女士","date":"2017-04-25"}
-    ],
-    "esfSources":[
-      {
-        "thumbnail":"https://img.wkzf.com/e13cc00ccbb547f9b7e63454535cabb0.ML",
-        "title":"精装修 随时可以看房子",
-        "layout":"2室2厅2卫",
-        "area":136,
-        "money":453,
-        "location":"浦东 花木",
-        "price":"45800"
-      },
-      {
-        "thumbnail":"https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
-        "title":"精装修 随时可以看房子",
-        "layout":"2室2厅2卫",
-        "area":136,
-        "money":453,
-        "location":"浦东 花木",
-        "price":"45800"
-      }
-    ] ,
-    "xfSources":[
-      {
-        "thumbnail":"https://img.wkzf.com/e13cc00ccbb547f9b7e63454535cabb0.ML",
-        "title":"翠湖天地御园",        
-        "area":"78㎡-120㎡",        
-        "location":"浦东 花木",
-        "price":"45800"
-      },
-      {
-        "thumbnail":"https://img.wkzf.com/1841a25ec70b499e99f1745dae82ff40.ML",
-        "title":"翠湖天地御园",        
-        "area":"78㎡-120㎡",        
-        "location":"浦东 花木",
-        "price":"45800"
-      }
-    ] ,
-    "sourcesHd":{"title":"看看我推荐的好房源吧"}
-  },
-  onLoad: function () {
-    
-  }
-} ;
-params=$.extend(true,{},params,detailfoot);
+    data: {
+        "agentInfo":{
+            agentId:100321,
+            agentName:'王大明',
+            headRoundImgUrl:'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
+            isWellAgent:false
+        },
+        "status":{
+            "score":0,
+            "text":'',
+            "labels":[],
+            "content":''
+        },
+        "tagList":{
+            'good':[
+                {
+                    id:0,
+                    text:'礼貌热情',
+                    isActive:false
+                },{
+                    id:1,
+                    text:'仪表整洁',
+                    isActive:false
+                },{
+                    id:2,
+                    text:'比较专业',
+                    isActive:false
+                },{
+                    id:3,
+                    text:'诚实可靠',
+                    isActive:false
+                },{
+                    id:4,
+                    text:'熟悉房源',
+                    isActive:false
+                },{
+                    id:5,
+                    text:'勤于联系',
+                    isActive:false
+                }
+            ],
+            'bad':[
+                {
+                    id:10,
+                    text:'不够热情',
+                    isActive:true
+                },{
+                    id:11,
+                    text:'仪表不整',
+                    isActive:false
+                },{
+                    id:12,
+                    text:'不够专业',
+                    isActive:false
+                },{
+                    id:13,
+                    text:'不够诚信',
+                    isActive:false
+                },{
+                    id:14,
+                    text:'房源不熟',
+                    isActive:true
+                },{
+                    id:15,
+                    text:'不给回音',
+                    isActive:true
+                }
+            ]
+        }
+    },
+    onLoad: function() {
+        //app.isLogin();
+    },
+    bindStarClick:function(e){
+        var index = e.currentTarget.dataset.id;
+        this.setData({
+            "status.score":status[index].score,
+            "status.text":status[index].text,
+        })
+        labels= [];
+        this.setLabels();
+    },
+    bindLabelClick:function(e){
+        var _this=this,
+            id = e.currentTarget.dataset.id,
+            type = this.data.status.score==5?"good":"bad",
+            arr = [];
+        this.data.tagList[type].forEach(function(item,index){
+            if(item.id == id){
+                var key = "tagList."+type+"["+index+"].isActive",
+                    value = _this.data.tagList[type][index].isActive?false:true;
+                _this.setData({
+                    [key]:value
+                })
+            }
+        })
+        if(labels.indexOf(id)!=-1){
+            labels.splice(labels.indexOf(id),1)
+        }else{
+            labels.push(id);  
+        }
+        _this.setData({
+            "status.labels":labels
+        })
+        console.log(this.data.status.labels)
+    },
+    setLabels:function(){
+        var _this= this;
+        this.data.tagList.good.forEach(function(item,index){
+            var key = "tagList.good["+index+"].isActive",
+                value =false;
+            _this.setData({
+                [key]:value,
+                "status.labels":[]
+            })
+        })
+        this.data.tagList.bad.forEach(function(item,index){
+            var key = "tagList.bad["+index+"].isActive",
+                value =false;
+            _this.setData({
+                [key]:value,
+                "status.labels":[]
+            })
+        })
+    },
+    bindinput:function(e){
+        this.setData({
+            "status.content":e.detail.value
+        })
+    },
+    bindSwitchChange:function(e){
+        var value =  e.detail.value;
+        this.setData({
+            "status.nameless":value=='checked'?1:0
+        })
+    },
+    bindSubmitClick:function(){
+        var data = this.data.status
+        if(data.score === 0){
+            wx.showModal({
+                title: '提示',
+                content: '请选择评分星级',
+                showCancel: false,
+                success: function(res) {
+                    if (res.confirm) {
+                    } else if (res.cancel) {
+                    }
+                }
+            })
+        }else if(data.textarea == ''){
+            wx.showModal({
+                title: '提示',
+                content: '请填写评论内容',
+                showCancel: false,
+                success: function(res) {
+                    if (res.confirm) {
+                    } else if (res.cancel) {
+                    }
+                }
+            })
+        }
+    }
+};
+params = $.extend(true, {}, params);
+
 Page(params);
