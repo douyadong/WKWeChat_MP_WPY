@@ -4,7 +4,8 @@ var houseComment = require('../components/house-comment.js');
 var request = require('../../utils/request.js');
 
 var params = $.extend(true, {}, {
-    data: {        
+    data: {    
+           
     },
     callEstateExpert: function () { //打电话给小区专家    
         wx.makePhoneCall({

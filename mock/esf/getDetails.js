@@ -1,4 +1,4 @@
-﻿module.cxports = {
+﻿module.exports = {
     "status": 1,
     "count": 0,
     "message": "获取二手房详情信息成功",
@@ -6,32 +6,13 @@
         "house": {
             "district": "松江区",
             "town": "泗泾",
-            "houseVideoResponse": null,
+            "houseVideoResponse":{
+			videoSmallImage:"https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL",
+			videlUrl:"http://v.wkzf.com/fe5b05415e74492f93752219333d443bWV.mp4",
+		},
             "imgList": [
-                "https://imgwater-test.oss.aliyuncs.com/4bc8a0356ca849ad90b51051b5ba1e2a.DL",
-                "https://imgwater-test.oss.aliyuncs.com/4bc8a0356ca849ad90b51051b5ba1e2a.DL",
-                "https://imgwater-test.oss.aliyuncs.com/4bc8a0356ca849ad90b51051b5ba1e2a.DL",
-                "https://imgwater-test.oss.aliyuncs.com/4bc8a0356ca849ad90b51051b5ba1e2a.DL",
-                "https://imgwater-test.oss.aliyuncs.com/f99431701a9e4941ad2a4dba26a657bf.DL",
-                "https://imgwater-test.oss.aliyuncs.com/f99431701a9e4941ad2a4dba26a657bf.DL",
-                "https://imgwater-test.oss.aliyuncs.com/f99431701a9e4941ad2a4dba26a657bf.DL",
-                "https://imgwater-test.oss.aliyuncs.com/f99431701a9e4941ad2a4dba26a657bf.DL",
-                "https://imgwater-test.oss.aliyuncs.com/150310e5e9d74a6fa5ae52b09559886a.DL",
-                "https://imgwater-test.oss.aliyuncs.com/7655d703aab34570bf364aad71372c7b.DL",
-                "https://imgwater-test.oss.aliyuncs.com/150310e5e9d74a6fa5ae52b09559886a.DL",
-                "https://imgwater-test.oss.aliyuncs.com/7655d703aab34570bf364aad71372c7b.DL",
-                "https://imgwater-test.oss.aliyuncs.com/150310e5e9d74a6fa5ae52b09559886a.DL",
-                "https://imgwater-test.oss.aliyuncs.com/150310e5e9d74a6fa5ae52b09559886a.DL",
-                "https://imgwater-test.oss.aliyuncs.com/7655d703aab34570bf364aad71372c7b.DL",
-                "https://imgwater-test.oss.aliyuncs.com/7655d703aab34570bf364aad71372c7b.DL",
-                "https://imgwater-test.oss.aliyuncs.com/72202c21de19428c88a721f17b93b0a8.DL",
-                "https://imgwater-test.oss.aliyuncs.com/72202c21de19428c88a721f17b93b0a8.DL",
-                "https://imgwater-test.oss.aliyuncs.com/72202c21de19428c88a721f17b93b0a8.DL",
-                "https://imgwater-test.oss.aliyuncs.com/72202c21de19428c88a721f17b93b0a8.DL",
-                "https://imgwater-test.oss.aliyuncs.com/23d1a33a38d94b35879655c188432fa0.DL",
-                "https://imgwater-test.oss.aliyuncs.com/23d1a33a38d94b35879655c188432fa0.DL",
-                "https://imgwater-test.oss.aliyuncs.com/23d1a33a38d94b35879655c188432fa0.DL",
-                "https://imgwater-test.oss.aliyuncs.com/23d1a33a38d94b35879655c188432fa0.DL"
+                "https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL",
+                "https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL"                
             ],
             "houseState": 2,
             "cityId": 43,
@@ -61,7 +42,7 @@
             "sellPoint": "jsjshshdjsjdhdhdjddid",
             "ownerMotivation": "duuddjdjdididiidhdhhdjdd",
             "aroundSupport": "sushehewhdhduueudjded",
-            "houseTypeDesc": null,
+            "houseTypeDesc": "房屋类型介绍",
             "estateDesc": null,
             "taxDesc": null,
             "otherIntroduce": "",
@@ -93,7 +74,7 @@
                     {
                         "pkid": 1079,
                         "subEstateId": 0,
-                        "upAmount": 0,
+                        "upAmount": 20,
                         "downAmount": 0,
                         "comment": "丰田天",
                         "createTimeStr": "2017-03-23 16:04:52",
@@ -150,7 +131,7 @@
                             }
                         },
                         "imgList": null,
-                        "landlord": 0
+                        "landlord": 1
                     },
                     {
                         "pkid": 1037,
@@ -159,8 +140,8 @@
                         "downAmount": 0,
                         "comment": "WEFWWRW",
                         "createTimeStr": "2017-03-17 16:57:02",
-                        "orderLevel": null,
-                        "isUp": 0,
+                        "orderLevel": 10,
+                        "isUp": 1,
                         "isDown": 0,
                         "guest": {
                             "pkid": 31836,
@@ -180,7 +161,7 @@
                                 "imgType": null
                             }
                         },
-                        "imgList": null,
+                        "imgList": ['https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL','https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL','https://img.wkzf.com/05f0f10e3b714350acaf0785cdf83f06.DL'],
                         "landlord": 0
                     }
                 ]
@@ -210,10 +191,10 @@
             "agentName": "刘小",
             "agentMobile": "18811112222",
             "headRoundImgKey": "53056dcde0ff41cea97b170543e3c087",
-            "headRoundImgUrl": "https://imgwater-test.oss.aliyuncs.com/53056dcde0ff41cea97b170543e3c087",
+            "headRoundImgUrl": "https://test01.fe.wkzf/wkwap_fe/img/source/user/default_head_img.png",
             "isWellAgent": 0,
             "vipType": 0,
-            "abbreviation": "",
+            "abbreviation": "zha",
             "companyName": "123",
             "agentWChatId": null,
             "weChatQRImgKey": null,

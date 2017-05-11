@@ -1,7 +1,7 @@
 <!--导入公共模板-->
 <import src="../../components/swiper.wxml"/>
 <view class="panel">
-  <template is="swiper" data="{{imgUrls}}" />
+  <template is="swiper" data="{{imgUrls,agentId}}" />
   <view wx:if="{{agent}}" class="expert-info">
     <view class="call"><text class="iconfont icon-tel" bindtap="callExport"></text></view>
     <view class="outline">

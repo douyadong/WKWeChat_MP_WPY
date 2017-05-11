@@ -3,6 +3,7 @@
 <import src="../components/swiper.wxml" />
 <import src="../components/esf-sources.wxml" />
 <import src="../components/house-comment.wxml" />
+<import src="../components/detail-foot.wxml" />
 <!--swiper-->
 <template is="swiper" data="{{imgUrls}}" />
 <view class="panel">
@@ -19,7 +20,7 @@
             </view>
             <view class="layout right">
                 <text class="caption">建筑面积</text>
-                <text>{{areaStr}} ㎡</text>
+                <text>{{areaStr}}</text>
             </view>
         </view>
         <view class="esftags">
@@ -80,16 +81,16 @@
             <navigator url="/pages/estate/detail">
                 <view class="row">
                     <view class="row-hd">小区</view>
-                    <view class="row-bd">阳光新城</view>
+                    <view class="row-bd">{{estateName}}</view>
                     <text class="arrow iconfont icon-arrow-r"> </text>
                 </view>
                 <view class="row">
                     <view class="row-hd">地铁</view>
-                    <view class="row-bd">2号线 7号线</view>
+                    <view class="row-bd">{{subwayName}}</view>
                 </view>
                 <view class="row">
                     <view class="row-hd">学校</view>
-                    <view class="row-bd">华师大附小,管弄新村小,管弄新村小学,管弄新村小学</view>
+                    <view class="row-bd">{{schoolName}}</view>
                 </view>
             </navigator>
         </view>
@@ -105,35 +106,35 @@
     <view class="panel-bd lr-padding">
         <view class="item">
             <text class="caption">主要卖点</text>
-            <text>静安寺商圈,南京路商圈，中山公园商圈</text>
+            <text>{{sellPoint}}</text>
         </view>
         <view class="item">
             <text class="caption">业主心态</text>
-            <text>业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态业主心态</text>
+            <text>ownerMotivation</text>
         </view>
         <view class="item">
             <text class="caption">周边配套</text>
-            <text>周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套周边配套</text>
+            <text>aroundSupport</text>
         </view>
         <view class="" wx:if="{{!isCollapsed}}">
-            <view class="item">
+            <view class="item" wx:if="{{houseTypeDesc}}">
                 <text class="caption">户型介绍</text>
-                <text>更多信息更多信息更多信息更多信息</text>
+                <text>{{houseTypeDesc}}</text>
             </view>
-            <view class="item">
+            <view class="item" wx:if="{{estateDesc}}">
                 <text class="caption">小区介绍</text>
-                <text>更多信息更多信息更多信息更多信息</text>
+                <text>{{estateDesc}}</text>
             </view>
-            <view class="item">
+            <view class="item" wx:if="{{taxDesc}}">
                 <text class="caption">税费解析</text>
-                <text>更多信息更多信息更多信息更多信息</text>
+                <text>{{taxDesc}}</text>
             </view>
-            <view class="item">
+            <view class="item" wx:if="{{otherIntroduce}}">
                 <text class="caption">其他介绍</text>
-                <text>更多信息更多信息更多信息更多信息</text>
+                <text>{{otherIntroduce}}</text>
             </view>
         </view>
-        <view class="button gray" bindtap="toggleMoreBasicInfo">{{isCollapsed?"查看更多":"收起"}}</view>
+        <view wx:if="{{houseTypeDesc||estateDesc||taxDesc||otherIntroduce}}" class="button gray" bindtap="toggleMoreBasicInfo">{{isCollapsed?"查看更多":"收起"}}</view>
     </view>
 </view>
 <view class="gap"></view>
@@ -143,26 +144,26 @@
         <view class="head">小区信息</view>
     </view>
     <view class="panel-bd lr-padding">
-        <navigator url="/pages/estate/detail">
+        <navigator url="/pages/estate/detail?subEstateId={{subEstateId}}&agentId={{agentId}}">
             <view class="item">
                 <icon class="arrow iconfont icon-arrow-r" />
                 <view class="item-hd">
                     <image src="https://img.wkzf.com/b7bcb9ead0634bc191970b97267b335e.DW"></image>
                 </view>
                 <view class="item-bd">
-                    <view class="caption">虹东小区 M11 金座</view>
-                    <view>1993 年竣工 | 150户</view>
-                    <view>虹桥路996弄</view>
+                    <view class="caption">{{estateName}}</view>
+                    <view>{{completedStr}} 年竣工 | {{totalHouseCount}}户</view>
+                    <view>{{estateAddr}}</view>
                 </view>
             </view>
         </navigator>
     </view>
     <!--在售房源-->
-    <navigator url="/pages/esf/list" class="house-link ">
+    <navigator url="/pages/esf/list?subEstate={{subEstateId}}" class="house-link ">
         <view class="panel-hd">
             <view class="head">在售房源</view>
             <view class="assistant">
-                <text>6套</text>
+                <text>{{sameEstateHouseAmount}}套</text>
                 <text class="iconfont icon-arrow-r"></text>
             </view>
         </view>
@@ -172,7 +173,7 @@
         <view class="panel-hd">
             <view class="head">用户评价</view>
             <view class="assistant">
-                <text>6</text>
+                <text>{{commentsCount}}</text>
                 <text class="iconfont icon-arrow-r"></text>
             </view>
         </view>
@@ -195,7 +196,7 @@
     <view class="panel-hd">
         <view class="head">位置及周边</view>
     </view>
-    <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}" bindmarkertap="markertap" polyline="{{false}}" bindregionchange="regionchange" show-location style="width: 100%; height: 300px;"></map>
+    <map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}"  show-location style="width: 100%; height: 300px;"></map>
 </view>
 <view class="gap"></view>
 <!--相似房源-->
@@ -206,7 +207,8 @@
 </view>
 <view class="panel esf-list">
     <template is="esf-sources" data="{{esfSources}}" />
-    <view class="row" wx:if="{{sameEstateHouseAmount>2}}">
+    <view class="row" wx:if="{{sameTownTotalCount>2}}">
         <navigator class="button gray" url="/pages/esf/list">查看更多</navigator>
     </view>
 </view>
+<template is="detail-foot" data="{{...agentInfo}}" wx:if="{{agentInfo}}"/>
