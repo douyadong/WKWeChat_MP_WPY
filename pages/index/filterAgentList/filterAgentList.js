@@ -1,4 +1,4 @@
-//区域模拟数据
+//区域模拟数据 
 let mock = require('./../../buy/mock.js')
 module.exports = {
   data: {
