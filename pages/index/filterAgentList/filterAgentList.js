@@ -99,7 +99,7 @@ module.exports = {
         })
       }
       //判断是否选择了更多筛选条件
-      if(this.data.screen_sort == sort){//说明没有旋转
+      if(this.data.screen_more == more){//说明没有旋转
         this.setData({
             isRotate2:false,
             blue2:false
@@ -120,7 +120,7 @@ module.exports = {
         })
       }
       //判断是否选择了更多筛选条件
-      if(this.data.screen_sort == sort){//说明没有旋转
+      if(this.data.screen_more == more){//说明没有旋转
         this.setData({
             isRotate2:false,
             blue2:false
@@ -171,7 +171,7 @@ module.exports = {
       })
     }
     //判断是否选择了更多筛选条件
-    if(this.data.screen_sort == sort){//说明没有旋转
+    if(this.data.screen_more == more){//说明没有旋转
       this.setData({
           isRotate2:false,
           blue2:false
