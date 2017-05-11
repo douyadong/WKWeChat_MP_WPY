@@ -1,0 +1,17 @@
+<view class="infos">
+  <view><text class="title">楼盘地址</text><text class="desc">上海市长宁区虹桥路996弄</text></view>
+  <view><text class="title">所属区域</text><text class="desc">长宁区 虹桥板块</text></view>
+  <view><text class="title">开发商</text><text class="desc">绿地百年房地产开发有限公司</text></view>
+  <view><text class="title">售楼处地址</text><text class="desc">上海市长宁区虹桥路996弄</text></view>
+  <view class="separator"></view>
+  <view><text class="title">产权年限</text><text class="desc">70 年</text></view>
+  <view><text class="title">装修标准</text><text class="desc">精装修</text></view>
+  <view><text class="title">规划户数</text><text class="desc">100 户</text></view>
+  <view><text class="title">规划车位</text><text class="desc">地上 102 个 地下 302 个</text></view>
+  <view><text class="title">容积率</text><text class="desc">3.0</text></view>
+  <view><text class="title">绿化率</text><text class="desc">65%</text></view>
+  <view class="separator"></view>
+  <view><text class="title">物业类型</text><text class="desc">普通住宅</text></view>
+  <view><text class="title">物业公司</text><text class="desc">好管家物业管理有限公司</text></view>
+  <view><text class="title">物业费</text><text class="desc">4.00 元/㎡/月</text></view>  
+</view>

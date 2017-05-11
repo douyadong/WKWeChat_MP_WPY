@@ -1,5 +1,11 @@
 {
   "pages": [
+    "pages/xf/poster-preview",
+    "pages/xf/infos",
+    "pages/xf/posters",
+    "pages/xf/presses",
+    "pages/xf/layouts",
+    "pages/xf/promotions",
     "pages/xf/detail",
     "pages/agent/qrcode",    
     "pages/agent/writeRate",    

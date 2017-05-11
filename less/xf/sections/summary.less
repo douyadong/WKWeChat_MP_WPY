@@ -75,18 +75,22 @@
             vertical-align : center ;
         }
     }
-    .icon-more {
+    navigator {
         background-color : @lighter-gray-color ;
-        .border-radius(6rpx) ;
-        color : @dark-blue-font-color ;
-        display : block ;
-        font-size : @small-font-size ;
+        .border-radius(6rpx) ;        
+        display : block ;        
         height : 40rpx ;
         line-height : 40rpx ;
-        margin-right : @common-margin ;
+        margin-right : @common-margin ;        
         position : absolute ;
         right : 0 ;
+        text-align : center ;
         top : 60rpx ;
         width : 50rpx ;
+        .icon-more {
+            color : @dark-blue-font-color ;
+            font-size : @small-font-size ;
+            margin-left : -@gap-dimension ;
+        }
     }
 }
