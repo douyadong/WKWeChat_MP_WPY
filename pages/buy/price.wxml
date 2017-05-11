@@ -6,11 +6,9 @@
             <view class="sprite sprite-cmonkey"></view>
         </view>
         <view class="row-list">
-            <view wx:for="{{items}}" class="item {{index%2==0 ? 'left' : ''}} {{item.selected?'selected':''}}" wx:key="{{index}}" data-text="{{item.text}}" data-min="{{item.min}}" data-max="{{item.max}}" data-index="{{index}}" bindtap="choose">
-                {{item.text}}
-            </view>
+            <view wx:for="{{items}}" class="item {{index%2==0 ? 'left' : ''}} {{item.selected?'selected':''}}" wx:key="{{index}}" data-text="{{item.text}}"
+                data-min="{{item.min}}" data-max="{{item.max}}" data-index="{{index}}" bindtap="choose">{{item.text}}</view>
         </view>
     </view>
-    <button type="primary" size="default" bindtap="submit">确认</button>
+    <button type="primary" class="button blue" bindtap="submit">确认</button>
 </view>
-

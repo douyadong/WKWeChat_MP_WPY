@@ -58,7 +58,13 @@ Page({
       text: '不限',
       min: 0,
       max: 0
-    }],
+    },
+      {
+        id: '-1',
+        text: '请选择总价范围',
+        min: -1,
+        max: -1
+      }],
     houseTypes: [{
       id: '1',
       text: '一室'
@@ -77,7 +83,11 @@ Page({
     }, {
       id: '0',
       text: '不限'
-    }],
+    },
+      {
+        id: '',
+        text: '请选择户型'
+      }],
     houseFeatures: [{
       id: 10,
       type: 'Subway',
@@ -132,26 +142,37 @@ Page({
     wx.removeStorageSync('buy_price')
     wx.removeStorageSync('buy_houseType')
     wx.removeStorageSync('buy_location')
+    // 判断用户是否登录
+
+    // 未登录初始化选择项信息
+    that.setPrice(-1, -1)
+    that.setHouseType('')
+    that.setLocation([])
 
     // get data
-    this.getData(function (res) {
-      let data = res.data
-      // 价格信息
-      that.setPrice(data.startPrice, data.endPrice)
+    // this.getData(function (res) {
+    //   let data = res.data
+    //   // 价格信息
+    //   that.setPrice(data.startPrice, data.endPrice)
 
-      // 户型信息
-      that.setHouseType(data.bedRoomSum)
+    //   // 户型信息
+    //   that.setHouseType(data.bedRoomSum)
 
-      // 位置信息
-      that.setLocation(data.townIdLists)
+    //   // 位置信息
+    //   that.setLocation(data.townIdLists)
 
-      // 房源特色信息
-      that.setHouseFeatures(data.houseFeature)
-    })
+    //   // 房源特色信息
+    //   that.setHouseFeatures(data.houseFeature)
+    // })
 
     this.data.loaded = true
   },
   onShow: function () {
+    let that = this
+    let price = wx.getStorageSync('buy_price')
+    let houseTypeId = wx.getStorageSync('buy_houseType')
+    let selectedBlockList = wx.getStorageSync('buy_location')
+
     if (!this.data.loaded) {
       let that = this
       let price = wx.getStorageSync('buy_price')
@@ -165,8 +186,11 @@ Page({
       this.setLocation(selectedBlockList)
     }
   },
+  onHide: function () {
+   
+  },
   handleRedirect: function (e) {
-    this.data.loaded = false
+    this.data.loaded = false;
     wx.navigateTo({url: e.currentTarget.dataset.url})
   },
   setPrice: function (startPrice, endPrice) {
@@ -228,9 +252,10 @@ Page({
         locationStr += ' ...'
       }
 
-      wx.setStorageSync('buy_location', townList)
       this.setData({'currentLocationStr': locationStr })
     }
+
+    wx.setStorageSync('buy_location', townList)
   },
   setHouseFeatures: function (featuresList) {
     let that = this
@@ -321,7 +346,7 @@ Page({
     let selectedBlockList = [],houseFeatureLists = []
     let requestData = {}
 
-    if (!that.data.currentPrice.min) {
+    if (!that.data.currentPrice.min.toString()) {
       wx.showModal({
         content: '请选择总价范围',
         cancelText: '关闭'
@@ -337,24 +362,16 @@ Page({
       return false
     }
 
-    if (!that.data.currentHouseType.id) {
+    if (!that.data.currentLocationStr) {
       wx.showModal({
-        content: '请选择户型',
+        content: '请选择位置',
         cancelText: '关闭'
       })
       return false
     }
 
-    if (!that.data.currentLocationStr.id) {
-      wx.showModal({
-        content: '请选择户型',
-        cancelText: '关闭'
-      })
-      return false
-    }
-
-    //判断是否登录
-    appInstance.isLogin();
+    // 判断是否登录
+    appInstance.isLogin()
 
     // 构造请求数据
     requestData.guestId = guestId

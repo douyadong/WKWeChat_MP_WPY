@@ -1,0 +1,1 @@
+page{background-color:#fff}.infos{padding:30rpx}.infos view:after{clear:both;content:" ";display:block;font-size:0;height:0;visibility:hidden}.infos text{display:block;font-size:32rpx;line-height:70rpx}.infos .title{color:#999;float:left}.infos .desc{color:#4e4e4e;float:right}.infos .separator{margin:30rpx 0}

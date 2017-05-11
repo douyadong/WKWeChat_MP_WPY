@@ -1,5 +1,6 @@
 //logs.js
-var util = require('../../utils/util.js')
+var util = require('../../utils/util.js');
+var request = require('../../utils/request.js');
 Page({
   data: {
     "esfSources":[
@@ -14,11 +15,57 @@ Page({
       }
     ]
   },
-  onLoad: function () {
-    this.setData({
-      logs: (wx.getStorageSync('logs') || []).map(function (log) {
-        return util.formatTime(new Date(log))
-      })
-    })
+  onLoad: function (options) {
+    //按照h5做法，相似房源不分页，在售房源分页
+    //todo:接口没有提供分页功能，暂且跳过
+    this.data.type = options.type;//1:相似房源，2:在售房源  
+    this.data.subEstateId = options.subEstateId;
+    this.data.houseId = options.houseId;  
+  },
+  reachBottom:function(){
+
+  },
+  onShow:function(){
+    var that = this;
+    var moduleName,action,data;
+    switch(this.data.type){
+      case 1:
+        moduleName="esf";
+        action="similar";
+        data={
+          houseId:this.data.houseId
+        };
+      break;
+      case 2:
+        moduleName="estate";
+        action="sellingList";
+        data={
+          subEstateId:this.data.subEstateId
+        };
+      break;
+    }
+
+    request.fetch({
+      module:moduleName,
+      action,
+      data,
+      success:function(data){
+        var esfSources = data.data.map(function(item){
+          return {
+            thumbnail:item.houseImgUrl,
+            title:item.houseTitle,
+            layout:item.houseChild,
+            area:item.areaStr,
+            money:item.totalPrice,
+            location:item.district+" "+item.town,
+            price:item.unitPrice,
+          }
+        });
+
+        that.setData({
+          esfSources
+        });
+      }
+    });
   }
 })
