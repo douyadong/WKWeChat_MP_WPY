@@ -1,16 +1,17 @@
 var request = require('../../utils/request.js');
 var $ = require('../../utils/extend.js');
 
+
+var requestData = {};
 Page({
     data: {
         comments: [],
         isLoading:false,
     },
     onLoad: function(option) {
-        console.log(option.subEstateId)
-        var data = $.extend(true,{},option);
+        requestData = $.extend(true,{},{offset:0},option);
         request.fetch({
-            data:data,
+            data:requestData,
             module:'comment',
             action:'list',
             mock:true,
@@ -24,8 +25,27 @@ Page({
     loadMore:function() {
         if(this.data.isLoading)return;
         this.setData({
-            isLoading:true
+            "isLoading":true
         });
-        console.log(1)
+        requestData.offset = requestData.offset++;
+        request.fetch({
+            data:requestData,
+            module:'comment',
+            action:'list',
+            showLoading:true,
+            mock:true,
+            success:function(data){
+                if(data.status === 1){
+                    this.setData({
+                        "comments":this.data.comments.concat(data.data.commentList),
+                        "isLoading":false
+                    })
+                }
+            }.bind(this),
+            error:function(){
+                
+                
+            }.bind(this)
+        })
     }
 })

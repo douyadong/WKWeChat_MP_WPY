@@ -83,11 +83,7 @@ var params = $.extend(true,{},{
 
     },
     bindFormSubmit: function(e) {
-        wx.showToast({
-            icon: "loading",
-            title: "正在上传"
-        });
-        if(this.data.currentFilePaths.length>0){
+        if(this.data.currentFilePaths){
             this.uploadFile(this.data.currentFilePaths,0)
         }else{
             this.uploadFormSubmit()
