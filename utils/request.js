@@ -4,6 +4,7 @@
  */
 
 const apiUrl = require('./apiUrl')
+const appInstance=getApp();
 
 module.exports = {
   /**
@@ -19,16 +20,13 @@ module.exports = {
    * @param  {} fail 请求失败的回调函数
    * @param  {} complete  请求执行的finally 函数
    */
-  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='数据加载中...', showMask=false, method='GET', data,dataType='json', success, fail, complete,mock=false}) {
+  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='加载中...', showMask=false, method='GET', data,dataType='json', success, fail, complete,mock=false}) {
     let url = apiUrl.get(module, action)
 
     showBarLoading && wx.showNavigationBarLoading()
 
     if (showLoading) {
-      wx.showLoading({
-        title: showTitle,
-        mask: showMask
-      })
+      appInstance.showLoading(showLoading,showTitle);
     }
 
     if(mock){
@@ -55,7 +53,7 @@ module.exports = {
         },
         complete: function () {
           showBarLoading && wx.hideNavigationBarLoading()
-          showLoading && wx.hideLoading()
+          showLoading && appInstance.hideLoading()
           typeof complete == 'function' && complete()
         }
       })

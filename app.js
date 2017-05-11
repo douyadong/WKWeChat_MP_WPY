@@ -1,7 +1,8 @@
 //app.js
 wx.showLLL = function(){
-  11
+  console.log('wx.showLLLL')
 }
+
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
@@ -42,5 +43,12 @@ App({
     }    
 
     return true;
+  },
+  showLoading:function(showTitle="加载中..."){
+    this.getCurrentPage().setData({"loading":{"show":true,"text":showTitle}})
+  },
+  hideLoading:function(cb){
+    this.getCurrentPage().setData({"loading":{"show":false}});
+    typeof cb == "function" && cb()
   }
 })

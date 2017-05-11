@@ -133,7 +133,10 @@ Page({
     superAreaObject: null,
     currentHouseFeatures: [],
     currentLocationStr: '',
-    loaded: false
+    loaded: false,
+    loading: {
+      show: false
+    }
   },
   onLoad: function () {
     let that = this
@@ -148,6 +151,12 @@ Page({
     that.setPrice(-1, -1)
     that.setHouseType('')
     that.setLocation([])
+
+    appInstance.showLoading();
+
+    setTimeout(function(){
+      appInstance.hideLoading()
+    },3000)
 
     // get data
     // this.getData(function (res) {
@@ -186,11 +195,9 @@ Page({
       this.setLocation(selectedBlockList)
     }
   },
-  onHide: function () {
-   
-  },
+  onHide: function () {},
   handleRedirect: function (e) {
-    this.data.loaded = false;
+    this.data.loaded = false
     wx.navigateTo({url: e.currentTarget.dataset.url})
   },
   setPrice: function (startPrice, endPrice) {
