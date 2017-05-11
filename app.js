@@ -36,10 +36,10 @@ App({
     var userInfo = wx.getStorageSync('userInfo')
     if (!userInfo) {
       // 当前页的地址
-      // var returnUrl = this.getCurrentPage().__route__
+      var returnUrl = this.getCurrentPage().__route__
       if (!needRedirect) {return false;}
       wx.navigateTo({
-        url: '/pages/logon/index' // '/pages/login/index?returnUrl='+returnUrl
+        url: '/pages/login/index?returnUrl='+returnUrl
       })
     }
 

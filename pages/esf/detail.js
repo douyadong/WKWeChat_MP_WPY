@@ -56,6 +56,11 @@ var params = $.extend(true,{},{
             videoUrl:h.houseVideoResponse.videoUrl,
             "type": "video"});
                 }
+                if(h.estateVideoResponse){
+                    newData.imgUrls.push({url: h.estateVideoResponse.videoSmallImage,
+            videoUrl:h.estateVideoResponse.videoUrl,
+            "type": "video"});
+                }
                 if(h.imgList && h.imgList.length){
                     h.imgList.forEach(function(img){
                         newData.imgUrls.push({

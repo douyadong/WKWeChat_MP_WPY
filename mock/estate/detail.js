@@ -68,7 +68,19 @@
                                 "imgType": 1
                             }
                         },
-                        "imgList": null,
+                        "imgList":[{
+				"pkid": 123,
+				"url": "http://imgwater-test.oss.aliyuncs.com/6b706135c8b24a769e08662bb33ee5a5",
+				"imgKey": "6b706135c8b24a769e08662bb33ee5a5",
+				"postFix": null,
+				"standard": null
+			}, {
+				"pkid": 124,
+				"url": "http://imgwater-test.oss.aliyuncs.com/e28438fa249c483b83a8e22431de16cd",
+				"imgKey": "e28438fa249c483b83a8e22431de16cd",
+				"postFix": null,
+				"standard": null
+			}],
                         "landlord": 1
                     },
                     {

@@ -33,10 +33,19 @@ module.exports = {
 					"imgType": 1
 				}
 			},
-			"imgList": [
-				'http://imgwater-test.oss.aliyuncs.com/ff70910a8e2349e2a2e93cea864c05a7',
-				'http://imgwater-test.oss.aliyuncs.com/ff70910a8e2349e2a2e93cea864c05a7'
-			],
+			"imgList": [{
+				"pkid": 123,
+				"url": "http://imgwater-test.oss.aliyuncs.com/6b706135c8b24a769e08662bb33ee5a5",
+				"imgKey": "6b706135c8b24a769e08662bb33ee5a5",
+				"postFix": null,
+				"standard": null
+			}, {
+				"pkid": 124,
+				"url": "http://imgwater-test.oss.aliyuncs.com/e28438fa249c483b83a8e22431de16cd",
+				"imgKey": "e28438fa249c483b83a8e22431de16cd",
+				"postFix": null,
+				"standard": null
+			}],
 			"landlord": 0
 		}, {
 			"pkid": 321,
@@ -117,7 +126,9 @@ module.exports = {
 				"openId": null,
 				"unionId": null,
 				"systemAvatarId": null,
-				"avatar": null
+				"avatar": {
+					"url": "http://imgwater-test.oss.aliyuncs.com/ff70910a8e2349e2a2e93cea864c05a7",
+				}
 			},
 			"imgList": null,
 			"landlord": 0
