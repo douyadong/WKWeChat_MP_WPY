@@ -1,5 +1,10 @@
 {
-  "pages": [    
+  "pages": [  
+    "pages/index/index",
+    "pages/city/index",
+    "pages/logon/index",
+    "pages/screen/index",
+      
     "pages/xf/detail",
     "pages/xf/infos",
     "pages/xf/layouts",
@@ -25,12 +30,6 @@
     "pages/esf/detail",
     "pages/esf/list",
     "pages/sell/index",
-
-    "pages/index/index",
-    "pages/city/index",
-    "pages/logon/index",
-    "pages/screen/index",
-
     "pages/comment/list",
     "pages/comment/write",
     
