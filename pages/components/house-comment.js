@@ -22,8 +22,7 @@ module.exports = {
     }
   */
 
-  hc_zan:function(event){//赞
-    console.log(app.getCurrentPage());
+  hc_zan:function(event){//赞    
     var self = this;
     var item = event.currentTarget.dataset.item;
     //判断是否登录
@@ -62,7 +61,7 @@ module.exports = {
     var imgList = this.data.comments.filter(function(item){return item.pkid == commentId})[0].imgList;
     wx.previewImage({
       current: currentImg,
-      urls: imgList
+      urls: imgList.map(function(img){return img.url})
     })
   }
 };

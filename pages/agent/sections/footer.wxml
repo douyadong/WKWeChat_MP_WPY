@@ -1,3 +1,4 @@
+<!--
 <import src="../../components/detail-foot.wxml" />
-<view class="no-sources">没有合适的房源？告诉我您的需求立即匹配房源</view>
 <template is="detail-foot" data="{{...agentInfo}}"/>
+-->

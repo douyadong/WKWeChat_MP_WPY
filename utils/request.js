@@ -1,9 +1,10 @@
 /**
- * @desc:悟空找房-请求帮助类
+ * @desc:悟空找房小程序-请求方法定义
  * @author:yuxiaochen@lifang.com
  */
 
 const apiUrl = require('./apiUrl')
+const appInstance=getApp();
 
 module.exports = {
   /**
@@ -19,16 +20,25 @@ module.exports = {
    * @param  {} fail 请求失败的回调函数
    * @param  {} complete  请求执行的finally 函数
    */
-  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='数据加载中...', showMask=false, method='GET', data,dataType='json', success, fail, complete}) {
+  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='加载中...', showMask=false, method='GET', data,dataType='json', success, fail, complete,mock=false}) {
     let url = apiUrl.get(module, action)
 
     showBarLoading && wx.showNavigationBarLoading()
-
+    
     if (showLoading) {
-      wx.showLoading({
-        title: showTitle,
-        mask: showMask
+      wx.showToast({
+        icon:'loading',
+        title:showTitle,
+        duration:100000
       })
+    }
+
+    if(mock){
+      var data = require(`../mock/${module}/${action}.js`);
+      success(data);
+      showBarLoading && wx.hideNavigationBarLoading()
+      showLoading && wx.hideToast();
+      return;
     }
 
     wx.request(
@@ -49,7 +59,7 @@ module.exports = {
         },
         complete: function () {
           showBarLoading && wx.hideNavigationBarLoading()
-          showLoading && wx.hideLoading()
+          showLoading && wx.hideToast();
           typeof complete == 'function' && complete()
         }
       })

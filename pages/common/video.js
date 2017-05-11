@@ -1,6 +1,6 @@
 //video.js
 var util = require('../../utils/util.js');
-var dt = require('../../utils/detailfoot.js');
+var dt = require('../components/detailfoot.js');
 var request = require('../../utils/request.js');
 Page({
     data: {

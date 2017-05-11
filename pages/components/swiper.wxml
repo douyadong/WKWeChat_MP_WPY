@@ -1,6 +1,6 @@
   <!--swiper组件-->
   <template name="swiper">
-  <swiper interval="2000">  
+  <swiper interval="2000">
       <swiper-item wx:for="{{imgUrls}}">    
         <navigator url="/pages/common/video?agentId={{agentId}}&videoUrl={{item.videoUrl}}" wx:if="{{item.type=='video'}}">  
           <view class="play">

@@ -1,5 +1,5 @@
-//logs.js
-var util = require('../../utils/util.js')
+var util = require('../../utils/util.js');
+var request = require('../../utils/request.js');
 Page({
     data: {
         houseId: '',
@@ -12,27 +12,27 @@ Page({
     },
     changenotExist: function() {
         this.setData({
-            notExist: !this.data.notExist
+            notExist: (this.data.notExist+1)%2
         })
     },
     changehasSold: function() {
         this.setData({
-            hasSold: !this.data.hasSold
+            hasSold: (this.data.hasSold)%2
         })
     },
     changepriceNotReal: function() {
         this.setData({
-            priceNotReal: !this.data.priceNotReal
+            priceNotReal: (this.data.priceNotReal+1)%2
         })
     },
     changeimgNotReal: function() {
         this.setData({
-            imgNotReal: !this.data.imgNotReal
+            imgNotReal: (this.data.imgNotReal+1)%2
         })
     },
     changeothreReason: function() {
         this.setData({
-            othreReason: !this.data.othreReason
+            othreReason: (this.data.othreReason+1)%2
         })
     },
     listenerDesInput: function(e) {
@@ -48,20 +48,19 @@ Page({
             imgNotReal: this.data.imgNotReal,
             othreReason: this.data.othreReason,
             memo: this.data.memo
-        };
-        console.log(requestData);
+        };        
         if (requestData.notExist || requestData.hasSold || requestData.priceNotReal || requestData.imgNotReal || requestData.othreReason || requestData.memo) {
             if (requestData.memo.length <= 300) {
-                wx.request({
-                    url: '',
-                    data: requestData,
-                    success: function(res) {
-                        console.log("request success");
+                request.fetch({
+                    "module":"report",
+                    "action":"write",
+                    "data":requestData,
+                    "success":function(data){
                         wx.navigateBack({
                             delta: 1
                         })
                     }
-                })
+                });
             } else {
                 wx.showModal({
                     content: '补充说明不能超过300字',
