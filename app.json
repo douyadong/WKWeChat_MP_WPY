@@ -1,16 +1,18 @@
 {
-  "pages": [
-    "pages/index/index",
-    "pages/city/index",
-    "pages/logon/index",
-    "pages/screen/index",     
-    "pages/agent/rateList",
-    "pages/agent/qrcode",
-    "pages/agent/writeRate",    
-    "pages/agent/detail",      
-    "pages/estate/detail",
-    "pages/sell/index",
+  "pages": [    
     "pages/xf/detail",
+    "pages/xf/infos",
+    "pages/xf/layouts",
+    "pages/xf/poster-preview",    
+    "pages/xf/posters",
+    "pages/xf/presses",    
+    "pages/xf/promotions",
+
+    "pages/agent/detail",    
+    "pages/agent/qrcode",
+    "pages/agent/rateList",
+    "pages/agent/writeRate",
+
     "pages/buy/index",
     "pages/buy/price",
     "pages/buy/houseType",
@@ -18,11 +20,23 @@
     "pages/buy/features",
     "pages/buy/success",
     "pages/buy/recommend",
+
+    "pages/estate/detail",
     "pages/esf/detail",
     "pages/esf/list",
+    "pages/sell/index",
+
+    "pages/index/index",
+    "pages/city/index",
+    "pages/logon/index",
+    "pages/screen/index",
+
+    "pages/comment/list",
+    "pages/comment/write",
+    
     "pages/report/write",
-    "pages/common/video",
-    "pages/comment/list"
+    "pages/common/video"
+    
   ],
   "window": {
     "backgroundColor": "#f0f0f0",

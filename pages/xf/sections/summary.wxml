@@ -28,7 +28,7 @@
       <text class="iconfont icon-hui"></text>
       <text>悟空优惠，付 1000 抵 5000 税费</text>
     </view>
-    <navigator class="iconfont icon-more" url="/pages/xf/promotions"></navigator>
+    <navigator url="/pages/xf/promotions"><text class="iconfont icon-more"></text></navigator>
   </view>
 </view>
 <view class="gap"></view>
