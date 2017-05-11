@@ -7,7 +7,8 @@
  @import "../variables.less";
  @import "../mixins.less";
  @import "../components/buy-panel.less";
- .wrapper {
+ .content {
+     margin-bottom: 100rpx;
      .area-box {
          border-radius: 10rpx;
          padding: 0 60rpx;
@@ -28,7 +29,7 @@
                  background-color: #fff;
                  .item {
                      .text {
-                         left:80rpx;
+                         left: 80rpx;
                          color: @blue-font-color;
                      }
                      .dot {
@@ -56,7 +57,7 @@
                  }
                  .text {
                      position: absolute;
-                     left:96rpx;
+                     left: 96rpx;
                      color: #76B4E8;
                  }
                  &.active {
@@ -76,8 +77,5 @@
                  }
              }
          }
-     }
-     button {
-         margin-top: 110rpx;
      }
  }

@@ -1,0 +1,34 @@
+ /*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：xf -> posters.less (楼盘画报)
+ 3. 作者：zhaohuagang@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/ 
+ @import "../variables.less";
+ @import "../mixins.less";
+
+.posters {
+    .poster {
+        padding : @common-margin ;
+        text , image {
+            display : block ;
+        }
+        .title {
+            color : @default-font-color ;
+            font-size : @large-font-size ;
+            line-height : 60rpx ;
+        }
+        .time {
+            color : #c3c3c3 ;
+            font-size : 26rpx ;
+        }
+        image {
+            width : 100% ;
+            margin : @gap-dimension 0 ;
+        }
+        .desc {
+            color : @light-font-color ; 
+            font-size : @large-font-size ;
+            line-height : 50rpx ;
+        }        
+    }
+}

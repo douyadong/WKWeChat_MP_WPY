@@ -11,6 +11,7 @@ page{
     background-color:#F0F0F0;
     overflow-y: auto;
     position: relative;
+    -webkit-overflow-scrolling: touch;
     //搜索
     .searchNavBox{
         width: 100%;
@@ -135,15 +136,12 @@ page{
         }
     }
     //筛选区域样式
-    @import url("screen/template.less");
+    @import url("filterAgentList/filterAgentList.less");
     //显示经纪列表
     .agentListBox{
         width: 100%;
         height: auto;
-        @import url("agentList/list.less");
-    }
-    .red{
-        color: red;
+        @import url("agentList/agentList.less");
     }
 }
 .noScroll{

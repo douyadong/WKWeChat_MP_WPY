@@ -12,7 +12,7 @@ Page({
     blockList: [],
     superAreaObject: null
   },
-  onLoad: function (options) {
+  onShow: function (options) {
     let that = this
     let matchIndexArray = []
 
@@ -22,12 +22,6 @@ Page({
     matchIndexArray = this.getMatchIndexArray()
     this.setArea(matchIndexArray)
     this.setBlock()
-
-    console.log(matchIndexArray)
-    console.log(that.data.currentArea)
-    console.log(this.data.areaList)
-    console.log(this.data.blockList)
-    console.log(this.data.superAreaObject)
   },
   convertData: function (data) {
     let that = this
@@ -94,6 +88,10 @@ Page({
     let selectedBlockList = wx.getStorageSync('buy_location')
     let superAreaObject = this.data.superAreaObject
 
+    if (!selectedBlockList || !selectedBlockList.length) {
+      return null
+    }
+
     this.data.blockList.forEach(oBlock1 => {
       selectedBlockList.forEach(oBlock2 => {
         if (oBlock1.id == oBlock2.id) {
@@ -117,20 +115,27 @@ Page({
   },
   setArea: function (indexArray) {
     let that = this
-    let matchIndexArray = indexArray.sort()
-    let activeIndex = matchIndexArray[0]
-    this.data.areaList.forEach(oArea => {
-      indexArray.forEach(item => {
-        if (oArea.index == item) {
-          oArea.selected = true
-        }
 
-        if (oArea.index == activeIndex) {
-          oArea.active = true
-          that.data.currentArea = oArea
-        }
+    if (indexArray) {
+      let matchIndexArray = indexArray.sort()
+      let activeIndex = matchIndexArray[0]
+      this.data.areaList.forEach(oArea => {
+        indexArray.forEach(item => {
+          if (oArea.index == item) {
+            oArea.selected = true
+          }
+
+          if (oArea.index == activeIndex) {
+            oArea.active = true
+            that.data.currentArea = oArea
+          }
+        })
       })
-    })
+    }else {
+      that.data.currentArea=this.data.areaList[0];
+      this.data.areaList[0].active = true
+    }
+
 
     this.setData({'areaList': this.data.areaList})
   },
@@ -142,7 +147,7 @@ Page({
     let selectedBlockList = wx.getStorageSync('buy_location')
 
     filtered = this.data.blockList.filter(item => {
-      return item.pid == currentArea.id && item.selected
+      return item.pid == currentArea.id && (item.selected || item.active)
     })
 
     this.data.blockList.forEach(oBlock1 => {
@@ -268,7 +273,7 @@ Page({
     })
 
     wx.setStorageSync('buy_location', towns)
-    
+
     wx.navigateBack({url: '/pages/buy/index'})
   }
 })

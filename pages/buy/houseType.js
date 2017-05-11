@@ -30,7 +30,7 @@ Page({
     }],
     currentHouseType: 0
   },
-  onLoad: function () {
+  onShow: function () {
     let houseTypeId = wx.getStorageSync('buy_houseType') || 0
 
     this.data.items.forEach(item => {

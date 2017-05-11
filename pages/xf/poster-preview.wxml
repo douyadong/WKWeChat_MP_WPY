@@ -1,0 +1,26 @@
+<swiper>  
+  <swiper-item>
+    <view class="page-no"><text>1 / 5</text></view>
+    <view class="pict">
+      <image src="https://imgwater.oss.aliyuncs.com/7288068197b24fd2880b71c156fa86c4.I640_360"></image>
+    </view>
+    <text class="title">看恒大佘山首府 218 平别墅 品生活味道</text>
+    <text class="desc">恒大佘山首府，着笔于大虹桥辐射核心圈，依托虹桥国际恒大佘山首府，着笔于大虹桥辐射核心圈依托虹桥国际。</text>
+  </swiper-item>
+  <swiper-item>
+    <view class="page-no"><text>2/5</text></view>
+    <view class="pict">
+      <image src="https://imgwater.oss.aliyuncs.com/7288068197b24fd2880b71c156fa86c4.I640_360"></image>
+    </view>
+    <text class="title">看恒大佘山首府 218 平别墅 品生活味道</text>
+    <text class="desc">恒大佘山首府，着笔于大虹桥辐射核心圈，依托虹桥国际恒大佘山首府，着笔于大虹桥辐射核心圈依托虹桥国际。</text>
+  </swiper-item>
+  <swiper-item>
+    <view class="page-no"><text>3/5</text></view>
+    <view class="pict">
+      <image src="https://imgwater.oss.aliyuncs.com/7288068197b24fd2880b71c156fa86c4.I640_360"></image>
+    </view>
+    <text class="title">看恒大佘山首府 218 平别墅 品生活味道</text>
+    <text class="desc">恒大佘山首府，着笔于大虹桥辐射核心圈，依托虹桥国际恒大佘山首府，着笔于大虹桥辐射核心圈依托虹桥国际。</text>
+  </swiper-item>
+</swiper>
