@@ -1,9 +1,8 @@
 {
   "pages": [
-    "pages/xf/detail",
+    "pages/agent/writeRate",
     "pages/agent/rateList",
-    "pages/agent/qrcode",
-    "pages/agent/writeRate",    
+    "pages/agent/qrcode",  
     "pages/agent/detail",      
     "pages/estate/detail",
     "pages/login/index",
@@ -20,7 +19,8 @@
     "pages/esf/list",
     "pages/report/write",
     "pages/common/video",
-    "pages/comment/list"
+    "pages/comment/list",
+    "pages/comment/write"
   ],
   "window": {
     "backgroundColor": "#f0f0f0",

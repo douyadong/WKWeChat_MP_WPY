@@ -1,3 +1,5 @@
 {
-    "navigationBarTitleText": "评价经纪人"
+    "navigationBarTitleText": "评价经纪人",
+    "navigationBarTextStyle": "black",
+  	"enablePullDownRefresh": false
 }
