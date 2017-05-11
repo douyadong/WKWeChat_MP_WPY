@@ -16,6 +16,7 @@ let main = {
     })
   },
   init(){
+    let _this = this;
     //地理定位
     wx.getLocation({
       type: 'wgs84',
@@ -30,10 +31,7 @@ let main = {
         console.log("点击取消");
       }
     })
-  },
-  onLoad(){
-    this.init();
-    let _this = this;
+    //获取区域数据
     request.fetch({
         mock:true,
         module:'index',
@@ -42,7 +40,10 @@ let main = {
         success:function(data){
              _this.filterAgentListInit(data.data);
         }
-    }); 
+    });
+  },
+  onLoad(){
+    this.init(); 
   },
   //滚动到底部异步加载经纪人列表
   onReachBottom(){

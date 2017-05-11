@@ -56,6 +56,7 @@ module.exports = {
             towns:[]
           });
       }
+      //把板块往上提一层
       for(let i=0;i<regionList.length;i++){
           if(parseInt(regionList[i].id) ==  parseInt(plateList[i].id)){
             let subLists = regionList[i].subList;
