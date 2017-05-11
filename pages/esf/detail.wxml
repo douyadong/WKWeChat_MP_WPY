@@ -168,7 +168,7 @@
         </view>
     </navigator>
     <!--用户评论-->
-    <navigator url="/pages/comment/write" class="house-link ">
+    <navigator url="/pages/comment/list?subEstateId=11111" class="house-link ">
         <view class="panel-hd">
             <view class="head">用户评价</view>
             <view class="assistant">
