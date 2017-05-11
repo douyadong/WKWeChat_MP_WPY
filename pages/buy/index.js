@@ -151,25 +151,25 @@ Page({
     // 判断用户是否登录
 
     // 未登录初始化选择项信息
-    that.setPrice(-1, -1)
-    that.setHouseType('')
-    that.setLocation([])
+    // that.setPrice(-1, -1)
+    // that.setHouseType('')
+    // that.setLocation([])
 
     // get data
-    // this.getData(function (res) {
-    //   let data = res.data
-    //   // 价格信息
-    //   that.setPrice(data.startPrice, data.endPrice)
+    this.getData(function (res) {
+      let data = res.data
+      // 价格信息
+      that.setPrice(data.startPrice, data.endPrice)
 
-    //   // 户型信息
-    //   that.setHouseType(data.bedRoomSum)
+      // 户型信息
+      that.setHouseType(data.bedRoomSum)
 
-    //   // 位置信息
-    //   that.setLocation(data.townIdLists)
+      // 位置信息
+      that.setLocation(data.townIdLists)
 
-    //   // 房源特色信息
-    //   that.setHouseFeatures(data.houseFeature)
-    // })
+      // 房源特色信息
+      that.setHouseFeatures(data.houseFeature)
+    })
 
     this.data.loaded = true
   },
@@ -337,12 +337,11 @@ Page({
       'module': 'buy',
       'action': 'getDetails',
       'showLoading': true,
+      'mock':true,
       success: function (res) {
-        console.log(res)
+        callback(res)
       }
     })
-
-    callback(res)
   },
   submit: function () {
     let that = this
@@ -351,27 +350,17 @@ Page({
     let requestData = {}
 
     if (that.data.currentPrice.min=="-1") {
-      // wx.showModal({
-      //   content: '请选择总价范围',
-      //   cancelText: '关闭'
-      // })
       appInstance.showTips('请选择总价范围')
       return false
     }
 
     if (!that.data.currentHouseType.id) {
-      wx.showModal({
-        content: '请选择户型',
-        cancelText: '关闭'
-      })
+      appInstance.showTips('请选择户型')
       return false
     }
 
     if (!that.data.currentLocationStr) {
-      wx.showModal({
-        content: '请选择位置',
-        cancelText: '关闭'
-      })
+      appInstance.showTips('请选择位置')
       return false
     }
 

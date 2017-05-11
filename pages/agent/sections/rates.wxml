@@ -3,28 +3,29 @@
   <view class="panel-hd">
     <view class="head">用户评价</view>
     <navigator class="assistant" url="/pages/agent/rateList">
-      <text>28</text>
+      <text>{{simpleAgentCommentTag.agentCommentCount}}</text>
       <text class="iconfont icon-arrow-r"></text>
     </navigator>
   </view>  
-  <view class="panel-bd">  
-    <view class="scores">
-      <text>综合得分：</text>
-      <text class="iconfont icon-star-all"></text>
-      <text class="iconfont icon-star-all"></text>
-      <text class="iconfont icon-star-all"></text>
-      <text class="iconfont icon-star-all"></text>
-      <text class="iconfont icon-star-half"></text>
-      <text class="points">4.5</text>
-    </view>     
-    <view class="tags">
-      <text>诚信可靠 23 </text>
-      <text>为用户着想 23 </text>
-      <text>房源熟悉 23 </text>
-      <text class="bad">不太专业 1 </text>
-    </view>
-    <template is="agent-rates" data="{{agentRates}}" />
+  <view class="panel-bd">
+    <view class="no-data" wx:if="{{!simpleAgentCommentTag.agentCommentCount}}">可怜，还没有用户评价他</view>
+    <block wx:else>
+      <view class="scores">
+        <text>综合得分：</text>
+        <text class="iconfont icon-star-all" wx:for="{{simpleAgentCommentTag.shi}}"></text>
+        <text class="iconfont icon-star-half" wx:if="{{simpleAgentCommentTag.hasSmall}}"></text>
+        <text class="iconfont icon-star-empty" wx:for="{{simpleAgentCommentTag.kong}}"></text>        
+        <text class="points">{{simpleAgentCommentTag.objScore}}</text>
+      </view>     
+      <view class="tags">
+        <block wx:for="{{simpleAgentCommentTag.tags}}">
+          <text wx:if="{{item.type === 1}}">{{item.label}} {{item.count}}</text>
+          <text class="bad" wx:else>{{item.label}} {{item.count}}</text>
+        </block>        
+      </view>
+      <template is="agent-rates" data="{{agentRates}}" />
+    </block>
     <view class="gap"></view>
-    <navigator url="/pages/agent/writeRate" class="button gray">我来评价</navigator>
+    <navigator url="/pages/agent/writeRate?agentId={{simpleAgentDetail.agentId}}" class="button gray">我来评价</navigator>
   </view>
 </view>
