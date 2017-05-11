@@ -1,1 +1,3 @@
+<import src="../components/detail-foot.wxml" />
 <video id="myVideo" autoplay="{{true}}" src="{{videoUrl}}" controls></video>
+<template is="detail-foot" data="{{...agentInfo}}" wx:if="{{agentId}}"/>
