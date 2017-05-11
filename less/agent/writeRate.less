@@ -8,22 +8,36 @@
 page {
     background-color : #fff ;
 }
+.titleShadow{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 1rpx;
+    box-shadow: 0 2rpx 6rpx 0 rgba(0,0,0,0.15);
+}
 .agent {
-    text-align : center ;
-    view , text {
-        vertical-align : middle ;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70rpx;
+    padding-top: 40rpx;
     .hp-container {
-        display : inline-block ;
+        position: relative;
+        height : 70rpx ;
+        width : 70rpx ;
         .head-portrait {
+            display: block;
             height : 70rpx ;
             width : 70rpx ;
         }
     }
     text {
-        color : @default-font-color ;
-        font-size : @large-font-size ;
-        margin-left : @gap-dimension ;
+        display: block;
+        height: 70rpx;
+        line-height: 70rpx;
+        color : @default-font-color;
+        font-size : @large-font-size;
+        margin-left : @gap-dimension;
     }
 }
 .legend-hd {
@@ -33,8 +47,12 @@ page {
 }
 .stars {
     text-align : center ;
+    height: 60rpx;
+    line-height: 60rpx;
+    margin-bottom: 30rpx;
     text {
-        font-size : 72rpx ;
+        padding: 0 15rpx;
+        font-size : 52rpx ;
     }
     .icon-star-all {
         color : @star-color ;
@@ -46,16 +64,16 @@ page {
 .star-desc {
     color : @light-font-color ;
     font-size : @default-font-size ;
-    line-height : 80rpx ;
+    line-height : 28rpx ;
     text-align : center ;
 }
 .tags {
     .clearfix() ;
-    padding : @common-margin / 2 ;
+    padding : 22rpx 30rpx 0 30rpx;
     view {
         box-sizing : border-box ;
         float : left ;
-        padding : @common-margin / 2 ;
+        padding : 20rpx 15rpx 10rpx 15rpx;
         width : 33.3% ;
         text {
             background-color : @lighter-gray-color ;
@@ -67,9 +85,11 @@ page {
             text-align : center ; 
         }
     }
-    .selected {
-        background-color : #e0f0ff ;
-        color : @default-font-color ;
+    .active {
+        text{
+           background-color : #E0F0FF ;
+            color : @default-font-color ; 
+        }
     }
 }
 form {
@@ -77,6 +97,9 @@ form {
         color : @light-font-color ;
         font-size : @default-font-size ;
         padding : 0 @common-margin @common-margin ;
+    }
+    .textView{
+        padding-top: 20rpx;
     }
     textarea {
         background : @page-background-color ;

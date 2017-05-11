@@ -1,4 +1,3 @@
-//logs.js
 var util = require('../../utils/util.js');
 var request = require('../../utils/request.js');
 Page({
@@ -13,19 +12,28 @@ Page({
         "location":"浦东 花木",
         "price":"45800"
       }
-    ]
+    ],
+    offset:0,
+    pageSize:10,
+    totalCount:0
   },
   onLoad: function (options) {
-    //按照h5做法，相似房源不分页，在售房源分页
-    //todo:接口没有提供分页功能，暂且跳过
+    //按照h5做法，相似房源不分页，在售房源分页    
     this.data.type = options.type;//1:相似房源，2:在售房源  
     this.data.subEstateId = options.subEstateId;
-    this.data.houseId = options.houseId;  
-  },
-  reachBottom:function(){
+    this.data.houseId = options.houseId; 
 
+    this.getHouses(); 
+  },
+  reachBottom:function(){    
+    if(this.data.type == 2 && this.data.offset<this.data.totalCount){
+      this.getHouses();
+    }
   },
   onShow:function(){
+    
+  },
+  getHouses:function(){
     var that = this;
     var moduleName,action,data;
     switch(this.data.type){
@@ -40,7 +48,9 @@ Page({
         moduleName="estate";
         action="sellingList";
         data={
-          subEstateId:this.data.subEstateId
+          subEstateId:this.data.subEstateId,
+          offset:this.data.offset,
+          pageSize:this.data.pageSize
         };
       break;
     }
@@ -50,18 +60,21 @@ Page({
       action,
       data,
       success:function(data){
-        var esfSources = data.data.map(function(item){
-          return {
+        var esfSources = this.data.esfSources;
+        data.data.map(function(item){
+          return esfSources.push({
             thumbnail:item.houseImgUrl,
             title:item.houseTitle,
             layout:item.houseChild,
             area:item.areaStr,
             money:item.totalPrice,
             location:item.district+" "+item.town,
-            price:item.unitPrice,
-          }
+            price:item.unitPrice
+          });
         });
 
+        that.data.totalCount = data.count;
+        that.data.offset = that.data.offset + data.data.length;
         that.setData({
           esfSources
         });

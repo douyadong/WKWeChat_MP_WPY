@@ -1,31 +1,50 @@
+<view class="titleShadow"></view>
+
 <view class="agent">
     <view class="hp-container">
-        <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
+        <image mode="aspectFill" src="{{agentInfo.headRoundImgUrl}}" class="head-portrait"></image>
+        <view class="tag" wx:if="{{agentInfo.isWellAgent}}"></view>
     </view>
-    <text>王大明</text>
+    <text>{{agentInfo.agentName}}</text>
 </view>
 <view class="legend-hd">
     <view class="bg-line"></view>
     <text>为经纪人评分</text>
 </view>
 <view class="stars">
-    <text class="iconfont icon-star-all"></text>
-    <text class="iconfont icon-star-empty"></text>
-    <text class="iconfont icon-star-empty"></text>
-    <text class="iconfont icon-star-empty"></text>
-    <text class="iconfont icon-star-empty"></text>
+    <block wx:for="{{5}}" wx:key="*this">
+        <text class="iconfont {{status.stars>index?'icon-star-all':'icon-star-empty'}}" data-id="{{index+1}}" bindtap="bindStarClick"></text>
+    </block>
 </view>
-<view class="star-desc">非常不满意，指出不足</view>
-<view class="tags">
-    <view><text class="selected">不够热情</text></view>
-    <view><text>仪表不整</text></view>
-    <view><text>不够专业</text></view>
-    <view><text>不够诚信</text></view>
-    <view><text>房源不熟</text></view>
-    <view><text>不给回音</text></view>      
-</view>
+<view class="star-desc">{{status.text}}</view>
+<block wx:if="{{status.stars==5}}">
+    <view class="tags">
+        <block wx:for="{{tagList.good}}" wx:key="*this">
+            <view data-id="{{item.id}}" 
+                  data-index="index" 
+                  bindtap="bindLabelClick"
+                  class="{{item.isActive?'active':''}}"
+            ><text>{{item.text}}</text></view>
+        </block> 
+    </view>
+</block>
+<block wx:if="{{status.stars<5 && status.stars>0}}">
+    <view class="tags">
+        <block wx:for="{{tagList.bad}}" wx:key="*this">
+            <view data-id="{{item.id}}" 
+                  data-index="index" 
+                  bindtap="bindLabelClick"
+                  class="{{item.isActive?'active':''}}"
+            ><text>{{item.text}}</text></view>
+        </block> 
+    </view>
+</block>
 <form>
-  <view><textarea placeholder-class="textarea" placeholder="经纪人的服务您还满意吗？您的评价将督促我们不断进步!" /></view>
-  <view><text>匿名评价</text><switch color="#4081D6" checked/></view>  
+    <view class="textView">
+        <textarea placeholder-class="textarea" maxlength="500" placeholder="经纪人的服务您还满意吗？您的评价将督促我们不断进步!" bindinput="bindinput" />
+    </view>
+    <view><text>匿名评价</text><switch color="#4081D6" bindchange="bindSwitchChange"/></view>  
 </form>
-<view class="submit"><view class="button blue">提交评价</view></view>
+<view class="submit">
+    <view class="button blue" bindtap="bindSubmitClick">提交评价</view>
+</view>

@@ -13,19 +13,19 @@
   <view class="buySell">
       <view class="list">
         <view class="circular buyCircular"></view>
-        <view class="text">我要卖房</view>
+        <view class="text" data-pagename="../sell/index" bindtap="goPage">我要卖房</view>
       </view>
       <view class="list">
         <view class="circular sellCircular"></view>
-        <view class="text">我要买房</view>
+        <view class="text" data-pagename="../buy/index" bindtap="goPage">我要买房</view>
       </view>
   </view>
   <!-- 筛选 -->
-  <include src="screen/template.wxml"/>
+  <include src="filterAgentList/filterAgentList.wxml"/>
   <!-- 经纪人列表 -->
   <view class="agentListBox">
       <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-          <include src="agentList/list.wxml"/>
+          <include src="agentList/agentList.wxml"/>
       </block>
   </view>
   <!-- 高亮 -->

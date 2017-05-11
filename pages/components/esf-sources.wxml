@@ -1,7 +1,7 @@
 <template name="esf-sources">
   <view class="esf-sources">
     <block wx:for="{{esfSources}}">
-    <view class="source">
+    <navigator class="source" url="/pages/esf/detail?subEstateId=11111">
       <image mode="aspectFill" src="{{item.thumbnail}}" class="thumbnail"></image>
       <view class="param title">{{item.title}}</view>
       <view class="param fit-height">
@@ -18,7 +18,7 @@
         <text>地铁</text>
         <text>近学校</text>
       </view>
-    </view>
+    </navigator>
     <view class="separator" wx:if="{{index < esfSources.length-1}}"></view>
     </block>    
   </view>

@@ -29,13 +29,14 @@ var params = $.extend(true, {}, {
     getEstateInfo: function () { //获取小区详情
         var that = this;
         request.fetch({
+            "mock":true,
             "module": "estate",
             "action": "detail",
             "data": {
                 subEstateId: that.data.subEstateId
             },
             "success": function (data) {
-                var e = data.estateInfo;
+                var e = data.data.estateInfo;
 
                 var estateInfo = {
                     district:e.district,
@@ -57,14 +58,14 @@ var params = $.extend(true, {}, {
                     markers:[{
                         //iconPath: "/resources/others.png",
                         id: 0,
-                        latitude: data.estateInfo.latitude,
-                        longitude: data.estateInfo.longitude,
+                        latitude: e.latitude,
+                        longitude: e.longitude,
                         width: 50,
                         height: 50
                     }]
                 };
-                var comments = e.comment;
-                var agent = data.agent;
+                var comments = e.comment.commentList;
+                var agent = data.data.agent;
                 var imgUrls = [];
 
                 /*

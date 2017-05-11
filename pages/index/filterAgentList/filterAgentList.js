@@ -1,10 +1,14 @@
-//区域模拟数据
+//区域模拟数据 
 let mock = require('./../../buy/mock.js')
+const region = '区域';
+const sort = '综合排序';
+const more = '更多';
+
 module.exports = {
   data: {
-    screen_region:'区域',
-    screen_sort:'综合排序',
-    screen_more:'更多',
+    screen_region:region,
+    screen_sort:sort,
+    screen_more:more,
     //设置页面默认可以滚动
     isScroll:false,
     //点击筛选，设置三角行旋转
@@ -74,32 +78,75 @@ module.exports = {
   },
   //显示不同的筛选列表
   showScreenList(event){
-    let index = parseInt(event.currentTarget.dataset.index);
+    let actionIndex = parseInt(event.currentTarget.dataset.index);
+    //this.actionIndex = actionIndex;
     this.setData({
       isScroll:true
     })
-    if(index == 0){//区域
+    if(actionIndex == 0){//区域
       this.setData({
         isRotate0:true,
         blue0:true,
         isShowMask:true,
-        showIndex:index
+        showIndex:actionIndex
       })
-    }else if(index == 1){//综合排序
+
+      //判断是否选择了综合排序筛选条件
+      if(this.data.screen_sort == sort){//说明没有旋转
+        this.setData({
+            isRotate1:false,
+            blue1:false
+        })
+      }
+      //判断是否选择了更多筛选条件
+      if(this.data.screen_more == more){//说明没有旋转
+        this.setData({
+            isRotate2:false,
+            blue2:false
+        })
+      }
+    }else if(actionIndex == 1){//综合排序
       this.setData({
         isRotate1:true,
         blue1:true,
         isShowMask:true,
-        showIndex:index
+        showIndex:actionIndex
       })
-
-    }else if(index == 2){//更多
+      //判断是否选择了区域筛选条件
+      if(this.data.screen_region == region){//说明没有旋转
+        this.setData({
+            isRotate0:false,
+            blue0:false
+        })
+      }
+      //判断是否选择了更多筛选条件
+      if(this.data.screen_more == more){//说明没有旋转
+        this.setData({
+            isRotate2:false,
+            blue2:false
+        })
+      }
+    }else if(actionIndex == 2){//更多
       this.setData({
         isRotate2:true,
         blue2:true,
         isShowMask:true,
-        showIndex:index
+        showIndex:actionIndex
       })
+      //判断是否选择了区域筛选条件
+      if(this.data.screen_region == region){//说明没有旋转
+        this.setData({
+            isRotate0:false,
+            blue0:false
+        })
+      }
+      //判断是否选择了综合排序筛选条件
+      if(this.data.screen_sort == sort){//说明没有旋转
+        this.setData({
+            isRotate1:false,
+            blue1:false
+        })
+      }
     }
   },
   //消失遮罩
@@ -109,6 +156,27 @@ module.exports = {
         isScroll:false,
         showIndex:-1
     })
+    //判断是否选择了区域筛选条件
+    if(this.data.screen_region == region){//说明没有旋转
+      this.setData({
+          isRotate0:false,
+          blue0:false
+      })
+    }
+    //判断是否选择了综合排序筛选条件
+    if(this.data.screen_sort == sort){//说明没有旋转
+      this.setData({
+          isRotate1:false,
+          blue1:false
+      })
+    }
+    //判断是否选择了更多筛选条件
+    if(this.data.screen_more == more){//说明没有旋转
+      this.setData({
+          isRotate2:false,
+          blue2:false
+      })
+    }
   },
   //点击左边区域
   tapRegionList(event){

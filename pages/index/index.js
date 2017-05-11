@@ -1,7 +1,7 @@
 //工具方法
 let _ = require('../../utils/extend.js')
 //筛选区域脚本
-let screen = require('./screen/template.js')
+let filterAgentList = require('./filterAgentList/filterAgentList.js')
 
 //获取应用实例
 let app = getApp()
@@ -46,4 +46,4 @@ let main = {
     })
   }
 }
-Page(_.extend(true,main, screen))
+Page(_.extend(true,main, filterAgentList))

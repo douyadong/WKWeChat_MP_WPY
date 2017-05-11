@@ -1,4 +1,3 @@
-<import src="../components/detail-foot.wxml" />
 <view class="section">
     <view class="titleShadow"></view>
     <form class="commentForm">
@@ -10,12 +9,11 @@
             <view class="iconfont icon-zhaopian"></view>
             选择图片
             </view>
-            <view class="imgItem" wx:for="{{uploadImages}}" wx:for-index="index" wx:for-item="item">
+            <view class="imgItem" wx:for="{{uploadImages}}" wx:for-index="index" wx:for-item="item" wx:key="*this">
                 <icon class="deletItem" data-id="{{index}}" bindtap="deletImageItem" type="clear" size="15" color="rgba(78,78,78)"/>
                 <image mode="aspectFill" src="{{item}}"></image>
             </view>   
         </view>
         <view class="commentSubmit" bindtap="bindFormSubmit"> 提交 </view>
     </form>
-    <template is="detail-foot" data="{{...agentInfo}}"/>
 </view>
