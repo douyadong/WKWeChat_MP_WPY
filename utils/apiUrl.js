@@ -12,7 +12,7 @@ const url = {
     "detail" : "/wxmpAgent/getAgentDetail.rest"
   } ,
   "buy" : {
-    "getDetails" : "/esf/moreList.rest?offset=10&pinyin=shanghai&_=14943219" ,
+    "getDetails" : "/wxmpInterest/getCustomerHouseIntention.rest" ,
     "add" : "/addInterestRecord.rest" ,
     "edit" : "/updateInterestRecord.rest" ,
     "getAgentList" : ""

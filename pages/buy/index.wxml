@@ -1,6 +1,3 @@
-<!--loading模板-->
-<import src="../components/loading.wxml"/>
-
 <!--tips模板-->
 <import src="../components/tips.wxml"/>
 
@@ -42,5 +39,5 @@
     </view>
     <button type="primary" class="button blue" bindtap="submit">完成</button>
 </view>
-<template is="loading" data="{{loading}}" />
+
 <template is="tips" data="{{tips}}" />
