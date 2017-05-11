@@ -1,10 +1,10 @@
-module.exports = {
+ï»¿module.exports = {
     "status": 1,
     "count": 0,
-    "message": "»ñÈ¡¾­¼ÍÈËĞÅÏ¢³É¹¦",
+    "message": "è·å–ç»çºªäººä¿¡æ¯æˆåŠŸ",
     "data": {
         "agentId": 100321,
-        "agentName": "ÁõĞ¡",
+        "agentName": "åˆ˜å°",
         "agentMobile": "18811112222",
         "headRoundImgKey": "53056dcde0ff41cea97b170543e3c087",
         "headRoundImgUrl": "https://imgwater-test.oss.aliyuncs.com/53056dcde0ff41cea97b170543e3c087",

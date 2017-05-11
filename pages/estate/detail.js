@@ -64,7 +64,7 @@ var params = $.extend(true, {}, {
                         height: 50
                     }]
                 };
-                var comments = e.comment;
+                var comments = e.comment.commentList;
                 var agent = data.data.agent;
                 var imgUrls = [];
 

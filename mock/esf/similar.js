@@ -1,19 +1,19 @@
-module.exports = {
+ï»¿module.exports = {
     "status": 1,
     "count": 0,
-    "message": "»ñÈ¡¶şÊÖ·¿ÏàËÆ·¿Ô´³É¹¦",
+    "message": "è·å–äºŒæ‰‹æˆ¿ç›¸ä¼¼æˆ¿æºæˆåŠŸ",
     "data": [
         {
             "houseId": 1465832,
-            "houseTitle": "ãôãşÏéºÍ¹«Ô¢Ò»ÆÚ ",
-            "houseChild": "3ÊÒ1Ìü1ÎÀ",
-            "areaStr": "120.00©O",
+            "houseTitle": "æ³—æ³¾ç¥¥å’Œå…¬å¯“ä¸€æœŸ ",
+            "houseChild": "3å®¤1å…1å«",
+            "areaStr": "120.00ã¡",
             "totalPrice": "586",
-            "district": "ËÉ½­Çø",
-            "town": "ãôãş",
+            "district": "æ¾æ±ŸåŒº",
+            "town": "æ³—æ³¾",
             "unitPrice": "48833",
             "tagList": [
-                "µØÌú"
+                "åœ°é“"
             ],
             "boutique": 0
         }
