@@ -11,7 +11,8 @@ Page({
     this.setData({
       type: options.type,//1:相似房源，2:在售房源 
       subEstateId:options.subEstateId,
-      houseId:options.houseId
+      houseId:options.houseId,
+      agentId:options.agentId
     });
 
     this.getHouses(); 
@@ -47,22 +48,14 @@ Page({
     }
 
     request.fetch({
-      mock:true,
+      //mock:true,
       module:moduleName,
       action,
       data,
       success:function(data){
         var esfSources = that.data.esfSources || [];
         data.data.map(function(item){
-          return esfSources.push({
-            thumbnail:item.houseImgUrl,
-            title:item.houseTitle,
-            layout:item.houseChild,
-            area:item.areaStr,
-            money:item.totalPrice,
-            location:item.district+" "+item.town,
-            price:item.unitPrice
-          });
+          return esfSources.push(item);
         });
 
         that.data.totalCount = data.count;

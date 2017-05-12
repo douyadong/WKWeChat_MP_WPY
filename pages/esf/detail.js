@@ -66,22 +66,12 @@ var params = $.extend(true,{},{
                         });
                     });                    
                 }
-                newData.comments = e.comment.commentList;//评论
-                newData.commentsCount = e.comment.amount;
+                newData.comments =e.comment && e.comment.commentList || [];//评论
+                newData.commentsCount = e.comment&&e.comment.amount||0;
                 newData.sameTownTotalCount = data.data.sameTownTotalCount;//在售房源数量
                 newData.esfSources = [];
                 if(data.data.sameTownHouseList){//相似房源列表
-                  newData.esfSources = data.data.sameTownHouseList.map(function (item) {
-                    return {
-                      thumbnail: item.houseImgUrl,
-                      title: item.houseTitle,
-                      layout: item.houseChild,
-                      area: item.areaStr,
-                      money: item.totalPrice,
-                      location: item.district + " " + item.town,
-                      price: item.unitPrice
-                    }
-                  });//相似房源列表
+                  newData.esfSources = data.data.sameTownHouseList||[];//相似房源列表
                 }
                 
                 if(a){//经纪人信息
@@ -94,15 +84,15 @@ var params = $.extend(true,{},{
         });
     },
     onLoad: function(options) {
+      //todo:打开这个注释
       this.setData({
-        houseId: 1460256,
-        agentId: 100321
-      });
-
-      /*this.setData({
         houseId: options.houseId,
         agentId: options.agentId
-      });*/
+      });
+      this.setData({
+        //houseId: 1460256,
+        agentId: 100321
+      });      
       this.getDetail();
     }
 },houseComment,swiper,df);
