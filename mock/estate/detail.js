@@ -24,7 +24,9 @@
             "propertyRight": "--",
             "memo": ";售均价:0",
             "imgList": [
-                "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW"
+                "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
+		"https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
+		"https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW"
             ],
             "estateImgUrl": "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
             "sellhouseCount": 0,
@@ -68,7 +70,19 @@
                                 "imgType": 1
                             }
                         },
-                        "imgList": null,
+                        "imgList":[{
+				"pkid": 123,
+				"url": "http://imgwater-test.oss.aliyuncs.com/6b706135c8b24a769e08662bb33ee5a5",
+				"imgKey": "6b706135c8b24a769e08662bb33ee5a5",
+				"postFix": null,
+				"standard": null
+			}, {
+				"pkid": 124,
+				"url": "http://imgwater-test.oss.aliyuncs.com/e28438fa249c483b83a8e22431de16cd",
+				"imgKey": "e28438fa249c483b83a8e22431de16cd",
+				"postFix": null,
+				"standard": null
+			}],
                         "landlord": 1
                     },
                     {

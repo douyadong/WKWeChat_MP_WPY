@@ -1,7 +1,5 @@
 {
   "pages": [
-    "pages/agent/detail",
-
     "pages/index/index",
     "pages/city/index",
     "pages/logon/index",
@@ -13,7 +11,7 @@
     "pages/xf/posters",
     "pages/xf/presses",
     "pages/xf/promotions",
-
+    "pages/agent/detail",
     "pages/agent/qrcode",
     "pages/agent/rateList",
     "pages/agent/writeRate",

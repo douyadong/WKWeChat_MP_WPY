@@ -28,13 +28,16 @@ module.exports = {
     if (showLoading) {
       wx.showToast({
         icon:'loading',
-        title:showTitle
+        title:showTitle,
+        duration:100000
       })
     }
 
     if(mock){
       var data = require(`../mock/${module}/${action}.js`);
       success(data);
+      showBarLoading && wx.hideNavigationBarLoading()
+      showLoading && wx.hideToast();
       return;
     }
 

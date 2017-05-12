@@ -12,12 +12,13 @@ Page({
             agentId: options.agentId
         })
 
-        getAgentInfo();
+        this.getAgentInfo();
     },
     getAgentInfo: function () {
         var that = this;
         if (this.data.agentId) {
             request.fetch({
+                mock:true,
                 module: "esf",
                 action: "agentInfo",
                 data: {

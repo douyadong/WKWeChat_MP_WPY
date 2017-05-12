@@ -1,9 +1,9 @@
 <template name="esf-sources">
   <view class="esf-sources">
-    <block wx:for="{{esfSources}}" wx:key="*this" wx:for-item="source">
-    <navigator class="source" url="/pages/esf/detail?subEstateId=11111">
-      <image mode="aspectFill" src="{{source.houseImgUrl}}" class="thumbnail"></image>
-      <view class="param title">{{source.houseTitle}}</view>
+    <block wx:for="{{esfSources}}">
+    <navigator class="source" url="/pages/esf/detail?houseId={{item.houseId}}&agentId={{agentId}}">
+      <image mode="aspectFill" src="{{item.houseImgUrl}}" class="thumbnail"></image>
+      <view class="param title">{{item.houseTitle}}</view>
       <view class="param fit-height">
         <text>{{source.houseChild}} {{source.areaStr}}㎡</text>
         <text class="money">{{source.totalPrice}}万</text>

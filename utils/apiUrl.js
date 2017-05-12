@@ -12,7 +12,7 @@ const url = {
     "detail" : "/wxmpAgent/getAgentDetail.rest"
   } ,
   "buy" : {
-    "getDetails" : "/esf/moreList.rest?offset=10&pinyin=shanghai&_=14943219" ,
+    "getDetails" : "/wxmpInterest/getCustomerHouseIntention.rest" ,
     "add" : "/addInterestRecord.rest" ,
     "edit" : "/updateInterestRecord.rest" ,
     "getAgentList" : ""
@@ -31,6 +31,18 @@ const url = {
     "list" : "/estate/queryEstateCommentList.rest" ,
     "uploadImg" : "/wxmpEstate/uploadPic.rest" ,
     "uploadComment" : "/wxmpEstate/commentEstate.rest"
+  },
+  "city":{
+    "list":"/wxmpCommon/getAllCityBusiness.rest"
+  },
+  "index":{
+    "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest"
+  },
+  "report":{
+    "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"
+
+
+
   }
 }
 

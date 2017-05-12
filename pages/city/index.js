@@ -1,10 +1,11 @@
+var request = require('../../utils/request.js');
 let main = {
   data: {
       showCityIndex:0,
-      locationCity:"上海",//定位城市
-      domesticCitys:[{cityId:"001",cityName:"上海"},{cityId:"002",cityName:"北京"},{cityId:"003",cityName:"天津"},{cityId:"004",cityName:"南京"}],
-      InternationalCity:"纽约",
-      InternationalCitys:[{cityId:"001",cityName:"纽约"},{cityId:"002",cityName:"华盛顿"},{cityId:"003",cityName:"硅谷"},{cityId:"004",cityName:"拉斯维加斯"}],
+      locationCity:{cityId:"001",cityName:"上海"},//定位的国内城市
+      domesticCitys:[],
+      InternationalCity:{cityId:"001",cityName:"纽约"},//定位的国际城市
+      InternationalCitys:[]
   },
   switchList(event){
     this.setData({
@@ -14,8 +15,44 @@ let main = {
   selectedCity(event){
     console.log(event.currentTarget.dataset.cityid);
   },
+  getCity(){
+    let domesticCitys = [];//国内
+    let InternationalCitys = [];//国际
+    request.fetch({
+        mock:true,
+        module:'city',
+        action:'list',
+        data:{},
+        success:function(data){
+            let cityList = data.data;
+            for(let i=0;i<cityList.length;i++){
+              if(cityList[i].china){//是国内城市
+                domesticCitys.push({
+                  cityId:cityList[i].cityId,
+                  cityName:cityList[i].cityName
+                });
+              }else{
+                InternationalCitys.push({
+                  cityId:cityList[i].cityId,
+                  cityName:cityList[i].cityName
+                });
+              }
+            }
+        }
+    });
+    //console.log(domesticCitys);
+    //console.log(InternationalCitys);
+    this.setData({
+        domesticCitys:domesticCitys,
+        InternationalCitys:InternationalCitys
+    })
+  },
+  setLocationCity(){
+    //读取地理定位，判断是国内还是国外，设置不同的地理定位
+
+  },
   onLoad(){
-    
+    this.getCity();
   }
 }
 Page(main)
