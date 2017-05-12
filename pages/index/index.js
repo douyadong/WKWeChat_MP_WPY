@@ -104,7 +104,10 @@ let main = {
         })
       })
   },
-  onLaunch() {
+  onLoad(){
+    this.init();
+
+
     wx.login({
       success: function(res) {
         if (res.code) {
@@ -115,9 +118,6 @@ let main = {
         }
       }
     });
-  },
-  onLoad(){
-    this.init();
     this.getUserInfo();
   },
   //滚动到底部异步加载经纪人列表
