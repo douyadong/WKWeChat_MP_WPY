@@ -5,16 +5,21 @@
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 .agent-rates {
     .rate {
-        padding: 30rpx 0;
-        border-top: 1rpx solid #e4e4e4;
+        padding: 30rpx 0 ;
+        border-top: 1rpx solid #e4e4e4 ;
         .star {
-            margin-bottom: 20rpx;
+            margin-bottom: 20rpx ;
             height: 25rpx;
             line-height: 25rpx;
             .iconfont {
-                margin-right: 6rpx;
-                color : @star-color ;
+                margin-right: 6rpx;                
                 font-size : @small-font-size ;
+            }
+            .icon-star-all , .icon-star-half {
+                color : @star-color ;
+            }
+            .icon-star-empty {
+                color : @legend-line-color ;
             }
         }
         .content {

@@ -5,20 +5,22 @@ module.exports = {
     "data": {
         "simpleAgentDetail": {
             "agentId": 100321,
-            "agentName": "刘小",
+            "agentName": "王小五",
             "agentMobile": "18811112222",
             "headRoundImgKey": "53056dcde0ff41cea97b170543e3c087",
             "headRoundImgUrl": "https://imgwater-test.oss.aliyuncs.com/53056dcde0ff41cea97b170543e3c087",
             "isWellAgent": 0,
             "vipType": 0,
             "abbreviation": "",
-            "companyName": "123",
+            "companyName": "上海志远地产经纪有限公司",
             "agentWChatId": null,
             "weChatQRImgKey": null,
             "agentWChartQRImgUrl": null,
             "agentVerifiedStatus": 1,
             "wellAgentBizMessageList": [
-                "松江区好经纪人"
+                "松江区" , 
+                "长宁区" ,
+                "闵行区"
             ],
             "agentBizTownList": [
                 "泗泾",
@@ -29,19 +31,49 @@ module.exports = {
                 "松江大学城"
             ],
             "agentVolume": 0,
-            "agentIntroduction": null,
-            "agentStory": null,
+            "agentIntroduction": "五年从业经验，促成超过100笔交易，安家置业请选择我！促成超过100笔交易，是名副其实的超级经纪人！",
+            "agentStory": "王先生看中一套静安区的900万的房子，在帮他和房东多次沟通后，王先生顺着他的意思往下走，终于让顾客买到了想要的房子。",
             "myBizStoryImgUrls": null
         },
         "simpleAgentCommentTag": {
-            "agentCommentCount": 0,
-            "objScore": 0,
-            "shi": 0,
-            "kong": 5,
-            "hasSmall": false,
-            "tags": []
+            "agentCommentCount": 20 ,
+            "objScore": 2.5 ,
+            "shi": 2 ,
+            "kong": 2 ,
+            "hasSmall": true ,
+            "tags": [
+                { "id" : 1 , "label" : "礼貌热情" , "count" : 23 , "type" : 1 } ,
+                { "id" : 2 , "label" : "比较专业" , "count" : 46 , "type" : 1 } ,
+                { "id" : 3 , "label" : "仪表整洁" , "count" : 12 , "type" : 1 } ,
+                { "id" : 4 , "label" : "不够专业" , "count" : 5 , "type" : 2 }
+            ]
         },
-        "simpleAgentCommentList": [],
+        "simpleAgentCommentList": [
+            {
+                "id" : 1 , 
+                "guestId" : 2345 ,
+                "guestPhoneNum" : "18516175860" ,
+                "comment" : "服务态度很好，感觉非常靠谱的一个经纪人！" , 
+                "score" : 4.5 ,
+                "commentType" : 1 , 
+                "createTime" : "2017-02-08 12:34:56" ,
+                "guestName" : "赵华刚" ,
+                "createTimeString" : "2017-02-08 12:34:56" , 
+                "isAnonym" : 2
+            } ,
+            {
+                "id" : 2 , 
+                "guestId" : 1123 ,
+                "guestPhoneNum" : "18621345678" ,
+                "comment" : "服务态度非常恶劣，我不想跟这个人说话好吗？老子要打人啦！" , 
+                "score" : 2.5 ,
+                "commentType" : 2 , 
+                "createTime" : "2017-02-06 12:34:56" ,
+                "guestName" : "俞晓晨" ,
+                "createTimeString" : "2017-02-06 12:34:56" , 
+                "isAnonym" : 2
+            } ,
+        ],
         "recommendOldHouseList": [
             {
                 "houseId": 1466005,
@@ -105,7 +137,42 @@ module.exports = {
                 "boutique": 0
             }
         ],
-        "recommendNewHouseList": null,
-        "recommendType": 2
+        "recommendNewHouseList": [
+            {
+                "id" : 1 , 
+                "townId" : 2345 ,
+                "estateId" : 1136 ,
+                "subEstateName" : "保利清能西海岸一期" ,
+                "imageUrl" : "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.ML",
+                "estateName" : "保利清能西海岸" , 
+                "startSpace" : "78㎡" ,
+                "endSpace" : "120㎡" ,
+                "avgPriceWou" : 45400 ,
+                "districtName" : "长宁区" ,
+                "townName" : "中山公园" ,
+                "isSoonOpen" : 1 ,
+                "hasActivity" : 1 ,
+                "isSubwayEstate" : 1 ,
+                "hasVideo" : 1
+            } ,
+            {
+                "id" : 2 , 
+                "townId" : 2346 ,
+                "estateId" : 1128 ,
+                "subEstateName" : "万联城市广场二期" ,
+                "imageUrl" : "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.ML",
+                "estateName" : "万联城市广场" , 
+                "startSpace" : "98㎡" ,
+                "endSpace" : "158㎡" ,
+                "avgPriceWou" : 13400 ,
+                "districtName" : "静安区" ,
+                "townName" : "静安寺" ,
+                "isSoonOpen" : 1 ,
+                "hasActivity" : 0 ,
+                "isSubwayEstate" : 0 ,
+                "hasVideo" : 1
+            }
+        ],
+        "recommendType": 1
     }
 } ;

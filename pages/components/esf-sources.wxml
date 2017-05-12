@@ -1,16 +1,16 @@
 <template name="esf-sources">
   <view class="esf-sources">
-    <block wx:for="{{esfSources}}">
+    <block wx:for="{{esfSources}}" wx:key="*this" wx:for-item="source">
     <navigator class="source" url="/pages/esf/detail?subEstateId=11111">
-      <image mode="aspectFill" src="{{item.thumbnail}}" class="thumbnail"></image>
-      <view class="param title">{{item.title}}</view>
+      <image mode="aspectFill" src="{{source.houseImgUrl}}" class="thumbnail"></image>
+      <view class="param title">{{source.houseTitle}}</view>
       <view class="param fit-height">
-        <text>{{item.layout}} {{item.area}}㎡</text>
-        <text class="money">{{item.money}}万</text>
+        <text>{{source.houseChild}} {{source.areaStr}}㎡</text>
+        <text class="money">{{source.totalPrice}}万</text>
       </view>
       <view class="param fit-height">
-        <text>{{item.location}}</text>
-        <text class="price">{{item.price}}元/㎡</text>
+        <text>{{source.district}} {{source.town}}</text>
+        <text class="price">{{source.unitPrice}}元/㎡</text>
       </view>
       <view class="param tags">
         <text class="selected">精选</text>
