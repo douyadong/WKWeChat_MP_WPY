@@ -39,7 +39,7 @@ App({
       var returnUrl = this.getCurrentPage().__route__
       if (!needRedirect) {return false;}
       wx.navigateTo({
-        url: '/pages/logon/index?returnUrl='+returnUrl
+        url: '/pages/logon/index?returnUrl=' + returnUrl
       })
     }
 
@@ -68,5 +68,29 @@ App({
       that.getCurrentPage().setData({'tips': {'show': false}})
       typeof cb == 'function' && cb()
     }, duration)
+  },
+  redirect: function ({url, query}) {
+    if (!url) return
+
+    let history = getCurrentPages()
+    let queryString = ''
+
+    if (query) {
+      Object.keys(query).forEach(key => {
+        queryString += `${key}=${query[key]}&`
+      })
+      queryString = queryString.substr(0, queryString.length - 1)
+      url = url + '?' + queryString
+    }
+
+    if (history.length >= 5) {
+      wx.redirectTo({
+        url: url
+      })
+    }else {
+      wx.navigateTo({
+        url: url
+      })
+    }
   }
 })

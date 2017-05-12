@@ -14,8 +14,7 @@ const url = {
   "buy" : {
     "getDetails" : "/wxmpInterest/getCustomerHouseIntention.rest" ,
     "add" : "/addInterestRecord.rest" ,
-    "edit" : "/updateInterestRecord.rest" ,
-    "getAgentList" : ""
+    "edit" : "/wxmpInterest/addOrUpdateIntentionAndGetAgentList.rest" 
   } ,
   "estate" : {
     "zan" : "/wxmpEstate/upOrDownEstateComment.rest" ,
