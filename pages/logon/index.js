@@ -130,11 +130,50 @@ Page({
   },
   onLoad: function () {
     //1.页面初始化，读取Storage，判断微信用户是否为空
+    wx.getStorage({
+      key: 'userInfo',
+      success: function(res) {//已授权
+          console.log(res.data)
+          //获取code
+          wx.login({
+            success: function(res) {
+              if (res.code) {
+                console.log(res.code);
+                //发起网络请求，code 换取 session_key
 
+                //写入Storage
+                
+              } else {
+                console.log('获取用户登录态失败！' + res.errMsg)
+              }
+            }
+          });
+      },
+      fail:function() {//未授权
+        wx.showModal({
+          title: '授权提示',
+          content: '检测到您没有打开悟空找房的用户信息权限，是否去设置打开？',
+          success: function(res) {
+            if (res.confirm) {
+                //去设置授权
+                wx.openSetting({
+                  success: (res) => {
+                    console.log(res);
+                  }
+                })
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+      }
+    })
     //不为空，说明已授权，提交登录信息
     
     //为空，未授权 -> 弹出授权提示，设置授权
     //点“取消”，弹框消失，“确定”去登录，校验手机号，验证码
+    //判断是否有绑定手机号？
+          //登录获取code
 
 
 

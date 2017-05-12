@@ -4,7 +4,7 @@
 <view class="page {{isScroll ? 'noScroll':''}}">
   <view class="searchNavBox">
     <view class="searchNav">
-      <navigator url="/pages/city/index" class="city">
+      <navigator url="/pages/logon/index" class="city">
           <text class="cityName">{{geographical.cityName}}</text>
           <text class="down"></text>
       </navigator>

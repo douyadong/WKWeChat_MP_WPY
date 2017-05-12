@@ -19,8 +19,10 @@ App({
       wx.login({
         success: function () {
           wx.getUserInfo({
+            withCredentials:true,
             success: function (res) {
               that.globalData.userInfo = res.userInfo
+              console.log(res);
               typeof cb == 'function' && cb(that.globalData.userInfo)
             }
           })
