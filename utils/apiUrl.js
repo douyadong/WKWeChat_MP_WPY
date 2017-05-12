@@ -32,8 +32,17 @@ const url = {
     "uploadImg" : "/wxmpEstate/uploadPic.rest" ,
     "uploadComment" : "/wxmpEstate/commentEstate.rest"
   },
+  "city":{
+    "list":"/wxmpCommon/getAllCityBusiness.rest"
+  },
+  "index":{
+    "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest"
+  },
   "report":{
     "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"
+
+
+
   }
 }
 

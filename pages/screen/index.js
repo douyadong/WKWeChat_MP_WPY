@@ -19,8 +19,12 @@ function HighlightTransform(data) {
               isgl:(arr[k] == data[i].key)
             });
           }
-          newList.push(list);
+          newList.push({
+              row:data[i],//原始数据
+              glList:list//高亮数据
+          });
       }
+      console.log(newList);
       return  newList;
 }
 
@@ -39,27 +43,44 @@ let main = {
   },
   //时时输入
   inputEvent(event){
-      console.log(event.detail);
+      //console.log(event.detail);
+      this.getAgentList(event.detail.value);
   },
   //点击完成触发
   completeEvent(event){
-      console.log(event.detail);
+      //console.log(event.detail.value);
+      this.getAgentList(event.detail.value);
   },
+  //搜索时获取经纪人数据
+  getAgentList(key){
+      console.log(key);  
+  },
+
+
   //点击更多经纪人
   moreAgent(event){
     let oldList = this.data.agentList;
     let newList = [
         {
             text:"徐平",
-            key:"徐"
+            key:"徐",
+            isVip:true,
+            phone:"13482385237",
+            portrait:"https://img.wkzf.com/0f9f836ac1ad4fd5b1cdbac652a51988"
         },
         {
             text:"徐莉",
-            key:"徐"
+            key:"徐",
+            isVip:false,
+            phone:"13482385237",
+            portrait:"https://img.wkzf.com/0f9f836ac1ad4fd5b1cdbac652a51988"
         },
         {
             text:"徐娟",
-            key:"徐"
+            key:"徐",
+            isVip:true,
+            phone:"13482385237",
+            portrait:"https://img.wkzf.com/0f9f836ac1ad4fd5b1cdbac652a51988"
         }
     ];
     let arr = HighlightTransform(newList)
@@ -75,15 +96,24 @@ let main = {
     let list1 = [
         {
             text:"徐平",
-            key:"徐"
+            key:"徐",
+            isVip:true,
+            phone:"13482385237",
+            portrait:"https://img.wkzf.com/0f9f836ac1ad4fd5b1cdbac652a51988"
         },
         {
             text:"徐莉",
-            key:"徐"
+            key:"徐",
+            isVip:false,
+            phone:"13482385237",
+            portrait:"https://img.wkzf.com/0f9f836ac1ad4fd5b1cdbac652a51988"
         },
         {
             text:"徐娟",
-            key:"徐"
+            key:"徐",
+            isVip:true,
+            phone:"13482385237",
+            portrait:"https://img.wkzf.com/0f9f836ac1ad4fd5b1cdbac652a51988"
         }
     ];
     this.setData({

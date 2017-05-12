@@ -134,9 +134,6 @@ Page({
     currentHouseFeatures: [],
     currentLocationStr: '',
     loaded: false,
-    loading: {
-      show: false
-    },
     tips: {
       show: false
     }
@@ -331,8 +328,6 @@ Page({
     this.setData({'houseFeatures': this.data.houseFeatures})
   },
   getData: function (callback) {
-    let res = require('./mock').interestInfo
-
     request.fetch({
       'module': 'buy',
       'action': 'getDetails',

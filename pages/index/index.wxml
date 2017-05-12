@@ -4,7 +4,13 @@
 <view class="page {{isScroll ? 'noScroll':''}}">
   <view class="searchNavBox">
     <view class="searchNav">
-      <view class="city" data-pagename="../city/index" bindtap="goPage"><text class="cityName">上海</text><text class="iconfont icon-arrow-down down"></text></view>
+      <view class="city" data-pagename="../city/index" bindtap="goPage">
+        <text class="cityName">上海</text>
+        <!--
+        <text class="iconfont icon-arrow-down down"></text>
+        -->
+        <text class="down"></text>
+      </view>
       <view class="searchBox">
         <view class="search" data-pagename="../screen/index" bindtap="goPage"><text class="iconfont icon-search searchIcon"></text><text class="searchText">搜索小区或地址</text></view>
       </view>
@@ -20,20 +26,15 @@
         <view class="text" data-pagename="../buy/index" bindtap="goPage">我要买房</view>
       </view>
   </view>
-  <!-- 筛选 -->
+  <!-- 筛选-->
   <include src="filterAgentList/filterAgentList.wxml"/>
+  <!-- 没有经纪人列表列表显示 -->
+  <view class="noAgentImgBox" wx:if="{{agentList.length == 0}}"></view>
   <!-- 经纪人列表 -->
   <view class="agentListBox">
       <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
           <include src="agentList/agentList.wxml"/>
       </block>
   </view>
-  <!-- 高亮 -->
-  <!--
-  <block wx:for="{{newList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-    <view> 
-      <text wx:for="{{list}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'red':''}}">{{li.text}}</text>
-    </view>
-  </block>
-  -->
+  
 </view>

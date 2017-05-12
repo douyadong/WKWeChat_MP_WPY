@@ -1,4 +1,4 @@
-﻿module.exports = {
+module.exports = {
     "status": 1,
     "count": 0,
     "message": "成功",
@@ -49,6 +49,7 @@
             "sellTimeStr": "2016-04-21",
             "seeHouseCompleteAmount": 0,
             "schoolName": null,
+            "metroInfo": "",
             "metroInfo": "",
             "firstImg": "https://imgwater-test.oss.aliyuncs.com/4bc8a0356ca849ad90b51051b5ba1e2a.DL"
         },

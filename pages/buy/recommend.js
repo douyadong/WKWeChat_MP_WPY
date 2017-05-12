@@ -1,20 +1,202 @@
 // pages/buy/recommend.js
+
+const request = require('../../utils/request')
+const appInstance = getApp()
+
 Page({
-  data: {},
-  onLoad: function (options) {
-    // 页面初始化 options为页面跳转所带来的参数
+  data: {
+    prices: [{
+      id: '1',
+      text: '100万以下',
+      min: 0,
+      max: 100
+    }, {
+      id: '2',
+      text: '100-150万',
+      min: 100,
+      max: 150
+    }, {
+      id: '3',
+      text: '150-200万',
+      min: 150,
+      max: 200
+    }, {
+      id: '4',
+      text: '200-250万',
+      min: 200,
+      max: 250
+    }, {
+      id: '5',
+      text: '250-300万',
+      min: 250,
+      max: 300
+    }, {
+      id: '6',
+      text: '300-500万',
+      min: 300,
+      max: 500
+    }, {
+      id: '7',
+      text: '500-1000万',
+      min: 500,
+      max: 1000
+    }, {
+      id: '8',
+      text: '1000-2000万',
+      min: 1000,
+      max: 2000
+    }, {
+      id: '9',
+      text: '2000万以上',
+      min: 2000,
+      max: 0
+    }, {
+      id: '0',
+      text: '不限',
+      min: 0,
+      max: 0
+    }],
+    houseTypes: [{
+      id: '1',
+      text: '一室'
+    }, {
+      id: '2',
+      text: '二室'
+    }, {
+      id: '3',
+      text: '三室'
+    }, {
+      id: '4',
+      text: '四室'
+    }, {
+      id: '5',
+      text: '五室及以上'
+    }, {
+      id: '0',
+      text: '不限'
+    }],
+    houseFeatures: [{
+      id: 10,
+      type: 'Subway',
+      text: '地铁房',
+      selected: false
+    }, {
+      id: 20,
+      type: 'School',
+      text: '近学校',
+      selected: false
+    }, {
+      id: 30,
+      type: 'South',
+      text: '朝南',
+      selected: false
+    }, {
+      id: 40,
+      type: 'Elevator',
+      text: '有电梯',
+      selected: false
+    }, {
+      id: 50,
+      type: 'Green',
+      text: '绿化好',
+      selected: false
+    }, {
+      id: 60,
+      type: 'Parking',
+      text: '有停车位',
+      selected: false
+    }],
+    currentPrice: {
+      min: '',
+      max: '',
+      text: '请选择总价范围'
+    },
+    currentHouseType: {
+      id: '',
+      text: '请选择户型'
+    },
+    currentHouseFeatures: [],
+    currentLocationStr: ''
   },
-  onReady: function () {
-    // 页面渲染完成
+  onLoad: function () {
+    let that = this
+
+    // get data
+    this.getData(function (res) {
+      let data = res.data
+      // 价格信息
+      that.setPrice(data.startPrice, data.endPrice)
+
+      // 户型信息
+      that.setHouseType(data.bedRoomSum)
+
+      // 位置信息
+      that.setLocation(data.townIdLists)
+
+      // 房源特色信息
+      that.setHouseFeatures(data.houseFeature)
+    })
   },
-  onShow: function () {
-    // 页面显示
+  setPrice: function (startPrice, endPrice) {
+    let that = this
+
+    this.data.prices.forEach(item => {
+      if (item.min == startPrice && item.max == endPrice) {
+        this.data.currentPrice = item
+        that.setData({'currentPrice': that.data.currentPrice})
+      }
+    })
   },
-  onHide: function () {
-    // 页面隐藏
+  setHouseType: function (bedRoomSum) {
+    let that = this
+
+    this.data.houseTypes.forEach(item => {
+      if (item.id == bedRoomSum) {
+        that.data.currentHouseType = item
+        that.setData({'currentHouseType': that.data.currentHouseType})
+      }
+    })
   },
-  onUnload: function () {
-    // 页面关闭
+  setLocation: function (townList) {
+    let that = this
+    let locationStr,location = []
+
+    if (townList && townList.length) {
+      townList.forEach(item => {
+        location.push(item.townName)
+      })
+
+      locationStr = location.join('、')
+
+      this.setData({'currentLocationStr': locationStr })
+    }
+  },
+  setHouseFeatures: function (featuresList) {
+    let that = this
+
+    this.data.houseFeatures.forEach(item => {
+      featuresList.forEach(oFeature => {
+        if (oFeature.featureId == item.id) {
+          item.selected = true
+        }
+      })
+    })
+
+    this.setData({'houseFeatures': this.data.houseFeatures})
+  },
+  handleRedirect: function (e) {
+    wx.navigateTo({url: e.currentTarget.dataset.url})
+  },
+  getData: function (callback) {
+    request.fetch({
+      'module': 'buy',
+      'action': 'getDetails',
+      'showLoading': true,
+      'mock': true,
+      success: function (res) {
+        callback(res)
+      }
+    })
   },
   call: function (e) {
     wx.makePhoneCall({
