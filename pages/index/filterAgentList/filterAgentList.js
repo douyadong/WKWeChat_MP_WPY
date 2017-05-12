@@ -1,5 +1,3 @@
-//区域模拟数据 
-let mock = require('./../../buy/mock.js')
 const region = '区域';
 const sort = '综合排序';
 const more = '更多';
