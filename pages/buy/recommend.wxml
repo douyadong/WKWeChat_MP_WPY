@@ -19,97 +19,59 @@
     </view>
     <view class="title">以下经纪人会主动与您联系</view>
     <view class="agent-list">
-        <navigator url="" class="item">
+        <navigator url="/pages/agent/detail?agentId={{item.agentId}}" class="item {{index==matchAgentList.length-1?'last':''}}" wx:for="{{matchAgentList}}" wx:key="{{item.agentId}}">
             <view class="main">
                 <view class="img-box">
-                    <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
-                    <view class="sprite sprite-jingu"></view>
+                    <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
+                    <view class="sprite sprite-jingu" wx:if="{{item.isWellAgent=='1'}}"></view>
                 </view>
                 <view class="content">
                     <view class="name-info">
-                        <text class="name">王小五</text>
-                        <text class="company">志远地产</text>
+                        <text class="name">{{item.agentName}}</text>
+                        <text class="company">{{item.agentBelongToCompanyName}}</text>
                     </view>
                     <view class="tips">
-                        根据您选的长宁地区推荐
+                        {{item.recommandInfo}}
                     </view>
                 </view>
             </view>
             <view class="tel">
-                <view class="iconfont icon-tel"></view>
-            </view>
-        </navigator>
-        <navigator url="" class="item last">
-            <view class="main">
-                <view class="img-box">
-                    <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
-                    <view class="sprite sprite-jingu"></view>
-                </view>
-                <view class="content">
-                    <view class="name-info">
-                        <text class="name">王小五</text>
-                        <text class="company">志远地产</text>
-                    </view>
-                    <view class="tips">
-                        根据您选的长宁地区推荐
-                    </view>
-                </view>
-            </view>
-            <view class="tel">
-                <view class="iconfont icon-tel"></view>
+                <view class="iconfont icon-tel" data-text="{{item.agentMobile}}" catchtap="call"></view>
             </view>
         </navigator>
     </view>
-    <view class="title">更多推荐</view>
-    <view class="agent-list more">
-        <navigator url="" class="item">
-            <view class="main">
-                <view class="img-box">
-                    <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
-                    <view class="sprite sprite-jingu"></view>
-                </view>
-                <view class="content">
-                    <view class="name-info">
-                        <text class="name">王小五</text>
-                        <text class="company">志远地产</text>
+    <block wx:if="{{recommenAgentList.length}}">
+        <view class="title">更多推荐</view>
+        <view class="agent-list more">
+            <navigator wx:if="{{index<2||showMore}}" url="/pages/agent/detail?agentId={{item.agentId}}" class="item {{index==recommenAgentList.length-1?'last':''}}" wx:for="{{recommenAgentList}}" wx:key="{{item.agentId}}">
+                <view class="main">
+                    <view class="img-box">
+                        <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
+                        <view class="sprite sprite-jingu" wx:if="{{item.isWellAgent=='1'}}"></view>
                     </view>
-                    <view class="tips">
-                        根据您选的长宁地区推荐
-                    </view>
-                </view>
-            </view>
-            <view class="tel">
-                <view class="iconfont icon-tel"></view>
-            </view>
-        </navigator>
-        <navigator url="" class="item last">
-            <view class="main">
-                <view class="img-box">
-                    <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e" class="head-portrait"></image>
-                    <view class="sprite sprite-jingu"></view>
-                </view>
-                <view class="content">
-                    <view class="name-info">
-                        <text class="name">王小五</text>
-                        <text class="company">志远地产</text>
-                    </view>
-                    <view class="tips">
-                        根据您选的长宁地区推荐
+                    <view class="content">
+                        <view class="name-info">
+                            <text class="name">{{item.agentName}}</text>
+                            <text class="company">{{item.agentBelongToCompanyName}}</text>
+                        </view>
+                        <view class="tips">
+                            {{item.recommandInfo}}
+                        </view>
                     </view>
                 </view>
-            </view>
-            <view class="tel">
-                <view class="iconfont icon-tel"></view>
-            </view>
-        </navigator>
+                <view class="tel">
+                    <view class="iconfont icon-tel" data-text="{{item.agentMobile}}" catchtap="call"></view>
+                </view>
+            </navigator>
 
-        <button class="button gray">查看更多</button>
-    </view>
+            <button class="button gray" wx:if="{{recommenAgentList.length>2&&!showMore}}" bindtap="showMore">查看更多</button>
+        </view>
+    </block>
 </view>
 
  <view class="footer">
     <view class="tips">
-        <text>若经纪人长时间未与您联系，可致电：</text><text class="tel" bindtap="call" data-text='400-821-5365'>400-821-5365</text>
+        <text>若经纪人长时间未与您联系，可致电：</text><text class="tel" catchtap="call" data-text='400-821-5365'>400-821-5365</text>
         <view class="tips">在悟空找房APP可查看更多</view>
     </view>  
     

@@ -122,6 +122,58 @@ module.exports = {
         'featureId': 30,
         'featureName': '朝南'
       }
+    ],
+    'orderAgentIdList': [{
+      'agentId': '11',
+      'agentName': '王小五',
+      'agentMobile': '15921476222',
+      'headRoundImgUrl': 'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
+      'headRoundImgKey': '',
+      'agentBelongToCompanyName': '志远地产',
+      'isWellAgent': 1,
+      'recommandInfo': '根据您选的长宁地区推荐'
+    },
+      {
+        'agentId': '11',
+        'agentName': '王小六',
+        'agentMobile': '15921476222',
+        'headRoundImgUrl': 'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
+        'headRoundImgKey': '',
+        'agentBelongToCompanyName': '志远地产',
+        'isWellAgent': 0,
+        'recommandInfo': '根据您选的长宁地区推荐'
+      }],
+    'recommendAgentIdList': [
+      {
+        'agentId': '11',
+        'agentName': '王小七',
+        'agentMobile': '15921476222',
+        'headRoundImgUrl': 'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
+        'headRoundImgKey': '',
+        'agentBelongToCompanyName': '志远地产',
+        'isWellAgent': 1,
+        'recommandInfo': '根据您选的长宁地区推荐'
+      },
+      {
+        'agentId': '11',
+        'agentName': '王小八',
+        'agentMobile': '15921476222',
+        'headRoundImgUrl': 'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
+        'headRoundImgKey': '',
+        'agentBelongToCompanyName': '志远地产',
+        'isWellAgent': 0,
+        'recommandInfo': '根据您选的长宁地区推荐'
+      },
+      {
+        'agentId': '11',
+        'agentName': '王小九',
+        'agentMobile': '15921476222',
+        'headRoundImgUrl': 'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
+        'headRoundImgKey': '',
+        'agentBelongToCompanyName': '志远地产',
+        'isWellAgent': 0,
+        'recommandInfo': '根据您选的长宁地区推荐'
+      }
     ]
   }
 }

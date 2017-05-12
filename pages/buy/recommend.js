@@ -115,8 +115,11 @@ Page({
       id: '',
       text: '请选择户型'
     },
+    showMore: false,
     currentHouseFeatures: [],
-    currentLocationStr: ''
+    currentLocationStr: '',
+    matchAgentList: [],
+    recommenAgentList: []
   },
   onLoad: function () {
     let that = this
@@ -135,6 +138,9 @@ Page({
 
       // 房源特色信息
       that.setHouseFeatures(data.houseFeature)
+
+      // 设置经纪人列表
+      that.setAgentList(data)
     })
   },
   setPrice: function (startPrice, endPrice) {
@@ -184,8 +190,43 @@ Page({
 
     this.setData({'houseFeatures': this.data.houseFeatures})
   },
+  setAgentList: function (data) {
+    let that = this
+
+    data.orderAgentIdList.forEach(item => {
+      that.data.matchAgentList.push({
+        'agentId': item.agentId,
+        'agentName': item.agentName,
+        'agentMobile': item.agentMobile,
+        'headRoundImgUrl': item.headRoundImgUrl,
+        'headRoundImgKey': item.headRoundImgKey,
+        'agentBelongToCompanyName': item.agentBelongToCompanyName,
+        'isWellAgent': item.isWellAgent,
+        'recommandInfo': item.recommandInfo
+      })
+    })
+
+    data.recommendAgentIdList.forEach(item => {
+      that.data.recommenAgentList.push({
+        'agentId': item.agentId,
+        'agentName': item.agentName,
+        'agentMobile': item.agentMobile,
+        'headRoundImgUrl': item.headRoundImgUrl,
+        'headRoundImgKey': item.headRoundImgKey,
+        'agentBelongToCompanyName': item.agentBelongToCompanyName,
+        'isWellAgent': item.isWellAgent,
+        'recommandInfo': item.recommandInfo
+      })
+    })
+
+    this.setData({'matchAgentList': that.data.matchAgentList})
+    this.setData({'recommenAgentList': that.data.recommenAgentList})
+  },
   handleRedirect: function (e) {
     wx.navigateTo({url: e.currentTarget.dataset.url})
+  },
+  showMore: function () {
+    this.setData({'showMore': true})
   },
   getData: function (callback) {
     request.fetch({
@@ -200,7 +241,7 @@ Page({
   },
   call: function (e) {
     wx.makePhoneCall({
-      phoneNumber: e.target.dataset.text
+      phoneNumber: e.currentTarget.dataset.text
     })
   }
 })
