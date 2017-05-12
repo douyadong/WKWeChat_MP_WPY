@@ -10,36 +10,36 @@ Page({
         othreReason: 0,
         memo: ""
     },
-    changenotExist: function() {
+    changenotExist: function () {
         this.setData({
-            notExist: (this.data.notExist+1)%2
+            notExist: (this.data.notExist + 1) % 2
         })
     },
-    changehasSold: function() {
+    changehasSold: function () {
         this.setData({
-            hasSold: (this.data.hasSold)%2
+            hasSold: (this.data.hasSold + 1) % 2
         })
     },
-    changepriceNotReal: function() {
+    changepriceNotReal: function () {
         this.setData({
-            priceNotReal: (this.data.priceNotReal+1)%2
+            priceNotReal: (this.data.priceNotReal + 1) % 2
         })
     },
-    changeimgNotReal: function() {
+    changeimgNotReal: function () {
         this.setData({
-            imgNotReal: (this.data.imgNotReal+1)%2
+            imgNotReal: (this.data.imgNotReal + 1) % 2
         })
     },
-    changeothreReason: function() {
+    changeothreReason: function () {
         this.setData({
-            othreReason: (this.data.othreReason+1)%2
+            othreReason: (this.data.othreReason + 1) % 2
         })
     },
-    listenerDesInput: function(e) {
+    listenerDesInput: function (e) {
         console.log(e.detail.value);
-        this.data.des = e.detail.value;
+        this.data.memo = e.detail.value;
     },
-    submit: function() {
+    submit: function () {
         var requestData = {
             houseId: this.data.houseId,
             notExist: this.data.notExist,
@@ -48,16 +48,22 @@ Page({
             imgNotReal: this.data.imgNotReal,
             othreReason: this.data.othreReason,
             memo: this.data.memo
-        };        
+        };
         if (requestData.notExist || requestData.hasSold || requestData.priceNotReal || requestData.imgNotReal || requestData.othreReason || requestData.memo) {
             if (requestData.memo.length <= 300) {
                 request.fetch({
-                    "module":"report",
-                    "action":"write",
-                    "data":requestData,
-                    "success":function(data){
-                        wx.navigateBack({
+                    "mock": true,
+                    "module": "report",
+                    "action": "write",
+                    "data": requestData,
+                    "success": function (data) {
+                        /*wx.navigateBack({
                             delta: 1
+                        })*/
+                        wx.showModal({
+                            content: data.message,
+                            showCancel: false,
+                            confirmColor: '#4081D6'
                         })
                     }
                 });
@@ -76,7 +82,7 @@ Page({
             });
         }
     },
-    onLoad: function(options) {
+    onLoad: function (options) {
         this.setData({
             houseId: options.houseId
         })

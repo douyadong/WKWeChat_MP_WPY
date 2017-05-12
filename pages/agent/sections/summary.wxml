@@ -13,8 +13,11 @@
     <view class="row">
       <view class="row-hd">成交故事：</view>
       <view class="row-bd">
-        <text>{{simpleAgentDetail.agentStory}}</text>
-        <text wx:if="{{agentStoryExtendable}}">... 更多</text>
+        <block wx:if="{{agentStoryExtendable}}">
+          <text>{{simpleAgentDetail.shortAgentStory}}</text>
+          <text class="more" bindtap="extendAgentStory"> 更多</text>
+        </block>        
+        <text wx:else>{{simpleAgentDetail.agentStory}}</text>        
       </view>
     </view>
   </view>

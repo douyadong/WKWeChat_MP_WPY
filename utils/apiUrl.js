@@ -2,7 +2,7 @@
  * @desc:统一定义请求接口地址
  */
 
-const domain = "https://m.wkzf.com" ;
+const domain = "http://minapp-test.yfyk365.com" ;
 
 const url = {
   "agent" : {
@@ -41,7 +41,11 @@ const url = {
   },
   "logon":{
     "generateIdentifyCode":"/wxmpLogin/generateIdentifyCode.rest",
-    "loginFromMobilePhone":"/wxmpLogin/loginFromMobilePhone.rest"
+    "loginFromMobilePhone":"/wxmpLogin/loginFromMobilePhone.rest",
+    "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest"
+  },
+  "report":{
+    "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"
   }
 }
 
