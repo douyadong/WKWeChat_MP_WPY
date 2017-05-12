@@ -104,7 +104,7 @@ let main = {
               console.log("允许授权");
               wx.setStorage({
                 key:"userInfo",
-                data:userInfo
+                data:res
               })
             }
           })
