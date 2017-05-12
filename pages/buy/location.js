@@ -3,14 +3,18 @@
  * @author:yuxiaochen@lifang.com
  */
 let res = require('./mock').areaInfo
-let interestInfo = require('./mock').interestInfo
+
+const appInstance = getApp()
 
 Page({
   data: {
     currentArea: {},
     areaList: [],
     blockList: [],
-    superAreaObject: null
+    superAreaObject: null,
+    tips: {
+      show: false
+    }
   },
   onShow: function (options) {
     let that = this
@@ -132,10 +136,9 @@ Page({
         })
       })
     }else {
-      that.data.currentArea=this.data.areaList[0];
+      that.data.currentArea = this.data.areaList[0]
       this.data.areaList[0].active = true
     }
-
 
     this.setData({'areaList': this.data.areaList})
   },
@@ -271,6 +274,11 @@ Page({
         })
       }
     })
+
+    if (!towns.length) {
+      appInstance.showTips('请选择位置')
+      return false
+    }
 
     wx.setStorageSync('buy_location', towns)
 
