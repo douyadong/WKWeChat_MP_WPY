@@ -10,8 +10,8 @@
                         <text class="iconfont icon-star-empty"></text>
                     </block>
                 </view>
-                <view class="content">{{item.content}}</view>
-                <view class="params">{{item.client}} | {{item.date}}</view>
+                <view class="content">{{item.comment}}</view>
+                <view class="params">{{item.guestName}} | {{item.createTimeString}}</view>
             </view>
         </block>
     </view>
