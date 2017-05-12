@@ -129,25 +129,12 @@ Page({
     });
   },
   onLoad: function () {
-    //1.页面初始化，读取Storage，判断微信用户是否为空
+    //1.页面初始化，读取Storage,获取用户登录信息，判断微信用户是否为空
     wx.getStorage({
-      key: 'userInfo',
+      key: 'userLoginInfo',
       success: function(res) {//已授权
           console.log(res.data)
-          //获取code
-          wx.login({
-            success: function(res) {
-              if (res.code) {
-                console.log(res.code);
-                //发起网络请求，code 换取 session_key
-
-                //写入Storage
-                
-              } else {
-                console.log('获取用户登录态失败！' + res.errMsg)
-              }
-            }
-          });
+          //没有sessionKey，要获取
       },
       fail:function() {//未授权
         wx.showModal({

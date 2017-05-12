@@ -97,13 +97,12 @@ let main = {
   getUserInfo(){
       var that = this
       wx.login({
-        success: function () {
+        success: function (res) {
           wx.getUserInfo({
             withCredentials:true,
             success: function (res) {
-              console.log("允许授权");
               wx.setStorage({
-                key:"userInfo",
+                key:"userLoginInfo",
                 data:res
               })
             }
