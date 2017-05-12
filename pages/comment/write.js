@@ -52,7 +52,7 @@ var params = $.extend(true,{},{
     uploadFile:function(file,i){
         var _this = this;
         wx.uploadFile({
-            url:'',
+            url:'http://minapp-test.yfyk365.com/wxmpEstate/uploadPic.rest',
             filePath: file[i],//这里是多个不行tempFilePaths[0]这样可以
             name: 'file',
             success: function(res){
@@ -71,24 +71,29 @@ var params = $.extend(true,{},{
                 }
             },
             fail: function (e) {
+                var n = i+1;
                 wx.showModal({
                     title: '提示',
-                    content: '第'+i+'张图片上传失败',
+                    content: '第'+n+'张图片上传失败',
                     showCancel: true
                 })
             }
         })
     },
     uploadFormSubmit:function(){
-
+        if(!this.data.uploadTextarea){
+            wx.showModal({
+                title: '提示',
+                content: '请填写评论',
+                showCancel: false
+            })
+        }else{
+            console.log(1)
+        }
     },
     bindFormSubmit: function(e) {
-        wx.showToast({
-            icon: "loading",
-            title: "正在上传"
-        });
-        if(this.data.currentFilePaths.length>0){
-            this.uploadFile(this.data.currentFilePaths,0)
+        if(this.data.uploadImages){
+            this.uploadFile(this.data.uploadImages,0)
         }else{
             this.uploadFormSubmit()
         }
