@@ -20,7 +20,7 @@
             添加微信
         </view>
     </view>
-    <view class="agentCodeShadow" id="agentCodeShadow" hidden="{{!isShowWXCode}}" bindtap="c_df_hideClick" bindtouchmove="eventPreventDefault">
+    <view class="agentCodeShadow" id="agentCodeShadow" hidden="{{true}}" bindtap="c_df_hideClick" bindtouchmove="eventPreventDefault">
         <view class="agentCodeBox" id="agentCodeBox" catchtap="c_df_stopEvent">
             <view class="agentCodeImg">
                 <image src="{{agentWChartQRImgUrl}}"></image>
