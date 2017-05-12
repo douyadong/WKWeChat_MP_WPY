@@ -3,14 +3,16 @@
         <view class="title">验证手机号码</view>
         <view class="formBox">
             <view class="inputBox">
-                <text class="getCode" bindtap="getCode">获取验证码</text>
+                <text class="getCode" wx:if="{{!isShowSend}}" data-codeType="1" bindtap="getCode">获取验证码</text>
+                <text class="getCode" wx:if="{{isShowSend}}">{{second}} 秒后重发</text>
                 <input type="number" placeholder="请输入手机号码" placeholder-class="formPlaceholder" class="input" bindinput="getPhone"/>
             </view>
             <view class="inputBox">
                 <input type="number" placeholder="请输入手机验证码" placeholder-class="formPlaceholder" class="input" bindinput="getVerificationCode"/>
             </view>
             <view class="button" bindtap="submit">确定</view>
-            <view class="verificationTitle">收不到短信？点此使用<text class="verification" bindtap="verification">语音验证</text></view>
+            <view class="verificationTitle">收不到短信？点此使用<text class="verification" data-codeType="2" bindtap="getCode">语音验证</text></view>
         </view>
     </view>
+    <view class="represent">登录代表同意<navigator url="/pages/userAgreement/index" class="userAgreement">《用户协议》</navigator></view>
 </view>

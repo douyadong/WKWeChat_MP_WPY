@@ -13,11 +13,11 @@
 </view>
 <view class="stars">
     <block wx:for="{{5}}" wx:key="*this">
-        <text class="iconfont {{status.stars>index?'icon-star-all':'icon-star-empty'}}" data-id="{{index+1}}" bindtap="bindStarClick"></text>
+        <text class="iconfont {{status.score>index?'icon-star-all':'icon-star-empty'}}" data-id="{{index+1}}" bindtap="bindStarClick"></text>
     </block>
 </view>
 <view class="star-desc">{{status.text}}</view>
-<block wx:if="{{status.stars==5}}">
+<block wx:if="{{status.score==5}}">
     <view class="tags">
         <block wx:for="{{tagList.good}}" wx:key="*this">
             <view data-id="{{item.id}}" 
@@ -28,7 +28,7 @@
         </block> 
     </view>
 </block>
-<block wx:if="{{status.stars<5 && status.stars>0}}">
+<block wx:if="{{status.score<5 && status.score>0}}">
     <view class="tags">
         <block wx:for="{{tagList.bad}}" wx:key="*this">
             <view data-id="{{item.id}}" 

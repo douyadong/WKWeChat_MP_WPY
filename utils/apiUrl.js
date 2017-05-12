@@ -37,6 +37,12 @@ const url = {
     "list":"/wxmpCommon/getAllCityBusiness.rest"
   },
   "index":{
+    "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest",
+    "findCityInfoByLonAndLat":"/wxmpCommon/findCityInfoByLonAndLat.rest"
+  },
+  "logon":{
+    "generateIdentifyCode":"/wxmpLogin/generateIdentifyCode.rest",
+    "loginFromMobilePhone":"/wxmpLogin/loginFromMobilePhone.rest",
     "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest"
   },
   "report":{
