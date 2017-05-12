@@ -19,8 +19,11 @@ var params = $.extend(true, {}, {
             urls: this.data.imgUrls.filter(function (item) { return item.type === 'img' }).map(function (item) { return item.url })// 需要预览的图片http链接列表
         })
     },
-    onLoad: function (option) {
-        this.data.subEstateId = option.subEstateId;
+    onLoad: function (options) {
+        this.setData({
+          subEstateId:options.subEstateId,
+          agentId:options.agentId
+        });        
     },
     onShow: function () {
         this.getEstateInfo();
@@ -32,6 +35,7 @@ var params = $.extend(true, {}, {
         var that = this;
         request.fetch({
             //"mock":true,
+            "showLoading":true,
             "module": "estate",
             "action": "detail",
             "data": {

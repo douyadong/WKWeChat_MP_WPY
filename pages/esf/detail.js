@@ -19,6 +19,7 @@ var params = $.extend(true,{},{
         var that = this;
         request.fetch({
             //mock:true,
+            "showLoading":true,
             module:'esf',
             action:'getDetails',
             data:{
@@ -76,19 +77,21 @@ var params = $.extend(true,{},{
                 
                 if(a){//经纪人信息
                     newData.agentInfo = a;
-                    newData.agentInfo.isShowWXCode = true;
+                    newData.agentInfo.isShowWXCode = false;
                 }
 
                 that.setData(newData);
             }
         });
     },
-    onLoad: function(options) {
-      //todo:打开这个注释
+    onLoad: function(options) {      
       this.setData({
         houseId: options.houseId,
         agentId: options.agentId
       });
+      /**
+       * todo:测试用的，勿忘删除
+       */
       this.setData({
         //houseId: 1460256,
         agentId: 100321

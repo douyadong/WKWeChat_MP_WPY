@@ -53,7 +53,7 @@
   <view class="separator"></view> 
   <view class="extendable">
     <view class="head">在售房源</view>
-    <navigator url="/pages/esf/list?subEstateId={{subEstateId}}" class="assistant">
+    <navigator url="/pages/esf/list?subEstateId={{subEstateId}}&type=2&agent={{agentId}}" class="assistant">
       <text>{{estateInfo.sellhouseCount}} 套</text>
       <text class="iconfont icon-arrow-r"></text>
     </navigator>
