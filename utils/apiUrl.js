@@ -31,6 +31,9 @@ const url = {
     "list" : "/estate/queryEstateCommentList.rest" ,
     "uploadImg" : "/wxmpEstate/uploadPic.rest" ,
     "uploadComment" : "/wxmpEstate/commentEstate.rest"
+  },
+  "report":{
+    "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"
   }
 }
 

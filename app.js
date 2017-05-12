@@ -39,7 +39,7 @@ App({
       var returnUrl = this.getCurrentPage().__route__
       if (!needRedirect) {return false;}
       wx.navigateTo({
-        url: '/pages/login/index?returnUrl='+returnUrl
+        url: '/pages/logon/index?returnUrl='+returnUrl
       })
     }
 
