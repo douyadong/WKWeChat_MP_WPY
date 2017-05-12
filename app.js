@@ -19,10 +19,10 @@ App({
       wx.login({
         success: function () {
           wx.getUserInfo({
-            withCredentials:true,
+            withCredentials: true,
             success: function (res) {
               that.globalData.userInfo = res.userInfo
-              console.log(res);
+              console.log(res)
               typeof cb == 'function' && cb(that.globalData.userInfo)
             }
           })
@@ -33,6 +33,7 @@ App({
   globalData: {
     userInfo: null
   },
+  mock: true,
   timer: null,
   isLogin: function (needRedirect = true) { // 判断是否登录了小程序
     var userInfo = wx.getStorageSync('userInfo')

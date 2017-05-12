@@ -233,7 +233,6 @@ Page({
       'module': 'buy',
       'action': 'getDetails',
       'showLoading': true,
-      'mock': true,
       success: function (res) {
         callback(res)
       }
