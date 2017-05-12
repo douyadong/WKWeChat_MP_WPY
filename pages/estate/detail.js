@@ -72,7 +72,7 @@ var params = $.extend(true, {}, {
 
                 /*
                 if(e.videoUrl){//todo:后端没有提供
-                    imgUrls.push({url:e.videoUrl,type='video'});
+                    imgUrls.push({url:e.videoUrl,videoUrl:e.videoUrl,type='video'});
                 }*/  
 
                 if(e.imgList && e.imgList.length){
@@ -91,4 +91,4 @@ var params = $.extend(true, {}, {
     }
 }, houseComment,swiper);
 
-Page(params)
+Page(params);

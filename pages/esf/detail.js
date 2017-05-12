@@ -50,7 +50,6 @@ var params = $.extend(true,{},{
                     height: 50
                 }];
                 
-
                 if(h.houseVideoResponse){
                     newData.imgUrls.push({url: h.houseVideoResponse.videoSmallImage,
             videoUrl:h.houseVideoResponse.videoUrl,
