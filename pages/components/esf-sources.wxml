@@ -1,7 +1,7 @@
 <template name="esf-sources">
   <view class="esf-sources">
     <block wx:for="{{esfSources}}">
-    <navigator class="source" url="/pages/esf/detail?subEstateId=11111">
+    <navigator class="source" url="/pages/esf/detail?houseId={{item.houseId}}&&agentId={{agentId}}">
       <image mode="aspectFill" src="{{item.thumbnail}}" class="thumbnail"></image>
       <view class="param title">{{item.title}}</view>
       <view class="param fit-height">

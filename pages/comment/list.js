@@ -1,9 +1,10 @@
 var request = require('../../utils/request.js');
 var $ = require('../../utils/extend.js');
-
+var houseComment = require('../components/house-comment.js');
 
 var requestData = {};
-Page({
+
+var params = $.extend(true,{},{
     data: {
         comments: [],
         isLoading:false,
@@ -48,4 +49,6 @@ Page({
             }.bind(this)
         })
     }
-})
+},houseComment);
+
+Page(params);

@@ -1,8 +1,17 @@
 <view class="screenListBox">
     <view class="screenList">
-        <view class="list {{blue0?'blue':''}}" bindtap="showScreenList" data-index="0">{{screen_region}}<text class="iconfont icon-arrow-down down {{isRotate0 ? 'down90':''}}"></text></view>
-        <view class="list {{blue1?'blue':''}}" bindtap="showScreenList" data-index="1">{{screen_sort}}<text class="iconfont icon-arrow-down down {{isRotate1 ? 'down90':''}}"></text></view>
-        <view class="list {{blue2?'blue':''}}" bindtap="showScreenList" data-index="2">{{screen_more}}<text class="iconfont icon-arrow-down down {{isRotate2 ? 'down90':''}}"></text></view>
+        <view class="list {{blue0?'blue':''}}" bindtap="showScreenList" data-index="0">
+            {{screen_region}}
+           <text class="iconfont icon-arrow-down down {{isRotate0 ? 'down90':''}}"></text>
+        </view>
+        <view class="list {{blue1?'blue':''}}" bindtap="showScreenList" data-index="1">
+            {{screen_sort}}
+            <text class="iconfont icon-arrow-down down {{isRotate1 ? 'down90':''}}"></text>
+        </view>
+        <view class="list {{blue2?'blue':''}}" bindtap="showScreenList" data-index="2">
+            {{screen_more}}
+            <text class="iconfont icon-arrow-down down {{isRotate2 ? 'down90':''}}"></text>
+        </view>
     </view>
     <!--遮罩-->
     <view class="maskBox {{isShowMask ? 'showMaskBox' : ''}}" bindtap="hideMaskBox"></view>
