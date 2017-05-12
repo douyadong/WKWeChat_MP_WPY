@@ -35,12 +35,12 @@ Page({
             othreReason: (this.data.othreReason + 1) % 2
         })
     },
-    listenerDesInput: function (e) {
-        console.log(e.detail.value);
+    listenerDesInput: function (e) {        
         this.data.memo = e.detail.value;
     },
     submit: function () {
         var requestData = {
+            guestId:12323,
             houseId: this.data.houseId,
             notExist: this.data.notExist,
             hasSold: this.data.hasSold,
@@ -52,7 +52,7 @@ Page({
         if (requestData.notExist || requestData.hasSold || requestData.priceNotReal || requestData.imgNotReal || requestData.othreReason || requestData.memo) {
             if (requestData.memo.length <= 300) {
                 request.fetch({
-                    "mock": true,
+                    //"mock": true,
                     "module": "report",
                     "action": "write",
                     "data": requestData,

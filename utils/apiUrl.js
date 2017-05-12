@@ -2,7 +2,8 @@
  * @desc:统一定义请求接口地址
  */
 
-const domain = "http://minapp-test.yfyk365.com" ;
+//const domain = "https://m.wkzf.com" ;
+const domain = "http://10.0.18.79:8107/";
 
 const url = {
   "agent" : {
@@ -14,8 +15,7 @@ const url = {
   "buy" : {
     "getDetails" : "/wxmpInterest/getCustomerHouseIntention.rest" ,
     "add" : "/addInterestRecord.rest" ,
-    "edit" : "/updateInterestRecord.rest" ,
-    "getAgentList" : ""
+    "edit" : "/wxmpInterest/addOrUpdateIntentionAndGetAgentList.rest" 
   } ,
   "estate" : {
     "zan" : "/wxmpEstate/upOrDownEstateComment.rest" ,

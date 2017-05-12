@@ -34,7 +34,8 @@ module.exports = {
     }
 
     if(mock){
-      var data = require(`../mock/${module}/${action}.js`);
+      let data = require(`../mock/${module}/${action}.js`);
+      data = JSON.parse(JSON.stringify(data));
       success(data);
       showBarLoading && wx.hideNavigationBarLoading()
       showLoading && wx.hideToast();

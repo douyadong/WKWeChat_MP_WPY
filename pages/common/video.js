@@ -33,7 +33,7 @@ Page({
                             "agentPhoneNum": data.data.agentMobile,
                             "agentWechatNum": data.data.agentWChatId,
                             "agentCodeImg": data.data.agentWChartQRImgUrl,
-                            'isShowWXCode': true
+                            'isShowWXCode': false
                         }
                     });
 
