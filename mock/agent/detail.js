@@ -54,7 +54,7 @@ module.exports = {
                 "guestId" : 2345 ,
                 "guestPhoneNum" : "18516175860" ,
                 "comment" : "服务态度很好，感觉非常靠谱的一个经纪人！" , 
-                "score" : 4.5 ,
+                "score" : 4 ,
                 "commentType" : 1 , 
                 "createTime" : "2017-02-08 12:34:56" ,
                 "guestName" : "赵华刚" ,
@@ -66,7 +66,7 @@ module.exports = {
                 "guestId" : 1123 ,
                 "guestPhoneNum" : "18621345678" ,
                 "comment" : "服务态度非常恶劣，我不想跟这个人说话好吗？老子要打人啦！" , 
-                "score" : 2.5 ,
+                "score" : 2 ,
                 "commentType" : 2 , 
                 "createTime" : "2017-02-06 12:34:56" ,
                 "guestName" : "俞晓晨" ,
@@ -173,6 +173,6 @@ module.exports = {
                 "hasVideo" : 1
             }
         ],
-        "recommendType": 1
+        "recommendType": 3
     }
 } ;

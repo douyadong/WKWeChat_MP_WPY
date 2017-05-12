@@ -19,8 +19,11 @@ var params = $.extend(true, {}, {
             urls: this.data.imgUrls.filter(function (item) { return item.type === 'img' }).map(function (item) { return item.url })// 需要预览的图片http链接列表
         })
     },
-    onLoad: function (option) {
-        this.data.subEstateId = option.subEstateId;
+    onLoad: function (options) {
+        this.setData({
+          subEstateId:options.subEstateId,
+          agentId:options.agentId
+        });        
     },
     onShow: function () {
         this.getEstateInfo();
@@ -31,7 +34,8 @@ var params = $.extend(true, {}, {
     getEstateInfo: function () { //获取小区详情
         var that = this;
         request.fetch({
-            "mock":true,
+            //"mock":true,
+            "showLoading":true,
             "module": "estate",
             "action": "detail",
             "data": {
@@ -66,13 +70,13 @@ var params = $.extend(true, {}, {
                         height: 50
                     }]
                 };
-                var comments = e.comment.commentList;
+                var comments = e.comment && e.comment.commentList || [];
                 var agent = data.data.agent;
                 var imgUrls = [];
 
                 /*
                 if(e.videoUrl){//todo:后端没有提供
-                    imgUrls.push({url:e.videoUrl,type='video'});
+                    imgUrls.push({url:e.videoUrl,videoUrl:e.videoUrl,type='video'});
                 }*/  
 
                 if(e.imgList && e.imgList.length){
@@ -83,7 +87,7 @@ var params = $.extend(true, {}, {
                 that.setData({                    
                     estateInfo,
                     comments,
-                    commentsCount:e.comment.amount,
+                    commentsCount:e.comment && e.comment.amount || 0,
                     imgUrls
                 });
             }
@@ -91,4 +95,4 @@ var params = $.extend(true, {}, {
     }
 }, houseComment,swiper);
 
-Page(params)
+Page(params);

@@ -4,15 +4,23 @@
 <view class="page {{isScroll ? 'noScroll':''}}">
   <view class="searchNavBox">
     <view class="searchNav">
+      <navigator url="/pages/city/index" class="city">
+          <text class="cityName">{{geographical.cityName}}</text>
+          <text class="down"></text>
+      </navigator>
+      <!--
       <view class="city" data-pagename="../city/index" bindtap="goPage">
-        <text class="cityName">上海</text>
-        <!--
-        <text class="iconfont icon-arrow-down down"></text>
-        -->
+        <text class="cityName">{{geographical.cityName}}</text>
         <text class="down"></text>
       </view>
+      -->
       <view class="searchBox">
+        <navigator url="/pages/screen/index" class="search">
+        	  <text class="iconfont icon-search searchIcon"></text><text class="searchText">搜索小区或地址</text>
+        </navigator>
+        <!--
         <view class="search" data-pagename="../screen/index" bindtap="goPage"><text class="iconfont icon-search searchIcon"></text><text class="searchText">搜索小区或地址</text></view>
+        -->
       </view>
     </view>
   </view>

@@ -1,25 +1,23 @@
 <template name="esf-sources">
   <view class="esf-sources">
-    <block wx:for="{{esfSources}}">
-    <navigator class="source" url="/pages/esf/detail?houseId={{item.houseId}}&agentId={{agentId}}">
-      <image mode="aspectFill" src="{{item.houseImgUrl}}" class="thumbnail"></image>
-      <view class="param title">{{item.houseTitle}}</view>
-      <view class="param fit-height">
-        <text>{{source.houseChild}} {{source.areaStr}}㎡</text>
-        <text class="money">{{source.totalPrice}}万</text>
-      </view>
-      <view class="param fit-height">
-        <text>{{source.district}} {{source.town}}</text>
-        <text class="price">{{source.unitPrice}}元/㎡</text>
-      </view>
-      <view class="param tags">
-        <text class="selected">精选</text>
-        <text>满五唯一</text>
-        <text>地铁</text>
-        <text>近学校</text>
-      </view>
-    </navigator>
-    <view class="separator" wx:if="{{index < esfSources.length-1}}"></view>
+    <block wx:for="{{esfSources}}" wx:for-item="source" wx:key="*this">
+      <navigator class="source" url="/pages/esf/detail?houseId={{source.houseId}}&agentId={{agentId}}">
+        <image mode="aspectFill" src="{{source.houseImgUrl}}" class="thumbnail"></image>
+        <view class="param title">{{source.houseTitle}}</view>
+        <view class="param fit-height">
+          <text>{{source.houseChild}} {{source.areaStr}}㎡</text>
+          <text class="money">{{source.totalPrice}}万</text>
+        </view>
+        <view class="param fit-height">
+          <text>{{source.district}} {{source.town}}</text>
+          <text class="price">{{source.unitPrice}}元/㎡</text>
+        </view>
+        <view class="param tags">
+          <text class="selected" wx:if="{{source.isTopHouse}}">精选</text>
+          <text wx:for="{{source.tagList}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>          
+        </view>
+      </navigator>
+      <view class="separator" wx:if="{{index < esfSources.length-1}}"></view>
     </block>    
   </view>
 </template>

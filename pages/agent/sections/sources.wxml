@@ -1,25 +1,31 @@
-<view class="legend-hd">
-  <view class="bg-line"></view>
-  <text>看看我推荐的好房源吧</text>
-</view>
-<view class="panel">
-  <view class="tabs" wx:if="{{recommendType === 3}}">
-    <view class="on">新房</view>
-    <view class="last">二手房</view>    
+<block wx:if="{{recommendType !== 0}}">
+  <view class="legend-hd">
+    <view class="bg-line"></view>
+    <text>看看我推荐的好房源吧</text>
   </view>
-  <block wx:if="{{recommendType === 2}}">
-    <import src="../../components/esf-sources.wxml"/>
-    <template is="esf-sources" data="{{esfSources}}" />
-  </block>
-  <block wx:elif="{{recommendType === 1}}">
-    <import src="../../components/xf-sources.wxml"/>
-    <template is="xf-sources" data="{{xfSources}}" />
-  </block>
-  <block wx:elif="{{recommendType === 3}}">
-    <import src="../../components/esf-sources.wxml"/>
-    <import src="../../components/xf-sources.wxml"/>
-    <template is="esf-sources" data="{{esfSources}}" />
-    <template is="xf-sources" data="{{xfSources}}" />
-  </block>
-</view>
-<view class="no-sources">没有合适的房源？告诉我您的需求立即匹配房源</view>
+  <view class="panel">
+    <view class="tabs" wx:if="{{recommendType === 3}}">
+      <view class="{{currentSourcesTab==='xf'?'on':''}}" data-tab="xf" bindtap="swapToTab">新房</view>
+      <view class="{{currentSourcesTab==='esf'?'on':''}} last" data-tab="esf" bindtap="swapToTab">二手房</view>   
+    </view>
+    <block wx:if="{{recommendType === 2}}">
+      <import src="../../components/esf-sources.wxml"/>
+      <template is="esf-sources" data="{{esfSources}}" />
+    </block>
+    <block wx:elif="{{recommendType === 1}}">
+      <import src="../../components/xf-sources.wxml"/>
+      <template is="xf-sources" data="{{xfSources}}" />
+    </block>
+    <block wx:elif="{{recommendType === 3}}">     
+      <view hidden="{{currentSourcesTab!=='esf'}}">
+        <import src="../../components/esf-sources.wxml"/>
+        <template is="esf-sources" data="{{esfSources}}" />
+      </view>
+      <view hidden="{{currentSourcesTab!=='xf'}}">
+        <import src="../../components/xf-sources.wxml"/>
+        <template is="xf-sources" data="{{xfSources}}" />
+      </view>
+    </block>
+  </view>
+  <view class="no-sources">没有合适的房源？告诉我您的需求立即匹配房源</view>
+</block>
