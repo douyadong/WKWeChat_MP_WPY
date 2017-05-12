@@ -5,7 +5,7 @@
   </view> 
   <view class="panel-bd lr-padding">
     <template is="house-comment" data="{{comments}}" />  
-    <navigator url="/pages/comment/list" class="button gray">我来点评</navigator>
+    <navigator url="/pages/comment/write?subEstateId=123123&commentLocation=2" class="button gray">我来点评</navigator>
   </view>
 </view>
 <view class="gap"></view>

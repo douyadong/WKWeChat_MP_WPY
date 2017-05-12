@@ -15,7 +15,6 @@ var params = $.extend(true,{},{
             data:requestData,
             module:'comment',
             action:'list',
-            mock:true,
             success:function(data){
                 this.setData({
                     "comments":data.data.commentList
