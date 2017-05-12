@@ -5,16 +5,16 @@
     <view class="info">
         <view class="row">
             <view class="content">
-                <text>200 - 250 万</text>
-                <text>三室</text>
+                <text>{{currentPrice.text}}</text>
+                <text>{{currentHouseType.text}}</text>
             </view>
-            <view class="link">
+            <view class="link" data-url="/pages/buy/index" bindtap="handleRedirect">
                 <text>修改</text>
                 <view class="iconfont icon-arrow-r"></view>
             </view>
         </view>
         <view class="location">
-            回到首页回到首页回到首页回到首页回到首页回到首页
+            {{currentLocationStr}}
         </view>
     </view>
     <view class="title">以下经纪人会主动与您联系</view>

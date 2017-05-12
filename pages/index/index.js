@@ -1,5 +1,6 @@
 //工具方法
 let _ = require('../../utils/extend.js')
+var request = require('../../utils/request.js');
 //筛选区域脚本
 let filterAgentList = require('./filterAgentList/filterAgentList.js')
 
@@ -15,6 +16,7 @@ let main = {
     })
   },
   init(){
+    let _this = this;
     //地理定位
     wx.getLocation({
       type: 'wgs84',
@@ -29,10 +31,19 @@ let main = {
         console.log("点击取消");
       }
     })
+    //获取区域数据
+    request.fetch({
+        mock:true,
+        module:'index',
+        action:'getCityAreasInfo',
+        data:{},
+        success:function(data){
+             _this.filterAgentListInit(data.data);
+        }
+    });
   },
   onLoad(){
-    this.init();
-    this.templateInit();
+    this.init(); 
   },
   //滚动到底部异步加载经纪人列表
   onReachBottom(){

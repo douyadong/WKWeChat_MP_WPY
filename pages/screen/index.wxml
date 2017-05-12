@@ -12,18 +12,18 @@
         <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
             <view class="agentList {{agentList.length-1 == index ? 'lastList':''}}"> 
                 <view class="portrait">
-                    <image src="https://img.wkzf.com/0f9f836ac1ad4fd5b1cdbac652a51988" class="portraitImg"></image>
+                    <image src="{{list.row.portrait}}" class="portraitImg"></image>
                 </view>
                 <view class="details">
                     <view class="nameAndVip">
                         <text class="name">
-                            <text wx:for="{{list}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'highlight':''}}">{{li.text}}</text>
+                            <text wx:for="{{list.glList}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'highlight':''}}">{{li.text}}</text>
                         </text>
-                        <text class="vip">vip</text>
+                        <text class="vip" wx:if="{{list.row.isVip}}">vip</text>
                     </view>
                     <view class="city">
                         <text class="cityName">上海市</text>
-                        <text class="phone">13482385237</text>
+                        <text class="phone">{{list.row.phone}}</text>
                     </view>
                 </view>
             </view>
@@ -34,8 +34,8 @@
     <view class="listBox">
         <block wx:for="{{regionList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
             <view class="regionList {{regionList.length-1 == index ? 'lastList':''}}"> 
-                <text wx:for="{{list}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'highlight':''}}">{{li.text}}</text>
+                <text wx:for="{{list.glList}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'highlight':''}}">{{li.text}}</text>
             </view>
-        </block>   
+        </block>
     </view>
 </view>

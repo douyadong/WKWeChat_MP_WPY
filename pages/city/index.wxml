@@ -7,7 +7,7 @@
   </view>
   <view class="cityList {{showCityIndex == 0 ? 'showCityList':''}}">
       <view class="default">定位城市</view>
-      <view class="defaultCity" bindtap="selectedCity">{{locationCity}}</view>
+      <view class="defaultCity" data-cityid="{{locationCity.cityId}}" bindtap="selectedCity">{{locationCity.cityName}}</view>
       <view class="default">全部城市</view>
       <view class="allListBox">
         <block wx:for="{{domesticCitys}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
@@ -17,7 +17,7 @@
   </view>
   <view class="cityList {{showCityIndex == 1 ? 'showCityList':''}}">
       <view class="default">定位城市</view>
-      <view class="defaultCity">{{InternationalCity}}</view>
+      <view class="defaultCity" data-cityid="{{InternationalCity.cityId}}" bindtap="selectedCity">{{InternationalCity.cityName}}</view>
       <view class="default">全部城市</view>
       <view class="allListBox">
         <block wx:for="{{InternationalCitys}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 

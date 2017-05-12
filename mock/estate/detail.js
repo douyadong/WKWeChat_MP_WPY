@@ -24,7 +24,9 @@
             "propertyRight": "--",
             "memo": ";售均价:0",
             "imgList": [
-                "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW"
+                "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
+		"https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
+		"https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW"
             ],
             "estateImgUrl": "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
             "sellhouseCount": 0,

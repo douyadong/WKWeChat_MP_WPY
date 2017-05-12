@@ -2,6 +2,7 @@ var util = require('../../utils/util.js');
 var $ = require('../../utils/extend.js');
 var houseComment = require('../components/house-comment.js');
 var request = require('../../utils/request.js');
+var swiper = require('../components/swiper.js');
 
 var params = $.extend(true, {}, {
     data: {    
@@ -88,6 +89,6 @@ var params = $.extend(true, {}, {
             }
         });
     }
-}, houseComment)
+}, houseComment,swiper);
 
 Page(params)

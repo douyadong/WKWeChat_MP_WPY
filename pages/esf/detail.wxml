@@ -5,7 +5,7 @@
 <import src="../components/house-comment.wxml" />
 <import src="../components/detail-foot.wxml" />
 <!--swiper-->
-<template is="swiper" data="{{imgUrls}}" />
+<template is="swiper" data="{{imgUrls,agentId}}" />
 <view class="panel">
     <view class="title head">{{houseTitle}}</view>
     <view class="panel-bd lr-padding">
