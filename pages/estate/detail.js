@@ -31,7 +31,7 @@ var params = $.extend(true, {}, {
     getEstateInfo: function () { //获取小区详情
         var that = this;
         request.fetch({
-            "mock":true,
+            //"mock":true,
             "module": "estate",
             "action": "detail",
             "data": {
@@ -66,7 +66,7 @@ var params = $.extend(true, {}, {
                         height: 50
                     }]
                 };
-                var comments = e.comment.commentList;
+                var comments = e.comment && e.comment.commentList || [];
                 var agent = data.data.agent;
                 var imgUrls = [];
 
@@ -83,7 +83,7 @@ var params = $.extend(true, {}, {
                 that.setData({                    
                     estateInfo,
                     comments,
-                    commentsCount:e.comment.amount,
+                    commentsCount:e.comment && e.comment.amount || 0,
                     imgUrls
                 });
             }

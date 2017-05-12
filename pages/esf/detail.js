@@ -10,8 +10,7 @@ var params = $.extend(true,{},{
     data: {
         isCollapsed:true,//基本信息收起
     },
-    toggleMoreBasicInfo:function(){
-        //基本信息查看更多按钮点击事件
+    toggleMoreBasicInfo:function(){//基本信息展开和收起        
         this.setData({
             isCollapsed:!this.data.isCollapsed
         });
@@ -19,7 +18,7 @@ var params = $.extend(true,{},{
     getDetail: function() { //获取二手房详情
         var that = this;
         request.fetch({
-            mock:true,
+            //mock:true,
             module:'esf',
             action:'getDetails',
             data:{
@@ -68,20 +67,24 @@ var params = $.extend(true,{},{
                     });                    
                 }
                 newData.comments = e.comment.commentList;//评论
-                newData.commentsCount = e.comment.ammount;
-                newData.sameTownTotalCount = data.data.sameTownTotalCount;
-                newData.esfSources= data.data.sameTownHouseList.map(function(item){
+                newData.commentsCount = e.comment.amount;
+                newData.sameTownTotalCount = data.data.sameTownTotalCount;//在售房源数量
+                newData.esfSources = [];
+                if(data.data.sameTownHouseList){//相似房源列表
+                  newData.esfSources = data.data.sameTownHouseList.map(function (item) {
                     return {
-                        thumbnail:item.houseImgUrl,
-                        title:item.houseTitle,
-                        layout:item.houseChild,
-                        area:item.areaStr,
-                        money:item.totalPrice,
-                        location:item.district+" "+item.town,
-                        price:item.unitPrice
+                      thumbnail: item.houseImgUrl,
+                      title: item.houseTitle,
+                      layout: item.houseChild,
+                      area: item.areaStr,
+                      money: item.totalPrice,
+                      location: item.district + " " + item.town,
+                      price: item.unitPrice
                     }
-                });//相似房源列表
-                if(a){
+                  });//相似房源列表
+                }
+                
+                if(a){//经纪人信息
                     newData.agentInfo = a;
                     newData.agentInfo.isShowWXCode = true;
                 }
@@ -91,10 +94,16 @@ var params = $.extend(true,{},{
         });
     },
     onLoad: function(options) {
-        this.data.houseId = options.houseId;
-        this.data.agentId = options.agentId;
+      this.setData({
+        houseId: 1460256,
+        agentId: 100321
+      });
 
-        this.getDetail();
+      /*this.setData({
+        houseId: options.houseId,
+        agentId: options.agentId
+      });*/
+      this.getDetail();
     }
 },houseComment,swiper,df);
 

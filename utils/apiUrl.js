@@ -2,7 +2,8 @@
  * @desc:统一定义请求接口地址
  */
 
-const domain = "https://m.wkzf.com" ;
+//const domain = "https://m.wkzf.com" ;
+const domain = "http://10.0.18.79:8107/";
 
 const url = {
   "agent" : {
@@ -40,9 +41,6 @@ const url = {
   },
   "report":{
     "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"
-
-
-
   }
 }
 
