@@ -27,11 +27,11 @@
   <view class="buySell">
       <view class="list">
         <view class="circular buyCircular"></view>
-        <view class="text" data-pagename="../sell/index" bindtap="goPage">我要卖房</view>
+        <navigator url="/pages/sell/index" class="text">我要卖房</navigator>
       </view>
       <view class="list">
         <view class="circular sellCircular"></view>
-        <view class="text" data-pagename="../buy/index" bindtap="goPage">我要买房</view>
+        <navigator url="/pages/buy/index" class="text">我要买房</navigator>
       </view>
   </view>
   <!-- 筛选-->
