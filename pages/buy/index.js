@@ -395,7 +395,6 @@ Page({
       module: 'buy',
       action: 'edit',
       data: requestData,
-      mock:true,
       method: 'post',
       success: function (res) {
         if (res.data && res.data.orderAgentIdList && res.data.orderAgentIdList.length) {
