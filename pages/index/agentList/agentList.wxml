@@ -1,31 +1,35 @@
-<navigator url="/pages/agent/detail" class="agentList">
-    <view class="portrait">
-        <image mode="aspectFill" src="https://imgwater.oss.aliyuncs.com/7f39b89cdd8e4acc85feec1898f3146a"/>
-        <view class="tag"></view>
-    </view>
-    <view class="content">
-        <view class="left">
-            <view class="title">王小五</view>
-            <view class="company">志远地产</view>
-            <view class="businessCenter">熟悉商圈：世纪大道、虹桥、唐镇、虹桥、唐镇</view>
-            <!--
-            <view class="businessCenter">熟悉商圈：世纪大道、虹桥、唐镇、虹桥、唐镇</view>
-            -->
-            <!--
-            <view class="bubbles">
-                <text>长宁区好经纪人</text>
-                <text>长宁区好经纪人</text>
-            </view>
-            -->
+<block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
+    <navigator url="/pages/agent/detail" class="agentList">
+        <view class="portrait">
+            <image mode="aspectFill" src="{{list.agentHeadImgUrl}}"/>
+            <view class="tag"></view>
         </view>
-        <view class="right">
-            <view class="starNumber">
-                <text class="iconfont icon-star-all star"></text>
-                <text class="number">4.7</text>
+        <view class="content">
+            <view class="left">
+                <view class="title">{{list.agentName}}</view>
+                <view class="company">{{list.agentBelongToCompanyName}}</view>
+                <view class="businessCenter">熟悉商圈：
+                    <text wx:for="{{list.agentBizTownList}}" wx:for-item="list" wx:for-index="index" wx:key="index">{{list}}</text>
+                </view>
+                <!--
+                <view class="businessCenter">熟悉商圈：世纪大道、虹桥、唐镇、虹桥、唐镇</view>
+                -->
+                <!--
+                <view class="bubbles">
+                    <text>长宁区好经纪人</text>
+                    <text>长宁区好经纪人</text>
+                </view>
+                -->
             </view>
-            <view class="evaluateNumber">
-                <text class="number">280</text>人评价
-            </view>    
+            <view class="right">
+                <view class="starNumber">
+                    <text class="iconfont icon-star-all star"></text>
+                    <text class="number">4.7</text>
+                </view>
+                <view class="evaluateNumber">
+                    <text class="number">280</text>人评价
+                </view>    
+            </view>
         </view>
-    </view>
-</navigator>
+    </navigator>
+</block>
