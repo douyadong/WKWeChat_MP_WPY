@@ -9,7 +9,8 @@ let params = {
           request.fetch({
               "module": "xf" ,
               "action" : "detail" ,
-              "showLoading" :  true ,              
+              "showLoading" :  true ,   
+              "mock":true,           
               success : function (res) {                           
                   //最后赋予模板变量
                   _.setData(res.data) ;

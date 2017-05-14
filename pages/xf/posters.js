@@ -8,8 +8,11 @@ let params = {
           let subEstateId = options.subEstateId ;
           request.fetch({
               "module": "xf" ,
-              "action" : "posters" ,
-              "showLoading" :  true ,              
+              "action" : "poster" ,
+              "showLoading" :  true ,   
+              "data":{
+                "subEstateId":113408
+              },           
               success : function (res) {                           
                   //最后赋予模板变量
                   _.setData({ "posters" : res.data }) ;
