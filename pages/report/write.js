@@ -57,14 +57,14 @@ Page({
                     "action": "write",
                     "data": requestData,
                     "success": function (data) {
-                        /*wx.navigateBack({
+                        wx.navigateBack({
                             delta: 1
-                        })*/
-                        wx.showModal({
+                        })
+                        /*wx.showModal({
                             content: data.message,
                             showCancel: false,
                             confirmColor: '#4081D6'
-                        })
+                        })*/
                     }
                 });
             } else {

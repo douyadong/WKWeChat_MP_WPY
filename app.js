@@ -41,7 +41,7 @@ App({
       // 当前页的地址
       var returnUrl = this.getCurrentPage().__route__
       if (!needRedirect) {return false;}
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/logon/index?returnUrl=' + returnUrl
       })
     }

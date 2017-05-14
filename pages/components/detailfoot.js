@@ -12,7 +12,7 @@ module.exports ={
         }
 	},
 	c_df_agentClick:function(e){
-		wx.navigateTo({
+		wx.redirectTo({
 	        url: '../agent/detail'
       	})
 	},

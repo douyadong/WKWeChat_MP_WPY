@@ -1,8 +1,17 @@
-<view class="panel">
+<view class="panel location">
   <view class="panel-hd">
     <view class="head">位置及周边</view>    
   </view>  
-  <view>
-    <map id="map" longitude="{{estateInfo.longitude}}" latitude="{{estateInfo.latitude}}" scale="14" markers="{{estateInfo.markers}}"   show-location></map>
+  <view class="map-container">
+  <!--
+    <map id="map" longitude="{{estateInfo.longitude}}" latitude="{{estateInfo.latitude}}" scale="14" markers="{{estateInfo.markers}}"   show-location></map>-->
+
+    <image bindtap="openLocation" src="http://apis.map.qq.com/ws/staticmap/v2/?&markers={{estateInfo.latitude}},{{estateInfo.longitude}}&key=3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN&size=375*240&center={{estateInfo.latitude}},{{estateInfo.longitude}}&zoom=18&scale=2"></image>
   </view>  
+  <view class="supports">
+      <view>
+        <text class="iconfont icon-location"></text>
+        <text>地址：{{estateInfo.estateAddr}}</text>
+      </view>
+    </view>
 </view>
