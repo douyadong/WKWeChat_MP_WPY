@@ -110,7 +110,7 @@ let main = {
       })
   },
   //获取经纪人列表
-  getAgentList(cityId,districtAndTown,orderType,selectLabelList,pageIndex){
+  getAgentList(cityId,districtAndTown,orderType,selectLabelList,pageIndex,cb){
     console.log(cityId,districtAndTown,orderType,selectLabelList,pageIndex);
     let _this = this;
     request.fetch({
@@ -126,14 +126,14 @@ let main = {
               "pageSize": 20,//每页数量 默认20条
           },
           success:function(data){
-              let oldAgentList = _this.data.agentList;
-              let newAgentList = data.data.agentList;
-              for(let i=0;i<newAgentList.length;i++){
-                oldAgentList.push(newAgentList[i]);
+              if(data.status.toString() == "1"){
+                  cb(data.data.agentList);
+              }else{
+                  cb([]);
               }
-              _this.setData({
-                  agentList:oldAgentList
-              })
+          },
+          fail:function() {
+            cb([]);
           }
     });
   },
@@ -153,7 +153,12 @@ let main = {
         _this.data.districtAndTown,
         _this.data.orderType,
         _this.data.selectLabelList,
-        _this.data.pageIndex
+        _this.data.pageIndex,
+        function (agentList) {
+          _this.setData({
+            agentList:agentList
+          })
+        }
       );
     });
   },
@@ -170,7 +175,16 @@ let main = {
       _this.data.districtAndTown,
       _this.data.orderType,
       _this.data.selectLabelList,
-      _this.data.pageIndex
+      _this.data.pageIndex,
+      function (agentList) {
+        let oldAgentList = _this.data.agentList;
+        for(let i=0;i<agentList.length;i++){
+          oldAgentList.push(agentList[i]);
+        }
+        _this.setData({
+            agentList:oldAgentList
+        })
+      }
     );
   }
 }
