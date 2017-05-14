@@ -40,6 +40,9 @@ let params = {
          this.setData({ "agentStoryExtendable" : false }) ;
      } ,     
      onLoad : function (options) {
+          this.setData({
+            agentId:options.agentId
+          });
           this.render(options) ;    
     }
 } ;

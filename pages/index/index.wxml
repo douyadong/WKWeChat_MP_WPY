@@ -4,26 +4,25 @@
 <view class="page {{isScroll ? 'noScroll':''}}">
   <view class="searchNavBox">
     <view class="searchNav">
-      <view class="city" data-pagename="../city/index" bindtap="goPage">
-        <text class="cityName">上海</text>
-        <!--
-        <text class="iconfont icon-arrow-down down"></text>
-        -->
-        <text class="down"></text>
-      </view>
+      <navigator url="/pages/logon/index" class="city">
+          <text class="cityName">{{geographical.cityName}}</text>
+          <text class="down"></text>
+      </navigator>
       <view class="searchBox">
-        <view class="search" data-pagename="../screen/index" bindtap="goPage"><text class="iconfont icon-search searchIcon"></text><text class="searchText">搜索小区或地址</text></view>
+        <navigator url="/pages/screen/index" class="search">
+        	  <text class="iconfont icon-search searchIcon"></text><text class="searchText">搜索小区或地址</text>
+        </navigator>
       </view>
     </view>
   </view>
   <view class="buySell">
       <view class="list">
         <view class="circular buyCircular"></view>
-        <view class="text" data-pagename="../sell/index" bindtap="goPage">我要卖房</view>
+        <navigator url="/pages/sell/index" class="text">我要卖房</navigator>
       </view>
       <view class="list">
         <view class="circular sellCircular"></view>
-        <view class="text" data-pagename="../buy/index" bindtap="goPage">我要买房</view>
+        <navigator url="/pages/buy/index" class="text">我要买房</navigator>
       </view>
   </view>
   <!-- 筛选-->

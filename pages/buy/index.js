@@ -162,10 +162,10 @@ Page({
       that.setHouseType(data.bedRoomSum)
 
       // 位置信息
-      that.setLocation(data.townIdLists)
+      that.setLocation(data.townList)
 
       // 房源特色信息
-      that.setHouseFeatures(data.houseFeature)
+      that.setHouseFeatures(data.cusHouseFeatures)
     })
 
     this.data.loaded = true
@@ -332,7 +332,7 @@ Page({
       'module': 'buy',
       'action': 'getDetails',
       'showLoading': true,
-      'mock':true,
+      'mock': true,
       success: function (res) {
         callback(res)
       }
@@ -341,10 +341,10 @@ Page({
   submit: function () {
     let that = this
     let guestId,bedRoomSum,sellPriceStart,sellPriceEnd,townIdStr
-    let selectedBlockList = [],houseFeatureLists = []
+    let houseFeatureLists = [],townIdList = [],districtIdList = []
     let requestData = {}
 
-    if (that.data.currentPrice.min=="-1") {
+    if (that.data.currentPrice.min == '-1') {
       appInstance.showTips('请选择总价范围')
       return false
     }
@@ -360,7 +360,7 @@ Page({
     }
 
     // 判断是否登录
-    appInstance.isLogin()
+    // appInstance.isLogin()
 
     // 构造请求数据
     requestData.guestId = guestId
@@ -370,11 +370,15 @@ Page({
 
     this.data.blockList.forEach(item => {
       if (item.selected) {
-        selectedBlockList.push(item.id)
+        if (!districtIdList.includes(item.pid)) {
+          districtIdList.push(item.pid)
+        }
+        townIdList.push(item.id)
       }
     })
 
-    requestData.townIdStr = selectedBlockList.join(',')
+    requestData.townIdList = townIdList
+    requestData.districtIdList = districtIdList
 
     this.data.houseFeatures.forEach(item => {
       if (item.selected) {
@@ -385,16 +389,24 @@ Page({
     if (houseFeatureLists.length) {
       requestData.houseFeatureLists = houseFeatureLists
     }
-
-    // request.fetch({
-    //   module:"buy",
-    //   action:"add",
-    //   data:requestData,
-    //   method:'post',
-    //   success:function(res){
-
-    //   }
-    // })
-
+    console.log(requestData)
+    // make request
+    request.fetch({
+      module: 'buy',
+      action: 'edit',
+      data: requestData,
+      method: 'post',
+      success: function (res) {
+        if (res.data && res.data.orderAgentIdList && res.data.orderAgentIdList.length) {
+          wx.navigateTo({
+            url: '/pages/buy/recommend'
+          })
+        }else {
+          wx.navigateTo({
+            url: '/pages/buy/success'
+          })
+        }
+      }
+    })
   }
 })

@@ -78,7 +78,7 @@
         <view class="separator"></view>
         <!--小区周边-->
         <view class="areaAround">
-            <navigator url="/pages/estate/detail">
+            <navigator url="/pages/estate/detail?subEstateId={{subEstateId}}&agentId={{agentId}}">
                 <view class="row">
                     <view class="row-hd">小区</view>
                     <view class="row-bd">{{estateName}}</view>
@@ -159,7 +159,7 @@
         </navigator>
     </view>
     <!--在售房源-->
-    <navigator url="/pages/esf/list?subEstate={{subEstateId}}" class="house-link ">
+    <navigator url="/pages/esf/list?subEstateId={{subEstateId}}&type=2&agentId={{agentId}}" class="house-link ">
         <view class="panel-hd">
             <view class="head">在售房源</view>
             <view class="assistant">
@@ -208,7 +208,7 @@
 <view class="panel esf-list">
     <template is="esf-sources" data="{{esfSources}}" />
     <view class="row" wx:if="{{sameTownTotalCount>2}}">
-        <navigator class="button gray" url="/pages/esf/list">查看更多</navigator>
+        <navigator class="button gray" url="/pages/esf/list?type=1&houseId={{houseId}}&agentId={{agentId}}">查看更多</navigator>
     </view>
 </view>
 <template is="detail-foot" data="{{...agentInfo}}" wx:if="{{agentInfo}}"/>

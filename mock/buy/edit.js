@@ -3,19 +3,19 @@ module.exports = {
   'count': 0,
   'message': '获取客户兴趣纪录信息成功',
   'data': {
-    'id':'1',
-    'guestId':'2',
-    'guestPhoneNum':'',
-    'guestName':'王小五',
-    'sex':1,
-    'cityId':43,
-    'cityName':'上海',
+    'id': '1',
+    'guestId': '2',
+    'guestPhoneNum': '',
+    'guestName': '王小五',
+    'sex': 1,
+    'cityId': 43,
+    'cityName': '上海',
 
     'startPrice': 0.0,
     'endPrice': 0.0,
     'addNum': '1',
     'bedRoomSum': '5',
-    'appType':'11',
+    'appType':"11",
     'townList': [
       {
         'id': 3625,

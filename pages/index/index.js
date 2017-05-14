@@ -8,12 +8,13 @@ let filterAgentList = require('./filterAgentList/filterAgentList.js')
 let app = getApp()
 let main = {
   data: {
-    agentList:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
-  },
-  goPage(event){
-    wx.navigateTo({
-      url: event.currentTarget.dataset.pagename
-    })
+    geographical:{
+        "cityId": 43,
+        "cityName": "上海市",
+        "districtId": 45,
+        "townId": null
+    },
+    agentList:[]
   },
   init(){
     let _this = this;
@@ -25,25 +26,107 @@ let main = {
         var longitude = res.longitude
         var speed = res.speed
         var accuracy = res.accuracy
-        console.info(latitude);
+        //根据地理定位返回的精度纬度，获取当前所在的城市信息
+        request.fetch({
+            mock:true,
+            module:'index',
+            action:'findCityInfoByLonAndLat',
+            data:{
+              lon:longitude,
+              lat:latitude
+            },
+            success:function(data){
+              if(data.status.toString() == '1'){
+                console.log("地理位置获取成功");
+                  //更新地理数据
+                  _this.setData({
+                      geographical:data.data
+                  });
+                  //把城市信息保存到本地
+                  wx.setStorage({
+                    key:"geographical",
+                    data:data.data
+                  });
+                  //根据地理位置，获取区域数据
+                  request.fetch({
+                      mock:true,
+                      module:'index',
+                      action:'getCityAreasInfo',
+                      data:{
+                        cityId:_this.data.geographical.cityId,
+                        houseType:0//0表示不区分新房和二手房1新房2二手房3租房
+                      },
+                      success:function(data){
+                          _this.filterAgentListInit(data.data);
+                      }
+                  });
+              }
+            },
+            fail:function() {//失败
+                console.log("地理位置获取失败");
+                wx.setStorage({
+                  key:"geographical",
+                  data:{}
+                })
+                //获取区域数据
+                request.fetch({
+                    mock:true,
+                    module:'index',
+                    action:'getCityAreasInfo',
+                    data:{
+                      cityId:_this.data.geographical.cityId,
+                      houseType:0//0表示不区分新房和二手房1新房2二手房3租房
+                    },
+                    success:function(data){
+                        _this.filterAgentListInit(data.data);
+                    }
+                });
+            }
+        });
       },
-      fail:function(res) {
-        console.log("点击取消");
+      fail:function() {
+         console.log("取消地理授权");
+         wx.setStorage({
+          key:"geographical",
+          data:{}
+        })
       }
     })
-    //获取区域数据
-    request.fetch({
-        mock:true,
-        module:'index',
-        action:'getCityAreasInfo',
-        data:{},
-        success:function(data){
-             _this.filterAgentListInit(data.data);
+  },
+  //获取用户信息
+  getUserInfo(){
+      var that = this
+      wx.login({
+        success: function (res) {
+          wx.getUserInfo({
+            withCredentials:true,
+            success: function (res) {
+              wx.setStorage({
+                key:"userLoginInfo",
+                data:res
+              })
+            }
+          })
         }
+      })
+  },
+  getAgentList(){
+    request.fetch({
+          mock:true,
+          module:'index',
+          action:'searchAgentList',
+          data:{
+
+          },
+          success:function(data){
+              let agentList = data.data.agentList;
+          }
     });
   },
   onLoad(){
-    this.init(); 
+    this.init();
+    this.getUserInfo();
+    this.getAgentList();
   },
   //滚动到底部异步加载经纪人列表
   onReachBottom(){

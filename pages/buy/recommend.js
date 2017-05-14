@@ -134,10 +134,10 @@ Page({
       that.setHouseType(data.bedRoomSum)
 
       // 位置信息
-      that.setLocation(data.townIdLists)
+      that.setLocation(data.townList)
 
       // 房源特色信息
-      that.setHouseFeatures(data.houseFeature)
+      that.setHouseFeatures(data.cusHouseFeatures)
 
       // 设置经纪人列表
       that.setAgentList(data)
@@ -233,7 +233,6 @@ Page({
       'module': 'buy',
       'action': 'getDetails',
       'showLoading': true,
-      'mock': true,
       success: function (res) {
         callback(res)
       }

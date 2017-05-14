@@ -19,8 +19,10 @@ App({
       wx.login({
         success: function () {
           wx.getUserInfo({
+            withCredentials: true,
             success: function (res) {
               that.globalData.userInfo = res.userInfo
+              console.log(res)
               typeof cb == 'function' && cb(that.globalData.userInfo)
             }
           })
@@ -31,6 +33,7 @@ App({
   globalData: {
     userInfo: null
   },
+  mock: true,
   timer: null,
   isLogin: function (needRedirect = true) { // 判断是否登录了小程序
     var userInfo = wx.getStorageSync('userInfo')
@@ -39,7 +42,7 @@ App({
       var returnUrl = this.getCurrentPage().__route__
       if (!needRedirect) {return false;}
       wx.navigateTo({
-        url: '/pages/logon/index?returnUrl='+returnUrl
+        url: '/pages/logon/index?returnUrl=' + returnUrl
       })
     }
 
@@ -68,5 +71,29 @@ App({
       that.getCurrentPage().setData({'tips': {'show': false}})
       typeof cb == 'function' && cb()
     }, duration)
+  },
+  redirect: function ({url, query}) {
+    if (!url) return
+
+    let history = getCurrentPages()
+    let queryString = ''
+
+    if (query) {
+      Object.keys(query).forEach(key => {
+        queryString += `${key}=${query[key]}&`
+      })
+      queryString = queryString.substr(0, queryString.length - 1)
+      url = url + '?' + queryString
+    }
+
+    if (history.length >= 5) {
+      wx.redirectTo({
+        url: url
+      })
+    }else {
+      wx.navigateTo({
+        url: url
+      })
+    }
   }
 })

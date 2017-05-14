@@ -1,10 +1,10 @@
 var util = require('../../utils/util.js')
 var $ = require('../../utils/extend.js')
 var detailfoot = require('../components/detailfoot.js')
-var app = getApp();
 
 var total = [],
-    textareaValue = "";
+    textareaValue = "",
+    mobilPhone = '';
 
 var params = $.extend(true,{},{
     data: {
@@ -12,10 +12,13 @@ var params = $.extend(true,{},{
         "uploadTextarea":""
     },
     onLoad: function() {
-        app.isLogin();
+        mobilPhone = wx.getStorageSync('phone');
     },
     bindblur: function(e){
         textareaValue = e.detail.value;
+        this.setData({
+            "uploadTextarea":textareaValue
+        })
     },
     chooseImg: function(e) {
         var _this = this;
@@ -41,7 +44,6 @@ var params = $.extend(true,{},{
         })
     },
     deletImageItem:function(e){
-        console.log(e.currentTarget.dataset.id)
         var currentFilePaths = this.data.uploadImages,
             index = e.currentTarget.dataset && e.currentTarget.dataset.id;
         currentFilePaths.splice(index,1);
@@ -52,45 +54,72 @@ var params = $.extend(true,{},{
     uploadFile:function(file,i){
         var _this = this;
         wx.uploadFile({
-            url:'',
+            url:'http://10.0.92.61:8107/wxmpEstate/uploadPic.rest',
             filePath: file[i],//这里是多个不行tempFilePaths[0]这样可以
             name: 'file',
             success: function(res){
-                var obj = new Object(),
-                    data = res.data;
-                obj.id = i;
-                obj.src = data;
+                var data = res.data;
 
                 if((i+1)!=file.length){
-                    total.push(obj);
+                    total.push(data);
                     _this.uploadFile(file,i+1);
                 }else{
-                    total.push(obj);
+                    total.push(data);
                     wx.hideToast();  //隐藏Toast
                     _this.uploadFormSubmit();
                 }
             },
             fail: function (e) {
+                var n = i+1;
                 wx.showModal({
                     title: '提示',
-                    content: '第'+i+'张图片上传失败',
+                    content: '第'+n+'张图片上传失败',
                     showCancel: true
                 })
             }
         })
     },
     uploadFormSubmit:function(){
-
+        var requestData = {
+            guestPhoneNum:mobilPhone,
+            subEstateId:this.data.subEstateId,
+            comment:textareaValue,
+            commentLocation:this.data.commentLocation,
+            imageKeys:total.join(',')
+        }
+        request.fetch({
+            data:requestData,
+            module:'comment',
+            action:'write',
+            showLoading:true,
+            mock:true,
+            success:function(data){
+                if(data.status === 1){
+                    wx.navigateBack()
+                }
+            }.bind(this),
+            error:function(){
+                wx.showModal({
+                    title: '提示',
+                    content: '评论失败，稍后再试',
+                    showCancel: false
+                })
+            }.bind(this)
+        })
     },
     bindFormSubmit: function(e) {
-        wx.showToast({
-            icon: "loading",
-            title: "正在上传"
-        });
-        if(this.data.currentFilePaths.length>0){
-            this.uploadFile(this.data.currentFilePaths,0)
+        if(this.data.uploadTextarea===""){
+            wx.showModal({
+                title: '提示',
+                content: '请填写评论',
+                showCancel: false
+            })
         }else{
-            this.uploadFormSubmit()
+            if(this.data.uploadImages.length>0){
+                this.uploadFile(this.data.uploadImages,0)
+            }else{
+                this.uploadFormSubmit()
+            }
         }
     }
 },detailfoot)
