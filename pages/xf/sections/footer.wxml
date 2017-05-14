@@ -1,2 +1,2 @@
 <import src="../../components/detail-foot.wxml" />
-<template is="detail-foot" data="{{...agentInfo}}"/>
+<template is="detail-foot" data="{{...agentDetail}}"/>
