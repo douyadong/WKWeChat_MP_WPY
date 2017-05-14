@@ -6,6 +6,7 @@ module.exports = {
         "cityId": 43,
         "cityName": "上海市",
         "districtId": 45,
-        "townId": null
+        "townId": null,
+        "cityPinyin":"shanghaishi"
     }
 }

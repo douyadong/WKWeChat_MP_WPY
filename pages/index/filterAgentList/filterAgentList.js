@@ -36,7 +36,7 @@ module.exports = {
     //综合排序点击高亮id
     sortActionId:-1,
     //更多列表
-    moreContentList:[{content:"好经纪人"},{content:"客户热评"},{content:"推荐房源数量多"}],
+    moreContentList:[{content:"不限"},{content:"好经纪人"},{content:"客户热评"},{content:"推荐房源数量多"}],
     //更多点击高亮
     moreActionId:-1
   },
@@ -180,17 +180,26 @@ module.exports = {
     this.setData({
         regionActionId:id
     })
-    //点击的是“不限”
+    //点击的是“不限”，towns：设置显现的板块
     if(id == -1){
       this.setData({
           screen_region:"不限",
-          towns:[]
+          towns:[],//点击的左侧的“不限”，没有板块，就是空数组
+          districtAndTown:this.data.geographical.cityPinyin//修改筛选经纪人列表状态
       })
+     //调用筛选经纪人列表
+     this.getAgentList(
+        this.data.geographical.cityId,
+        this.data.districtAndTown,
+        this.data.orderType,
+        this.data.selectLabelList,
+        this.data.pageIndex
+      );
     }
     for(let i=0;i<plateList.length;i++){
-      if(plateList[i].id == id){
+      if(plateList[i].id == id){//点击的不是“不限”，是区域
           this.setData({
-              towns:plateList[i].towns
+              towns:plateList[i].towns//不是空数组，修改右侧板块状态
           })
       }
     }
@@ -199,8 +208,17 @@ module.exports = {
   plateList(event){
     this.setData({
       plateActionId:event.target.id,
-      screen_region:event.currentTarget.dataset.platename
+      screen_region:event.currentTarget.dataset.platename,
+      districtAndTown:event.currentTarget.dataset.pinyin//修改筛选经纪人列表状态
     })
+    //调用筛选经纪人列表
+    this.getAgentList(
+      this.data.geographical.cityId,
+      this.data.districtAndTown,
+      this.data.orderType,
+      this.data.selectLabelList,
+      this.data.pageIndex
+    );
   },
   //点击综合排序
   tapSort(event){
