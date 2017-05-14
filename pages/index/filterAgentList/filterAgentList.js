@@ -32,11 +32,11 @@ module.exports = {
     //点击左边区域，默认选中的id
     regionActionId:-1,
     //综合排序列表
-    sortContentList:[{content:"综合排序"},{content:"评价分数从高到低"},{content:"成交量从高到低"}],
+    sortContentList:[{orderType:1,content:"综合排序"},{orderType:2,content:"评价分数从高到低"},{orderType:3,content:"成交量从高到低"}],//1.综合排序 2.评价分数从高到低 3.成交量从高到低
     //综合排序点击高亮id
     sortActionId:-1,
     //更多列表
-    moreContentList:[{content:"好经纪人"},{content:"客户热评"},{content:"推荐房源数量多"}],
+    moreContentList:[{selectLabel:0,content:"不限"},{selectLabel:1,content:"好经纪人"},{selectLabel:2,content:"客户热评"},{selectLabel:3,content:"推荐房源数量多"}],//1.好经纪人 2.客户热评 3.推荐房源数量多
     //更多点击高亮
     moreActionId:-1
   },
@@ -174,53 +174,132 @@ module.exports = {
   },
   //点击左边区域
   tapRegionList(event){
-    let plateList = this.data.plateList;//板块数据
+    let _this = this;
+    let plateList = _this.data.plateList;//板块数据
     let id = parseInt(event.target.id);//当前点击id
     //设置点击背景变白
-    this.setData({
+    _this.setData({
         regionActionId:id
     })
-    //点击的是“不限”
+    //点击的是“不限”，towns：设置显现的板块
     if(id == -1){
-      this.setData({
+      _this.setData({
           screen_region:"不限",
-          towns:[]
+          towns:[],//点击的左侧的“不限”，没有板块，就是空数组
+          districtAndTown:_this.data.geography.cityPinyin,//修改获取经纪人列表筛选条件 “区域” 状态
+          pageIndex:0
       })
+     //调用筛选经纪人列表
+     _this.getAgentList(
+        _this.data.geography.cityId,
+        _this.data.districtAndTown,
+        _this.data.orderType,
+        _this.data.selectLabelList,
+        _this.data.pageIndex,
+        function (agentList) {
+          _this.setData({
+            agentList:agentList
+          })
+        }
+      );
     }
     for(let i=0;i<plateList.length;i++){
-      if(plateList[i].id == id){
-          this.setData({
-              towns:plateList[i].towns
+      if(plateList[i].id == id){//点击的不是“不限”，是区域
+          _this.setData({
+              towns:plateList[i].towns//不是空数组，修改右侧板块状态
           })
       }
     }
   },
   //点击右边板块
   plateList(event){
-    this.setData({
+    let _this = this;
+    _this.setData({
       plateActionId:event.target.id,
-      screen_region:event.currentTarget.dataset.platename
+      screen_region:event.currentTarget.dataset.platename,
+      districtAndTown:event.currentTarget.dataset.pinyin,//修改筛选经纪人列表状态
+      pageIndex:0
     })
+    //调用筛选经纪人列表
+    _this.getAgentList(
+      _this.data.geography.cityId,
+      _this.data.districtAndTown,
+      _this.data.orderType,
+      _this.data.selectLabelList,
+      _this.data.pageIndex,
+      function (agentList) {
+        _this.setData({
+          agentList:agentList
+        })
+      }
+    );
   },
   //点击综合排序
   tapSort(event){
-    this.setData({
-        sortActionId:parseInt(event.currentTarget.dataset.index)
+    let _this = this;
+    _this.setData({
+         sortActionId:parseInt(event.currentTarget.dataset.index),//排序的点击id
+         screen_sort:event.currentTarget.dataset.content, //设置点击的值回显
+         orderType:parseInt(event.currentTarget.dataset.ordertype),
+         pageIndex:0
     })
-    //设置点击的值回显
-    this.setData({
-        screen_sort:event.currentTarget.dataset.content
-    })
+    //console.log(parseInt(event.currentTarget.dataset.ordertype));
+    //调用筛选经纪人列表
+    _this.getAgentList(
+      _this.data.geography.cityId,
+      _this.data.districtAndTown,
+      _this.data.orderType,
+      _this.data.selectLabelList,
+      _this.data.pageIndex,
+      function (agentList) {
+        _this.setData({
+          agentList:agentList
+        })
+      }
+    );
   },
   //点击筛选更多
   tapMore(event){
-    //设置当前点击高亮
-    this.setData({
-        moreActionId:parseInt(event.currentTarget.dataset.index)
+    let _this = this;
+    _this.setData({
+        moreActionId:parseInt(event.currentTarget.dataset.index),//设置当前点击高亮
+        screen_more:event.currentTarget.dataset.content//设置点击的值回显
     })
-    //设置点击的值回显
-    this.setData({
-        screen_more:event.currentTarget.dataset.content
-    })
+    console.log(event.currentTarget.dataset.selectlabel);
+    if(parseInt(event.currentTarget.dataset.selectlabel) != 0){
+      _this.setData({
+          selectLabelList:[parseInt(event.currentTarget.dataset.selectlabel)],
+          pageIndex:0
+      })
+      _this.getAgentList(
+        _this.data.geography.cityId,
+        _this.data.districtAndTown,
+        _this.data.orderType,
+        _this.data.selectLabelList,
+        _this.data.pageIndex,
+        function (agentList) {
+          _this.setData({
+            agentList:agentList
+          })
+        }
+      );
+    }else{
+      _this.setData({
+          selectLabelList:[1,2,3],
+          pageIndex:0
+      })
+      _this.getAgentList(
+        _this.data.geography.cityId,
+        _this.data.districtAndTown,
+        _this.data.orderType,
+        _this.data.selectLabelList,
+        _this.data.pageIndex,
+        function (agentList) {
+          _this.setData({
+            agentList:agentList
+          })
+        }
+      );
+    }
   }
 }

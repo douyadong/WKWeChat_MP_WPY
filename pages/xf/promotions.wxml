@@ -1,24 +1,6 @@
-<view class="promotion">
+<view class="promotion" wx:for="{{promotions}}" wx:key="*this" wx:for-item="promotion">
   <text class="iconfont icon-hui"></text>
-  <text class="title">悟空优惠，付 1000 抵 5000 税费</text>
-  <text class="desc">每付 1000 可抵 5000 税费，更可现场获得返现机会。</text>
-  <view class="separator"></view>
-</view>
-<view class="promotion">
-  <text class="iconfont icon-hui"></text>
-  <text class="title">悟空优惠，付 1000 抵 5000 税费</text>
-  <text class="desc">每付 1000 可抵 5000 税费，更可现场获得返现机会。</text>
-  <view class="separator"></view>
-</view>
-<view class="promotion">
-  <text class="iconfont icon-hui"></text>
-  <text class="title">悟空优惠，付 1000 抵 5000 税费</text>
-  <text class="desc">每付 1000 可抵 5000 税费，更可现场获得返现机会。</text>
-  <view class="separator"></view>
-</view>
-<view class="promotion">
-  <text class="iconfont icon-hui"></text>
-  <text class="title">悟空优惠，付 1000 抵 5000 税费</text>
-  <text class="desc">每付 1000 可抵 5000 税费，更可现场获得返现机会。</text>
+  <text class="title">{{promotion.title}}</text>
+  <text class="desc">{{promotion.details}}</text>
   <view class="separator"></view>
 </view>
