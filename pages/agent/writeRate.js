@@ -164,7 +164,7 @@ var params = {
         })
     },
     bindSubmitClick:function(){
-        var data = this.data.status
+        var data = this.data.status;
         if(data.score === 0){
             wx.showModal({
                 title: '提示',
@@ -176,7 +176,7 @@ var params = {
                     }
                 }
             })
-        }else if(data.textarea == ''){
+        }else if(data.content == ''){
             wx.showModal({
                 title: '提示',
                 content: '请填写评论内容',

@@ -21,7 +21,7 @@
   <view class="rates">
     <template is="agent-rates" data="{{simpleAgentCommentList}}" />
   </view>
-  <view class="legend-hd" wx:if="{{simpleAgentCommentList.length<10}}">
+  <view class="legend-hd" wx:if="{{!isAllowLoading}}">
       <view class="bg-line"></view>
       <text>没有更多了</text>
   </view>

@@ -14,7 +14,7 @@ let main = {
         "districtId": 45,
         "townId": null
     },
-    agentList:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+    agentList:[]
   },
   init(){
     let _this = this;
@@ -97,13 +97,12 @@ let main = {
   getUserInfo(){
       var that = this
       wx.login({
-        success: function () {
+        success: function (res) {
           wx.getUserInfo({
             withCredentials:true,
             success: function (res) {
-              console.log("允许授权");
               wx.setStorage({
-                key:"userInfo",
+                key:"userLoginInfo",
                 data:res
               })
             }
@@ -111,9 +110,28 @@ let main = {
         }
       })
   },
+  getAgentList(){
+    let _this = this;
+    request.fetch({
+          mock:true,
+          module:'index',
+          action:'searchAgentList',
+          data:{
+
+          },
+          success:function(data){
+              let agentList = data.data.agentList;
+              console.log(agentList);
+              _this.setData({
+                  agentList:agentList
+              })
+          }
+    });
+  },
   onLoad(){
     this.init();
     this.getUserInfo();
+    this.getAgentList();
   },
   //滚动到底部异步加载经纪人列表
   onReachBottom(){

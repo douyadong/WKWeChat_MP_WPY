@@ -19,7 +19,7 @@
 <view class="star-desc">{{status.text}}</view>
 <block wx:if="{{status.score==5}}">
     <view class="tags">
-        <block wx:for="{{tagList.good}}" wx:key="*this">
+        <block wx:for="{{tagList.good}}" wx:key="item.id">
             <view data-id="{{item.id}}" 
                   data-index="index" 
                   bindtap="bindLabelClick"
@@ -30,7 +30,7 @@
 </block>
 <block wx:if="{{status.score<5 && status.score>0}}">
     <view class="tags">
-        <block wx:for="{{tagList.bad}}" wx:key="*this">
+        <block wx:for="{{tagList.bad}}" wx:key="item.id">
             <view data-id="{{item.id}}" 
                   data-index="index" 
                   bindtap="bindLabelClick"

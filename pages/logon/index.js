@@ -1,10 +1,14 @@
 var request = require('../../utils/request.js');
+let app = getApp()
 Page({
   data: {
     phone:'',
     verificationCode:'',
     isShowSend:false,
-    second:60
+    second:60,
+    tips: {
+      show: false
+    }
   },
   //获取手机号
   getPhone(event){
@@ -17,19 +21,11 @@ Page({
     let phone = this.data.phone;
     let codeType = event.target.dataset.codetype;
     if(phone == ''){
-      wx.showToast({
-          title: '请输手机号码',
-          icon: 'success',
-          duration: 2000
-        })
-        return false;
+      app.showTips("请输手机号码");
+      return false;
     }
     if(!(/^1[34578]\d{9}$/.test(phone))){ 
-        wx.showToast({
-          title: '输入正确的手机号码',
-          icon: 'success',
-          duration: 2000
-        })
+        app.showTips("输入正确的手机号码");
         return false; 
     } 
     //显示重新发送
@@ -79,37 +75,21 @@ Page({
     let verificationCode = this.data.verificationCode;
     //校验手机号
     if(phone == ''){
-      wx.showToast({
-          title: '请输手机号码',
-          icon: 'success',
-          duration: 2000
-        })
+        app.showTips("请输手机号码");
         return false;
     }
     if(!(/^1[34578]\d{9}$/.test(phone))){ 
-        wx.showToast({
-          title: '输入正确的手机号码',
-          icon: 'success',
-          duration: 2000
-        })
+        app.showTips("输入正确的手机号码");
         return false; 
     }
     
     //校验验证码
     if(verificationCode == ''){
-      wx.showToast({
-        title: '验证码不得为空',
-        icon: 'success',
-        duration: 2000
-      })
+      app.showTips("验证码不得为空");
       return false;
     }
     if(isNaN(verificationCode) ){//|| (verificationCode+'').length != 6
-      wx.showToast({
-        title: '验证码为数字',
-        icon: 'success',
-        duration: 2000 
-      })
+      app.showTips("验证码为数字");
       return false;
     }
     console.log("手机号"+this.data.phone);
@@ -129,25 +109,12 @@ Page({
     });
   },
   onLoad: function () {
-    //1.页面初始化，读取Storage，判断微信用户是否为空
+    //1.页面初始化，读取Storage,获取用户登录信息，判断微信用户是否为空
     wx.getStorage({
-      key: 'userInfo',
+      key: 'userLoginInfo',
       success: function(res) {//已授权
           console.log(res.data)
-          //获取code
-          wx.login({
-            success: function(res) {
-              if (res.code) {
-                console.log(res.code);
-                //发起网络请求，code 换取 session_key
-
-                //写入Storage
-                
-              } else {
-                console.log('获取用户登录态失败！' + res.errMsg)
-              }
-            }
-          });
+          //没有sessionKey，要获取
       },
       fail:function() {//未授权
         wx.showModal({

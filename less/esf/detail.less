@@ -6,6 +6,7 @@
  
  @import "../variables.less";
  @import "../mixins.less";
+  @import "../xf/sections/location.less";
  /******************房屋详情********************/
  
  .panel {
@@ -19,7 +20,7 @@
              flex: 1;
          }
          .center {
-             flex: 2;
+             flex: 1.5;
              border-left: 1px solid @separator-color;
              border-right: 1px solid @separator-color;
              padding-left: 60rpx;
@@ -165,9 +166,9 @@
              color: @navigator-active-color;
              font-size: 26rpx;
              position: absolute;
-             right: 20rpx;
+             right: 0rpx;
              top: 50%;
-             margin-top: -13rpx;
+             margin-top: -30rpx;
          }
          .item-hd {
              image {
