@@ -2,6 +2,7 @@
   <view class="panel-hd">
     <view class="head">在售户型</view>    
   </view>
+  <navigator url="/pages/xf/layouts?subEstateId={{newHouseDetail.estateId}}">
   <view class="panel-bd lr-padding">
     <view style="width:{{newHouseDetail.houseTypeImages.length * 300}}rpx">
       <view class="layout" wx:for="{{newHouseDetail.houseTypeImages}}" wx:key="*this" wx:for-item="layout">
@@ -17,5 +18,6 @@
       </view>     
     </view>
   </view>
+  </navigator>
 </view>
 <view class="gap"></view>
