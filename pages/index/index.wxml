@@ -5,7 +5,7 @@
   <view class="searchNavBox">
     <view class="searchNav">
       <navigator url="/pages/logon/index" class="city">
-          <text class="cityName">{{geographical.cityName}}</text>
+          <text class="cityName">{{geography.cityName}}</text>
           <text class="down"></text>
       </navigator>
       <view class="searchBox">
