@@ -2,10 +2,10 @@
   <view class="panel-hd">
     <view class="head">在售户型</view>    
   </view>
-  <navigator url="/pages/xf/layouts?subEstateId={{newHouseDetail.estateId}}">
   <view class="panel-bd lr-padding">
     <view style="width:{{newHouseDetail.houseTypeImages.length * 300}}rpx">
       <view class="layout" wx:for="{{newHouseDetail.houseTypeImages}}" wx:key="*this" wx:for-item="layout">
+        <navigator url="/pages/xf/layouts?subEstateId={{newHouseDetail.estateId}}&current={{index}}">
         <image src="{{layout.thumbnail}}"></image>
         <view>
           <text class="layout-name">{{layout.name}}</text>
@@ -15,9 +15,9 @@
           <text class="layout-desc">{{layout.bedRoomSum}}室{{layout.livingRoomSum}}厅{{layout.wcSum}}卫</text>
           <text class="area">{{layout.spaceArea}}㎡</text>
         </view>
-      </view>     
+        </navigator>
+      </view> 
     </view>
   </view>
-  </navigator>
 </view>
 <view class="gap"></view>
