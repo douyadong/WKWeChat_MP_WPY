@@ -21,7 +21,7 @@ module.exports = {
         "parkingSpace" : 338 ,
         "saleAddress" : "长宁区中山公园大门" ,
         "greenRate" : 2 ,
-        "volumeRate" : "" ,
+        "volumeRate" : "3.6" ,
         "propertyCharges" : "4.00 元/㎡/月" ,
         "propertyCompany" : "好管家物业管理有限公司"
     }

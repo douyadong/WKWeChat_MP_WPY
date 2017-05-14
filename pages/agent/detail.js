@@ -1,4 +1,4 @@
-import $ from "../../utils/extend.js" ;
+
 import request from "../../utils/request" ;
 
 let mock = true ;  //页面调取数据是mock还是接口数据，如果是接口数据这里写false就好了
