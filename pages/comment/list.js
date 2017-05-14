@@ -3,6 +3,7 @@ var $ = require('../../utils/extend.js');
 var houseComment = require('../components/house-comment.js');
 
 var requestData = {};
+var isLoading = false;
 
 var params = $.extend(true,{},{
     data: {
@@ -15,6 +16,7 @@ var params = $.extend(true,{},{
             data:requestData,
             module:'comment',
             action:'list',
+            mock:true,
             success:function(data){
                 this.setData({
                     "comments":data.data.commentList
@@ -23,11 +25,10 @@ var params = $.extend(true,{},{
         })
     },
     loadMore:function() {
-        if(this.data.isLoading)return;
-        this.setData({
-            "isLoading":true
-        });
+        if(isLoading)return;
+        isLoading = true;
         requestData.offset = requestData.offset++;
+        
         request.fetch({
             data:requestData,
             module:'comment',
@@ -37,9 +38,11 @@ var params = $.extend(true,{},{
             success:function(data){
                 if(data.status === 1){
                     this.setData({
-                        "comments":this.data.comments.concat(data.data.commentList),
-                        "isLoading":false
+                        "comments":this.data.comments.concat(data.data.commentList)
                     })
+                    setTimeout(function(){
+                        isLoading= false;
+                    }.bind(this),200)
                 }
             }.bind(this),
             error:function(){

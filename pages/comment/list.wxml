@@ -1,6 +1,6 @@
 <!--logs.wxml-->
 <import src="../components/house-comment.wxml" />
 <view class="titleShadow"></view>
-<scroll-view class="house-comments" scroll-y="true" lower-threshold="100" bindscrolltolower="loadMore">
+<scroll-view class="house-comments" scroll-y="true" bindscrolltolower="loadMore">
     <template is="house-comment" data="{{comments}}"/>
 </scroll-view>
