@@ -13,10 +13,12 @@ var params = $.extend(true, {}, {
             phoneNumber: this.data.agent && this.data.agent.agentMobile
         });
     } ,
-    preview: function (event) {        
-        wx.previewImage({
-            current: event.target.dataset.imgUrl, // 当前显示图片的http链接
-            urls: this.data.imgUrls.filter(function (item) { return item.type === 'img' }).map(function (item) { return item.url })// 需要预览的图片http链接列表
+    openLocation: function() {
+        wx.openLocation({
+            longitude: parseFloat(this.data.estateInfo.longitude),
+            latitude: parseFloat(this.data.estateInfo.latitude),
+            name:this.data.estateInfo.estateName,
+            address:this.data.estateInfo.estateAddr
         })
     },
     onLoad: function (options) {
@@ -46,6 +48,7 @@ var params = $.extend(true, {}, {
 
                 var estateInfo = {
                     district:e.district,
+                    estateName:e.estateName,
                     town:e.town,
                     propertyRight:e.propertyRight,
                     completed:e.completed,
@@ -61,13 +64,12 @@ var params = $.extend(true, {}, {
                     sellhouseCount:e.sellhouseCount,
                     longitude:e.longitude,
                     latitude:e.latitude,
+                    estateAddr:e.estateAddr,
                     markers:[{
                         //iconPath: "/resources/others.png",
                         id: 0,
                         latitude: e.latitude,
-                        longitude: e.longitude,
-                        width: 50,
-                        height: 50
+                        longitude: e.longitude
                     }]
                 };
                 var comments = e.comment && e.comment.commentList || [];
