@@ -32,13 +32,13 @@
     <!--综合排序-->
     <view class="sort {{showIndex == 1 ? 'showView':''}}">
         <block wx:for="{{sortContentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-            <view class="list {{sortActionId == index ? 'sortAction':''}}" data-index="{{index}}" data-content="{{list.content}}" bindtap="tapSort">{{list.content}}</view>
+            <view class="list {{sortActionId == index ? 'sortAction':''}}" data-index="{{index}}" data-orderType="{{list.orderType}}" data-content="{{list.content}}" bindtap="tapSort">{{list.content}}</view>
         </block>
     </view>
     <!--更多-->
     <view class="more {{showIndex == 2 ? 'showView':''}}">
         <block wx:for="{{moreContentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-            <view class="list {{moreActionId == index ? 'moreAction':''}}" data-index="{{index}}" data-content="{{list.content}}" bindtap="tapMore">{{list.content}}</view>
+            <view class="list {{moreActionId == index ? 'moreAction':''}}" data-index="{{index}}" data-selectLabel="{{list.selectLabel}}" data-content="{{list.content}}" bindtap="tapMore">{{list.content}}</view>
         </block>
     </view>
 </view>

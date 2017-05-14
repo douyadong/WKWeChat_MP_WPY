@@ -6,7 +6,8 @@ var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
 var qqmapsdk ;
 
 let params =$.extend(true , {} , {
-     data : {         
+     data : {
+            
      } ,
      render : function(options) {
           let  _ = this ;
@@ -14,7 +15,12 @@ let params =$.extend(true , {} , {
           request.fetch({
               "module": "xf" ,
               "action" : "detail" ,
-              "showLoading" :  true ,              
+              "mock" : false ,
+              "data" : {
+                  "subEstateId" : 113408 ,
+                  "agentId" : 100321    
+              } ,
+              "showLoading" :  true ,            
               success : function (res) {
                   let result = res.data ;
                   //给二手房和新房两个组件赋值
@@ -28,9 +34,8 @@ let params =$.extend(true , {} , {
                       result.newHouseDetail.cimageList.forEach(function(element) {
                           result.imgUrls.push({ "url" : element.imageUrl }) ; 
                       }) ;
-                  }                          
-                  //最后赋予模板变量
-                  _.setData(res.data) ;
+                  }
+                  _.setData(result) ;
               }
           }) ;
      } ,
@@ -44,7 +49,7 @@ let params =$.extend(true , {} , {
     } ,
     onLoad : function (options) {
          qqmapsdk = new QQMapWX({
-            key: '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
+            key : '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
          }) ;        
         this.render(options) ;    
     }
