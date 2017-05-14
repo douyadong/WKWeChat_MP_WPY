@@ -111,6 +111,7 @@ let main = {
       })
   },
   getAgentList(){
+    let _this = this;
     request.fetch({
           mock:true,
           module:'index',
@@ -120,6 +121,10 @@ let main = {
           },
           success:function(data){
               let agentList = data.data.agentList;
+              console.log(agentList);
+              _this.setData({
+                  agentList:agentList
+              })
           }
     });
   },
