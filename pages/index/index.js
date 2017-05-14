@@ -14,7 +14,7 @@ let main = {
         "districtId": 45,
         "townId": null
     },
-    agentList:[{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
+    agentList:[]
   },
   init(){
     let _this = this;
@@ -110,9 +110,23 @@ let main = {
         }
       })
   },
+  getAgentList(){
+    request.fetch({
+          mock:true,
+          module:'index',
+          action:'searchAgentList',
+          data:{
+
+          },
+          success:function(data){
+              let agentList = data.data.agentList;
+          }
+    });
+  },
   onLoad(){
     this.init();
     this.getUserInfo();
+    this.getAgentList();
   },
   //滚动到底部异步加载经纪人列表
   onReachBottom(){

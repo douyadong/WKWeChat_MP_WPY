@@ -16,3 +16,6 @@
     </view>
     <view class="represent">登录代表同意<navigator url="/pages/userAgreement/index" class="userAgreement">《用户协议》</navigator></view>
 </view>
+<!--tips模板-->
+<import src="../components/tips.wxml"/>
+<template is="tips" data="{{tips}}" />
