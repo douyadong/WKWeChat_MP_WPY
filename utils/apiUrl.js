@@ -3,7 +3,7 @@
  */
 
 //const domain = "https://m.wkzf.com" ;
-const domain = "http://10.0.18.79:8107/";
+const domain = "http://minapp-test.yfyk365.com";
 
 const url = {
   "agent" : {

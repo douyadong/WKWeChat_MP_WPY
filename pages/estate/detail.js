@@ -90,6 +90,10 @@ var params = $.extend(true, {}, {
                     commentsCount:e.comment && e.comment.amount || 0,
                     imgUrls
                 });
+
+                wx.setNavigationBarTitle({
+                  title: e.estateName,
+                })
             }
         });
     }

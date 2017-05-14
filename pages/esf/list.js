@@ -15,6 +15,20 @@ Page({
       agentId:options.agentId
     });
 
+    //设置导航条中的标题
+    let title = "";
+    switch(options.type){
+      case "1":
+        title = "相似房源列表";
+      break;
+      case "2":
+        title = "在售房源列表";
+      break;
+    }
+
+    wx.setNavigationBarTitle({
+      title: title,
+    });
     this.getHouses(); 
   },
   reachBottom:function(){    
