@@ -2,7 +2,7 @@
 <view class="panel rates">
   <view class="panel-hd">
     <view class="head">用户评价</view>
-    <navigator class="assistant" url="/pages/agent/rateList">
+    <navigator class="assistant" url="/pages/agent/rateList?agentId={{simpleAgentDetail.agentId}}">
       <text>{{simpleAgentCommentTag.agentCommentCount}}</text>
       <text class="iconfont icon-arrow-r"></text>
     </navigator>
