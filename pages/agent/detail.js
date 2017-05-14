@@ -10,6 +10,7 @@ let params = {
           request.fetch({
               "module": "agent" ,
               "action" : "detail" ,
+              "data" : { "agentId" : agentId } ,
               "showLoading" :  true ,              
               success : function (res) {
                   let result = res.data ;
