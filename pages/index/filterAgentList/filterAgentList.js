@@ -185,11 +185,11 @@ module.exports = {
       this.setData({
           screen_region:"不限",
           towns:[],//点击的左侧的“不限”，没有板块，就是空数组
-          districtAndTown:this.data.geographical.cityPinyin//修改筛选经纪人列表状态
+          districtAndTown:this.data.geography.cityPinyin//修改获取经纪人列表筛选条件 “区域” 状态
       })
      //调用筛选经纪人列表
      this.getAgentList(
-        this.data.geographical.cityId,
+        this.data.geography.cityId,
         this.data.districtAndTown,
         this.data.orderType,
         this.data.selectLabelList,
@@ -213,7 +213,7 @@ module.exports = {
     })
     //调用筛选经纪人列表
     this.getAgentList(
-      this.data.geographical.cityId,
+      this.data.geography.cityId,
       this.data.districtAndTown,
       this.data.orderType,
       this.data.selectLabelList,

@@ -8,7 +8,7 @@
         </view>
         <view class="content">
             <view class="left">
-                <view class="title">{{list.agentName}}</view>
+                <view class="title">{{list.agentId}}{{list.agentName}}</view>
                 <view class="company">{{list.agentBelongToCompanyName}}</view>
                 <block wx:if="{{list.agentBizTownList != null && list.agentBizTownList.length != 0}}">
                     <view class="businessCenter">熟悉商圈:<text wx:for="{{list.agentBizTownList}}" wx:for-item="list" wx:for-index="index" wx:key="index">{{list}},</text></view>
