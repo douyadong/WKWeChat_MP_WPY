@@ -1,26 +1,10 @@
 <view class="presses">
-  <view class="press">
-    <text class="title">静安府样板间已开放，预计 7 月中下旬开盘</text>
-    <text class="desc">7 月 4 日最新消息：静安府样板间已开放，预计 7 月中下旬开盘。首开产品为 95、118 平三房，138 平四房具体价格、优惠待定。</text>
-    <text class="date">2016-07-07</text>
-  </view>
-  <view class="separator"></view>
-  <view class="press">
-    <text class="title">静安府样板间已开放，预计 7 月中下旬开盘</text>
-    <text class="desc">7 月 4 日最新消息：静安府样板间已开放，预计 7 月中下旬开盘。首开产品为 95、118 平三房，138 平四房具体价格、优惠待定。</text>
-    <text class="date">2016-07-07</text>
-  </view>
-  <view class="separator"></view>
-  <view class="press">
-    <text class="title">静安府样板间已开放，预计 7 月中下旬开盘</text>
-    <text class="desc">7 月 4 日最新消息：静安府样板间已开放，预计 7 月中下旬开盘。首开产品为 95、118 平三房，138 平四房具体价格、优惠待定。</text>
-    <text class="date">2016-07-07</text>
-  </view>
-  <view class="separator"></view>
-  <view class="press">
-    <text class="title">静安府样板间已开放，预计 7 月中下旬开盘</text>
-    <text class="desc">7 月 4 日最新消息：静安府样板间已开放，预计 7 月中下旬开盘。首开产品为 95、118 平三房，138 平四房具体价格、优惠待定。</text>
-    <text class="date">2016-07-07</text>
-  </view>
-  <view class="separator"></view>
+  <block wx:for="{{presses}}" wx:key="*this" wx:for-item="press">
+    <view class="press">
+      <text class="title">{{press.title}}</text>
+      <text class="desc">{{press.content}}</text>
+      <text class="date">{{press.publishTimeStr}}</text>
+    </view>
+    <view class="separator" wx:if="{{index < presses.length-1}}"></view>
+  </block>
 </view>

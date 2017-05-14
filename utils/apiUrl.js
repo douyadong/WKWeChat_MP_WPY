@@ -48,6 +48,15 @@ const url = {
   },
   "report":{
     "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"
+  } ,
+  "xf" : {
+    "detail" : "/wxmpNewHouseDetail/getNewHouseDetail.rest" ,
+    "info" : "/wxmpNewHouseDetail/getNewHouseBasicInfo.rest" ,
+    "presses" : "/wxmpNewHouseDetail/getDynamicList.rest" ,
+    "poster" : "/wxmpNewHouseDetail/getMagazineList.rest" ,
+    "layouts" : "/wxmpNewHouseDetail/getHouseTypeDetail.rest" ,
+    "promotions" : "/wxmpNewHouseDetail/getNewHouseActivityInfo.rest" ,
+    "poster-preview" : "/wxmpNewHouseDetail/getMagazineList.rest"
   }
 }
 
