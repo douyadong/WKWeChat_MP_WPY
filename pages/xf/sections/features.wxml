@@ -3,26 +3,24 @@
     <view class="head">项目特色</view>    
   </view> 
   <view class="panel-bd lr-padding">
-    <view class="feature">
-      <text class="sprite sprite-bus"></text>
-      <text class="title">交通</text>
-      <text class="desc">紧邻虹桥综合交通枢纽与国家会展中心，是核心区临高铁首排项目。</text>
-    </view>
-    <view class="feature">
-      <text class="sprite sprite-light"></text>
-      <text class="title">配套</text>
-      <text class="desc">紧邻虹桥综合交通枢纽与国家会展中心，是核心区临高铁首排项目。</text>
-    </view>
-    <view class="feature">
-      <text class="sprite sprite-school"></text>
-      <text class="title">学校</text>
-      <text class="desc">紧邻虹桥综合交通枢纽与国家会展中心，是核心区临高铁首排项目。</text>
-    </view>
-    <view class="feature">
-      <text class="sprite sprite-technolog"></text>
-      <text class="title">智能科技</text>
-      <text class="desc">紧邻虹桥综合交通枢纽与国家会展中心，是核心区临高铁首排项目。</text>
-    </view>
+    <view class="feature" wx:for="{{newHouseDetail.projectFeatureList}}" wx:key="*this" wx:for-item="feature">
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===2}}"></text>
+      <text class="sprite sprite-light" wx:if="{{feature.featureType===3}}"></text>
+      <text class="sprite sprite-school" wx:if="{{feature.featureType===4}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===5}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===6}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===7}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===8}}"></text>
+      <text class="sprite sprite-technolog" wx:if="{{feature.featureType===9}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===10}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===11}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===12}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===13}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===14}}"></text>
+      <text class="sprite sprite-bus" wx:if="{{feature.featureType===15}}"></text>      
+      <text class="title">{{feature.featureName}}</text>
+      <text class="desc">{{feature.featureDescription}}</text>
+    </view>    
   </view>
 </view>
 <view class="gap"></view>

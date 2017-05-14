@@ -20,8 +20,8 @@ module.exports = {
         "propertyTypeStr" : "小高层" ,
         "parkingSpace" : 338 ,
         "saleAddress" : "长宁区中山公园大门" ,
-        "greenRate" : 2 ,
-        "volumeRate" : "" ,
+        "greenRate" : "65%" ,
+        "volumeRate" : "3.0" ,
         "propertyCharges" : "4.00 元/㎡/月" ,
         "propertyCompany" : "好管家物业管理有限公司"
     }

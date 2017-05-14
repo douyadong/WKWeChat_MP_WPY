@@ -3,35 +3,39 @@
  2. 文件名称：xf -> sections -> location.less (新房详情位置及周边部分)
  3. 作者：zhaohuagang@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+ 
  .location {
-     position : relative ;
-    map {
-        width : 100% ; 
-        height : 500rpx ;
-    }
-    .supports {
-        background-color : #fff ;
-        .border-radius(14rpx) ;
-        bottom : 50rpx ;
-        left : 6% ;
-        padding : @gap-dimension  / 2 @gap-dimension ;
-        position : absolute ;
-        width : 88% ;
-        text {
-            color : @default-font-color ;            
-            font-size : @default-font-size ;
-            vertical-align : middle ;
-        }
-        .iconfont {
-            font-size : @larger-font-size ;
-            margin-right : @gap-dimension ;
-        }
-        .icon-location {
-            color : @red-font-color ;
-        }
-        .icon-ditie {
-            color : @blue-font-color ;
-        }
-
-    }
+     position: relative;
+     map {
+         width: 100%;
+         height: 500rpx;
+     }
+     image {
+         width: 100%;
+     }
+     .supports {
+         background-color: #fff;
+         .border-radius(14rpx);
+         bottom: 20rpx;
+         left: 4%;
+         padding: @gap-dimension / 2 @gap-dimension ;
+         position: absolute;
+         width: 92%;
+         box-sizing: border-box;
+         text {
+             color: @default-font-color ;
+             font-size: @default-font-size ;
+             vertical-align: middle;
+         }
+         .iconfont {
+             font-size: @larger-font-size ;
+             margin-right: @gap-dimension ;
+         }
+         .icon-location {
+             color: @red-font-color ;
+         }
+         .icon-ditie {
+             color: @blue-font-color ;
+         }
+     }
  }

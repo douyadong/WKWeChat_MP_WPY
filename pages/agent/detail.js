@@ -1,7 +1,5 @@
-import $ from "../../utils/extend.js" ;
-import request from "../../utils/request" ;
 
-let mock = true ;  //页面调取数据是mock还是接口数据，如果是接口数据这里写false就好了
+import request from "../../utils/request" ;
 
 let params = {
      data : {         
@@ -12,8 +10,7 @@ let params = {
           request.fetch({
               "module": "agent" ,
               "action" : "detail" ,
-              "showLoading" :  true ,
-              "mock" : mock ,
+              "showLoading" :  true ,              
               success : function (res) {
                   let result = res.data ;
                   //给二手房和新房两个组件赋值

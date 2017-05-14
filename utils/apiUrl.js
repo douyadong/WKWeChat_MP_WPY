@@ -3,7 +3,7 @@
  */
 
 //const domain = "https://m.wkzf.com" ;
-const domain = "http://10.0.18.79:8107/";
+const domain = "http://minapp-test.yfyk365.com";
 
 const url = {
   "agent" : {
@@ -48,6 +48,15 @@ const url = {
   },
   "report":{
     "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"
+  } ,
+  "xf" : {
+    "detail" : "/wxmpNewHouseDetail/getNewHouseDetail.rest" ,
+    "info" : "/wxmpNewHouseDetail/getNewHouseBasicInfo.rest" ,
+    "presses" : "/wxmpNewHouseDetail/getDynamicList.rest" ,
+    "poster" : "/wxmpNewHouseDetail/getMagazineList.rest" ,
+    "layouts" : "/wxmpNewHouseDetail/getHouseTypeDetail.rest" ,
+    "promotions" : "/wxmpNewHouseDetail/getNewHouseActivityInfo.rest" ,
+    "poster-preview" : "/wxmpNewHouseDetail/getMagazineList.rest"
   }
 }
 
