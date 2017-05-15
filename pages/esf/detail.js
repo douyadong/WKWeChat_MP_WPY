@@ -51,7 +51,7 @@ var params = $.extend(true, {}, {
                 fields.forEach(function(item) {
                     newData[item] = h[item];
                 });
-                fields = ['estateId', 'subEstateId', 'estateName', 'subwayName', 'schoolName', 'completedStr', 'totalHouseCount', 'estateAddr', 'sameEstateHouseAmount', 'longitude', 'latitude'];
+                fields = ['estateId', 'subEstateId', 'estateName', 'subwayName', 'schoolName', 'completedStr', 'totalHouseCount', 'estateAddr', 'sameEstateHouseAmount', 'longitude', 'latitude','estateImgUrl'];
                 fields.forEach(function(item) {
                     if (item != 'latitude' && item != 'longitude') {
                         newData[item] = e[item];
