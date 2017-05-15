@@ -4,7 +4,7 @@
  */
 
 const apiUrl = require('./apiUrl')
-const appInstance=getApp();
+const appInstance = getApp()
 
 module.exports = {
   /**
@@ -15,55 +15,65 @@ module.exports = {
    * @param  {} showTitle 加载中提示文案
    * @param  {} showMask  加载是否显示遮罩层
    * @param  {} method  请求方法，默认为'GET'
+   * @param  {} contenType  请求的contenType 默认为application/json,
+   * @param  {} data  请求的数据
    * @param  {} dataType='json' 默认为 json。如果设置了 dataType 为 json，则会尝试对响应的数据做一次 JSON.parse
    * @param  {} success 请求成功的回调函数
    * @param  {} fail 请求失败的回调函数
    * @param  {} complete  请求执行的finally 函数
    */
-  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='加载中...', showMask=false, method='GET', data,dataType='json', success, fail, complete,mock=false}) {
+  fetch: function ({module, action, showBarLoading=true, showLoading=false, showTitle='加载中...', showMask=false, method='GET', contenType='application/json', data, dataType='json', success, fail, complete, mock=false }) {
     let url = apiUrl.get(module, action)
 
     showBarLoading && wx.showNavigationBarLoading()
-    
+
     if (showLoading) {
       wx.showToast({
-        icon:'loading',
-        title:showTitle,
-        duration:100000
+        icon: 'loading',
+        title: showTitle,
+        duration: 100000
       })
     }
 
-    if(/*appInstance.mock*/mock){
-      let data = require(`../mock/${module}/${action}.js`);
-      data = JSON.parse(JSON.stringify(data));
-      success(data);
+    if ( /*appInstance.mock*/mock) {
+      let data = require(`../mock/${module}/${action}.js`)
+      data = JSON.parse(JSON.stringify(data))
       showBarLoading && wx.hideNavigationBarLoading()
-      showLoading && wx.hideToast();
-      typeof complete == 'function' && complete();
-      return;
+      showLoading && wx.hideToast()
+      success(data)
+      typeof complete == 'function' && complete()
+      return
     }
 
-    wx.request(
-      {
-        url,
-        method,
-        data,
-        dataType,
-        success: function (res) {
-          if (res.statusCode == '200' && res.data.status == '1') {
-            typeof success == 'function' && success(res.data)
-          }else {
-            typeof fail == 'function' && fail(res.data)
-          }
-        },
-        fail: function (error) {
-          console.error(error)
-        },
-        complete: function () {
-          showBarLoading && wx.hideNavigationBarLoading()
-          showLoading && wx.hideToast();
-          typeof complete == 'function' && complete()
+    let params = {
+      url,
+      method,
+      data,
+      dataType,
+      success: function (res) {
+        console.log(res)
+        if (res.statusCode == '200' && res.data.status == '1') {
+          typeof success == 'function' && success(res.data)
+        }else {
+          typeof fail == 'function' && fail(res.data)
         }
-      })
+      },
+      fail: function (error) {
+        console.error(error)
+      },
+      complete: function () {
+        showBarLoading && wx.hideNavigationBarLoading()
+        showLoading && wx.hideToast()
+        typeof complete == 'function' && complete()
+      }
+    }
+
+    if (method.toUpperCase() == 'POST') {
+      params.header = {
+        'Content-Type': contenType
+      }
+    }
+
+    wx.request(params)
   }
 }
