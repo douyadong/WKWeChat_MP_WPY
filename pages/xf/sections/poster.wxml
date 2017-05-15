@@ -10,7 +10,7 @@
       <text class="desc">{{poster.content}}</text> 
       <view class="separator" wx:if="{{index < newHouseDetail.newHouseMagazineList.length-1}}"></view>
     </block>
-    <navigator class="button gray">查看更多</navigator>
+    <navigator url="/pages/xf/posters?subEstateId={{newHouseDetail.estateId}}" class="button gray">查看更多</navigator>
   </view>  
 </view>
 <view class="gap"></view>

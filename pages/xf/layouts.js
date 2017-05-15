@@ -9,10 +9,13 @@ let params = {
           request.fetch({
               "module": "xf" ,
               "action" : "layouts" ,
-              "showLoading" :  true ,              
+              "showLoading" :  true , 
+              "data":{
+                "subEstateId":subEstateId
+              },             
               success : function (res) {                                 
                   //最后赋予模板变量
-                  _.setData({ "layouts" : res.data }) ;
+                  _.setData({ "layouts" : res.data,"current":options.current }) ;
               }
           }) ;
      } ,

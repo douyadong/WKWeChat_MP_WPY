@@ -3,15 +3,15 @@
     <view class="head">位置及周边</view>    
   </view>  
   <view class="map-container">
-    <map id="map" longitude="113.324520" latitude="23.099994" scale="14" show-location></map>
+    <image bindtap="openLocation" src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{newHouseDetail.latitude}},{{newHouseDetail.longitude}}&key=3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN&size=375*240&center={{newHouseDetail.latitude}},{{newHouseDetail.longitude}}&zoom=18&scale=2"></image>
     <view class="supports">
       <view>
         <text class="iconfont icon-location"></text>
-        <text>地址：虹桥路19弄 </text>
+        <text>地址：{{newHouseDetail.initName}}</text>
       </view>
       <view>
         <text class="iconfont icon-ditie"></text>
-        <text>地铁：9 号线 </text>
+        <text>地铁：{{newHouseDetail.subwayLabel}}</text>
       </view>
     </view>
   </view>  
