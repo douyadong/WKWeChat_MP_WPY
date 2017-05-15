@@ -1,4 +1,2 @@
-<!--
 <import src="../../components/detail-foot.wxml" />
 <template is="detail-foot" data="{{...simpleAgentDetail}}"/>
--->

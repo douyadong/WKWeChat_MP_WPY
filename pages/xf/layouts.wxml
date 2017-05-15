@@ -1,6 +1,6 @@
-<swiper current="{{current}}">  
+<swiper current="{{current}}" bindchange="setNavigatorTitle">  
   <swiper-item wx:for="{{layouts}}" wx:key="*this" wx:for-item="layout">
-    <text class="head">{{layout.name}}</text>
+    <!--<text class="head">{{layout.name}}</text>-->
     <view class="pict">
       <image src="{{layout.img_640_776}}"></image>
     </view>

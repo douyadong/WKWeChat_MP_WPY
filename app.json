@@ -38,7 +38,7 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "悟空找房+",
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": false
+    "enablePullDownRefresh": true
   },
   "networkTimeout": {
     "request": 30000,
