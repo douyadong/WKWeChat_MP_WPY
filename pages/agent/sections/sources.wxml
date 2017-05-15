@@ -10,20 +10,20 @@
     </view>
     <block wx:if="{{recommendType === 2}}">
       <import src="../../components/esf-sources.wxml"/>
-      <template is="esf-sources" data="{{esfSources}}" />
+      <template is="esf-sources" data="{{esfSources,agentId}}" />
     </block>
     <block wx:elif="{{recommendType === 1}}">
       <import src="../../components/xf-sources.wxml"/>
-      <template is="xf-sources" data="{{xfSources}}" />
+      <template is="xf-sources" data="{{xfSources,agentId}}" />
     </block>
     <block wx:elif="{{recommendType === 3}}">     
       <view hidden="{{currentSourcesTab!=='esf'}}">
         <import src="../../components/esf-sources.wxml"/>
-        <template is="esf-sources" data="{{esfSources}}" />
+        <template is="esf-sources" data="{{esfSources,agentId}}" />
       </view>
       <view hidden="{{currentSourcesTab!=='xf'}}">
         <import src="../../components/xf-sources.wxml"/>
-        <template is="xf-sources" data="{{xfSources}}" />
+        <template is="xf-sources" data="{{xfSources,agentId}}" />
       </view>
     </block>
   </view>

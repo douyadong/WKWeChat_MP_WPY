@@ -19,8 +19,8 @@ let params =$.extend(true , {} , {
               "action" : "detail" ,
               "mock" : false ,
               "data" : {
-                  "subEstateId" : 113408 ,
-                  "agentId" : 100321    
+                  "subEstateId" : _.data.subEstateId, //113408 ,
+                  "agentId" : _.data.agentId//100321    
               } ,
               "showLoading" :  true ,            
               success : function (res) {
@@ -55,6 +55,10 @@ let params =$.extend(true , {} , {
          qqmapsdk = new QQMapWX({
             key : '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
          }) ;        
+        this.setData({
+          agentId:options.agentId,
+          subEstateId:options.subEstateId
+        });
         this.render(options) ;    
     }
 } , houseComment , swiper , detailFoot ) ;
