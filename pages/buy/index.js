@@ -120,8 +120,9 @@ Page({
       selected: false
     }],
     currentPrice: {
-      min: '',
-      max: '',
+      id: '-1',
+      min: '-1',
+      max: '-1',
       text: '请选择总价范围'
     },
     currentHouseType: {
@@ -146,7 +147,7 @@ Page({
     wx.removeStorageSync('buy_houseType')
     wx.removeStorageSync('buy_location')
     // 判断用户是否登录
-    if (!appInstance.isLogin({'needRedirect': false})) {
+    if (!appInstance.isLogin(false)) {
       // 未登录初始化选择项信息
       that.setPrice(-1, -1)
       that.setHouseType('')
@@ -229,7 +230,7 @@ Page({
     let locationStr,location = []
     let allCheckedAreas = []
 
-    let areaInfo=wx.getStorageSync('cityInfo');
+    let areaInfo = wx.getStorageSync('cityInfo')
 
     // 转换data
     this.convertData(areaInfo)
@@ -237,7 +238,7 @@ Page({
     if (townList && townList.length) {
       this.data.blockList.forEach(oBlock1 => {
         townList.forEach(oBlock2 => {
-          if (oBlock1.id == oBlock2.id) {
+          if (oBlock1.id == oBlock2.townId) {
             oBlock1.selected = true
             that.data.superAreaObject[oBlock1.pid]++
             if (that.data.superAreaObject[oBlock1.pid + '_count'] == that.data.superAreaObject[oBlock1.pid]) {
@@ -380,8 +381,8 @@ Page({
     appInstance.isLogin()
 
     // 构造请求数据
-    requestData.guestId = '123'
-    requestData.cityId = '43'
+    requestData.guestId = wx.getStorageSync('userInfo').guestId
+    requestData.cityId = wx.getStorageSync('geography').cityId
     requestData.sellPriceStart = this.data.currentPrice.min
     requestData.sellPriceEnd = this.data.currentPrice.max
     requestData.bedRoomSum = this.data.currentHouseType.id

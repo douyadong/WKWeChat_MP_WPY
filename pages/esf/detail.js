@@ -21,8 +21,8 @@ var params = $.extend(true, {}, {
         wx.openLocation({
             longitude: parseFloat(this.data.longitude),
             latitude: parseFloat(this.data.latitude),
-            name:this.data.houseTitle,
-            address:this.data.estateAddr
+            name: this.data.houseTitle,
+            address: this.data.estateAddr
         })
     },
     jump:function(event){
@@ -35,7 +35,7 @@ var params = $.extend(true, {}, {
     getDetail: function() { //获取二手房详情
         var that = this;
         request.fetch({
-            //mock:true,
+            mock: false,
             "showLoading": true,
             module: 'esf',
             action: 'getDetails',
@@ -54,16 +54,17 @@ var params = $.extend(true, {}, {
                 });
                 fields = ['estateId', 'subEstateId', 'estateName', 'subwayName', 'schoolName', 'completedStr', 'totalHouseCount', 'estateAddr', 'sameEstateHouseAmount', 'longitude', 'latitude'];
                 fields.forEach(function(item) {
-                    newData[item] = e[item];
+                    if (item != 'latitude' && item != 'longitude') {
+                        newData[item] = e[item];
+                    }
                 });
-
-                newData.markers = [{
-                    //iconPath: "/resources/others.png",
-                    id: 0,
-                    latitude: e.latitude,
-                    longitude: e.longitude
-                }];
-
+                /********百度地图坐标转腾讯地图坐标************/
+                app.getQQMapLocation(e.latitude, e.longitude, function(res) {
+                    that.setData({
+                        'latitude': res.data.locations[0].lat,
+                        'longitude': res.data.locations[0].lng
+                    })
+                });
                 if (h.houseVideoResponse) {
                     newData.imgUrls.push({
                         url: h.houseVideoResponse.videoSmallImage,
@@ -107,19 +108,13 @@ var params = $.extend(true, {}, {
     },
     onLoad: function(options) {
         qqmapsdk = new QQMapWX({
-            key: '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
+            key: app.globalData.qqmapkey
         });
         this.setData({
             houseId: options.houseId,
             agentId: options.agentId
         });
-        /**
-         * todo:测试用的，勿忘删除
-         */
-        this.setData({
-            //houseId: 1460256,
-            agentId: 100321
-        });
+
         this.getDetail();
     }
 }, houseComment, swiper, df);
