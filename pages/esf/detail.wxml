@@ -214,7 +214,7 @@
     </view>
 </view>
 <view class="panel esf-list">
-    <template is="esf-sources" data="{{esfSources}}" />
+    <template is="esf-sources" data="{{esfSources,agentId}}" />
     <view class="row" wx:if="{{sameTownTotalCount>2}}">
         <navigator class="button gray" url="/pages/esf/list?type=1&houseId={{houseId}}&agentId={{agentId}}">查看更多</navigator>
     </view>
