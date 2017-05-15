@@ -99,7 +99,7 @@
 <view class="gap"></view>
 <!--基本信息-->
 <view class="panel basicBox">
-    <navigator url="/pages/report/write?houseId={{houseId}}" class="report">举报</navigator>
+    <view data-url="/pages/report/write?houseId={{houseId}}" bindtap="jump" class="report">举报</view>
     <view class="panel-hd">
         <view class="head">基本信息</view>
     </view>
@@ -169,7 +169,7 @@
         </view>
     </navigator>
     <!--用户评论-->
-    <navigator url="/pages/comment/list?subEstateId=11111" class="house-link ">
+    <navigator url="/pages/comment/list?subEstateId={{subEstateId}}" class="house-link ">
         <view class="panel-hd">
             <view class="head">用户评价</view>
             <view class="assistant">
@@ -183,9 +183,9 @@
         <view class="house-comments">
             <template is="house-comment" data="{{comments}}" />
             <view class="btn-group">
-                <navigator data-url="/pages/comment/write" url="/pages/comment/write" bindtap="gotoComment">
+                <view data-url="/pages/comment/write?subEstateId={{subEstateId}}" url="/pages/comment/write?subEstateId={{subEstateId}}" bindtap="jump">
                     我来评价
-                </navigator>
+                </view>
             </view>
         </view>
     </view>

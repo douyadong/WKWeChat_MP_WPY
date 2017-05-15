@@ -51,6 +51,14 @@ let params =$.extend(true , {} , {
             address : this.data.newHouseDetail.initName
         }) ;
     } ,
+    gotoComment:function(event){
+      let url = event.currentTarget.dataset.url;
+      let app = getApp();
+      app.isLogin(true, url);
+      wx.navigateTo({
+        url: url
+      })  
+    },
     onLoad : function (options) {
          qqmapsdk = new QQMapWX({
             key : '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
