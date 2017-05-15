@@ -3,20 +3,17 @@ import $ from "../../utils/extend" ;
 import houseComment from "../components/house-comment" ;
 import swiper from "../components/swiper" ;
 import detailFoot from "../components/detailfoot" ;
-import QQMapWX from "../../utils/qqmap-wx-jssdk.min.js" ;
 var app = getApp();
-let qqmapsdk ;
 
 let params =$.extend(true , {} , {
      data : {
            "qqMapKey":app.globalData.qqmapkey 
      } ,
-     render : function(options) {
-          let  _ = this ;
-          let subEstateId = options.subEstateId ;
+     render : function() {
+          let  _ = this ;          
           request.fetch({
               "module": "xf" ,
-              "action" : "detail" ,            
+              "action" : "detail" ,
               "data" : {
                   "subEstateId" : _.data.subEstateId ,
                   "agentId" : _.data.agentId
@@ -24,11 +21,18 @@ let params =$.extend(true , {} , {
               "showLoading" :  true ,            
               success : function (res) {
                   let result = res.data ;
+                  //设置导航栏标题，格式为："区域 板块"
+                  wx.setNavigationBarTitle({
+                      title : result.newHouseDetail.districtName + " " + result.newHouseDetail.townName
+                  }) ;
                   //给二手房和新房两个组件赋值
-                  result.xfSources = result.aroundNewHouseList ;                  
-                  result.comments = result.comment && result.comment.commentList || [] ; 
-                  //给经纪人信息赋值
-                  result.agentDetail = result.agent ;
+                  result.xfSources = result.aroundNewHouseList ;
+                  if(result.xfSources) {
+                      result.xfSources.forEach(function(element){
+                          element.agentId = _.data.agentId ;
+                      }) ; 
+                  }                           
+                  result.comments = result.comment && result.comment.commentList || [] ;                  
                   result.imgUrls = [] ;
                   //先将视频整合起来
                   if(result.newHouseDetail.estateVideoResponse) result.imgUrls.push({ "url" : result.newHouseDetail.estateVideoResponse.videoSmallImage , "videoUrl" : result.newHouseDetail.estateVideoResponse.videoUrl , "type" : "video" }) ; 
@@ -66,15 +70,12 @@ let params =$.extend(true , {} , {
       })  
     },
     onLoad : function (options) {
-         qqmapsdk = new QQMapWX({
-            key : '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
-         }) ; 
          //将页面传递过来的经纪人ID和新房ID保存起来供其他地方使用       
         this.setData({
           agentId : options.agentId ,
           subEstateId : options.subEstateId
         }) ;
-        this.render(options) ;    
+        this.render() ;    
     }
 } , houseComment , swiper , detailFoot ) ;
 

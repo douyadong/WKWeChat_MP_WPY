@@ -225,6 +225,11 @@ Page({
   handleRedirect: function (e) {
     wx.navigateTo({url: e.currentTarget.dataset.url})
   },
+  backToHomePage: function () {
+    wx.reLaunch({
+      url: '/pages/index/index'
+    })
+  },
   showMore: function () {
     this.setData({'showMore': true})
   },

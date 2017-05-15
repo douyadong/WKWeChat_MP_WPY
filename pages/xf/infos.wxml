@@ -1,17 +1,17 @@
 <view class="infos">
-  <view><text class="title">楼盘地址</text><text class="desc">{{initName}}</text></view>
+  <view><text class="title">楼盘地址</text><text class="desc">{{initName || "--"}}</text></view>
   <view><text class="title">所属区域</text><text class="desc">{{districtName}} {{townName}}</text></view>
-  <view><text class="title">开发商</text><text class="desc">{{developers}}</text></view>
-  <view><text class="title">售楼处地址</text><text class="desc">{{saleAddress}}</text></view>
+  <view><text class="title">开发商</text><text class="desc">{{developers || "--"}}</text></view>
+  <view><text class="title">售楼处地址</text><text class="desc">{{saleAddress || "--"}}</text></view>
   <view class="separator"></view>
-  <view><text class="title">产权年限</text><text class="desc">{{propertyRight}}</text></view>
-  <view><text class="title">装修标准</text><text class="desc">{{buildDecoration}}</text></view>
+  <view><text class="title">产权年限</text><text class="desc">{{propertyRight || "--"}}</text></view>
+  <view><text class="title">装修标准</text><text class="desc">{{buildDecoration || "--"}}</text></view>
   <view><text class="title">规划户数</text><text class="desc">{{planRoom}} 户</text></view>
-  <view><text class="title">规划车位</text><text class="desc">{{parkingSpace}}</text></view>
-  <view><text class="title">容积率</text><text class="desc">{{volumeRate}}</text></view>
-  <view><text class="title">绿化率</text><text class="desc">{{greenRate}}</text></view>
+  <view><text class="title">规划车位</text><text class="desc">{{parkingSpace || "--"}}</text></view>
+  <view><text class="title">容积率</text><text class="desc">{{volumeRate || "--"}}</text></view>
+  <view><text class="title">绿化率</text><text class="desc">{{greenRate || "--"}}</text></view>
   <view class="separator"></view>
-  <view><text class="title">物业类型</text><text class="desc">{{propertyTypeStr}}</text></view>
-  <view><text class="title">物业公司</text><text class="desc">{{propertyCompany}}</text></view>
-  <view><text class="title">物业费</text><text class="desc">{{propertyCharges}}</text></view>  
+  <view><text class="title">物业类型</text><text class="desc">{{propertyTypeStr || "--"}}</text></view>
+  <view><text class="title">物业公司</text><text class="desc">{{propertyCompany || "--"}}</text></view>
+  <view><text class="title">物业费</text><text class="desc">{{propertyCharges || "--"}}</text></view>  
 </view>

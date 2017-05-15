@@ -3,9 +3,8 @@
  */
 
 //const domain = "https://m.wkzf.com" ;
-//const domain = "https://minapp-test.yfyk365.com";
-const domain = "http://10.0.90.39:8118"
-//const domain = "http://10.0.93.186:8118"
+//const domain = "http://10.0.90.39:8118"
+const domain = "https://minapp-test.yfyk365.com";
 
 const url = {
   "agent" : {
@@ -35,7 +34,7 @@ const url = {
     "uploadComment" : "/wxmpEstate/commentEstate.rest"
   },
   "city":{
-    "list":"/wxmpCommon/getAllCityBusiness.rest"
+    "getAllCityBusiness":"/wxmpCommon/getAllCityBusiness.rest"
   },
   "index":{
     "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest",

@@ -91,6 +91,10 @@ var params = $.extend(true, {}, {
                 newData.esfSources = [];
                 if (data.data.sameTownHouseList) { //相似房源列表
                     newData.esfSources = data.data.sameTownHouseList || []; //相似房源列表
+                    newData.esfSources.forEach(function(element){
+                        element.agentId = that.data.agentId ;
+                    }) ;
+                    
                 }
 
                 if (a) { //经纪人信息

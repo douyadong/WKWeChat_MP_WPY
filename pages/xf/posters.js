@@ -11,7 +11,7 @@ let params = {
               "action" : "poster" ,
               "showLoading" :  true ,   
               "data":{
-                "subEstateId":113408
+                "subEstateId":subEstateId
               },           
               success : function (res) {                           
                   //最后赋予模板变量
