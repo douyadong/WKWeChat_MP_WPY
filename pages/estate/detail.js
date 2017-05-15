@@ -42,8 +42,7 @@ var params = $.extend(true, {}, {
     },
     getEstateInfo: function () { //获取小区详情
         var that = this;
-        request.fetch({
-            //"mock":true,
+        request.fetch({            
             "showLoading":true,
             "module": "estate",
             "action": "detail",
