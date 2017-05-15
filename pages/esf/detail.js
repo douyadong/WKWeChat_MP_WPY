@@ -5,12 +5,11 @@ var houseComment = require('../components/house-comment.js');
 var swiper = require('../components/swiper.js');
 var request = require('../../utils/request.js');
 var df = require('../components/detailfoot.js');
-var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
-var qqmapsdk;
 var app = getApp();
 var params = $.extend(true, {}, {
     data: {
         isCollapsed: true, //基本信息收起
+        "qqMapKey":app.globalData.qqmapkey
     },
     toggleMoreBasicInfo: function() { //基本信息展开和收起        
         this.setData({
@@ -21,14 +20,21 @@ var params = $.extend(true, {}, {
         wx.openLocation({
             longitude: parseFloat(this.data.longitude),
             latitude: parseFloat(this.data.latitude),
-            name:this.data.houseTitle,
-            address:this.data.estateAddr
+            name: this.data.houseTitle,
+            address: this.data.estateAddr
         })
+    },
+    jump:function(event){
+      let url = event.currentTarget.dataset.url;
+      app.isLogin(true, url);
+      wx.navigateTo({
+        url: url
+      })      
     },
     getDetail: function() { //获取二手房详情
         var that = this;
         request.fetch({
-            //mock:true,
+            mock: false,
             "showLoading": true,
             module: 'esf',
             action: 'getDetails',
@@ -45,18 +51,19 @@ var params = $.extend(true, {}, {
                 fields.forEach(function(item) {
                     newData[item] = h[item];
                 });
-                fields = ['estateId', 'subEstateId', 'estateName', 'subwayName', 'schoolName', 'completedStr', 'totalHouseCount', 'estateAddr', 'sameEstateHouseAmount', 'longitude', 'latitude'];
+                fields = ['estateId', 'subEstateId', 'estateName', 'subwayName', 'schoolName', 'completedStr', 'totalHouseCount', 'estateAddr', 'sameEstateHouseAmount', 'longitude', 'latitude','estateImgUrl'];
                 fields.forEach(function(item) {
-                    newData[item] = e[item];
+                    if (item != 'latitude' && item != 'longitude') {
+                        newData[item] = e[item];
+                    }
                 });
-
-                newData.markers = [{
-                    //iconPath: "/resources/others.png",
-                    id: 0,
-                    latitude: e.latitude,
-                    longitude: e.longitude
-                }];
-
+                /********百度地图坐标转腾讯地图坐标************/
+                app.getQQMapLocation(e.latitude, e.longitude, function(res) {
+                    that.setData({
+                        'latitude': res.data.locations[0].lat,
+                        'longitude': res.data.locations[0].lng
+                    })
+                });
                 if (h.houseVideoResponse) {
                     newData.imgUrls.push({
                         url: h.houseVideoResponse.videoSmallImage,
@@ -103,20 +110,11 @@ var params = $.extend(true, {}, {
         });
     },
     onLoad: function(options) {
-        qqmapsdk = new QQMapWX({
-            key: '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
-        });
         this.setData({
             houseId: options.houseId,
             agentId: options.agentId
         });
-        /**
-         * todo:测试用的，勿忘删除
-         */
-        this.setData({
-            //houseId: 1460256,
-            agentId: 100321
-        });
+
         this.getDetail();
     }
 }, houseComment, swiper, df);

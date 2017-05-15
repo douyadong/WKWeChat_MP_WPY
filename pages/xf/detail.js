@@ -3,20 +3,17 @@ import $ from "../../utils/extend" ;
 import houseComment from "../components/house-comment" ;
 import swiper from "../components/swiper" ;
 import detailFoot from "../components/detailfoot" ;
-import QQMapWX from "../../utils/qqmap-wx-jssdk.min.js" ;
-
-let qqmapsdk ;
+var app = getApp();
 
 let params =$.extend(true , {} , {
      data : {
-            
+           "qqMapKey":app.globalData.qqmapkey 
      } ,
      render : function() {
           let  _ = this ;          
           request.fetch({
               "module": "xf" ,
               "action" : "detail" ,
-              "mock" : false ,
               "data" : {
                   "subEstateId" : _.data.subEstateId ,
                   "agentId" : _.data.agentId
@@ -45,6 +42,13 @@ let params =$.extend(true , {} , {
                           result.imgUrls.push({ "url" : element.imageUrl }) ; 
                       }) ;
                   }
+                //根据百度地图坐标获取腾讯地图坐标
+                app.getQQMapLocation(result.newHouseDetail.latitude, result.newHouseDetail.longitude, function(res) {
+                    _.setData({
+                        'newHouseDetail.latitude': res.data.locations[0].lat,
+                        'newHouseDetail.longitude': res.data.locations[0].lng
+                    })
+                });
                   _.setData(result) ;
               }
           }) ;
@@ -57,10 +61,15 @@ let params =$.extend(true , {} , {
             address : this.data.newHouseDetail.initName
         }) ;
     } ,
+    gotoComment:function(event){
+      let url = event.currentTarget.dataset.url;
+      let app = getApp();
+      app.isLogin(true, url);
+      wx.navigateTo({
+        url: url
+      })  
+    },
     onLoad : function (options) {
-         qqmapsdk = new QQMapWX({
-            key : '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
-         }) ; 
          //将页面传递过来的经纪人ID和新房ID保存起来供其他地方使用       
         this.setData({
           agentId : options.agentId ,
@@ -70,4 +79,4 @@ let params =$.extend(true , {} , {
     }
 } , houseComment , swiper , detailFoot ) ;
 
-Page(params) ;
+Page(params);

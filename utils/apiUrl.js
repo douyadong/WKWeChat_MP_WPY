@@ -4,7 +4,6 @@
 
 //const domain = "https://m.wkzf.com" ;
 const domain = "https://minapp-test.yfyk365.com";
-
 const url = {
   "agent" : {
     "rateList" : "/wxmpAgent/getAgentCustomerCommentList.rest",
@@ -44,7 +43,8 @@ const url = {
     "generateIdentifyCode":"/wxmpLogin/generateIdentifyCode.rest",
     "loginFromMobilePhone":"/wxmpLogin/loginFromMobilePhone.rest",
     "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest",
-    "getWechatBindGuestInfo":"/wxmpLogin/getWechatBindGuestInfo.rest"//判断是否已经绑定过手机接口
+    "getWechatBindGuestInfo":"/wxmpLogin/getWechatBindGuestInfo.rest",//判断是否已经绑定过手机接口
+    "getOpenIdByCode":"/wxmpLogin/getOpenIdByCode.rest"
   },
   "report":{
     "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"

@@ -111,12 +111,12 @@ let main = {
   getUserInfo(){
       var that = this
       wx.login({
-        success: function (res) {
+        success: function () {
           wx.getUserInfo({
             withCredentials:true,
-            success: function (res) {console.log(res);
+            success: function (res) {
               wx.setStorage({
-                key:"userLoginInfo",
+                key:"userAuthorizedInfo",
                 data:res
               })
             }
