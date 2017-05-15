@@ -3,8 +3,8 @@
  */
 
 //const domain = "https://m.wkzf.com" ;
-const domain = "https://minapp-test.yfyk365.com";
-//const domain = "http://10.0.90.39:8118"
+//const domain = "https://minapp-test.yfyk365.com";
+const domain = "http://10.0.90.39:8118"
 //const domain = "http://10.0.93.186:8118"
 
 const url = {
@@ -48,6 +48,10 @@ const url = {
     "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest",
     "getWechatBindGuestInfo":"/wxmpLogin/getWechatBindGuestInfo.rest",//判断是否已经绑定过手机接口
     "getOpenIdByCode":"/wxmpLogin/getOpenIdByCode.rest"
+  },
+  "screen":{
+      "associationalAgentList":"/wxmpAgent/associationalAgentList.rest",
+      "acWord":"/wxmpIndex/acWord.rest"
   },
   "report":{
     "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"
