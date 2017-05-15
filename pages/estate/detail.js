@@ -6,7 +6,7 @@ var swiper = require('../components/swiper.js');
 var app = getApp();
 var params = $.extend(true, {}, {
     data: {    
-           
+           "qqMapKey":app.globalData.qqmapkey
     },
     callEstateExpert: function () { //打电话给小区专家    
         wx.makePhoneCall({

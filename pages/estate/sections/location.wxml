@@ -6,7 +6,7 @@
   <!--
     <map id="map" longitude="{{estateInfo.longitude}}" latitude="{{estateInfo.latitude}}" scale="14" markers="{{estateInfo.markers}}"   show-location></map>-->
 
-    <image bindtap="openLocation" src="http://apis.map.qq.com/ws/staticmap/v2/?&markers={{estateInfo.latitude}},{{estateInfo.longitude}}&key=3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN&size=375*240&center={{estateInfo.latitude}},{{estateInfo.longitude}}&zoom=18&scale=2"></image>
+    <image bindtap="openLocation" src="http://apis.map.qq.com/ws/staticmap/v2/?&markers={{estateInfo.latitude}},{{estateInfo.longitude}}&key={{qqMapKey}}&size=375*240&center={{estateInfo.latitude}},{{estateInfo.longitude}}&zoom=18&scale=2"></image>
   </view>  
   <view class="supports">
       <view>

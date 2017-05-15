@@ -5,12 +5,11 @@ var houseComment = require('../components/house-comment.js');
 var swiper = require('../components/swiper.js');
 var request = require('../../utils/request.js');
 var df = require('../components/detailfoot.js');
-var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
-var qqmapsdk;
 var app = getApp();
 var params = $.extend(true, {}, {
     data: {
         isCollapsed: true, //基本信息收起
+        "qqMapKey":app.globalData.qqmapkey
     },
     toggleMoreBasicInfo: function() { //基本信息展开和收起        
         this.setData({
@@ -100,9 +99,6 @@ var params = $.extend(true, {}, {
         });
     },
     onLoad: function(options) {
-        qqmapsdk = new QQMapWX({
-            key: app.globalData.qqmapkey
-        });
         this.setData({
             houseId: options.houseId,
             agentId: options.agentId

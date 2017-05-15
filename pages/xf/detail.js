@@ -3,13 +3,12 @@ import $ from "../../utils/extend";
 import houseComment from "../components/house-comment";
 import swiper from "../components/swiper";
 import detailFoot from "../components/detailfoot";
-import QQMapWX from "../../utils/qqmap-wx-jssdk.min.js";
 var app = getApp();
-let qqmapsdk;
+
 
 let params = $.extend(true, {}, {
     data: {
-
+        "qqMapKey":app.globalData.qqmapkey
     },
     render: function(options) {
         let _ = this;
@@ -40,7 +39,7 @@ let params = $.extend(true, {}, {
                     });
                 }
                 //根据百度地图坐标获取腾讯地图坐标
-                app.getQQMapLocation(result.latitude, result.longitude, function(res) {
+                app.getQQMapLocation(result.newHouseDetail.latitude, result.newHouseDetail.longitude, function(res) {
                     _.setData({
                         'newHouseDetail.latitude': res.data.locations[0].lat,
                         'newHouseDetail.longitude': res.data.locations[0].lng
@@ -59,9 +58,6 @@ let params = $.extend(true, {}, {
         });
     },
     onLoad: function(options) {
-        qqmapsdk = new QQMapWX({
-            key: '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
-        });
         //将页面传递过来的经纪人ID和新房ID保存起来供其他地方使用       
         this.setData({
             agentId: options.agentId,
