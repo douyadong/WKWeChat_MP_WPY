@@ -44,7 +44,7 @@ module.exports = {
             "houseTypeDesc": "",
             "estateDesc": null,
             "taxDesc": null,
-            "otherIntroduce": "",
+            "otherIntroduce": "otherIntroduce",
             "subEstateInitName": "",
             "sellTimeStr": "2016-04-21",
             "seeHouseCompleteAmount": 0,

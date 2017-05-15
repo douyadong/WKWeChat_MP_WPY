@@ -31,7 +31,8 @@ const url = {
   "comment" : {
     "list" : "/estate/queryEstateCommentList.rest" ,
     "uploadImg" : "/wxmpEstate/uploadPic.rest" ,
-    "uploadComment" : "/wxmpEstate/commentEstate.rest"
+    "uploadComment" : "/wxmpEstate/commentEstate.rest",
+    "write":"/wxmpEstate/commentEstate.rest"
   },
   "city":{
     "getAllCityBusiness":"/wxmpCommon/getAllCityBusiness.rest"
