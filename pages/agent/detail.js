@@ -37,10 +37,11 @@ let params = {
         this.setData({ "agentStoryExtendable": false });
     },
     onLoad: function(options) {
+        //把页面参数agentId保存
         this.setData({
-            agentId: options.agentId
-        });
-        this.render(options);
+            agentId : options.agentId
+        }) ;
+        this.render(options) ;
     }
 };
 

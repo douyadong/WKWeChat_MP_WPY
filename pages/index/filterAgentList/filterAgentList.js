@@ -186,7 +186,8 @@ module.exports = {
       _this.setData({
           screen_region:"不限",
           towns:[],//点击的左侧的“不限”，没有板块，就是空数组
-          districtAndTown:_this.data.geography.cityPinyin,//修改获取经纪人列表筛选条件 “区域” 状态
+          //districtAndTown:_this.data.geography.cityPinyin,//修改获取经纪人列表筛选条件 “区域” 状态
+          districtAndTown:"",
           pageIndex:0
       })
      //调用筛选经纪人列表
@@ -265,10 +266,10 @@ module.exports = {
         moreActionId:parseInt(event.currentTarget.dataset.index),//设置当前点击高亮
         screen_more:event.currentTarget.dataset.content//设置点击的值回显
     })
-    console.log(event.currentTarget.dataset.selectlabel);
+    //console.log(event.currentTarget.dataset.selectlabel);
     if(parseInt(event.currentTarget.dataset.selectlabel) != 0){
       _this.setData({
-          selectLabelList:[parseInt(event.currentTarget.dataset.selectlabel)],
+          selectLabelList:parseInt(event.currentTarget.dataset.selectlabel),
           pageIndex:0
       })
       _this.getAgentList(
@@ -285,7 +286,7 @@ module.exports = {
       );
     }else{
       _this.setData({
-          selectLabelList:[1,2,3],
+          selectLabelList:-1,
           pageIndex:0
       })
       _this.getAgentList(

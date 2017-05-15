@@ -1,7 +1,7 @@
 <template name="xf-sources">
   <view class="xf-sources">
     <block wx:for="{{xfSources}}" wx:key="*this" wx:for-item="source">
-    <navigator open-type="redirect" class="source" url="/pages/xf/detail?subEstateId=11111">
+    <navigator open-type="redirect" class="source" url="/pages/xf/detail?subEstateId={{source.id}}&agentId={{agentId}}">
       <image mode="aspectFill" src="{{source.imageUrl}}" class="thumbnail"></image>
       <view class="param title">{{source.estateName}}</view>
       <view class="param fit-height">
