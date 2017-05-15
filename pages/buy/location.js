@@ -2,7 +2,6 @@
  * @desc 我要买房-位置选择页
  * @author:yuxiaochen@lifang.com
  */
-let res = require('./mock').areaInfo
 
 const appInstance = getApp()
 
@@ -19,9 +18,10 @@ Page({
   onShow: function (options) {
     let that = this
     let matchIndexArray = []
+    
+    let areaInfo=wx.getStorageSync('cityInfo');
 
-    // todo:请求接口获取接口地址
-    this.convertData(res.data)
+    this.convertData(areaInfo)
 
     matchIndexArray = this.getMatchIndexArray()
     this.setArea(matchIndexArray)

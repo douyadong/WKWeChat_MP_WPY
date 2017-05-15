@@ -33,6 +33,15 @@ var params = $.extend(true, {}, {
     onShareAppMessage: function () {
 
     },
+    gotoComment:function(event){
+      let url = event.currentTarget.dataset.url;
+      console.log(url);
+      app.isLogin(true,url);
+      wx.navigateTo({
+        url: url
+      })
+      return false;
+    },
     getEstateInfo: function () { //获取小区详情
         var that = this;
         request.fetch({
