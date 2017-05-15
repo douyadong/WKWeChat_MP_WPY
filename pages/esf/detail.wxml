@@ -198,6 +198,8 @@
     </view>
     <view class="map-container">
     <!--<map id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="14" controls="{{controls}}" bindcontroltap="controltap" markers="{{markers}}"  show-location style="width: 100%; height: 300px;"></map>-->
+
+    
     <image bindtap="openLocation" src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{latitude}},{{longitude}}&key=3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN&size=375*240&center={{latitude}},{{longitude}}&zoom=18&scale=2"></image>
     </view>
      <view class="supports">

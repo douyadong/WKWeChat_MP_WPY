@@ -3,7 +3,7 @@ var $ = require('../../utils/extend.js');
 var houseComment = require('../components/house-comment.js');
 var request = require('../../utils/request.js');
 var swiper = require('../components/swiper.js');
-
+var app = getApp();
 var params = $.extend(true, {}, {
     data: {    
            
@@ -45,7 +45,13 @@ var params = $.extend(true, {}, {
             },
             "success": function (data) {
                 var e = data.data.estateInfo;
-
+                //根据百度地图坐标获取腾讯地图坐标
+                app.getQQMapLocation(e.latitude, e.longitude, function(res) {
+                    that.setData({
+                        'estateInfo.latitude': res.data.locations[0].lat,
+                        'estateInfo.longitude': res.data.locations[0].lng
+                    })
+                });
                 var estateInfo = {
                     district:e.district,
                     estateName:e.estateName,
@@ -62,30 +68,19 @@ var params = $.extend(true, {}, {
                     subwayName:e.subwayName,
                     schoolName:e.schoolName,
                     sellhouseCount:e.sellhouseCount,
-                    longitude:e.longitude,
-                    latitude:e.latitude,
-                    estateAddr:e.estateAddr,
-                    markers:[{
-                        //iconPath: "/resources/others.png",
-                        id: 0,
-                        latitude: e.latitude,
-                        longitude: e.longitude
-                    }]
+                    estateAddr:e.estateAddr
                 };
+
                 var comments = e.comment && e.comment.commentList || [];
                 var agent = data.data.agent;
                 var imgUrls = [];
-
-                /*
-                if(e.videoUrl){//todo:后端没有提供
-                    imgUrls.push({url:e.videoUrl,videoUrl:e.videoUrl,type='video'});
-                }*/  
 
                 if(e.imgList && e.imgList.length){
                     e.imgList.forEach(function(item){
                         imgUrls.push({url:item});
                     });
-                }                            
+                } 
+
                 that.setData({                    
                     estateInfo,
                     comments,
