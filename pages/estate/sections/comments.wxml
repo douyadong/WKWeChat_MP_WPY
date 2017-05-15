@@ -11,7 +11,7 @@
     <view class="house-comments">
         <template is="house-comment" data="{{comments}}" />
         <view class="btn-group">
-          <navigator url="/pages/comment/write?subEstateId={{subEstateId}}">
+          <navigator bindtap="gotoComment" data-url="/pages/comment/write?subEstateId={{subEstateId}}">
             我来点评
           </navigator>
         </view>

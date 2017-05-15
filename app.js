@@ -35,11 +35,16 @@ App({
   },
   mock: true,
   timer: null,
-  isLogin: function ({needRedirect = true,returnUrl=''}) { // 判断是否登录了小程序
+  isLogin: function (needRedirect = true,returnUrl='') { // 判断是否登录了小程序
+    console.log(needRedirect);
+    console.log(returnUrl);
     var userInfo = wx.getStorageSync('userInfo')
     if (!userInfo) {
       // 当前页的地址
-      returnUrl = returnUrl || this.getCurrentPage().__route__
+      returnUrl = returnUrl || this.getCurrentPage().__route__;
+      console.log(returnUrl);
+      returnUrl = encodeURIComponent(returnUrl);
+      console.log(returnUrl);
       if (!needRedirect) {return false;}
       wx.redirectTo({
         url: '/pages/logon/index?returnUrl=' + returnUrl

@@ -35,8 +35,13 @@ var params = $.extend(true, {}, {
 
     },
     gotoComment:function(event){
-      console.log(event.currentTarget.url);
-      app.isLogin('hello world');
+      let url = event.currentTarget.dataset.url;
+      console.log(url);
+      app.isLogin(true,url);
+      wx.navigateTo({
+        url: url
+      })
+      return false;
     },
     getEstateInfo: function () { //获取小区详情
         var that = this;
