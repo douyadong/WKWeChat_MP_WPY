@@ -17,11 +17,7 @@ let params =$.extend(true , {} , {
           request.fetch({
               "module": "xf" ,
               "action" : "detail" ,
-              "mock" : false ,
-              "data" : {
-                  "subEstateId" : 113408 ,
-                  "agentId" : 100321    
-              } ,
+              "mock" : false ,              
               "showLoading" :  true ,            
               success : function (res) {
                   let result = res.data ;
