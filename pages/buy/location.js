@@ -98,7 +98,7 @@ Page({
 
     this.data.blockList.forEach(oBlock1 => {
       selectedBlockList.forEach(oBlock2 => {
-        if (oBlock1.id == oBlock2.id) {
+        if (oBlock1.id == oBlock2.townId) {
           if (!matchIndexArray.includes(oBlock1.pIndex)) {
             matchIndexArray.push(oBlock1.pIndex)
           }
@@ -269,6 +269,7 @@ Page({
     blockList.forEach(oBlock => {
       if (!allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
         towns.push({
+          townId:oBlock.id,
           id: oBlock.id,
           townName: oBlock.name
         })
