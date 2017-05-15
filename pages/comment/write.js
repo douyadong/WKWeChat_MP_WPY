@@ -1,5 +1,6 @@
 var util = require('../../utils/util.js')
 var $ = require('../../utils/extend.js')
+var request = require('../../utils/request.js')
 var detailfoot = require('../components/detailfoot.js')
 
 var total = [],
@@ -92,7 +93,6 @@ var params = $.extend(true,{},{
             module:'comment',
             action:'write',
             showLoading:true,
-            mock:true,
             success:function(data){
                 if(data.status === 1){
                     wx.navigateBack()

@@ -3,6 +3,11 @@ let _ = require('../../utils/extend.js')
 var request = require('../../utils/request.js');
 //筛选区域脚本
 let filterAgentList = require('./filterAgentList/filterAgentList.js')
+let util = require('../../utils/util.js')
+if(wx.getStorageSync('device') == ''){
+  wx.setStorageSync('device', util.guid());
+}
+
 
 //获取应用实例
 let app = getApp()
@@ -21,7 +26,7 @@ let main = {
     //获取经纪人列表的筛选条件
     districtAndTown:"",//选中区域拼音
     orderType:1,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
-    selectLabelList:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
+    selectLabel:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
     pageIndex:0,//起始条数 默认从0开始
   },
   setGeography(cb){
@@ -29,7 +34,7 @@ let main = {
     //先把默认的地理位置信息写入到本地
     wx.setStorage({
       key:"geography",
-      data:_this.data.geographical
+      data:_this.data.geography
     })
     //地理定位
     wx.getLocation({
@@ -39,7 +44,6 @@ let main = {
         var longitude = res.longitude
         var speed = res.speed
         var accuracy = res.accuracy
-        console.log(latitude+"---------------"+longitude);
         //根据精度纬度，获取当前所在的城市信息
         request.fetch({
             mock:!true,
@@ -125,8 +129,8 @@ let main = {
       })
   },
   //获取经纪人列表
-  getAgentList(cityId,districtAndTown,orderType,selectLabelList,pageIndex,cb){
-    console.log(cityId,districtAndTown,orderType,selectLabelList,pageIndex);
+  getAgentList(cityId,districtAndTown,orderType,selectLabel,pageIndex,cb){
+    console.log(cityId,districtAndTown,orderType,selectLabel,pageIndex);
     let _this = this;
     request.fetch({
           mock:!true,
@@ -136,9 +140,10 @@ let main = {
               "cityId": cityId,//城市主键
               "districtAndTown": districtAndTown,//选中区域拼音。区域选的如果是不限，就传当前城市
               "orderType": orderType,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
-              "selectLabelList":selectLabelList,//1.好经纪人 2.客户热评 3.推荐房源数量多
+              "selectLabel":selectLabel,//1.好经纪人 2.客户热评 3.推荐房源数量多
               "pageIndex": pageIndex,//起始条数 默认从0开始
               "pageSize": 20,//每页数量 默认20条
+              "device":wx.getStorageSync('device')
           },
           success:function(data){
               if(data.status.toString() == "1"){
@@ -169,7 +174,7 @@ let main = {
         _this.data.geography.cityId,
         _this.data.districtAndTown,
         _this.data.orderType,
-        _this.data.selectLabelList,
+        _this.data.selectLabel,
         _this.data.pageIndex,
         function (agentList) {
           _this.setData({
@@ -191,7 +196,7 @@ let main = {
       _this.data.geography.cityId,
       _this.data.districtAndTown,
       _this.data.orderType,
-      _this.data.selectLabelList,
+      _this.data.selectLabel,
       _this.data.pageIndex,
       function (agentList) {
         let oldAgentList = _this.data.agentList;

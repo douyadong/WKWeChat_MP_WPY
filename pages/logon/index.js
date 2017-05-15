@@ -261,8 +261,8 @@ Page({
       app.showTips("验证码为数字");
       return false;
     }
-    console.log("手机号"+_this.data.phone);
-    console.log("验证码"+_this.data.verificationCode); 
+    //console.log("手机号"+_this.data.phone);
+    //console.log("验证码"+_this.data.verificationCode); 
     //提交
     submit(phone,verificationCode).then((data)=>{
       console.log("提交成功");

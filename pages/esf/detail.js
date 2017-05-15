@@ -34,7 +34,6 @@ var params = $.extend(true, {}, {
     getDetail: function() { //获取二手房详情
         var that = this;
         request.fetch({
-            mock: false,
             "showLoading": true,
             module: 'esf',
             action: 'getDetails',

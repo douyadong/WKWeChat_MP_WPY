@@ -2,15 +2,15 @@
     <view class="screenBox">
         <view class="screen">
             <text class="iconfont icon-search searchIcon"></text>
-            <view class="screenInputBox">
-                <input placeholder="请输入经纪人名或地区名" placeholder-class="screenPlaceholder" class="screenInput" bindinput="inputEvent" bindconfirm="completeEvent"/>
+            <view class="screenInputBox"><!--bindinput="inputEvent"-->
+                <input type="text" placeholder="请输入经纪人名或地区名" placeholder-class="screenPlaceholder" class="screenInput"  bindconfirm="completeEvent"/>
             </view>
         </view>
     </view>
     <view class="default">经纪人</view>
     <view class="listBox">
         <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-            <view class="agentList {{agentList.length-1 == index ? 'lastList':''}}"> 
+            <navigator url="/pages/logon/index?agentId={{list.row.agentId}}" class="agentList {{agentList.length-1 == index ? 'lastList':''}}">
                 <view class="portrait">
                     <image src="{{list.row.portrait}}" class="portraitImg"></image>
                 </view>
@@ -26,7 +26,7 @@
                         <text class="phone">{{list.row.phone}}</text>
                     </view>
                 </view>
-            </view>
+            </navigator>
         </block> 
     </view>
     <view class="more" bindtap="moreAgent">更多经纪人</view>
@@ -34,7 +34,12 @@
     <view class="listBox">
         <block wx:for="{{regionList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
             <view class="regionList {{regionList.length-1 == index ? 'lastList':''}}"> 
-                <text wx:for="{{list.glList}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'highlight':''}}">{{li.text}}</text>
+                <view class="title">
+                    <text wx:for="{{list.glList}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'highlight':''}}">{{li.text}}</text>
+                </view>
+                <view class="describe" wx:if="{{list.row.describe == 1}}">行政区</view>
+                <view class="describe" wx:if="{{list.row.describe == 2}}">板块</view>
+                <view class="describe" wx:if="{{list.row.describe == 3}}">小区</view>
             </view>
         </block>
     </view>

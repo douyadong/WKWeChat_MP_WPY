@@ -195,7 +195,7 @@ module.exports = {
         _this.data.geography.cityId,
         _this.data.districtAndTown,
         _this.data.orderType,
-        _this.data.selectLabelList,
+        _this.data.selectLabel,
         _this.data.pageIndex,
         function (agentList) {
           _this.setData({
@@ -226,7 +226,7 @@ module.exports = {
       _this.data.geography.cityId,
       _this.data.districtAndTown,
       _this.data.orderType,
-      _this.data.selectLabelList,
+      _this.data.selectLabel,
       _this.data.pageIndex,
       function (agentList) {
         _this.setData({
@@ -250,7 +250,7 @@ module.exports = {
       _this.data.geography.cityId,
       _this.data.districtAndTown,
       _this.data.orderType,
-      _this.data.selectLabelList,
+      _this.data.selectLabel,
       _this.data.pageIndex,
       function (agentList) {
         _this.setData({
@@ -269,14 +269,14 @@ module.exports = {
     //console.log(event.currentTarget.dataset.selectlabel);
     if(parseInt(event.currentTarget.dataset.selectlabel) != 0){
       _this.setData({
-          selectLabelList:parseInt(event.currentTarget.dataset.selectlabel),
+          selectLabel:parseInt(event.currentTarget.dataset.selectlabel),
           pageIndex:0
       })
       _this.getAgentList(
         _this.data.geography.cityId,
         _this.data.districtAndTown,
         _this.data.orderType,
-        _this.data.selectLabelList,
+        _this.data.selectLabel,
         _this.data.pageIndex,
         function (agentList) {
           _this.setData({
@@ -286,14 +286,14 @@ module.exports = {
       );
     }else{
       _this.setData({
-          selectLabelList:-1,
+          selectLabel:-1,
           pageIndex:0
       })
       _this.getAgentList(
         _this.data.geography.cityId,
         _this.data.districtAndTown,
         _this.data.orderType,
-        _this.data.selectLabelList,
+        _this.data.selectLabel,
         _this.data.pageIndex,
         function (agentList) {
           _this.setData({
