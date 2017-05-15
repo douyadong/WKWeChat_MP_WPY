@@ -24,6 +24,13 @@ var params = $.extend(true, {}, {
             address: this.data.estateAddr
         })
     },
+    jump:function(event){
+      let url = event.currentTarget.dataset.url;
+      app.isLogin(true, url);
+      wx.navigateTo({
+        url: url
+      })      
+    },
     getDetail: function() { //获取二手房详情
         var that = this;
         request.fetch({
