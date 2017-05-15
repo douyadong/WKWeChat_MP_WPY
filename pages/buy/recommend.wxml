@@ -19,7 +19,7 @@
     </view>
     <view class="title">以下经纪人会主动与您联系</view>
     <view class="agent-list">
-        <navigator url="/pages/agent/detail?agentId={{item.agentId}}" class="item {{index==matchAgentList.length-1?'last':''}}" wx:for="{{matchAgentList}}" wx:key="{{item.agentId}}">
+        <view  class="item {{index==matchAgentList.length-1?'last':''}}" wx:for="{{matchAgentList}}" wx:key="{{item.agentId}}">
             <view class="main">
                 <view class="img-box">
                     <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
@@ -38,12 +38,12 @@
             <view class="tel">
                 <view class="iconfont icon-tel" data-text="{{item.agentMobile}}" catchtap="call"></view>
             </view>
-        </navigator>
+        </view>
     </view>
     <block wx:if="{{recommenAgentList.length}}">
         <view class="title">更多推荐</view>
         <view class="agent-list more">
-            <navigator wx:if="{{index<2||showMore}}" url="/pages/agent/detail?agentId={{item.agentId}}" class="item {{index==recommenAgentList.length-1?'last':''}}" wx:for="{{recommenAgentList}}" wx:key="{{item.agentId}}">
+            <view wx:if="{{index<2||showMore}}" class="item {{index==recommenAgentList.length-1?'last':''}}" wx:for="{{recommenAgentList}}" wx:key="{{item.agentId}}">
                 <view class="main">
                     <view class="img-box">
                         <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
@@ -62,7 +62,7 @@
                 <view class="tel">
                     <view class="iconfont icon-tel" data-text="{{item.agentMobile}}" catchtap="call"></view>
                 </view>
-            </navigator>
+            </view>
 
             <button class="button gray" wx:if="{{recommenAgentList.length>2&&!showMore}}" bindtap="showMore">查看更多</button>
         </view>
@@ -75,5 +75,5 @@
         <view class="tips">在悟空找房APP可查看更多</view>
     </view>  
     
-    <button class="button blue">回到首页</button>
+    <button class="button blue" bindtap="backToHomePage">回到首页</button>
 </view>
