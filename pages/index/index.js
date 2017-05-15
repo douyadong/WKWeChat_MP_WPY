@@ -39,7 +39,6 @@ let main = {
         var longitude = res.longitude
         var speed = res.speed
         var accuracy = res.accuracy
-        console.log(latitude+"---------------"+longitude);
         //根据精度纬度，获取当前所在的城市信息
         request.fetch({
             mock:!true,

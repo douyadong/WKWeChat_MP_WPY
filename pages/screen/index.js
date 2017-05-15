@@ -29,6 +29,36 @@ function HighlightTransform(data) {
 }
 
 
+/**
+ * 获取经纪人列表
+ */
+var getAgentList = function(associationalWord,cookieId,pageIndex,pageSize,cityId) {
+    return new Promise(function (resolve, reject) {
+        request.fetch({
+          mock:!true,
+          module:'logon',
+          action:'getOpenIdByCode',
+          data:{
+            "associationalWord": associationalWord,
+            "cookieId": cookieId,
+            "pageIndex": pageIndex,
+            "pageSize": pageSize,
+            "cityId": cityId
+          },
+          success:function(data){
+              if(data.status.toString() == "1"){
+                resolve(data.data.openId);
+              }else{
+                reject([]);
+              }
+          },
+          fail:function() {
+            reject([]);
+          }
+      });
+    });
+}
+
 
 
 //工具方法
@@ -54,6 +84,8 @@ let main = {
   //搜索时获取经纪人数据
   getAgentList(key){
       console.log(key);  
+
+
   },
 
 
