@@ -21,7 +21,7 @@ let main = {
     //获取经纪人列表的筛选条件
     districtAndTown:"",//选中区域拼音
     orderType:1,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
-    selectLabelList:[1,2,3],//更多：1.好经纪人 2.客户热评 3.推荐房源数量多
+    selectLabelList:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
     pageIndex:0,//起始条数 默认从0开始
   },
   setGeography(cb){
@@ -39,9 +39,10 @@ let main = {
         var longitude = res.longitude
         var speed = res.speed
         var accuracy = res.accuracy
+        console.log(latitude+"---------------"+longitude);
         //根据精度纬度，获取当前所在的城市信息
         request.fetch({
-            mock:true,
+            mock:!true,
             module:'index',
             action:'findCityInfoByLonAndLat',
             data:{
@@ -49,6 +50,8 @@ let main = {
               lat:latitude
             },
             success:function(data){//获取城市信息成功
+              console.log("经纬度，获取城市成功");
+              console.log(data);
               if(data.status.toString() == '1'){
                   //更新地理信息状态
                   _this.setData({
@@ -63,7 +66,7 @@ let main = {
               cb();
             },
             fail:function() {//获取城市信息失败
-                console.log("地理位置获取失败");
+                console.log("经纬度，获取城市失败");
                 cb();
             }
         });
@@ -80,7 +83,7 @@ let main = {
     let _this = this;
     //根据城市id，获取区域数据
     request.fetch({
-        mock:true,
+        mock:!true,
         module:'index',
         action:'getCityAreasInfo',
         data:{
@@ -88,7 +91,19 @@ let main = {
           houseType:0//0表示不区分新房和二手房1新房2二手房3租房
         },
         success:function(data){
+            //console.log(data);
             _this.filterAgentListInit(data.data);
+            wx.setStorage({
+                key:"cityInfo",
+                data:data.data
+            })
+        },
+        fail:function(params) {
+          _this.filterAgentListInit([]);
+          wx.setStorage({
+                key:"cityInfo",
+                data:[]
+          })
         }
     });
   },
@@ -114,7 +129,7 @@ let main = {
     console.log(cityId,districtAndTown,orderType,selectLabelList,pageIndex);
     let _this = this;
     request.fetch({
-          mock:true,
+          mock:!true,
           module:'index',
           action:'searchAgentList',
           data:{
@@ -145,7 +160,8 @@ let main = {
       _this.getCityAreasInfo(_this.data.geography.cityId);
       //设置区域
       _this.setData({
-          districtAndTown:_this.data.geography.cityPinyin
+          //districtAndTown:_this.data.geography.cityPinyin
+          districtAndTown:""
       })
       //获取经纪人列表
       _this.getAgentList(
