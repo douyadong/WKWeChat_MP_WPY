@@ -51,8 +51,7 @@ Page({
         };
         if (requestData.notExist || requestData.hasSold || requestData.priceNotReal || requestData.imgNotReal || requestData.othreReason || requestData.memo) {
             if (requestData.memo.length <= 300) {
-                request.fetch({
-                    //"mock": true,
+                request.fetch({                    
                     "module": "report",
                     "action": "write",
                     "data": requestData,
@@ -60,11 +59,6 @@ Page({
                         wx.navigateBack({
                             delta: 1
                         })
-                        /*wx.showModal({
-                            content: data.message,
-                            showCancel: false,
-                            confirmColor: '#4081D6'
-                        })*/
                     }
                 });
             } else {

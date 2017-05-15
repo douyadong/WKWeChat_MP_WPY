@@ -16,8 +16,7 @@ let params =$.extend(true , {} , {
           let subEstateId = options.subEstateId ;
           request.fetch({
               "module": "xf" ,
-              "action" : "detail" ,
-            "mock": true,
+              "action" : "detail" ,            
               "data" : {
                   "subEstateId" : _.data.subEstateId ,
                   "agentId" : _.data.agentId

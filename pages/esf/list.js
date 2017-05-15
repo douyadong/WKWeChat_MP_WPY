@@ -67,7 +67,6 @@ Page({
     }
 
     request.fetch({
-      mock:true,
       showLoading:true,
       module:moduleName,
       action,
