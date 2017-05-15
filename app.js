@@ -31,7 +31,8 @@ App({
         }
     },
     globalData: {
-        userInfo: null
+        userInfo: null,
+        qqmapkey:'FJ6BZ-QZG3P-LASD7-VHLJJ-AG5FT-4KB2U'
     },
     mock: true,
     timer: null,
