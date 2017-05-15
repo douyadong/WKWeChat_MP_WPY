@@ -2,10 +2,7 @@
   <view class="panel-hd">
     <view class="head">位置及周边</view>    
   </view>  
-  <view class="map-container">
-  <!--
-    <map id="map" longitude="{{estateInfo.longitude}}" latitude="{{estateInfo.latitude}}" scale="14" markers="{{estateInfo.markers}}"   show-location></map>-->
-
+  <view class="map-container"> 
     <image bindtap="openLocation" src="http://apis.map.qq.com/ws/staticmap/v2/?&markers={{estateInfo.latitude}},{{estateInfo.longitude}}&key={{qqMapKey}}&size=375*240&center={{estateInfo.latitude}},{{estateInfo.longitude}}&zoom=18&scale=2"></image>
   </view>  
   <view class="supports">

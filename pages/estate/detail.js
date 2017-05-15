@@ -30,9 +30,6 @@ var params = $.extend(true, {}, {
     onShow: function () {
         this.getEstateInfo();
     },
-    onShareAppMessage: function () {
-
-    },
     gotoComment:function(event){
       let url = event.currentTarget.dataset.url;      
       app.isLogin(true,url);
@@ -43,7 +40,6 @@ var params = $.extend(true, {}, {
     getEstateInfo: function () { //获取小区详情
         var that = this;
         request.fetch({
-            //"mock":true,
             "showLoading":true,
             "module": "estate",
             "action": "detail",

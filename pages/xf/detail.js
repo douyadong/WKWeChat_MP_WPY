@@ -3,9 +3,7 @@ import $ from "../../utils/extend" ;
 import houseComment from "../components/house-comment" ;
 import swiper from "../components/swiper" ;
 import detailFoot from "../components/detailfoot" ;
-import QQMapWX from "../../utils/qqmap-wx-jssdk.min.js" ;
 var app = getApp();
-let qqmapsdk ;
 
 let params =$.extend(true , {} , {
      data : {
@@ -17,7 +15,6 @@ let params =$.extend(true , {} , {
           request.fetch({
               "module": "xf" ,
               "action" : "detail" ,
-            "mock": true,
               "data" : {
                   "subEstateId" : _.data.subEstateId ,
                   "agentId" : _.data.agentId
@@ -67,9 +64,6 @@ let params =$.extend(true , {} , {
       })  
     },
     onLoad : function (options) {
-         qqmapsdk = new QQMapWX({
-            key : '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
-         }) ; 
          //将页面传递过来的经纪人ID和新房ID保存起来供其他地方使用       
         this.setData({
           agentId : options.agentId ,
