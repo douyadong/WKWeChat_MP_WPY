@@ -4,7 +4,8 @@ Page({
   data: {    
     offset:0,
     pageSize:10,
-    totalCount:0
+    totalCount:0,
+    loading:false
   },
   onLoad: function (options) {
     //按照h5做法，相似房源不分页，在售房源分页    
@@ -31,7 +32,7 @@ Page({
     });
     this.getHouses(); 
   },
-  reachBottom:function(){    
+  onReachBottom:function(){    
     if(this.data.type == 2 && this.data.offset<this.data.totalCount){
       this.getHouses();
     }
@@ -40,6 +41,10 @@ Page({
     
   },
   getHouses:function(){
+    if(this.data.loading){
+      return;
+    }
+    this.setData({loading:true});
     var that = this;
     var moduleName,action,data;
     switch(this.data.type){
@@ -62,7 +67,8 @@ Page({
     }
 
     request.fetch({
-      //mock:true,
+      mock:true,
+      showLoading:true,
       module:moduleName,
       action,
       data,
@@ -77,6 +83,9 @@ Page({
         that.setData({
           esfSources
         });
+      },
+      complete:function(){
+        that.setData({ loading: false });
       }
     });
   }
