@@ -154,6 +154,7 @@ let main = {
   },
   onLoad(){
     let _this = this;
+    _this.getUserInfo();
     //设置地理
     _this.setGeography(function() {
       //获取区域信息
