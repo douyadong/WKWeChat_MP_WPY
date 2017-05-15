@@ -1,6 +1,6 @@
 <import src="../components/swiper.wxml"/>
 <!--楼盘相册部分-->
-<template is="swiper" data="{{imgUrls}}" />
+<template is="swiper" data="{{imgUrls,agentId}}" />
 <!--概要部分-->
 <include src="sections/summary.wxml"/>
 <!--楼盘动态部分-->

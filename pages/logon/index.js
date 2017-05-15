@@ -1,4 +1,23 @@
 var request = require('../../utils/request.js');
+/**
+ * 获取code方法
+ */
+var getLoginCode = function () {
+    return new Promise(function (resolve, reject) {
+        wx.login({
+          success: function(res) {
+            if (res.code) {
+              //获取code换取session_key
+              console.log("code："+res.code);
+              resolve(res.code);
+            } else {
+              console.log('获取用户登录态失败！' + res.errMsg);
+              reject(res.errMsg)
+            }
+          }
+        });
+    });
+};
 let app = getApp()
 Page({
   data: {
@@ -108,41 +127,47 @@ Page({
         }
     });
   },
-  onLoad: function () {
+  onLoad() {
+    getLoginCode().then((code)=>{
+      console.log(code);
+    });
+
     //1.页面初始化，读取Storage,获取用户登录信息，判断微信用户是否为空
     wx.getStorage({
       key: 'userLoginInfo',
       success: function(res) {//已授权
+          console.log("已授权");
           console.log(res.data)
-          //没有sessionKey，要获取
+          //调接口：判断是否已经绑定过手机接口（完成）。获取openId
+
+
+
       },
       fail:function() {//未授权
+        console.log("未授权，没有获取到userLoginInfo信息");
+        //提示授权
         wx.showModal({
           title: '授权提示',
           content: '检测到您没有打开悟空找房的用户信息权限，是否去设置打开？',
           success: function(res) {
-            if (res.confirm) {
-                //去设置授权
+              //去设置授权
+              if(res.confirm){
+                console.log("用户点击确定");
+                //打开设置页面
                 wx.openSetting({
                   success: (res) => {
                     console.log(res);
                   }
                 })
-            } else if (res.cancel) {
-              console.log('用户点击取消')
-            }
+              }else{
+                console.log("用户点击取消");
+              }
+          },
+          fail:function () {
+              console.log('对话框调用失败')
           }
         })
       }
     })
-    //不为空，说明已授权，提交登录信息
-    
-    //为空，未授权 -> 弹出授权提示，设置授权
-    //点“取消”，弹框消失，“确定”去登录，校验手机号，验证码
-    //判断是否有绑定手机号？
-          //登录获取code
-
-
-
   }
 })

@@ -39,6 +39,7 @@ module.exports = {
       success(data);
       showBarLoading && wx.hideNavigationBarLoading()
       showLoading && wx.hideToast();
+      typeof complete == 'function' && complete();
       return;
     }
 

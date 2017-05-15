@@ -17,7 +17,11 @@ let params =$.extend(true , {} , {
           request.fetch({
               "module": "xf" ,
               "action" : "detail" ,
-              "mock" : false ,              
+              "mock" : false ,
+              "data" : {
+                  "subEstateId" : _.data.subEstateId ,
+                  "agentId" : _.data.agentId
+              } ,
               "showLoading" :  true ,            
               success : function (res) {
                   let result = res.data ;
@@ -50,7 +54,12 @@ let params =$.extend(true , {} , {
     onLoad : function (options) {
          qqmapsdk = new QQMapWX({
             key : '3PLBZ-SHL3O-E4TWH-SFGHP-WYGG5-KKFLN'
-         }) ;        
+         }) ; 
+         //将页面传递过来的经纪人ID和新房ID保存起来供其他地方使用       
+        this.setData({
+          agentId : options.agentId ,
+          subEstateId : options.subEstateId
+        }) ;
         this.render(options) ;    
     }
 } , houseComment , swiper , detailFoot ) ;
