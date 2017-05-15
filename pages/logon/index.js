@@ -7,17 +7,73 @@ var getLoginCode = function () {
         wx.login({
           success: function(res) {
             if (res.code) {
-              //获取code换取session_key
-              console.log("code："+res.code);
               resolve(res.code);
             } else {
-              console.log('获取用户登录态失败！' + res.errMsg);
               reject(res.errMsg)
             }
           }
         });
     });
 };
+/**
+ * 通过code获取openId
+ */
+var getOpenId = function(code) {
+     return new Promise(function (resolve, reject) {
+        request.fetch({
+          mock:true,
+          module:'logon',
+          action:'getOpenIdByCode',
+          data:{
+            code:code,
+          },
+          success:function(data){
+              if(data.status.toString() == "1"){
+                resolve(data.data.openId);
+              }else{
+                reject("");
+              }
+          },
+          fail:function() {
+            reject("");
+          }
+      });
+    });
+}
+/**
+ * 通过 openId 判断是否已经绑定过手机接口
+ */
+var isBind = function(openId) {
+  return new Promise(function (resolve, reject) {
+      request.fetch({
+          mock:true,
+          module:'logon',
+          action:'getWechatBindGuestInfo',
+          data:{
+            openId:openId,
+          },
+          success:function(data){
+             if(data.status.toString() == "1"){
+                resolve(data.data);
+              }else{
+                reject("");
+              }
+          },
+          fail:function() {
+            reject("");
+          }
+      });
+  })
+}
+
+/**
+ * 根据手机号，获取短信验证码和语音验证码
+ */
+
+
+
+
+
 let app = getApp()
 Page({
   data: {
@@ -127,21 +183,38 @@ Page({
         }
     });
   },
-  onLoad() {
-    getLoginCode().then((code)=>{
-      console.log(code);
-    });
-
+  onLoad(options) {
+    console.log(options);
+    let url = options.returnUrl;
     //1.页面初始化，读取Storage,获取用户登录信息，判断微信用户是否为空
     wx.getStorage({
       key: 'userLoginInfo',
       success: function(res) {//已授权
           console.log("已授权");
-          console.log(res.data)
-          //调接口：判断是否已经绑定过手机接口（完成）。获取openId
-
-
-
+          //获取code
+          getLoginCode().then((code)=>{
+              console.log(code);
+              //获取openId
+              getOpenId(code).then((openId)=>{
+                console.log(openId);
+                //判断是否已经绑定过手机
+                isBind(openId).then((data)=>{
+                  if(data == null){//没有绑定手机号
+                      //正常登录（即验证手机号码）
+                  }else{//返回对象，已经绑定手机号。登录结束
+                    //把最终的用户信息，写如到本地
+                    wx.setStorage({
+                       key:"userInfo",
+                       data:data
+                    });
+                    //返回到登录前的url
+                    wx.redirectTo({
+                      url: url
+                    })
+                  }
+                });
+              });
+          });
       },
       fail:function() {//未授权
         console.log("未授权，没有获取到userLoginInfo信息");
