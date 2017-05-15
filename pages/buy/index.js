@@ -2,7 +2,7 @@
  * @desc 我要买房-首页
  * @author:yuxiaochen@lifang.com
  */
-const areaInfo = require('./mock').areaInfo.data
+
 const request = require('../../utils/request')
 const appInstance = getApp()
 
@@ -120,8 +120,9 @@ Page({
       selected: false
     }],
     currentPrice: {
-      min: '',
-      max: '',
+      id: '-1',
+      min: '-1',
+      max: '-1',
       text: '请选择总价范围'
     },
     currentHouseType: {
@@ -146,27 +147,35 @@ Page({
     wx.removeStorageSync('buy_houseType')
     wx.removeStorageSync('buy_location')
     // 判断用户是否登录
+    if (!appInstance.isLogin(false)) {
+      // 未登录初始化选择项信息
+      that.setPrice(-1, -1)
+      that.setHouseType('')
+      that.setLocation([])
+    }else {
+      // get data
+      this.getData(function (res) {
+        let data = res.data
 
-    // 未登录初始化选择项信息
-    // that.setPrice(-1, -1)
-    // that.setHouseType('')
-    // that.setLocation([])
+        if (data) {
+          // 价格信息
+          that.setPrice(data.startPrice, data.endPrice)
 
-    // get data
-    this.getData(function (res) {
-      let data = res.data
-      // 价格信息
-      that.setPrice(data.startPrice, data.endPrice)
+          // 户型信息
+          that.setHouseType(data.bedRoomSum)
 
-      // 户型信息
-      that.setHouseType(data.bedRoomSum)
+          // 位置信息
+          that.setLocation(data.townList)
 
-      // 位置信息
-      that.setLocation(data.townList)
-
-      // 房源特色信息
-      that.setHouseFeatures(data.cusHouseFeatures)
-    })
+          // 房源特色信息
+          that.setHouseFeatures(data.cusHouseFeatures)
+        }else {
+          that.setPrice(-1, -1)
+          that.setHouseType('')
+          that.setLocation([])
+        }
+      })
+    }
 
     this.data.loaded = true
   },
@@ -221,13 +230,15 @@ Page({
     let locationStr,location = []
     let allCheckedAreas = []
 
+    let areaInfo = wx.getStorageSync('cityInfo')
+
     // 转换data
     this.convertData(areaInfo)
 
     if (townList && townList.length) {
       this.data.blockList.forEach(oBlock1 => {
         townList.forEach(oBlock2 => {
-          if (oBlock1.id == oBlock2.id) {
+          if (oBlock1.id == oBlock2.townId) {
             oBlock1.selected = true
             that.data.superAreaObject[oBlock1.pid]++
             if (that.data.superAreaObject[oBlock1.pid + '_count'] == that.data.superAreaObject[oBlock1.pid]) {
@@ -328,11 +339,18 @@ Page({
     this.setData({'houseFeatures': this.data.houseFeatures})
   },
   getData: function (callback) {
+    let cityId = wx.getStorageSync('geography').cityId
+    let guestId = wx.getStorageSync('userInfo').guestId
+
     request.fetch({
       'module': 'buy',
       'action': 'getDetails',
+      'data': {
+        'guestId': '123',
+        'cityId': cityId
+      },
       'showLoading': true,
-      'mock': true,
+      'mock': false,
       success: function (res) {
         callback(res)
       }
@@ -360,10 +378,11 @@ Page({
     }
 
     // 判断是否登录
-    // appInstance.isLogin()
+    appInstance.isLogin()
 
     // 构造请求数据
-    requestData.guestId = guestId
+    requestData.guestId = wx.getStorageSync('userInfo').guestId
+    requestData.cityId = wx.getStorageSync('geography').cityId
     requestData.sellPriceStart = this.data.currentPrice.min
     requestData.sellPriceEnd = this.data.currentPrice.max
     requestData.bedRoomSum = this.data.currentHouseType.id
@@ -394,7 +413,8 @@ Page({
     request.fetch({
       module: 'buy',
       action: 'edit',
-      data: requestData,
+      data: JSON.stringify(requestData),
+      mock: false,
       method: 'post',
       success: function (res) {
         if (res.data && res.data.orderAgentIdList && res.data.orderAgentIdList.length) {

@@ -4,24 +4,6 @@
 var request = require('../../utils/request.js');
 var app = getApp();
 module.exports = {
-  /*
-    data:{
-      comments:[{
-        "pkid": 1079,
-        "subEstateId": 0,
-        "upAmount": 0,
-        "downAmount": 0,
-        "comment": "丰田天",
-        "createTimeStr": "2017-03-23 16:04:52",
-        "orderLevel": null,
-        "isUp": 0,
-        "isDown": 0,
-        "imgList": null,
-        "landlord": 0
-      }]
-    }
-  */
-
   hc_zan:function(event){//赞    
     let self = this;
     let item = event.currentTarget.dataset.item;

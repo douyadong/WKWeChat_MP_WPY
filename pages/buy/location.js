@@ -2,7 +2,6 @@
  * @desc 我要买房-位置选择页
  * @author:yuxiaochen@lifang.com
  */
-let res = require('./mock').areaInfo
 
 const appInstance = getApp()
 
@@ -19,9 +18,10 @@ Page({
   onShow: function (options) {
     let that = this
     let matchIndexArray = []
+    
+    let areaInfo=wx.getStorageSync('cityInfo');
 
-    // todo:请求接口获取接口地址
-    this.convertData(res.data)
+    this.convertData(areaInfo)
 
     matchIndexArray = this.getMatchIndexArray()
     this.setArea(matchIndexArray)
@@ -98,7 +98,7 @@ Page({
 
     this.data.blockList.forEach(oBlock1 => {
       selectedBlockList.forEach(oBlock2 => {
-        if (oBlock1.id == oBlock2.id) {
+        if (oBlock1.id == oBlock2.townId) {
           if (!matchIndexArray.includes(oBlock1.pIndex)) {
             matchIndexArray.push(oBlock1.pIndex)
           }
@@ -269,6 +269,7 @@ Page({
     blockList.forEach(oBlock => {
       if (!allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
         towns.push({
+          townId:oBlock.id,
           id: oBlock.id,
           townName: oBlock.name
         })
