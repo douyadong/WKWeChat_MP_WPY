@@ -35,11 +35,11 @@ App({
   },
   mock: true,
   timer: null,
-  isLogin: function (needRedirect = true) { // 判断是否登录了小程序
+  isLogin: function ({needRedirect = true,returnUrl=''}) { // 判断是否登录了小程序
     var userInfo = wx.getStorageSync('userInfo')
     if (!userInfo) {
       // 当前页的地址
-      var returnUrl = this.getCurrentPage().__route__
+      returnUrl = returnUrl || this.getCurrentPage().__route__
       if (!needRedirect) {return false;}
       wx.redirectTo({
         url: '/pages/logon/index?returnUrl=' + returnUrl

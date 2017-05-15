@@ -3,6 +3,7 @@ var $ = require('../../utils/extend.js');
 var houseComment = require('../components/house-comment.js');
 var request = require('../../utils/request.js');
 var swiper = require('../components/swiper.js');
+let app = getApp();
 
 var params = $.extend(true, {}, {
     data: {    
@@ -32,6 +33,10 @@ var params = $.extend(true, {}, {
     },
     onShareAppMessage: function () {
 
+    },
+    gotoComment:function(event){
+      console.log(event.currentTarget.url);
+      app.isLogin('hello world');
     },
     getEstateInfo: function () { //获取小区详情
         var that = this;
