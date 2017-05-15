@@ -1,6 +1,6 @@
 <view class="panel summary">
   <view class="panel-bd lr-padding">
-    <text class="head">{{newHouseDetail.estateName}}</text>
+    <text class="head">{{newHouseDetail.estateName || "--"}}</text>
     <text class="highlight">{{newHouseDetail.houseSellPoint}}</text>
     <view class="price-series">
       <text class="price">{{newHouseDetail.lowestTotalPrice}} 元／㎡</text>
