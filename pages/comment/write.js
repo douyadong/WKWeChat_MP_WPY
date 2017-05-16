@@ -96,7 +96,7 @@ var params = $.extend(true,{},{
             data:requestData,
             module:'comment',
             action:'write',
-            method:'POST',
+            method:'get',
             showLoading:true,
             showTitle:'提交中',
             success:function(data){
