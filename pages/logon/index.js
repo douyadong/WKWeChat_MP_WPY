@@ -25,6 +25,7 @@ var getOpenId = function(code) {
           mock:!true,
           module:'logon',
           action:'getOpenIdByCode',
+          showLoading:false,
           data:{
             code:code,
           },
@@ -50,6 +51,7 @@ var isBind = function(openId) {
           mock:!true,
           module:'logon',
           action:'getWechatBindGuestInfo',
+          showLoading:false,
           data:{
             openId:openId,
           },
