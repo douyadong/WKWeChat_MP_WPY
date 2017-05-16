@@ -22,9 +22,13 @@ var params = $.extend(true, {}, {
         })
     },
     onLoad: function(options) {
+        let userInfo = wx.getStorageSync('userInfo');
+        let guestPhoneNum = userInfo && userInfo.mobile || '';
+
         this.setData({
             subEstateId: options.subEstateId,
-            agentId: options.agentId
+            agentId: options.agentId,
+            guestPhoneNum: guestPhoneNum
         });
     },
     onShow: function() {
@@ -44,7 +48,9 @@ var params = $.extend(true, {}, {
             "module": "estate",
             "action": "detail",
             "data": {
-                subEstateId: that.data.subEstateId
+                subEstateId: that.data.subEstateId,
+                agentId:that.data.agentId,
+                guestPhoneNum: that.data.guestPhoneNum
             },
             "success": function(data) {
                 var e = data.data.estateInfo;

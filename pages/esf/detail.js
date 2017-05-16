@@ -33,7 +33,7 @@ var params = $.extend(true, {}, {
       })      
     },
     getDetail: function() { //获取二手房详情
-        var that = this;
+        var that = this;      
         request.fetch({
             //mock:true,
             "showLoading": true,
@@ -41,7 +41,8 @@ var params = $.extend(true, {}, {
             action: 'getDetails',
             data: {
                 houseId: this.data.houseId,
-                agentId: this.data.agentId
+                agentId: this.data.agentId,
+                guestPhoneNum: this.data.guestPhoneNum
             },
             success: function(data) {
                 var newData = { imgUrls: [] };
@@ -111,10 +112,14 @@ var params = $.extend(true, {}, {
         });
     },
     onLoad: function(options) {
+        let userInfo = wx.getStorageSync('userInfo');
+        let guestPhoneNum = userInfo && userInfo.mobile || '';
+
         this.setData({
             houseId: options.houseId,
             agentId: options.agentId,
-            sourceType:options.sourceType
+            sourceType:options.sourceType,
+            guestPhoneNum:guestPhoneNum
         });
 
         this.getDetail();
