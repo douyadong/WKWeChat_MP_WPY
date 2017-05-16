@@ -2,7 +2,8 @@ var request = require('../../utils/request.js');
 var $ = require('../../utils/extend.js');
 
 var initData = {},
-	isLoading = false;
+	isLoading = false,
+    pageIndex = 0;
 
 var params = {
 	data: {
@@ -11,19 +12,18 @@ var params = {
         loadError:false
 	},
 	onLoad: function(option) {
-		initData = $.extend(true,{},{pageIndex:0},option);
+		initData = $.extend(true,{},{pageIndex:pageIndex,pageSize:20},option);
         request.fetch({
             data:initData,
             module:'agent',
             action:'rateList',
-            mock:true,
             success:function(data){
             	if(data.status === 1){
             		this.setData({
 	                    "simpleAgentCommentTag":data.data.simpleAgentCommentTag,
 	                    "simpleAgentCommentList":data.data.simpleAgentCommentList
 	                })
-	                if(data.data.simpleAgentCommentList.length<10){
+	                if(data.data.simpleAgentCommentList.length<20){
 	                    this.setData({
 	                        "isNoData":true
 	                    })
@@ -39,7 +39,9 @@ var params = {
 		if(isLoading || this.data.isNoData)return;
         isLoading = true;
 
-        initData.pageIndex = initData.pageIndex++;
+        pageIndex++;
+
+        initData.pageIndex = pageIndex*20;
         
         request.fetch({
             data:initData,
@@ -49,10 +51,10 @@ var params = {
             success:function(data){
                 if(data.status === 1){
                     this.setData({
-                        "simpleAgentCommentList":this.data.simpleAgentCommentList.concat(data.data.simpleAgentCommentList),
+                        "simpleAgentCommentList":this.data.simpleAgentCommentList.concat(data.data),
                         "loadError":false
                     })
-                    if(data.data.commentList.length<10){
+                    if(data.data.length<20){
                         this.setData({
                             "isNoData":true
                         })
@@ -63,11 +65,11 @@ var params = {
                 }
             }.bind(this),
             fail:function(){
-                initData.pageIndex = initData.pageIndex--;
+                pageIndex--;
                 this.setData({
                     "loadError":true
                 })
-                console.log(111)
+                console.log('加载失败')
             }.bind(this)
         })
 	},

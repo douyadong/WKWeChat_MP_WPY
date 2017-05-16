@@ -2,8 +2,9 @@ var request = require('../../utils/request.js');
 var $ = require('../../utils/extend.js');
 var houseComment = require('../components/house-comment.js');
 
-var requestData = {};
-var isLoading = false;
+var requestData = {},
+    isLoading = false,
+    offset = 0;
 
 var params = $.extend(true,{},{
     data: {
@@ -16,7 +17,7 @@ var params = $.extend(true,{},{
             mobile = mobile && mobile.mobile || '';
             
         requestData = $.extend(true,{},{
-            offset:0,
+            offset:offset,
             guestPhoneNum:mobile
         },option);
 
@@ -35,7 +36,8 @@ var params = $.extend(true,{},{
     loadMore:function() {
         if(isLoading)return;
         isLoading = true;
-        requestData.offset = requestData.offset++;
+        offset++;
+        requestData.offset = offset;
         
         request.fetch({
             data:requestData,
@@ -54,8 +56,11 @@ var params = $.extend(true,{},{
                 }
             }.bind(this),
             error:function(){
-                
-                
+                pageIndex--;
+                this.setData({
+                    "loadError":true
+                })
+                console.log('加载失败')
             }.bind(this)
         })
     }
