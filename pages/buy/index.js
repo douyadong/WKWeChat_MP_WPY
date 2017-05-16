@@ -233,9 +233,10 @@ Page({
   setLocation: function (townList) {
     let that = this
     let locationStr,location = []
-    let allCheckedAreas = []
 
     let areaInfo = wx.getStorageSync('cityInfo')
+
+    this.data.allCheckedAreas = []
 
     // 转换data
     this.convertData(areaInfo)
@@ -243,19 +244,19 @@ Page({
     if (townList && townList.length) {
       this.data.blockList.forEach(oBlock1 => {
         townList.forEach(oBlock2 => {
-          if (oBlock1.id == oBlock2.townId) {
+          if ((oBlock1.id == oBlock2.townId) || (oBlock1.id == oBlock2.id)) {
             oBlock1.selected = true
             that.data.superAreaObject[oBlock1.pid]++
             if (that.data.superAreaObject[oBlock1.pid + '_count'] == that.data.superAreaObject[oBlock1.pid]) {
               location.push(oBlock1.pName)
-              allCheckedAreas.push(oBlock1.pid)
+              that.data.allCheckedAreas.push(oBlock1.pid)
             }
           }
         })
       })
 
       this.data.blockList.forEach(oBlock => {
-        if (!allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
+        if (!that.data.allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
           location.push(oBlock.name)
         }
       })
@@ -382,7 +383,7 @@ Page({
     }
 
     // 判断是否登录
-    return appInstance.isLogin(true, '', 'back')
+    appInstance.isLogin(true, '', 'back')
 
     // 构造请求数据
     requestData.guestId = wx.getStorageSync('userInfo').guestId
@@ -391,17 +392,17 @@ Page({
     requestData.sellPriceEnd = this.data.currentPrice.max
     requestData.bedRoomSum = this.data.currentHouseType.id
 
+    if (this.data.allCheckedAreas.length) {
+      requestData.districtIdList = this.data.allCheckedAreas
+    }
+
     this.data.blockList.forEach(item => {
       if (item.selected) {
-        if (!districtIdList.includes(item.pid)) {
-          districtIdList.push(item.pid)
-        }
         townIdList.push(item.id)
       }
     })
 
     requestData.townIdList = townIdList
-    requestData.districtIdList = districtIdList
 
     this.data.houseFeatures.forEach(item => {
       if (item.selected) {
