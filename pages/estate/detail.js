@@ -22,14 +22,14 @@ var params = $.extend(true, {}, {
         })
     },
     onLoad: function(options) {
+        /**
+        * options中需要有subEstateId和agentId
+        */
         let userInfo = wx.getStorageSync('userInfo');
         let guestPhoneNum = userInfo && userInfo.mobile || '';
+        options.guestPhoneNum = guestPhoneNum;
 
-        this.setData({
-            subEstateId: options.subEstateId,
-            agentId: options.agentId,
-            guestPhoneNum: guestPhoneNum
-        });
+        this.setData(options);
     },
     onShow: function() {
         this.getEstateInfo();

@@ -10,13 +10,13 @@ Page({
         openType:'redirect'
     },
     onLoad: function(options) {
+        /**
+         * options中需要type,subEstateId,houseId和agentId
+         * type -- 1:相似房源，2:在售房源
+         */
+
         //按照h5做法，相似房源不分页，在售房源分页    
-        this.setData({
-            type: options.type, //1:相似房源，2:在售房源 
-            subEstateId: options.subEstateId,
-            houseId: options.houseId,
-            agentId: options.agentId
-        });
+        this.setData(options);
 
         //设置导航条中的标题
         let title = "";
