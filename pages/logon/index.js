@@ -337,9 +337,15 @@ Page({
               data: data
             })
             // 返回到登录前的url
-            wx.redirectTo({
-              url: _this.data.returnUrl
-            })
+            if (_this.data.type == 'redirect') {
+              wx.redirectTo({
+                url: _this.data.returnUrl
+              })
+            }else {
+              wx.navigateBack({
+                url: _this.data.returnUrl
+              })
+            }
           }
         })
       })

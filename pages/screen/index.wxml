@@ -10,7 +10,7 @@
     <view class="default">经纪人</view>
     <view class="listBox">
         <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-            <navigator url="/pages/logon/index?agentId={{list.row.agentId}}" class="agentList {{agentList.length-1 == index ? 'lastList':''}}">
+            <navigator url="/pages/agent/detail?agentId={{list.row.agentId}}" class="agentList {{agentList.length-1 == index ? 'lastList':''}}">
                 <view class="portrait">
                     <image src="{{list.row.portrait}}" class="portraitImg"></image>
                 </view>
