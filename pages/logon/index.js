@@ -299,7 +299,7 @@ Page({
           data: data
         })
         // 返回到登录前的url
-        if (data.type == 'redirect') {
+        if (_this.data.type == 'redirect') {
           wx.redirectTo({
             url: _this.data.returnUrl
           })
