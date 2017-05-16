@@ -298,26 +298,22 @@ Page({
           key: 'userInfo',
           data: data
         })
-        _this.goUrl();
+        // 返回到登录前的url
+        if (_this.data.type == 'redirect') {
+          wx.redirectTo({
+            url: _this.data.returnUrl
+          })
+        }else {
+          wx.navigateBack({
+            url: _this.data.returnUrl
+          })
+        }
       }else {
         app.showTips('登录失败，重新登录')
         console.log('登录失败，重新登录')
         console.log(data)
       }
     })
-  },
-  goUrl(){
-    let _this = this;
-    // 返回到登录前的url
-    if (_this.data.type == 'redirect') {
-      wx.redirectTo({
-        url: _this.data.returnUrl
-      })
-    }else {
-      wx.navigateBack({
-        url: _this.data.returnUrl
-      })
-    }
   },
   // 写已授权逻辑
   yesAuthorized() {
@@ -340,7 +336,18 @@ Page({
               key: 'userInfo',
               data: data
             })
-            _this.goUrl();
+            // 返回到登录前的url
+            console.log('yesAuthorized.....');
+            console.log(_this.data);
+            if (_this.data.type == 'redirect') {
+              wx.redirectTo({
+                url: _this.data.returnUrl
+              })
+            }else {
+              wx.navigateBack({
+                url: _this.data.returnUrl
+              })
+            }
           }
         })
       })
@@ -417,7 +424,7 @@ Page({
       let returnUrl = decodeURIComponent(options.returnUrl)
       _this.setData({
         returnUrl: returnUrl,
-        type: options.type
+        type: type
       })
     }
 

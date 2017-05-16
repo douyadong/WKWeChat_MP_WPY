@@ -25,11 +25,15 @@ var params = $.extend(true,{},{
             data:requestData,
             module:'comment',
             action:'list',
-            mock:true,
             success:function(data){
                 this.setData({
                     "comments":data.data.commentList
                 })
+                if(data.data.commentList.length<20){
+                    this.setData({
+                        "isNoData":true
+                    })
+                }
             }.bind(this)
         })
     },
