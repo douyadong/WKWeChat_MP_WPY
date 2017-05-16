@@ -190,19 +190,18 @@ module.exports = {
           districtAndTown:"",
           pageIndex:0
       })
-     //调用筛选经纪人列表
-     _this.getAgentList(
-        _this.data.geography.cityId,
-        _this.data.districtAndTown,
-        _this.data.orderType,
-        _this.data.selectLabel,
-        _this.data.pageIndex,
-        function (agentList) {
+      //获取经纪人
+      _this.getAgentList(
+          _this.data.geography.cityId,
+          _this.data.districtAndTown,
+          _this.data.orderType,
+          _this.data.selectLabel,
+          _this.data.pageIndex
+      ).then((agentList)=>{
           _this.setData({
-            agentList:agentList
+              agentList:agentList
           })
-        }
-      );
+      });
     }
     for(let i=0;i<plateList.length;i++){
       if(plateList[i].id == id){//点击的不是“不限”，是区域
@@ -221,19 +220,18 @@ module.exports = {
       districtAndTown:event.currentTarget.dataset.pinyin,//修改筛选经纪人列表状态
       pageIndex:0
     })
-    //调用筛选经纪人列表
-    _this.getAgentList(
-      _this.data.geography.cityId,
-      _this.data.districtAndTown,
-      _this.data.orderType,
-      _this.data.selectLabel,
-      _this.data.pageIndex,
-      function (agentList) {
-        _this.setData({
-          agentList:agentList
-        })
-      }
-    );
+      //获取经纪人
+      _this.getAgentList(
+          _this.data.geography.cityId,
+          _this.data.districtAndTown,
+          _this.data.orderType,
+          _this.data.selectLabel,
+          _this.data.pageIndex
+      ).then((agentList)=>{
+          _this.setData({
+              agentList:agentList
+          })
+      });
   },
   //点击综合排序
   tapSort(event){
@@ -244,20 +242,18 @@ module.exports = {
          orderType:parseInt(event.currentTarget.dataset.ordertype),
          pageIndex:0
     })
-    //console.log(parseInt(event.currentTarget.dataset.ordertype));
-    //调用筛选经纪人列表
+    //获取经纪人
     _this.getAgentList(
-      _this.data.geography.cityId,
-      _this.data.districtAndTown,
-      _this.data.orderType,
-      _this.data.selectLabel,
-      _this.data.pageIndex,
-      function (agentList) {
+        _this.data.geography.cityId,
+        _this.data.districtAndTown,
+        _this.data.orderType,
+        _this.data.selectLabel,
+        _this.data.pageIndex
+    ).then((agentList)=>{
         _this.setData({
-          agentList:agentList
+            agentList:agentList
         })
-      }
-    );
+    });
   },
   //点击筛选更多
   tapMore(event){
@@ -272,35 +268,35 @@ module.exports = {
           selectLabel:parseInt(event.currentTarget.dataset.selectlabel),
           pageIndex:0
       })
+      //获取经纪人
       _this.getAgentList(
-        _this.data.geography.cityId,
-        _this.data.districtAndTown,
-        _this.data.orderType,
-        _this.data.selectLabel,
-        _this.data.pageIndex,
-        function (agentList) {
+          _this.data.geography.cityId,
+          _this.data.districtAndTown,
+          _this.data.orderType,
+          _this.data.selectLabel,
+          _this.data.pageIndex
+      ).then((agentList)=>{
           _this.setData({
-            agentList:agentList
+              agentList:agentList
           })
-        }
-      );
+      });
     }else{
       _this.setData({
           selectLabel:-1,
           pageIndex:0
       })
+      //获取经纪人
       _this.getAgentList(
-        _this.data.geography.cityId,
-        _this.data.districtAndTown,
-        _this.data.orderType,
-        _this.data.selectLabel,
-        _this.data.pageIndex,
-        function (agentList) {
+          _this.data.geography.cityId,
+          _this.data.districtAndTown,
+          _this.data.orderType,
+          _this.data.selectLabel,
+          _this.data.pageIndex
+      ).then((agentList)=>{
           _this.setData({
-            agentList:agentList
+              agentList:agentList
           })
-        }
-      );
+      });
     }
   }
 }

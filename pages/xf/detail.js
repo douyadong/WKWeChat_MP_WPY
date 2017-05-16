@@ -16,7 +16,8 @@ let params =$.extend(true , {} , {
               "action" : "detail" ,
               "data" : {
                   "subEstateId" : _.data.subEstateId ,
-                  "agentId" : _.data.agentId
+                  "agentId" : _.data.agentId,
+                  "guestPhoneNum": _.data.guestPhoneNum
               } ,
               "showLoading" :  true ,            
               success : function (res) {
@@ -70,10 +71,14 @@ let params =$.extend(true , {} , {
       })  
     },
     onLoad : function (options) {
+        let userInfo = wx.getStorageSync('userInfo');
+        let guestPhoneNum = userInfo && userInfo.mobile || '';
+
          //将页面传递过来的经纪人ID和新房ID保存起来供其他地方使用       
         this.setData({
           agentId : options.agentId ,
-          subEstateId : options.subEstateId
+          subEstateId : options.subEstateId,
+          guestPhoneNum: guestPhoneNum
         }) ;
         this.render() ;    
     }

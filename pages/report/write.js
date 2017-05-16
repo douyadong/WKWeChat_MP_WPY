@@ -77,8 +77,9 @@ Page({
         }
     },
     onLoad: function (options) {
-        this.setData({
-            houseId: options.houseId
-        })
+        /**
+         * options中需要houseId
+         */
+        this.setData(options);
     }
 })

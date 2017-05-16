@@ -2,20 +2,26 @@ var request = require('../../utils/request.js');
 var $ = require('../../utils/extend.js');
 var houseComment = require('../components/house-comment.js');
 
-var initData = {};
+var requestData = {};
 var isLoading = false;
 
 var params = $.extend(true,{},{
     data: {
         comments: [],
-        isLoading:false,//是否正在加载中
-        isNoData:false,//是否没有数据了
-        loadError:false
+        isLoading:false,
     },
     onLoad: function(option) {
-        initData = $.extend(true,{},{offset:0},option);
+
+        var mobile =  wx.getStorageSync('userInfo');
+            mobile = mobile && mobile.mobile || '';
+            
+        requestData = $.extend(true,{},{
+            offset:0,
+            guestPhoneNum:mobile
+        },option);
+
         request.fetch({
-            data:initData,
+            data:requestData,
             module:'comment',
             action:'list',
             mock:true,
@@ -23,55 +29,35 @@ var params = $.extend(true,{},{
                 this.setData({
                     "comments":data.data.commentList
                 })
-                if(data.data.commentList.length<10){
-                    this.setData({
-                        "isNoData":true
-                    })
-                }
-            }.bind(this),
-            fail:function(){
-
-            }
+            }.bind(this)
         })
     },
     loadMore:function() {
-        if(isLoading || this.data.isNoData)return;
+        if(isLoading)return;
         isLoading = true;
-        initData.offset = initData.offset++;
+        requestData.offset = requestData.offset++;
         
         request.fetch({
-            data:initData,
+            data:requestData,
             module:'comment',
             action:'list',
             showLoading:true,
+            //mock:true,
             success:function(data){
                 if(data.status === 1){
                     this.setData({
-                        "comments":this.data.comments.concat(data.data.commentList),
-                        "loadError":false
+                        "comments":this.data.comments.concat(data.data.commentList)
                     })
-                    if(data.data.commentList.length<10){
-                        this.setData({
-                            "isNoData":true
-                        })
-                    }
                     setTimeout(function(){
                         isLoading= false;
                     }.bind(this),200)
                 }
             }.bind(this),
-            fail:function(){
-                initData.offset = initData.offset--;
-                this.setData({
-                    "loadError":true
-                })
-                console.log(111)
+            error:function(){
+                
+                
             }.bind(this)
         })
-    },
-    bindErrorBtn:function(){
-        isLoading=false;
-        this.loadMore();
     }
 },houseComment);
 

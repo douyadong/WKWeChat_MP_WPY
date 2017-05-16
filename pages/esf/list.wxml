@@ -1,5 +1,5 @@
 <!--二手房列表页-->
 <import src="../components/esf-sources.wxml"/>
 <view class="panel">
-	<template is="esf-sources" data="{{esfSources,agentId}}" />
+	<template is="esf-sources" data="{{esfSources,agentId,sourceType,openType}}" />
 </view>

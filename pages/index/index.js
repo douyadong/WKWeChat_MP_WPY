@@ -4,11 +4,128 @@ var request = require('../../utils/request.js');
 //筛选区域脚本
 let filterAgentList = require('./filterAgentList/filterAgentList.js')
 let util = require('../../utils/util.js')
+//写入一个唯一标识符
 if(wx.getStorageSync('device') == ''){
   wx.setStorageSync('device', util.guid());
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * 根据经纬度获取地理定位
+ */
+var getGeography = function() {
+    let defineGeography = {
+        "cityId": 43,
+        "cityName": "上海市",
+        "districtId": 45,
+        "townId": null,
+        "cityPinyin":"shanghaishi"
+    }
+    return new Promise(function (resolve, reject) {
+      //地理定位
+      wx.getLocation({
+        type: 'wgs84',
+        success: function(res) {//地理定位成功，获取经纬度
+          var latitude = res.latitude
+          var longitude = res.longitude
+          var speed = res.speed
+          var accuracy = res.accuracy
+          //根据精度纬度，获取当前所在的城市信息
+          request.fetch({
+              mock:!true,
+              module:'index',
+              action:'findCityInfoByLonAndLat',
+              data:{
+                lon:longitude,
+                lat:latitude
+              },
+              success:function(data){//获取城市信息成功
+                if(data.status.toString() == '1' && data.data != null){
+                    wx.setStorage({
+                      key:"location",
+                      data:data.data
+                    });
+                    resolve(data.data);
+                }else{
+                    resolve(defineGeography);
+                }
+              },
+              fail:function() {//获取城市信息失败
+                  resolve(defineGeography);
+              }
+          });
+        },
+        fail:function() {//用户取消地理定位
+            resolve(defineGeography);
+        }
+      })
+  })
+}
+/**
+ * 根据城市id获取详细信息
+ */
+var getCityBusinessById = function (cityId) {
+  return new Promise(function (resolve, reject) {
+      request.fetch({
+          mock:!true,
+          module:'index',
+          action:'getCityBusinessById',
+          data:{
+            cityId:cityId
+          },
+          success:function(data){//获取城市信息成功
+            console.log(data);
+            if(data.status.toString() == "1" && data.data != null){
+                resolve(data.data);
+            }else{
+                //使用地理定位的信息
+                getGeography().then((data)=>{
+                    resolve(data)
+                });
+            }
+          },
+          fail:function() {//获取城市信息失败
+              //使用地理定位的信息
+                getGeography().then((data)=>{
+                    resolve(data)
+                });
+          }
+      });
+  });
+}
+/**
+ * 获取经纪人列表
+ */
+var getAgentList = function(cityId,districtAndTown,orderType,selectLabel,pageIndex) {
+  return new Promise(function (resolve, reject) {
+      request.fetch({
+            mock:!true,
+            module:'index',
+            action:'searchAgentList',
+            data:{
+                "cityId": cityId,//城市主键
+                "districtAndTown": districtAndTown,//选中区域拼音。区域选的如果是不限，就传当前城市
+                "orderType": orderType,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
+                "selectLabel":selectLabel,//1.好经纪人 2.客户热评 3.推荐房源数量多
+                "pageIndex": pageIndex,//起始条数 默认从0开始
+                "pageSize": 20,//每页数量 默认20条
+                "device":wx.getStorageSync('device')
+            },
+            success:function(data){
+                if(data.status.toString() == "1" && data.data != null && data.data.agentList !=null && data.data.agentList.length > 0){
+                    resolve(data.data.agentList);
+                }else{
+                    resolve([]);
+                }
+            },
+            fail:function() {
+              resolve([]);
+            }
+      });
+  })
+}
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 //获取应用实例
 let app = getApp()
 let main = {
@@ -28,59 +145,6 @@ let main = {
     orderType:1,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
     selectLabel:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
     pageIndex:0,//起始条数 默认从0开始
-  },
-  setGeography(cb){
-    let _this = this;
-    //先把默认的地理位置信息写入到本地
-    wx.setStorage({
-      key:"geography",
-      data:_this.data.geography
-    })
-    //地理定位
-    wx.getLocation({
-      type: 'wgs84',
-      success: function(res) {//地理定位成功，获取经纬度
-        var latitude = res.latitude
-        var longitude = res.longitude
-        var speed = res.speed
-        var accuracy = res.accuracy
-        //根据精度纬度，获取当前所在的城市信息
-        request.fetch({
-            mock:!true,
-            module:'index',
-            action:'findCityInfoByLonAndLat',
-            data:{
-              lon:longitude,
-              lat:latitude
-            },
-            success:function(data){//获取城市信息成功
-              console.log("经纬度，获取城市成功");
-              console.log(data);
-              if(data.status.toString() == '1'){
-                  //更新地理信息状态
-                  _this.setData({
-                      geography:data.data
-                  });
-                  //把成功后的地理位置信息写入本地
-                  wx.setStorage({
-                    key:"geography",
-                    data:data.data
-                  });
-              }
-              cb();
-            },
-            fail:function() {//获取城市信息失败
-                console.log("经纬度，获取城市失败");
-                cb();
-            }
-        });
-      },
-      fail:function() {//用户取消地理定位
-        //使用的是默认城市id,获取区域信息
-        console.log("用户取消地理定位");
-        cb();
-      }
-    })
   },
   //根据城市id获取区域信息
   getCityAreasInfo(cityId){
@@ -128,61 +192,75 @@ let main = {
         }
       })
   },
-  //获取经纪人列表
-  getAgentList(cityId,districtAndTown,orderType,selectLabel,pageIndex,cb){
-    console.log(cityId,districtAndTown,orderType,selectLabel,pageIndex);
+  getAgentList:getAgentList,
+  onLoad(options){
     let _this = this;
-    request.fetch({
-          mock:!true,
-          module:'index',
-          action:'searchAgentList',
-          data:{
-              "cityId": cityId,//城市主键
-              "districtAndTown": districtAndTown,//选中区域拼音。区域选的如果是不限，就传当前城市
-              "orderType": orderType,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
-              "selectLabel":selectLabel,//1.好经纪人 2.客户热评 3.推荐房源数量多
-              "pageIndex": pageIndex,//起始条数 默认从0开始
-              "pageSize": 20,//每页数量 默认20条
-              "device":wx.getStorageSync('device')
-          },
-          success:function(data){
-              if(data.status.toString() == "1"){
-                  cb(data.data.agentList);
-              }else{
-                  cb([]);
-              }
-          },
-          fail:function() {
-            cb([]);
-          }
-    });
-  },
-  onLoad(){
-    let _this = this;
+    //获取用户信息
     _this.getUserInfo();
-    //设置地理
-    _this.setGeography(function() {
-      //获取区域信息
-      _this.getCityAreasInfo(_this.data.geography.cityId);
-      //设置区域
-      _this.setData({
-          //districtAndTown:_this.data.geography.cityPinyin
-          districtAndTown:""
-      })
-      //获取经纪人列表
-      _this.getAgentList(
-        _this.data.geography.cityId,
-        _this.data.districtAndTown,
-        _this.data.orderType,
-        _this.data.selectLabel,
-        _this.data.pageIndex,
-        function (agentList) {
-          _this.setData({
-            agentList:agentList
-          })
-        }
-      );
-    });
+    //判断是否选择了城市
+    if(options.cityid == undefined){//说明没有没选择城市，调用地理定位获取
+        //根据经纬度，获取地理定位信息
+        getGeography().then((data)=>{
+              //更新地理信息状态
+              _this.setData({
+                  geography:data
+              });
+              //把成功后的地理位置信息写入本地
+              wx.setStorage({
+                key:"geography",
+                data:data
+              });
+              //根据定位的地理信息，获取区域信息
+              _this.getCityAreasInfo(_this.data.geography.cityId);
+              //设置区域
+              _this.setData({
+                  districtAndTown:""
+              })
+              //获取经纪人
+              _this.getAgentList(
+                  _this.data.geography.cityId,
+                  _this.data.districtAndTown,
+                  _this.data.orderType,
+                  _this.data.selectLabel,
+                  _this.data.pageIndex
+              ).then((agentList)=>{
+                  _this.setData({
+                      agentList:agentList
+                  })
+              });
+        });
+    }else{//说明用户选择的是具体的城市
+        //根据城市id获取地理位置定位信息
+        getCityBusinessById(options.cityid).then((data)=>{
+            //更新地理信息状态
+            _this.setData({
+                geography:data
+            });
+            //把成功后的地理位置信息写入本地
+            wx.setStorage({
+              key:"geography",
+              data:data
+            });
+            //根据定位的地理信息，获取区域信息
+            _this.getCityAreasInfo(_this.data.geography.cityId);
+            //设置区域
+            _this.setData({
+                districtAndTown:""
+            })
+            //获取经纪人
+            _this.getAgentList(
+                _this.data.geography.cityId,
+                _this.data.districtAndTown,
+                _this.data.orderType,
+                _this.data.selectLabel,
+                _this.data.pageIndex
+            ).then((agentList)=>{
+                _this.setData({
+                    agentList:agentList
+                })
+            });
+        });
+    }
   },
   //滚动到底部异步加载经纪人列表
   onReachBottom(){

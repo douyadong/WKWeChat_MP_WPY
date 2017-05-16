@@ -27,7 +27,8 @@ var status = [{},{
     }
 ];
 var labels = [],
-    uid = 0;
+    guestId = 0,
+    isSending = false;
 
 var params = {
     data: {
@@ -37,7 +38,8 @@ var params = {
             "score":0,
             "text":'',
             "labels":[],
-            "content":''
+            "content":'',
+            'nameless':0
         },
         "tagList":{
             'good':[
@@ -98,6 +100,7 @@ var params = {
     },
     onLoad: function(option) {
         var initData = $.extend(true,{},option);
+        guestId = wx.getStorageSync('userInfo').guestId;
         request.fetch({
             data:initData,
             module:'agent',
@@ -116,7 +119,6 @@ var params = {
                 console.log('获取经纪人id失败')
             }
         })
-
     },
     bindStarClick:function(e){
         var index = e.currentTarget.dataset.id;
@@ -149,7 +151,7 @@ var params = {
         _this.setData({
             "status.labels":labels
         })
-        console.log(this.data.status.labels)
+        console.log(labels)
     },
     setLabels:function(){
         var _this= this;
@@ -181,6 +183,13 @@ var params = {
             "status.nameless":value==value?1:0
         })
     },
+    switchLabel:function(arr){
+        var newArr = arr;
+        for(var i=0;i<newArr.length;i++){
+            newArr.splice(i,1,{labelId:newArr[i]})
+        }
+        return newArr;
+    },
     bindSubmitClick:function(){
         var data = this.data.status;
         if(data.score === 0){
@@ -206,12 +215,18 @@ var params = {
                 }
             })
         }else{
-            var requestData = $.extend(true,{
+            if(isSending) return;
+            isSending = true;
+            var requestData = {
                 agentId:this.data.agentInfo.agentId,
                 commentType:3,
-                guestId:uid,
-            },this.data.status)
-            delete requestData['text'];
+                guestId:guestId,
+                score:data.score,
+                nameless:data.nameless,
+                content:data.content,
+                labels:this.switchLabel(labels)
+            }
+            
             request.fetch({
                 data:requestData,
                 module:'agent',
@@ -221,10 +236,12 @@ var params = {
                 showTitle:'提交中',
                 success:function(data){
                     if(data.status === 1){
+                        isSending = false;
                         wx.navigateBack()
                     }
                 }.bind(this),
                 fail:function(){
+                    isSending = false;
                     wx.showModal({
                         title: '提示',
                         content: '评论失败，稍后再试',

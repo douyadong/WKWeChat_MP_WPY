@@ -4,7 +4,7 @@
 <view class="page {{isScroll ? 'noScroll':''}}">
   <view class="searchNavBox">
     <view class="searchNav">
-      <navigator url="/pages/city/index" class="city">
+      <navigator open-type="redirect" url="/pages/city/index" class="city">
           <text class="cityName">{{geography.cityName}}</text>
           <text class="down"></text>
       </navigator>
@@ -32,11 +32,6 @@
   <!-- 经纪人列表 -->
   <view class="agentListBox">
       <include src="agentList/agentList.wxml"/>
-      <!--
-      <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-          <include src="agentList/agentList.wxml"/>
-      </block>
-      -->
   </view>
   
 </view>

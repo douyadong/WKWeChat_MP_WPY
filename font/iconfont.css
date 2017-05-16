@@ -1,15 +1,15 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1494329924587'); /* IE9*/
-  src: url('iconfont.eot?t=1494329924587#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1494329924587') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1494329924587') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1494329924587#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1494915612211'); /* IE9*/
+  src: url('iconfont.eot?t=1494915612211#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1494915612211') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1494915612211') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1494915612211#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
   font-family:"iconfont" !important;
-  font-size:32rpx;
+  font-size:16px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -70,4 +70,6 @@
 .icon-sale-house:before { content: "\e703"; }
 
 .icon-zhaopian:before { content: "\e704"; }
+
+.icon-chengjiaotao:before { content: "\e705"; }
 
