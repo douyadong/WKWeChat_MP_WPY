@@ -29,14 +29,14 @@ var getOpenId = function(code) {
             code:code,
           },
           success:function(data){
-              if(data.status.toString() == "1"){
-                resolve(data.data.openId);
+              if(data.status.toString() == "1" && data.data != ""){
+                resolve(data.data);
               }else{
-                reject("");
+                resolve("");
               }
           },
           fail:function() {
-            reject("");
+            resolve("");
           }
       });
     });
@@ -84,11 +84,11 @@ var getVerificationCode = function(phone,codeType) {
              if(data.status.toString() == "1"){
                 resolve(data.data);
               }else{
-                reject("");
+                resolve("");
               }
           },
           fail:function() {
-            reject("");
+            resolve("");
           }
       });
   })
@@ -108,14 +108,14 @@ var submit = function (phone,verificationCode) {
             code:verificationCode
           },
           success:function(data){
-              if(data.status.toString() == "1"){
+              if(data.status.toString() == "1" && data.data != null){
                 resolve(data.data);
               }else{
-                reject("");
+                resolve("");
               }
           },
           fail:function() {
-            reject("");
+            resolve("");
           }
       });
   })
@@ -125,6 +125,13 @@ var submit = function (phone,verificationCode) {
  * 根据经纬度，获取地理位置信息
  */
 var getLocation = function(){
+  let defineGeography = {
+        "cityId": 43,
+        "cityName": "上海市",
+        "districtId": 45,
+        "townId": null,
+        "cityPinyin":"shanghaishi"
+    }
   return new Promise(function (resolve, reject) {
       wx.getLocation({
         type: 'wgs84',
@@ -142,13 +149,27 @@ var getLocation = function(){
                 lat:latitude
               },
               success:function(data){//获取城市信息成功
-                if(data.status.toString() == '1'){
+                if(data.status.toString() == '1' && data.data != null){
                     //把成功后的地理位置信息写入本地
                     wx.setStorage({
                       key:"geography",
                       data:data.data
                     });
+                    resolve(data.data);
+                }else{
+                    wx.setStorage({
+                      key:"geography",
+                      data:defineGeography
+                    });
+                    resolve(defineGeography);
                 }
+              },
+              fail:function() {
+                  wx.setStorage({
+                    key:"geography",
+                    data:defineGeography
+                  });
+                  resolve(defineGeography);
               }
           });
         }
@@ -171,7 +192,8 @@ Page({
     tips: {
       show: false
     },
-    returnUrl:''
+    returnUrl:'/pages/index/index',
+    isShowAgreement:false
   },
   //获取手机号
   getPhone(event){
@@ -181,7 +203,8 @@ Page({
   },
   //手机号获取验证码
   phoneGetCode(event){
-    let phone = this.data.phone;
+    let _this = this;
+    let phone = _this.data.phone;
     let codeType = event.target.dataset.codetype;
     if(phone == ''){
       app.showTips("请输手机号码");
@@ -200,18 +223,22 @@ Page({
     let t = setInterval(()=>{
       --s;
       if(s == 0){
-        this.setData({
+        _this.setData({
           isShowSend:false
         })
         clearInterval(t);
       }
-      this.setData({
+      _this.setData({
         second:s
       })
     }, 1000);
     //获取验证码
     getVerificationCode(phone,codeType).then((data)=>{
-      console.log(data);
+      if(data == ""){//获取验证码失败
+          app.showTips("获取验证码失败,请重新获取");
+      }else{
+          app.showTips("获取验证码成功");
+      }
     });
   },
   //语音获取验证码
@@ -265,17 +292,24 @@ Page({
     //console.log("验证码"+_this.data.verificationCode); 
     //提交
     submit(phone,verificationCode).then((data)=>{
-      console.log("提交成功");
-      console.log(data);
-      //把最终的用户信息，写如到本地
-      wx.setStorage({
-          key:"userInfo",
-          data:data
-      });
-      //返回到登录前的url
-      wx.redirectTo({
-        url: _this.data.returnUrl
-      })
+      if(data != ""){
+          app.showTips("登录成功");
+          console.log("提交成功");
+          console.log(data);
+          //把最终的用户信息，写如到本地
+          wx.setStorage({
+              key:"userInfo",
+              data:data
+          });
+          //返回到登录前的url
+          wx.redirectTo({
+            url: _this.data.returnUrl
+          })
+      }else{
+          app.showTips("登录失败，重新登录");
+          console.log("登录失败，重新登录");
+          console.log(data);
+      }
     });
   },
   //写已授权逻辑
@@ -283,14 +317,16 @@ Page({
     let _this = this;
     //获取code
     getLoginCode().then((code)=>{
-        console.log(code);
+        console.log("code:"+code);
         //根据code，获取openId
         getOpenId(code).then((openId)=>{
           console.log(openId);
           //根据openId，判断是否已经绑定过手机
           isBind(openId).then((data)=>{
+            console.log(data);
             if(data == null){//没有绑定手机号
                 //正常登录（即验证手机号码）
+                console.log("已授权，没有绑定过手机号码，走正常登录逻辑（即验证手机号码）");
             }else{//返回对象，已经绑定手机号。登录结束
               //把最终的用户信息，写如到本地
               wx.setStorage({
@@ -327,6 +363,7 @@ Page({
                           wx.getUserInfo({
                             withCredentials:true,
                             success: function (res) {
+                              console.log("获取到用户信息，在调用已授权逻辑，进行一系列处理");
                               //把用户授权信息写入到本地
                               wx.setStorage({
                                 key:"userAuthorizedInfo",
@@ -334,12 +371,15 @@ Page({
                               })
                               //在调用用户授权逻辑
                               _this.yesAuthorized();
+                            },
+                            fail:function() {
+                              console.log("获取到用户信息失败，只能输入手机号和验证码进行登录");
                             }
                           })
                         }
                       })
                     }else{//用户没勾选了获取“用户信息”选项，走正常登录
-
+                        console.log("用户没勾选获取“用户信息”选项，只能输入手机号和验证码进行登录");
                     }
 
                     if(res.authSetting['scope.userLocation']){//用户勾选了获取“地理位置”选项
@@ -350,16 +390,31 @@ Page({
                 }
               })
             }else{//用户点击取消，就需要自己输入手机号，验证码，走正常登录逻辑
-              console.log("用户点击取消");
+              console.log("用户点击取消打开设置，什么都获取不到，只能输入手机号和验证码进行登录");
             }
         }
       })
   },
+  showAgreement(){
+      let _this = this;
+      _this.setData({
+          isShowAgreement:true
+      });
+  },
+  hideAgreement(){
+      let _this = this;
+      _this.setData({
+          isShowAgreement:false
+      });
+  },
   onLoad(options) {
     let _this = this;
-    _this.setData({
-        returnUrl:decodeURIComponent(options.returnUrl)
-    });
+    if(options.returnUrl != null && options.returnUrl != ''){
+        let returnUrl = decodeURIComponent(options.returnUrl);
+        _this.setData({
+            returnUrl:returnUrl
+        });
+    }
 
     //1.页面初始化，读取Storage,获取用户登录信息，判断微信用户是否为空
     wx.getStorage({

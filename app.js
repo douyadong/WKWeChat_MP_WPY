@@ -4,11 +4,12 @@ wx.showLLL = function () {
 }
 
 App({
-  onLaunch: function () {
+  onLaunch: function (options) {
     // 调用API从本地缓存中获取数据
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
+    wx.setStorageSync('scene', options.scene)
   },
   getUserInfo: function (cb) {
     var that = this
@@ -31,19 +32,19 @@ App({
     }
   },
   globalData: {
-        userInfo: null,
-        qqmapkey:'FJ6BZ-QZG3P-LASD7-VHLJJ-AG5FT-4KB2U'
+    userInfo: null,
+    qqmapkey: 'FJ6BZ-QZG3P-LASD7-VHLJJ-AG5FT-4KB2U'
   },
   mock: true,
   timer: null,
-  isLogin: function (needRedirect = true,returnUrl='') { // 判断是否登录了小程序
+  isLogin: function (needRedirect = true , returnUrl = '') { // 判断是否登录了小程序
     var userInfo = wx.getStorageSync('userInfo')
     if (!userInfo) {
       // 当前页的地址
-      returnUrl = returnUrl || this.getCurrentPage().__route__;      
-      returnUrl = encodeURIComponent(returnUrl);      
-            if (!needRedirect) {
-                return false; }
+      returnUrl = returnUrl || this.getCurrentPage().__route__
+      returnUrl = encodeURIComponent(returnUrl)
+      if (!needRedirect) {
+        return false; }
       wx.navigateTo({
         url: '/pages/logon/index?returnUrl=' + returnUrl
       })
@@ -51,19 +52,19 @@ App({
 
     return true
   },
-    getQQMapLocation: function(latitude, longitude, cb) {
-        wx.request({
-            url: 'https://apis.map.qq.com/ws/coord/v1/translate',
-            data: {
-                locations: encodeURI(latitude + ',' + longitude),
-                type: 3,
-                key: this.globalData.qqmapkey
-            },
-            success: function(res) {
-                cb(res);
-            }
-        });
-    },
+  getQQMapLocation: function (latitude, longitude, cb) {
+    wx.request({
+      url: 'https://apis.map.qq.com/ws/coord/v1/translate',
+      data: {
+        locations: encodeURI(latitude + ',' + longitude),
+        type: 3,
+        key: this.globalData.qqmapkey
+      },
+      success: function (res) {
+        cb(res)
+      }
+    })
+  },
   showLoading: function (title = '加载中...') {
     this.getCurrentPage().setData({'loading': {'show': true,title: title}})
   },
@@ -73,8 +74,8 @@ App({
   },
   showTips: function (obj) {
     let that = this
-        let text, duration = 2000,
-            cb
+    let text, duration = 2000,
+      cb
 
     if (typeof obj === 'object') {
       ({text, duration=2000, cb} = obj)
