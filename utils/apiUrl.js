@@ -12,7 +12,9 @@ const url = {
     "getAgentInfo" : "/wxmpAgent/getSimpleAgent.rest",
     "writeRate" : "/wxmpAgent/commentAgent.rest",
     "detail" : "/wxmpAgent/getAgentDetail.rest",
-    "moreList": "/moreAgentCommentList.rest"
+    "moreList": "/moreAgentCommentList.rest" ,
+    "getMoreEsf" : "/moreAgentOldHouseList.rest" ,
+    "getMoreXf" : "/moreAgentNewHouseList.rest"
   } ,
   "buy" : {
     "getDetails" : "/wxmpInterest/getCustomerHouseIntention.rest" ,
