@@ -87,7 +87,7 @@ var params = $.extend(true,{},{
             isSending = true;
         var requestData = {
             guestPhoneNum:userInfo.mobile,
-            subEstateId:initData.subEstateId,
+            subEstateId:parseFloat(initData.subEstateId),
             comment:textareaValue,
             commentLocation:initData.commentLocation,
             imageKeys:total.join(',')

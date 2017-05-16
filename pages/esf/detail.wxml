@@ -183,7 +183,7 @@
         <view class="house-comments">
             <template is="house-comment" data="{{comments}}" />
             <view class="btn-group">
-                <view data-url="/pages/comment/write?subEstateId={{subEstateId}}" url="/pages/comment/write?subEstateId={{subEstateId}}" bindtap="jump">
+                <view data-url="/pages/comment/write?subEstateId={{subEstateId}}" bindtap="jump">
                     我来评价
                 </view>
             </view>
@@ -208,15 +208,17 @@
 </view>
 <view class="gap"></view>
 <!--相似房源-->
-<view class="panel" hidden="{{sourceType=='esfList' ? true : false}}">
+<view hidden="{{sourceType!='esfList' && esfSources && esfSources.length ? false : true}}">
+<view class="panel" >
     <view class="panel-hd">
         <view class="head">相似房源推荐</view>
     </view>
 </view>
-<view class="panel esf-list" hidden="{{sourceType=='esfList' ? true : false}}">
+<view class="panel esf-list">
     <template is="esf-sources" data="{{esfSources,agentId,openType}}" />
     <view class="row" wx:if="{{sameTownTotalCount>5}}">
         <navigator class="button gray" url="/pages/esf/list?type=1&houseId={{houseId}}&agentId={{agentId}}">查看更多</navigator>
     </view>
+</view>
 </view>
 <template is="detail-foot" data="{{...agentInfo}}" wx:if="{{agentInfo}}"/>

@@ -18,15 +18,16 @@ Page({
         var that = this;
         if (this.data.agentId) {
             request.fetch({
-                mock:true,
                 module: "esf",
                 action: "agentInfo",
                 data: {
                     agentId: this.data.agentId
                 },
                 success: function (data) {
+                    data.data.isShowWXCode = false;
                     that.setData({
-                        agentInfo: {
+                        agentInfo:data.data
+                        /*agentInfo: {
                             "agentImage": data.data.headRoundImgUrl,
                             "agentName": data.data.agentName,
                             "agentCompany": data.data.companyName,
@@ -34,7 +35,7 @@ Page({
                             "agentWechatNum": data.data.agentWChatId,
                             "agentCodeImg": data.data.agentWChartQRImgUrl,
                             'isShowWXCode': false
-                        }
+                        }*/
                     });
 
                 }
