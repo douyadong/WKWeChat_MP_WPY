@@ -5,7 +5,8 @@ var request = require('../../utils/request.js')
 var total = [],
     textareaValue = "",
     userInfo = '',
-    initData = {};
+    initData = {},
+    isSending = false;
 
 var params = $.extend(true,{},{
     data: {
@@ -82,6 +83,8 @@ var params = $.extend(true,{},{
         })
     },
     uploadFormSubmit:function(){
+        if(isSending) return;
+            isSending = true;
         var requestData = {
             guestPhoneNum:userInfo.mobile,
             subEstateId:initData.subEstateId,
@@ -98,10 +101,12 @@ var params = $.extend(true,{},{
             showTitle:'提交中',
             success:function(data){
                 if(data.status === 1){
+                    isSending = false;
                     wx.navigateBack()
                 }
             }.bind(this),
             fail:function(){
+                isSending = false;
                 wx.showModal({
                     title: '提示',
                     content: '评论失败，稍后再试',

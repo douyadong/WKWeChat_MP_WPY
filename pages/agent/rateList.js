@@ -11,7 +11,7 @@ var params = {
         loadError:false
 	},
 	onLoad: function(option) {
-		initData = $.extend(true,{},{offset:0},option);
+		initData = $.extend(true,{},{pageIndex:0},option);
         request.fetch({
             data:initData,
             module:'agent',
@@ -39,7 +39,7 @@ var params = {
 		if(isLoading || this.data.isNoData)return;
         isLoading = true;
 
-        initData.offset = initData.offset++;
+        initData.pageIndex = initData.pageIndex++;
         
         request.fetch({
             data:initData,
@@ -63,7 +63,7 @@ var params = {
                 }
             }.bind(this),
             fail:function(){
-                initData.offset = initData.offset--;
+                initData.pageIndex = initData.pageIndex--;
                 this.setData({
                     "loadError":true
                 })

@@ -13,7 +13,11 @@ var params = $.extend(true,{},{
         loadError:false
     },
     onLoad: function(option) {
-        initData = $.extend(true,{},{offset:0},option);
+        var mobile =  wx.getStorageSync('userInfo').mobile;
+        initData = $.extend(true,{},{
+            offset:0,
+            guestPhoneNum:mobile
+        },option);
         request.fetch({
             data:initData,
             module:'comment',
