@@ -1,5 +1,7 @@
 var $ = require('../../utils/extend.js');
-var app = getApp();
+var request = require('../../utils/request.js')
+
+
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;
@@ -24,21 +26,20 @@ var status = [{},{
         "text":'非常满意，夸夸经纪人吧'
     }
 ];
-var labels = [];
+var labels = [],
+    guestId = 0,
+    isSending = false;
 
 var params = {
     data: {
         "agentInfo":{
-            agentId:100321,
-            agentName:'王大明',
-            headRoundImgUrl:'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
-            isWellAgent:false
         },
         "status":{
             "score":0,
             "text":'',
             "labels":[],
-            "content":''
+            "content":'',
+            'nameless':0
         },
         "tagList":{
             'good':[
@@ -97,8 +98,27 @@ var params = {
             ]
         }
     },
-    onLoad: function() {
-        //app.isLogin();
+    onLoad: function(option) {
+        var initData = $.extend(true,{},option);
+        guestId = wx.getStorageSync('userInfo').guestId;
+        request.fetch({
+            data:initData,
+            module:'agent',
+            action:'getAgentInfo',
+            success:function(data){
+                if(data.status ===1){
+                    this.setData({
+                        "agentInfo.agentId":data.data.agentId,
+                        "agentInfo.agentName":data.data.agentName,
+                        "agentInfo.headRoundImgUrl":data.data.headRoundImgUrl,
+                        "agentInfo.isWellAgent":data.data.isWellAgent
+                    })
+                }
+            }.bind(this),
+            fail:function(){
+                console.log('获取经纪人id失败')
+            }
+        })
     },
     bindStarClick:function(e){
         var index = e.currentTarget.dataset.id;
@@ -131,7 +151,7 @@ var params = {
         _this.setData({
             "status.labels":labels
         })
-        console.log(this.data.status.labels)
+        console.log(labels)
     },
     setLabels:function(){
         var _this= this;
@@ -160,8 +180,15 @@ var params = {
     bindSwitchChange:function(e){
         var value =  e.detail.value;
         this.setData({
-            "status.nameless":value=='checked'?1:0
+            "status.nameless":value==value?1:0
         })
+    },
+    switchLabel:function(arr){
+        var newArr = arr;
+        for(var i=0;i<newArr.length;i++){
+            newArr.splice(i,1,{labelId:newArr[i]})
+        }
+        return newArr;
     },
     bindSubmitClick:function(){
         var data = this.data.status;
@@ -186,6 +213,41 @@ var params = {
                     } else if (res.cancel) {
                     }
                 }
+            })
+        }else{
+            if(isSending) return;
+            isSending = true;
+            var requestData = {
+                agentId:this.data.agentInfo.agentId,
+                commentType:3,
+                guestId:guestId,
+                score:data.score,
+                nameless:data.nameless,
+                content:data.content,
+                labels:this.switchLabel(labels)
+            }
+            
+            request.fetch({
+                data:requestData,
+                module:'agent',
+                action:'writeRate',
+                method:'POST',
+                showLoading:true,
+                showTitle:'提交中',
+                success:function(data){
+                    if(data.status === 1){
+                        isSending = false;
+                        wx.navigateBack()
+                    }
+                }.bind(this),
+                fail:function(){
+                    isSending = false;
+                    wx.showModal({
+                        title: '提示',
+                        content: '评论失败，稍后再试',
+                        showCancel: false
+                    })
+                }.bind(this)
             })
         }
     }

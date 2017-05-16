@@ -21,7 +21,7 @@ module.exports = {
       "action":"zan",
       "data":{
         "guestId":userInfo.guestId,
-        "guestPhoneNum": userInfo.guestPhoneNum,
+        "guestPhoneNum": userInfo.mobile,
         "commentId": item.pkid,
         "commentType":"2"
       },

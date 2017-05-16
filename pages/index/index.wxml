@@ -32,11 +32,6 @@
   <!-- 经纪人列表 -->
   <view class="agentListBox">
       <include src="agentList/agentList.wxml"/>
-      <!--
-      <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-          <include src="agentList/agentList.wxml"/>
-      </block>
-      -->
   </view>
   
 </view>

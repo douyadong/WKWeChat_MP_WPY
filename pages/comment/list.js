@@ -11,7 +11,15 @@ var params = $.extend(true,{},{
         isLoading:false,
     },
     onLoad: function(option) {
-        requestData = $.extend(true,{},{offset:0},option);
+
+        var mobile =  wx.getStorageSync('userInfo');
+            mobile = mobile && mobile.mobile || '';
+            
+        requestData = $.extend(true,{},{
+            offset:0,
+            guestPhoneNum:mobile
+        },option);
+
         request.fetch({
             data:requestData,
             module:'comment',
@@ -34,7 +42,7 @@ var params = $.extend(true,{},{
             module:'comment',
             action:'list',
             showLoading:true,
-            mock:true,
+            //mock:true,
             success:function(data){
                 if(data.status === 1){
                     this.setData({
