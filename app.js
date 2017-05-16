@@ -37,16 +37,16 @@ App({
   },
   mock: true,
   timer: null,
-  isLogin: function (needRedirect = true , returnUrl = '') { // 判断是否登录了小程序
+  isLogin: function (needRedirect = true , returnUrl = '' , type = 'redirect') { // 判断是否登录了小程序
     var userInfo = wx.getStorageSync('userInfo')
     if (!userInfo) {
       // 当前页的地址
-      returnUrl = returnUrl || this.getCurrentPage().__route__
+      returnUrl = returnUrl || '/' + this.getCurrentPage().__route__
       returnUrl = encodeURIComponent(returnUrl)
       if (!needRedirect) {
         return false; }
       wx.navigateTo({
-        url: '/pages/logon/index?returnUrl=' + returnUrl
+        url: '/pages/logon/index?returnUrl=' + returnUrl + '&type=' + type
       })
     }
 
