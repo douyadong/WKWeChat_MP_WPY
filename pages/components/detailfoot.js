@@ -6,11 +6,11 @@ module.exports ={
 			scene = wx.getStorageSync('scene');
 		if(scene!= 1001){
 			wx.redirectTo({
-		        url: '../agent/detail'
+		        url: '../agent/detail?agentId='+this.data.agentInfo.agentId
 	      	})
 		}else{
 			wx.makePhoneCall({
-			  	phoneNumber: _this.data.agentInfo.mobild //仅为示例，并非真实的电话号码
+			  	phoneNumber: _this.data.agentInfo.agentMobile //仅为示例，并非真实的电话号码
 			})
 		}
 	},
@@ -22,7 +22,7 @@ module.exports ={
 	c_df_phoneClick:function(){
 		var _this = this;
 		wx.makePhoneCall({
-		  	phoneNumber: _this.data.agentInfo.mobild //仅为示例，并非真实的电话号码
+		  	phoneNumber: _this.data.agentInfo.agentMobile //仅为示例，并非真实的电话号码
 		})
 	},
 	c_df_hideClick:function(e){
