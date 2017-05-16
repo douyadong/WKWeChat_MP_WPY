@@ -112,16 +112,14 @@ var params = $.extend(true, {}, {
         });
     },
     onLoad: function(options) {
+        /**
+         * options中需要houseId、agentId和sourceType
+         */
         let userInfo = wx.getStorageSync('userInfo');
         let guestPhoneNum = userInfo && userInfo.mobile || '';
+        options.guestPhoneNum = guestPhoneNum;
 
-        this.setData({
-            houseId: options.houseId,
-            agentId: options.agentId,
-            sourceType:options.sourceType,
-            guestPhoneNum:guestPhoneNum
-        });
-
+        this.setData(options);
         this.getDetail();
     }
 }, houseComment, swiper, df);
