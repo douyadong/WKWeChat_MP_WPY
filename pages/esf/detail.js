@@ -9,7 +9,8 @@ var app = getApp();
 var params = $.extend(true, {}, {
     data: {
         isCollapsed: true, //基本信息收起
-        "qqMapKey":app.globalData.qqmapkey
+        "qqMapKey":app.globalData.qqmapkey,
+        "openType":"redirect"
     },
     toggleMoreBasicInfo: function() { //基本信息展开和收起        
         this.setData({
@@ -34,6 +35,7 @@ var params = $.extend(true, {}, {
     getDetail: function() { //获取二手房详情
         var that = this;
         request.fetch({
+            //mock:true,
             "showLoading": true,
             module: 'esf',
             action: 'getDetails',
@@ -111,7 +113,8 @@ var params = $.extend(true, {}, {
     onLoad: function(options) {
         this.setData({
             houseId: options.houseId,
-            agentId: options.agentId
+            agentId: options.agentId,
+            sourceType:options.sourceType
         });
 
         this.getDetail();
