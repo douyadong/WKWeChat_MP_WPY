@@ -60,11 +60,11 @@ module.exports = {
         }
       },
       fail: function (error) {
+        showBarLoading && wx.hideNavigationBarLoading()
+        showLoading && wx.hideToast()
         console.error(error)
       },
       complete: function () {
-        showBarLoading && wx.hideNavigationBarLoading()
-        showLoading && wx.hideToast()
         typeof complete == 'function' && complete()
       }
     }
