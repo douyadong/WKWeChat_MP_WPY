@@ -242,7 +242,7 @@ Page({
       'action': 'getDetails',
       'showLoading': true,
       'data': {
-        'guestId': '123',
+        'guestId': guestId,
         'cityId': cityId
       },
       success: function (res) {

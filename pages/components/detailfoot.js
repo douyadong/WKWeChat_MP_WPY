@@ -4,7 +4,7 @@ module.exports ={
             "headRoundImgUrl": "https://img.wkzf.com/a365d1ae298c453f914ca45f910aa175",
             "agentName": '陈元杰',
             "abbreviation": '志远地产',
-            "agentMobile":'13989890909',
+            "mobild":'13989890909',
             "weChatQRImgKey":'13989890909',
             "agentWChartQRImgUrl":"https://imgwater.oss.aliyuncs.com/67d28c90288a43238d311f2942d4f029",
             'isShowWXCode':true,
@@ -12,8 +12,9 @@ module.exports ={
         }
 	},
 	c_df_agentClick:function(e){
-		var _this = this;
-		if(true){
+		var _this = this,
+			scene = wx.getStorageSync('scene');
+		if(scene!= 1001){
 			wx.redirectTo({
 		        url: '../agent/detail'
 	      	})
@@ -27,9 +28,6 @@ module.exports ={
 		wx.navigateTo({
 	        url: '../agent/qrcode'
       	})
-		/*this.setData({
-	      	'agentInfo.isShowWXCode':false
-	    })*/
 	},
 	c_df_phoneClick:function(){
 		var _this = this;
