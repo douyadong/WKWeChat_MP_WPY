@@ -11,6 +11,10 @@
           <text class="iconfont icon-renzheng"></text>
           <text class="result">通过认证</text>
         </block>
+        <block wx:if="{{simpleAgentDetail.agentVolume}}">
+          <text class="iconfont icon-volume"></text>
+          <text class="result">成交{{simpleAgentDetail.agentVolume}}套</text>
+        </block>
       </view>      
       <view class="row-bd tags">
         <text wx:for="{{simpleAgentDetail.wellAgentBizMessageList}}" wx:key="*this">{{item}}</text>              
