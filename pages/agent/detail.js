@@ -19,7 +19,7 @@ let pullLoadRequestData =  { "agentId" : null , "pageIndex" : 0 , "pageSize" : 1
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 定义页面初始化参数
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-let params = $.extend(true , {} , {
+let params = $.extend(true , {} , detailFoot , {
     data : {
         "pageParams" : {} ,  //页面参数对象
         "isNoData" : false ,  //用来标识页面数据是否加载完毕
@@ -45,8 +45,9 @@ let params = $.extend(true , {} , {
                 //判断成交故事后面是否需要出...更多
                 let agentStory = result.simpleAgentDetail.agentStory || "" ;
                 result.agentStoryExtendable = agentStory && agentStory.length > 34 ? true : false ;
-                result.simpleAgentDetail.shortAgentStory = agentStory.substr(0, 34) + "..." ;
+                result.simpleAgentDetail.shortAgentStory = agentStory.substr(0, 34) + "..." ;                
                 //最后赋予模板变量
+                result.agentInfo = result.simpleAgentDetail ;
                 _.setData(result) ;
             }
         }) ;
@@ -125,7 +126,7 @@ let params = $.extend(true , {} , {
         //渲染页面
         this.render() ;
     }
-} , detailFoot) ;
+}) ;
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 实例化页面
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
