@@ -146,6 +146,8 @@ Page({
     wx.removeStorageSync('buy_price')
     wx.removeStorageSync('buy_houseType')
     wx.removeStorageSync('buy_location')
+
+
     // 判断用户是否登录
     if (!appInstance.isLogin(false)) {
       // 未登录初始化选择项信息
@@ -346,11 +348,10 @@ Page({
       'module': 'buy',
       'action': 'getDetails',
       'data': {
-        'guestId': '123',
+        'guestId': guestId,
         'cityId': cityId
       },
       'showLoading': true,
-      'mock': false,
       success: function (res) {
         callback(res)
       }
@@ -408,13 +409,12 @@ Page({
     if (houseFeatureLists.length) {
       requestData.houseFeatureLists = houseFeatureLists
     }
-    console.log(requestData)
+
     // make request
     request.fetch({
       module: 'buy',
       action: 'edit',
       data: JSON.stringify(requestData),
-      mock: false,
       method: 'post',
       success: function (res) {
         if (res.data && res.data.orderAgentIdList && res.data.orderAgentIdList.length) {
