@@ -9,7 +9,10 @@ let params = {
           request.fetch({
               "module": "xf" ,
               "action" : "poster-preview" ,
-              "showLoading" :  true ,              
+              "showLoading" :  true ,  
+              "data":{
+                "subEstateId":subEstateId
+              },            
               success : function (res) {                           
                   //最后赋予模板变量
                   _.setData({ "posters" : res.data }) ;

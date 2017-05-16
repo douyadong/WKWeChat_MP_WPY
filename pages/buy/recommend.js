@@ -225,14 +225,26 @@ Page({
   handleRedirect: function (e) {
     wx.navigateTo({url: e.currentTarget.dataset.url})
   },
+  backToHomePage: function () {
+    wx.reLaunch({
+      url: '/pages/index/index'
+    })
+  },
   showMore: function () {
     this.setData({'showMore': true})
   },
   getData: function (callback) {
+    let cityId = wx.getStorageSync('geography').cityId
+    let guestId = wx.getStorageSync('userInfo').guestId
+
     request.fetch({
       'module': 'buy',
       'action': 'getDetails',
       'showLoading': true,
+      'data': {
+        'guestId': '123',
+        'cityId': cityId
+      },
       success: function (res) {
         callback(res)
       }

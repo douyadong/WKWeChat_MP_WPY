@@ -265,8 +265,8 @@ module.exports = {
                 }
             ],
             "newHouseMagazineCount": 12,
-            "longitude": "121.455708",
-            "latitude": "31.136166",
+            "longitude": "121.467026",
+            "latitude": "31.206841",
             "subwayLabel": null,
             "xfVisible": "1",
             "salePhone": "010-25632023",

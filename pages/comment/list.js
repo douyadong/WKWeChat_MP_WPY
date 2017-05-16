@@ -3,8 +3,7 @@ var $ = require('../../utils/extend.js');
 var houseComment = require('../components/house-comment.js');
 
 var initData = {};
-var isLoading = false,
-    isNoData = false;
+var isLoading = false;
 
 var params = $.extend(true,{},{
     data: {
@@ -36,7 +35,7 @@ var params = $.extend(true,{},{
         })
     },
     loadMore:function() {
-        if(isLoading || isNoData)return;
+        if(isLoading || this.data.isNoData)return;
         isLoading = true;
         initData.offset = initData.offset++;
         

@@ -1,16 +1,18 @@
-<view class="panel poster">
-  <view class="panel-hd">
-    <view class="head">楼盘画报</view>    
-  </view> 
-  <view class="panel-bd lr-padding">
-    <block wx:for="{{newHouseDetail.newHouseMagazineList}}" wx:for-item="poster" wx:key="*this">
-      <text class="title">{{poster.title}}</text>
-      <text class="time">{{poster.publishTimeStr}}</text>
-      <image mode="aspectFit" src="{{poster.fileName}}"></image>
-      <text class="desc">{{poster.content}}</text> 
-      <view class="separator" wx:if="{{index < newHouseDetail.newHouseMagazineList.length-1}}"></view>
-    </block>
-    <navigator url="/pages/xf/posters?subEstateId={{newHouseDetail.estateId}}" class="button gray">查看更多</navigator>
-  </view>  
-</view>
-<view class="gap"></view>
+<block wx:if="{{newHouseDetail.newHouseMagazineList}}">
+  <view class="panel poster">
+    <view class="panel-hd">
+      <view class="head">楼盘画报</view>    
+    </view> 
+    <view class="panel-bd lr-padding">
+      <block wx:for="{{newHouseDetail.newHouseMagazineList}}" wx:for-item="poster" wx:key="*this">
+        <text class="title">{{poster.title}}</text>
+        <text class="time">{{poster.publishTimeStr}}</text>
+        <image mode="aspectFit" src="{{poster.fileName}}"></image>
+        <text class="desc">{{poster.content}}</text> 
+        <view class="separator" wx:if="{{index < newHouseDetail.newHouseMagazineList.length-1}}"></view>
+      </block>
+      <navigator url="/pages/xf/posters?subEstateId={{newHouseDetail.estateId}}" class="button gray">查看更多</navigator>
+    </view>  
+  </view>
+  <view class="gap"></view>
+</block>

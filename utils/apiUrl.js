@@ -3,16 +3,16 @@
  */
 
 //const domain = "https://m.wkzf.com" ;
-//const domain = "https://minapp-test.yfyk365.com";
-const domain = "http://10.0.90.39:8118"
-//const domain = "http://10.0.93.186:8118"
+//const domain = "http://10.0.90.39:8118"
+const domain = "https://minapp-test.yfyk365.com";
 
 const url = {
   "agent" : {
     "rateList" : "/wxmpAgent/getAgentCustomerCommentList.rest",
     "getAgentInfo" : "/wxmpAgent/getSimpleAgent.rest",
     "writeRate" : "/wxmpAgent/commentAgent.rest",
-    "detail" : "/wxmpAgent/getAgentDetail.rest"
+    "detail" : "/wxmpAgent/getAgentDetail.rest",
+    "moreList": "/moreAgentCommentList.rest"
   } ,
   "buy" : {
     "getDetails" : "/wxmpInterest/getCustomerHouseIntention.rest" ,
@@ -32,10 +32,11 @@ const url = {
   "comment" : {
     "list" : "/estate/queryEstateCommentList.rest" ,
     "uploadImg" : "/wxmpEstate/uploadPic.rest" ,
-    "uploadComment" : "/wxmpEstate/commentEstate.rest"
+    "uploadComment" : "/wxmpEstate/commentEstate.rest",
+    "write":"/wxmpEstate/commentEstate.rest"
   },
   "city":{
-    "list":"/wxmpCommon/getAllCityBusiness.rest"
+    "getAllCityBusiness":"/wxmpCommon/getAllCityBusiness.rest"
   },
   "index":{
     "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest",
@@ -46,7 +47,12 @@ const url = {
     "generateIdentifyCode":"/wxmpLogin/generateIdentifyCode.rest",
     "loginFromMobilePhone":"/wxmpLogin/loginFromMobilePhone.rest",
     "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest",
-    "getWechatBindGuestInfo":"/wxmpLogin/getWechatBindGuestInfo.rest"//判断是否已经绑定过手机接口
+    "getWechatBindGuestInfo":"/wxmpLogin/getWechatBindGuestInfo.rest",//判断是否已经绑定过手机接口
+    "getOpenIdByCode":"/wxmpLogin/getOpenIdByCode.rest"
+  },
+  "screen":{
+      "associationalAgentList":"/wxmpAgent/associationalAgentList.rest",
+      "acWord":"/wxmpIndex/acWord.rest"
   },
   "report":{
     "write":"/wxmpOldHouseDetail/guestTipoffHouse.rest"

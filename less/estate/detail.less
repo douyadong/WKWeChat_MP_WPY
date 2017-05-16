@@ -4,58 +4,64 @@
  3. 作者：tangxuyang@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
  
- @import "../variables.less" ;
- @import "../mixins.less" ;
+ @import "../variables.less";
+ @import "../mixins.less";
  @import "../xf/sections/location.less";
-  .expert-info {
-     .clearfix() ;
-     padding : 0 @common-margin ;
+ page {
+     padding-bottom: 30rpx;
+ }
+ 
+ .expert-info {
+     .clearfix();
+     padding: 0 @common-margin ;
      view {
-         line-height : 140rpx ;
+         line-height: 140rpx;
      }
      text {
-         font-size : @large-font-size ;
+         font-size: @large-font-size ;
      }
      .call {
-         float : right ;         
+         float: right;
          .icon-tel {
-             color : @blue-font-color ;     
-             font-size : @larger-font-size ;
+             color: @blue-font-color ;
+             font-size: @larger-font-size ;
          }
      }
      .outline {
-         float : left ;
-         image , text {
-             color : @default-font-color ;
-             vertical-align : middle ;
+         float: left;
+         image,
+         text {
+             color: @default-font-color ;
+             vertical-align: middle;
          }
          .head-portrait {
-             height : 80rpx ;
-             margin-right : @gap-dimension ;
-             width : 80rpx ;
+             height: 80rpx;
+             margin-right: @gap-dimension ;
+             width: 80rpx;
          }
          .position {
-             color : @light-font-color ;
-             margin-left : @gap-dimension ;
+             color: @light-font-color ;
+             margin-left: @gap-dimension ;
          }
      }
  }
  
  .summary {
      .separator {
-        margin : 0 @common-margin ;
+         margin: 0 @common-margin ;
      }
      .panel-bd {
          .row {
-             .row-hd , .row-bd {
-                 line-height : 56rpx ;
-                 font-size:@large-font-size;
+             .row-hd,
+             .row-bd {
+                 line-height: 56rpx;
+                 font-size: @large-font-size;
              }
              .row-hd {
-                 width : 128rpx ;                             
+                 width: 128rpx;
              }
              .row-bd {
-                 margin-left : 152rpx ;                        
+                 margin-left: 152rpx;
              }
          }
      }
@@ -63,12 +69,12 @@
  
  .comments {
      .panel-bd {
-         padding-left : @common-margin ;
-         padding-right : @common-margin ;
+         padding-left: @common-margin ;
+         padding-right: @common-margin ;
      }
  }
-
- map{
-    width: 100%; 
-    height: 500rpx;
+ 
+ map {
+     width: 100%;
+     height: 500rpx;
  }

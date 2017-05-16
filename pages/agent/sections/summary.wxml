@@ -5,19 +5,21 @@
       <view class="row-bd">{{simpleAgentDetail.agentBizTownList}}</view>
     </view>
     <view class="separator"></view>
-    <view class="row">
-      <view class="row-hd">自我介绍：</view>
-      <view class="row-bd">{{simpleAgentDetail.agentIntroduction}}</view>
-    </view>
-    <view class="separator"></view>
+    <block wx:if="{{simpleAgentDetail.agentIntroduction}}">
+      <view class="row">
+        <view class="row-hd">自我介绍：</view>
+        <view class="row-bd">{{simpleAgentDetail.agentIntroduction}}</view>
+      </view>
+      <view class="separator"></view>
+    </block>
     <view class="row">
       <view class="row-hd">成交故事：</view>
       <view class="row-bd">
         <block wx:if="{{agentStoryExtendable}}">
-          <text>{{simpleAgentDetail.shortAgentStory}}</text>
+          <text>{{simpleAgentDetail.shortAgentStory || "--"}}</text>
           <text class="more" bindtap="extendAgentStory"> 更多</text>
         </block>        
-        <text wx:else>{{simpleAgentDetail.agentStory}}</text>        
+        <text wx:else>{{simpleAgentDetail.agentStory || "--"}}</text>        
       </view>
     </view>
   </view>

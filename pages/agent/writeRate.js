@@ -26,15 +26,12 @@ var status = [{},{
         "text":'非常满意，夸夸经纪人吧'
     }
 ];
-var labels = [];
+var labels = [],
+    uid = 0;
 
 var params = {
     data: {
         "agentInfo":{
-            agentId:100321,
-            agentName:'王大明',
-            headRoundImgUrl:'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
-            isWellAgent:0
         },
         "status":{
             "score":0,
@@ -108,17 +105,18 @@ var params = {
             success:function(data){
                 if(data.status ===1){
                     this.setData({
-                        "agentInfo.agentId":data.agentId,
-                        "agentInfo.agentName":data.agentName,
-                        "agentInfo.headRoundImgUrl":data.headRoundImgUrl,
-                        "agentInfo.isWellAgent":data.isWellAgent
+                        "agentInfo.agentId":data.data.agentId,
+                        "agentInfo.agentName":data.data.agentName,
+                        "agentInfo.headRoundImgUrl":data.data.headRoundImgUrl,
+                        "agentInfo.isWellAgent":data.data.isWellAgent
                     })
                 }
             }.bind(this),
             fail:function(){
-
+                console.log('获取经纪人id失败')
             }
         })
+
     },
     bindStarClick:function(e){
         var index = e.currentTarget.dataset.id;
@@ -180,7 +178,7 @@ var params = {
     bindSwitchChange:function(e){
         var value =  e.detail.value;
         this.setData({
-            "status.nameless":value=='checked'?1:0
+            "status.nameless":value==value?1:0
         })
     },
     bindSubmitClick:function(){
@@ -208,10 +206,17 @@ var params = {
                 }
             })
         }else{
+            var requestData = $.extend(true,{
+                agentId:this.data.agentInfo.agentId,
+                commentType:3,
+                guestId:uid,
+            },this.data.status)
+            delete requestData['text'];
             request.fetch({
-                data:data,
+                data:requestData,
                 module:'agent',
                 action:'writeRate',
+                method:'POST',
                 showLoading:true,
                 showTitle:'提交中',
                 success:function(data){

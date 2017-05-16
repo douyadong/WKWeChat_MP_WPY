@@ -2,8 +2,7 @@ var request = require('../../utils/request.js');
 var $ = require('../../utils/extend.js');
 
 var initData = {},
-	isLoading = false,
-    isNoData = false;
+	isLoading = false;
 
 var params = {
 	data: {
@@ -37,7 +36,7 @@ var params = {
         })
 	},
 	loadMore:function(){
-		if(isLoading || isNoData)return;
+		if(isLoading || this.data.isNoData)return;
         isLoading = true;
 
         initData.offset = initData.offset++;

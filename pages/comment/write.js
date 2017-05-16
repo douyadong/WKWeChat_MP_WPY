@@ -1,6 +1,5 @@
 var util = require('../../utils/util.js')
 var $ = require('../../utils/extend.js')
-var detailfoot = require('../components/detailfoot.js')
 var request = require('../../utils/request.js')
 
 var total = [],
@@ -94,6 +93,7 @@ var params = $.extend(true,{},{
             data:requestData,
             module:'comment',
             action:'write',
+            method:'POST',
             showLoading:true,
             showTitle:'提交中',
             success:function(data){
@@ -125,6 +125,6 @@ var params = $.extend(true,{},{
             }
         }
     }
-},detailfoot)
+})
 
 Page(params)

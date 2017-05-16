@@ -1,6 +1,6 @@
 module.exports = {
-    "message": "",
-    "status": "",
+    "message": "ok",
+    "status": 1,
     "data": {
         "guestId": null,
         "mobile": {},

@@ -1,5 +1,5 @@
 <import src="../../components/xf-sources.wxml"/>
-<view class="panel nearby">
+<view class="panel nearby" wx:if="{{xfSources}}">
   <view class="panel-hd">
     <view class="head">周边楼盘</view>    
   </view>  
