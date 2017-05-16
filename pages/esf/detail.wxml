@@ -183,7 +183,7 @@
         <view class="house-comments">
             <template is="house-comment" data="{{comments}}" />
             <view class="btn-group">
-                <view data-url="/pages/comment/write?subEstateId={{subEstateId}}" bindtap="jump">
+                <view data-url="/pages/comment/write?subEstateId={{subEstateId}}&commentLocation=1" bindtap="jump">
                     我来评价
                 </view>
             </view>
