@@ -1,7 +1,7 @@
 <view class="panel summary">
   <view class="panel-bd lr-padding">
     <text class="head">{{newHouseDetail.estateName || "--"}}</text>
-    <text class="highlight">{{newHouseDetail.houseSellPoint}}</text>
+    <text class="highlight">{{newHouseDetail.houseSellPoint || "--"}}</text>
     <view class="price-series">
       <text class="price">{{newHouseDetail.lowestTotalPrice}} 元／㎡</text>
       <text>[ 参考价格 ]</text>
@@ -12,7 +12,7 @@
       <text class="promotion" wx:if="{{newHouseDetail.hasActivity==='1'}}">有优惠</text>
       <text class="video" wx:if="{{newHouseDetail.hasVideo==='1'}}">有视频</text>
     </view>
-    <view class="date">开盘时间：{{newHouseDetail.openTimeStr}} 交房时间：{{newHouseDetail.launchTimeStr}}</view>
+    <view class="date">开盘时间：{{newHouseDetail.openTimeStr || "--"}} 交房时间：{{newHouseDetail.launchTimeStr || "--"}}</view>
     <view class="separator" wx:if="{{newHouseDetail.activityList}}"></view>   
   </view>  
   <view class="promotions lr-padding" wx:if="{{newHouseDetail.activityList}}">    

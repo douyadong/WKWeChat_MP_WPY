@@ -139,14 +139,17 @@ Page({
       show: false
     }
   },
-  onLoad: function () {
+  onLoad: function (options) {
     let that = this
+
+    if (options.logon) {
+      return
+    }
 
     // clear buy localStorge
     wx.removeStorageSync('buy_price')
     wx.removeStorageSync('buy_houseType')
     wx.removeStorageSync('buy_location')
-
 
     // 判断用户是否登录
     if (!appInstance.isLogin(false)) {
@@ -379,7 +382,7 @@ Page({
     }
 
     // 判断是否登录
-    appInstance.isLogin()
+    return appInstance.isLogin(true, '', 'back')
 
     // 构造请求数据
     requestData.guestId = wx.getStorageSync('userInfo').guestId
