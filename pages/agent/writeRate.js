@@ -1,5 +1,7 @@
 var $ = require('../../utils/extend.js');
-var app = getApp();
+var request = require('../../utils/request.js')
+
+
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;
@@ -32,7 +34,7 @@ var params = {
             agentId:100321,
             agentName:'王大明',
             headRoundImgUrl:'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
-            isWellAgent:false
+            isWellAgent:0
         },
         "status":{
             "score":0,
@@ -97,8 +99,26 @@ var params = {
             ]
         }
     },
-    onLoad: function() {
-        //app.isLogin();
+    onLoad: function(option) {
+        var initData = $.extend(true,{},option);
+        request.fetch({
+            data:initData,
+            module:'agent',
+            action:'getAgentInfo',
+            success:function(data){
+                if(data.status ===1){
+                    this.setData({
+                        "agentInfo.agentId":data.agentId,
+                        "agentInfo.agentName":data.agentName,
+                        "agentInfo.headRoundImgUrl":data.headRoundImgUrl,
+                        "agentInfo.isWellAgent":data.isWellAgent
+                    })
+                }
+            }.bind(this),
+            fail:function(){
+
+            }
+        })
     },
     bindStarClick:function(e){
         var index = e.currentTarget.dataset.id;
@@ -186,6 +206,26 @@ var params = {
                     } else if (res.cancel) {
                     }
                 }
+            })
+        }else{
+            request.fetch({
+                data:data,
+                module:'agent',
+                action:'writeRate',
+                showLoading:true,
+                showTitle:'提交中',
+                success:function(data){
+                    if(data.status === 1){
+                        wx.navigateBack()
+                    }
+                }.bind(this),
+                fail:function(){
+                    wx.showModal({
+                        title: '提示',
+                        content: '评论失败，稍后再试',
+                        showCancel: false
+                    })
+                }.bind(this)
             })
         }
     }

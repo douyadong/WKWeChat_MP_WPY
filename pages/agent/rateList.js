@@ -1,83 +1,80 @@
+var request = require('../../utils/request.js');
+var $ = require('../../utils/extend.js');
+
+var initData = {},
+	isLoading = false,
+    isNoData = false;
+
 var params = {
 	data: {
-		"simpleAgentCommentTag":{
-			"objScore":3.7,
-			"shi":3,
-			"kong":1,
-			"hasSmall":true,
-			"tags":[{
-				"label":'礼貌热情',
-				"count":18,
-				"type":1
-			},{
-				"label":'礼貌热情',
-				"count":18,
-				"type":1
-			},{
-				"label":'不够专业',
-				"count":1,
-				"type":2
-			},{
-				"label":'不够热情',
-				"count":1,
-				"type":2
-			}]
-		},
-		"simpleAgentCommentList": [{
-			"comment": "服务态度很好，感觉非常靠谱的一个经纪人！",
-			"guestName": "王先生",
-			"createTimeString": "2017-05-03",
-			"score":4
-		}, {
-			"comment": "很热情，很了解房源信息 ",
-			"guestName": "李先生",
-			"createTimeString": "2017-04-28",
-			"score":3
-		}, {
-			"comment": "感觉专业技能还有待于提高啊！",
-			"guestName": "张女士",
-			"createTimeString": "2017-04-25",
-			"score":2
-		}, {
-			"comment": "感觉专业技能还有待于提高啊！",
-			"guestName": "张女士",
-			"createTimeString": "2017-04-25",
-			"score":1
-		}, {
-			"comment": "感觉专业技能还有待于提高啊！",
-			"guestName": "张女士",
-			"createTimeString": "2017-04-25",
-			"score":0
-		}, {
-			"comment": "感觉专业技能还有待于提高啊！",
-			"guestName": "张女士",
-			"createTimeString": "2017-04-25",
-			"score":5
-		}, {
-			"comment": "感觉专业技能还有待于提高啊！",
-			"guestName": "张女士",
-			"date": "2017-04-25",
-			"score":0
-		}, {
-			"comment": "感觉专业技能还有待于提高啊！",
-			"guestName": "张女士",
-			"createTimeString": "2017-04-25",
-			"score":4
-		}, {
-			"comment": "感觉专业技能还有待于提高啊！",
-			"guestName": "张女士",
-			"createTimeString": "2017-04-25",
-			"score":5
-		}],
-		isLoading:false,
-		isAllowLoading:false
+		isLoading:false,//是否正在加载中
+        isNoData:false,//是否没有数据了
+        loadError:false
 	},
-	onLoad: function() {
+	onLoad: function(option) {
+		initData = $.extend(true,{},{offset:0},option);
+        request.fetch({
+            data:initData,
+            module:'agent',
+            action:'rateList',
+            mock:true,
+            success:function(data){
+            	if(data.status === 1){
+            		this.setData({
+	                    "simpleAgentCommentTag":data.data.simpleAgentCommentTag,
+	                    "simpleAgentCommentList":data.data.simpleAgentCommentList
+	                })
+	                if(data.data.simpleAgentCommentList.length<10){
+	                    this.setData({
+	                        "isNoData":true
+	                    })
+	                }
+            	}
+            }.bind(this),
+            fail:function(){
 
+            }
+        })
 	},
 	loadMore:function(){
-		if(this.data.isLoading || !this.data.isAllowLoading)return;
-		console.log(1)
-	}
+		if(isLoading || isNoData)return;
+        isLoading = true;
+
+        initData.offset = initData.offset++;
+        
+        request.fetch({
+            data:initData,
+            module:'agent',
+            action:'moreList',
+            showLoading:true,
+            success:function(data){
+                if(data.status === 1){
+                    this.setData({
+                        "simpleAgentCommentList":this.data.simpleAgentCommentList.concat(data.data.simpleAgentCommentList),
+                        "loadError":false
+                    })
+                    if(data.data.commentList.length<10){
+                        this.setData({
+                            "isNoData":true
+                        })
+                    }
+                    setTimeout(function(){
+                        isLoading= false;
+                    }.bind(this),200)
+                }
+            }.bind(this),
+            fail:function(){
+                initData.offset = initData.offset--;
+                this.setData({
+                    "loadError":true
+                })
+                console.log(111)
+            }.bind(this)
+        })
+	},
+    bindErrorBtn:function(){
+        isLoading=false;
+        this.loadMore();
+    }
 };
 Page(params);

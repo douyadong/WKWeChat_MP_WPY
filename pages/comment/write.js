@@ -1,18 +1,21 @@
 var util = require('../../utils/util.js')
 var $ = require('../../utils/extend.js')
 var detailfoot = require('../components/detailfoot.js')
+var request = require('../../utils/request.js')
 
 var total = [],
     textareaValue = "",
-    mobilPhone = '';
+    userInfo = '',
+    initData = {};
 
 var params = $.extend(true,{},{
     data: {
         "uploadImages":[],
         "uploadTextarea":""
     },
-    onLoad: function() {
-        mobilPhone = wx.getStorageSync('phone');
+    onLoad: function(option) {
+        initData = $.extend(true,{},option);
+        userInfo = wx.getStorageSync('userInfo');
     },
     bindblur: function(e){
         textareaValue = e.detail.value;
@@ -54,7 +57,7 @@ var params = $.extend(true,{},{
     uploadFile:function(file,i){
         var _this = this;
         wx.uploadFile({
-            url:'http://10.0.92.61:8107/wxmpEstate/uploadPic.rest',
+            url:'https://minapp-test.yfyk365.com/wxmpEstate/uploadPic.rest',
             filePath: file[i],//这里是多个不行tempFilePaths[0]这样可以
             name: 'file',
             success: function(res){
@@ -81,10 +84,10 @@ var params = $.extend(true,{},{
     },
     uploadFormSubmit:function(){
         var requestData = {
-            guestPhoneNum:mobilPhone,
-            subEstateId:this.data.subEstateId,
+            guestPhoneNum:userInfo.mobile,
+            subEstateId:initData.subEstateId,
             comment:textareaValue,
-            commentLocation:this.data.commentLocation,
+            commentLocation:initData.commentLocation,
             imageKeys:total.join(',')
         }
         request.fetch({
@@ -92,13 +95,13 @@ var params = $.extend(true,{},{
             module:'comment',
             action:'write',
             showLoading:true,
-            mock:true,
+            showTitle:'提交中',
             success:function(data){
                 if(data.status === 1){
                     wx.navigateBack()
                 }
             }.bind(this),
-            error:function(){
+            fail:function(){
                 wx.showModal({
                     title: '提示',
                     content: '评论失败，稍后再试',
