@@ -11,10 +11,15 @@ var params = $.extend(true,{},{
         isLoading:false,
     },
     onLoad: function(option) {
-        let userInfo = wx.getStorageSync('userInfo');
-        let guestPhoneNum = userInfo && userInfo.mobile || '';
 
-        requestData = $.extend(true, {}, { offset: 0, guestPhoneNum: guestPhoneNum},option);
+        var mobile =  wx.getStorageSync('userInfo');
+            mobile = mobile && mobile.mobile || '';
+            
+        requestData = $.extend(true,{},{
+            offset:0,
+            guestPhoneNum:mobile
+        },option);
+
         request.fetch({
             data:requestData,
             module:'comment',
