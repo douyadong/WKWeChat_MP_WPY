@@ -337,6 +337,8 @@ Page({
               data: data
             })
             // 返回到登录前的url
+            console.log('yesAuthorized.....');
+            console.log(_this.data);
             if (_this.data.type == 'redirect') {
               wx.redirectTo({
                 url: _this.data.returnUrl
