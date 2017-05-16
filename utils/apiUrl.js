@@ -40,7 +40,8 @@ const url = {
   "index":{
     "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest",
     "findCityInfoByLonAndLat":"/wxmpCommon/findCityInfoByLonAndLat.rest",
-    "searchAgentList":"/wxmpAgent/searchAgentList.rest"
+    "searchAgentList":"/wxmpAgent/searchAgentList.rest",
+    "getCityBusinessById":"/wxmpCommon/getCityBusinessById.rest"
   },
   "logon":{
     "generateIdentifyCode":"/wxmpLogin/generateIdentifyCode.rest",

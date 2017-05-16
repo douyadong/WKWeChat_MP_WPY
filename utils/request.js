@@ -59,12 +59,14 @@ module.exports = {
           typeof fail == 'function' && fail(res.data)
         }
       },
-      fail: function (error) {
+      fail: function (error) {      
         console.error(error)
       },
       complete: function () {
-        showBarLoading && wx.hideNavigationBarLoading()
-        showLoading && wx.hideToast()
+        // console.log('3333')
+        // showBarLoading && wx.hideNavigationBarLoading()
+        // showLoading && wx.hideToast()
+        // console.log('44444')
         typeof complete == 'function' && complete()
       }
     }

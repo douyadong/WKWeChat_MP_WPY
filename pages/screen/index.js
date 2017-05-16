@@ -48,14 +48,14 @@ var getAgentList = function(associationalWord,pageIndex,pageSize) {
             "cityId":  wx.getStorageSync('geography').cityId
           },
           success:function(data){
-              if(data.status.toString() == "1"){
+              if(data.status.toString() == "1" && data.data != null && data.data.length > 0){
                 resolve(data.data);
               }else{
-                reject([]);
+                resolve([]);
               }
           },
           fail:function() {
-            reject([]);
+            resolve([]);
           }
       });
     });
@@ -75,14 +75,14 @@ var getRegionList = function(associationalWord) {
             "cityId":wx.getStorageSync('geography').cityId
           },
           success:function(data){
-              if(data.status.toString() == "1"){
+              if(data.status.toString() == "1" && data.data != null && data.data.length > 0){
                 resolve(data.data);
               }else{
-                reject([]);
+                resolve([]);
               }
           },
           fail:function() {
-            reject([]);
+            resolve([]);
           }
       });
     })
@@ -110,9 +110,11 @@ let main = {
           pageIndex:0
       });
      getAgentList(_this.data.key,_this.data.pageIndex,3).then((agentList)=>{
-         _this.setData({
-            agentList:HighlightTransform( _this.conversionAgent(agentList))
-        })
+         if(agentList.length>0){
+            _this.setData({
+                agentList:HighlightTransform( _this.conversionAgent(agentList))
+            })
+         }
      });
      getRegionList(_this.data.key).then((list)=>{
          _this.conversionRegion(list);
@@ -126,9 +128,11 @@ let main = {
           pageIndex:0
       });
       getAgentList(_this.data.key,_this.data.pageIndex,3).then((agentList)=>{
-         _this.setData({
-            agentList:HighlightTransform( _this.conversionAgent(agentList))
-        })
+         if(agentList.length>0){
+            _this.setData({
+                agentList:HighlightTransform( _this.conversionAgent(agentList))
+            })
+         }
      });
      getRegionList(_this.data.key).then((list)=>{
          _this.conversionRegion(list);
@@ -152,17 +156,16 @@ let main = {
   },
   //把地区转换为想要的格式
   conversionRegion(list){
-      console.log(list);
       let _this = this;
       let newList = [];
       for(let i=0;i<list.length;i++){
           newList.push({
                 text:list[i].displayStr,
                 key:_this.data.key,
-                describe:list[i].associationOrder
+                describe:list[i].associationOrder,
+                cityId:list[i].value
           });
       }
-      
       _this.setData({
         regionList:HighlightTransform(newList)
       })
