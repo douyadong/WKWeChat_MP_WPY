@@ -189,6 +189,7 @@ Page({
       show: false
     },
     returnUrl: '/pages/index/index',
+    type:'redirect',
     isShowAgreement: false
   },
   // 获取手机号
