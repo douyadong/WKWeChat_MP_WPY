@@ -2,7 +2,7 @@
     <view class="titleShadow"></view>
     <form class="commentForm">
         <view class="commentTextarea">
-            <textarea placeholder="说说房子所在的小区…" auto-focus name="textarea" bindblur="bindblur" />
+            <textarea placeholder="说说房子所在的小区…" auto-focus name="textarea" bindinput="bindblur" />
         </view>
         <view class="chooseImage">
             <view class="chooseButton" bindtap="chooseImg">

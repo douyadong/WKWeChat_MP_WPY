@@ -10,7 +10,7 @@
     </view>
     <view class="row">
       <view class="row-hd">竣工年代</view>
-      <view class="row-bd">{{estateInfo.completed}}</view>
+      <view class="row-bd">{{estateInfo.completed}}年</view>
     </view>
     <view class="row">
       <view class="row-hd">房屋总数</view>
