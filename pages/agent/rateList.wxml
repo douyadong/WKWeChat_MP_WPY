@@ -26,7 +26,6 @@
       <text>没有更多了</text>
   </view>
   <view class="loadingError" wx:if="{{loadError}}">
-      <view class="bg-line"></view>
-      <text>没有更多了</text>
+      加载失败，点击重试
   </view>
 </scroll-view>
