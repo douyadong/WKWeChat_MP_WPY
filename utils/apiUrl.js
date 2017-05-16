@@ -11,7 +11,8 @@ const url = {
     "rateList" : "/wxmpAgent/getAgentCustomerCommentList.rest",
     "getAgentInfo" : "/wxmpAgent/getSimpleAgent.rest",
     "writeRate" : "/wxmpAgent/commentAgent.rest",
-    "detail" : "/wxmpAgent/getAgentDetail.rest"
+    "detail" : "/wxmpAgent/getAgentDetail.rest",
+    "moreList": "/moreAgentCommentList.rest"
   } ,
   "buy" : {
     "getDetails" : "/wxmpInterest/getCustomerHouseIntention.rest" ,

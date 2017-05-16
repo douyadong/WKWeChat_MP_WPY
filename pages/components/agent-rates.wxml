@@ -1,12 +1,12 @@
 <template name="agent-rates">
     <view class="agent-rates">
-        <block wx:for="{{simpleAgentCommentList}}" wx:key="*this">
+        <block wx:for="{{simpleAgentCommentList}}" wx:key="index">
             <view class="rate">
                 <view class="star">
-                    <block wx:for="{{item.score}}" wx:key="*this">
+                    <block wx:for="{{item.score}}" wx:key="index">
                         <text class="iconfont icon-star-all"></text>
                     </block>
-                    <block wx:for="{{5-item.score}}" wx:key="*this">
+                    <block wx:for="{{5-item.score}}" wx:key="index">
                         <text class="iconfont icon-star-empty"></text>
                     </block>
                 </view>
