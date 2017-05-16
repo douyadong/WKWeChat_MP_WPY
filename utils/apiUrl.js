@@ -4,7 +4,7 @@
 
 //const domain = "https://m.wkzf.com" ;
 //const domain = "http://10.0.90.39:8118"
-const domain = "https://minapp-test.yfyk365.com";
+const domain = "https://minapp-sim.yfyk365.com";
 
 const url = {
   "agent" : {
@@ -62,9 +62,9 @@ const url = {
   } ,
   "xf" : {
     "detail" : "/wxmpNewHouseDetail/getNewHouseDetail.rest" ,
-    "info" : "/wxmpNewHouseDetail/getNewHouseBasicInfo.rest" ,
+    "infos" : "/wxmpNewHouseDetail/getNewHouseBasicInfo.rest" ,
     "presses" : "/wxmpNewHouseDetail/getDynamicList.rest" ,
-    "poster" : "/wxmpNewHouseDetail/getMagazineList.rest" ,
+    "posters" : "/wxmpNewHouseDetail/getMagazineList.rest" ,
     "layouts" : "/wxmpNewHouseDetail/getHouseTypeDetail.rest" ,
     "promotions" : "/wxmpNewHouseDetail/getNewHouseActivityInfo.rest" ,
     "poster-preview" : "/wxmpNewHouseDetail/getMagazineList.rest"
