@@ -1,5 +1,7 @@
 var $ = require('../../utils/extend.js');
-var app = getApp();
+var request = require('../../utils/request.js')
+
+
 Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;
@@ -24,15 +26,12 @@ var status = [{},{
         "text":'非常满意，夸夸经纪人吧'
     }
 ];
-var labels = [];
+var labels = [],
+    uid = 0;
 
 var params = {
     data: {
         "agentInfo":{
-            agentId:100321,
-            agentName:'王大明',
-            headRoundImgUrl:'https://imgwater.oss.aliyuncs.com/748c4f4b1fbc449d8c98b9027d851e2e',
-            isWellAgent:false
         },
         "status":{
             "score":0,
@@ -97,8 +96,27 @@ var params = {
             ]
         }
     },
-    onLoad: function() {
-        //app.isLogin();
+    onLoad: function(option) {
+        var initData = $.extend(true,{},option);
+        request.fetch({
+            data:initData,
+            module:'agent',
+            action:'getAgentInfo',
+            success:function(data){
+                if(data.status ===1){
+                    this.setData({
+                        "agentInfo.agentId":data.data.agentId,
+                        "agentInfo.agentName":data.data.agentName,
+                        "agentInfo.headRoundImgUrl":data.data.headRoundImgUrl,
+                        "agentInfo.isWellAgent":data.data.isWellAgent
+                    })
+                }
+            }.bind(this),
+            fail:function(){
+                console.log('获取经纪人id失败')
+            }
+        })
+
     },
     bindStarClick:function(e){
         var index = e.currentTarget.dataset.id;
@@ -160,7 +178,7 @@ var params = {
     bindSwitchChange:function(e){
         var value =  e.detail.value;
         this.setData({
-            "status.nameless":value=='checked'?1:0
+            "status.nameless":value==value?1:0
         })
     },
     bindSubmitClick:function(){
@@ -186,6 +204,33 @@ var params = {
                     } else if (res.cancel) {
                     }
                 }
+            })
+        }else{
+            var requestData = $.extend(true,{
+                agentId:this.data.agentInfo.agentId,
+                commentType:3,
+                guestId:uid,
+            },this.data.status)
+            delete requestData['text'];
+            request.fetch({
+                data:requestData,
+                module:'agent',
+                action:'writeRate',
+                method:'POST',
+                showLoading:true,
+                showTitle:'提交中',
+                success:function(data){
+                    if(data.status === 1){
+                        wx.navigateBack()
+                    }
+                }.bind(this),
+                fail:function(){
+                    wx.showModal({
+                        title: '提示',
+                        content: '评论失败，稍后再试',
+                        showCancel: false
+                    })
+                }.bind(this)
             })
         }
     }
