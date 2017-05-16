@@ -14,8 +14,13 @@
             <view class="verificationTitle">收不到短信？点此使用<text class="verification" data-codeType="2" bindtap="voiceGetCode">语音验证</text></view>
         </view>
     </view>
+    <!--
     <view class="represent">登录代表同意<navigator url="/pages/userAgreement/index" class="userAgreement">《用户协议》</navigator></view>
+    -->
+    <view class="represent">登录代表同意<text bindtap="showAgreement" class="agreement">《用户协议》</text></view>
 </view>
 <!--tips模板-->
 <import src="../components/tips.wxml"/>
 <template is="tips" data="{{tips}}" />
+<!-- 用户协议 -->
+<include src="../userAgreement/index.wxml"/>
