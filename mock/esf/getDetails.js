@@ -212,9 +212,79 @@ module.exports = {
                     "地铁"
                 ],
                 "boutique": 0
+            },
+             {
+                "houseId": 1465832,
+                "houseTitle": "房子标题",
+                "houseChild": "好房型",
+                "areaStr": "120",
+                "totalPrice": "586",
+                "district": "北京",
+                "town": "古北",
+                "unitPrice": "48833",
+                "tagList": [
+                    "地铁"
+                ],
+                "boutique": 0
+            },
+             {
+                "houseId": 1465832,
+                "houseTitle": "房子标题",
+                "houseChild": "好房型",
+                "areaStr": "120",
+                "totalPrice": "586",
+                "district": "北京",
+                "town": "古北",
+                "unitPrice": "48833",
+                "tagList": [
+                    "地铁"
+                ],
+                "boutique": 0
+            },
+             {
+                "houseId": 1465832,
+                "houseTitle": "房子标题",
+                "houseChild": "好房型",
+                "areaStr": "120",
+                "totalPrice": "586",
+                "district": "北京",
+                "town": "古北",
+                "unitPrice": "48833",
+                "tagList": [
+                    "地铁"
+                ],
+                "boutique": 0
+            },
+            {
+                "houseId": 1465832,
+                "houseTitle": "房子标题",
+                "houseChild": "好房型",
+                "areaStr": "120",
+                "totalPrice": "586",
+                "district": "北京",
+                "town": "古北",
+                "unitPrice": "48833",
+                "tagList": [
+                    "地铁"
+                ],
+                "boutique": 0
+            },
+            {
+                "houseId": 1465832,
+                "houseTitle": "房子标题",
+                "houseChild": "好房型",
+                "areaStr": "120",
+                "totalPrice": "586",
+                "district": "北京",
+                "town": "古北",
+                "unitPrice": "48833",
+                "tagList": [
+                    "地铁"
+                ],
+                "boutique": 0
             }
         ],
-        "sameTownTotalCount": 1,
+        "sameTownTotalCount": 6,
         "agent": {
             "agentId": 100321,
             "agentName": "小刘",

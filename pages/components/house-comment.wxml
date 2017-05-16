@@ -1,5 +1,5 @@
 <template name="house-comment">
-	<view class="comment" wx:for="{{comments}}" wx:key="*this">
+	<view class="comment" wx:for="{{comments}}" wx:key="index">
       <view class="comment-hd clearfix">
         <image mode="aspectFill" src="{{item.guest.avatar.url}}" class="comment-photo" />
         <view class="comment-hd-inner">
@@ -11,7 +11,7 @@
       <view class="comment-bd">
         {{item.comment}}
         <view class="comment-images" wx:if="{{item.imgList&&item.imgList.length>0}}">
-          <image wx:key="*this" wx:for="{{item.imgList}}" wx:for-item="image" wx:for-index="imageIndex" src="{{image.url}}" class="{{imageIndex==2?'last':''}}" bindtap="hc_previewImage" data-img-url="{{image.url}}" data-comment-id="{{item.pkid}}"></image>
+          <image wx:for="{{item.imgList}}" wx:for-item="image" wx:for-index="imageIndex" wx:key="imageIndex" src="{{image.url}}" class="{{imageIndex==2?'last':''}}" bindtap="hc_previewImage" data-img-url="{{image.url}}" data-comment-id="{{item.pkid}}"></image>
         </view>
       </view>
       <view class="comment-ft">

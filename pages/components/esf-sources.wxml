@@ -1,7 +1,7 @@
 <template name="esf-sources">
   <view class="esf-sources">
     <block wx:for="{{esfSources}}" wx:for-item="source" wx:key="*this">
-      <navigator open-type="redirect" class="source" url="/pages/esf/detail?houseId={{source.houseId}}&agentId={{source.agentId}}">
+      <navigator open-type="{{openType || 'navigate'}}" class="source" url="/pages/esf/detail?houseId={{source.houseId}}&agentId={{source.agentId}}&sourceType={{sourceType || ''}}">
         <image mode="aspectFill" src="{{source.houseImgUrl}}" class="thumbnail"></image>
         <view class="param title">{{source.houseTitle}}</view>
         <view class="param fit-height">
