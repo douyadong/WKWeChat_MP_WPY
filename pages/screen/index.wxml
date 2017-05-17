@@ -29,7 +29,7 @@
             </navigator>
         </block> 
     </view>
-    <view class="more" bindtap="moreAgent">更多经纪人</view>
+    <view class="more" bindtap="moreAgent" wx:if="{{agentList.length != 0}}">更多经纪人</view>
     <view class="default">地区</view>
     <view class="listBox">
         <block wx:for="{{regionList}}" wx:for-item="list" wx:for-index="index" wx:key="index">
