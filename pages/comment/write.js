@@ -1,6 +1,7 @@
 var util = require('../../utils/util.js')
 var $ = require('../../utils/extend.js')
 var request = require('../../utils/request.js')
+var apiUrl = require('../../utils/apiUrl.js')
 
 var total = [],
     textareaValue = "",
@@ -57,7 +58,7 @@ var params = $.extend(true,{},{
     uploadFile:function(file,i){
         var _this = this;
         wx.uploadFile({
-            url:'https://minapp-test.yfyk365.com/wxmpEstate/uploadPic.rest',
+            url:apiUrl.get('comment','uploadImg'),
             filePath: file[i],//这里是多个不行tempFilePaths[0]这样可以
             name: 'file',
             success: function(res){
@@ -92,24 +93,34 @@ var params = $.extend(true,{},{
             commentLocation:initData.commentLocation,
             imageKeys:total.join(',')
         }
+        wx.hideLoading()
         request.fetch({
             data:requestData,
             module:'comment',
             action:'write',
             method:'POST',
-            showLoading:true,
             showTitle:'提交中',
             success:function(data){
                 if(data.status === 1){
                     isSending = false;
-                    wx.navigateBack()
+                    wx.showModal({
+                        title: '成功',
+                        content: '评价成功',
+                        success: function(res) {
+                            if (res.confirm) {
+                                wx.navigateBack()
+                            } else if (res.cancel) {
+                                console.log('用户点击取消')
+                            }
+                        }
+                    })
                 }
             }.bind(this),
-            fail:function(){
+            fail:function(data){
                 isSending = false;
                 wx.showModal({
                     title: '提示',
-                    content: '评论失败，稍后再试',
+                    content: data.message,
                     showCancel: false
                 })
             }.bind(this)
@@ -124,6 +135,9 @@ var params = $.extend(true,{},{
             })
         }else{
             if(this.data.uploadImages.length>0){
+                wx.showLoading({
+                    title: '图片上传中'
+                })
                 this.uploadFile(this.data.uploadImages,0)
             }else{
                 this.uploadFormSubmit()
