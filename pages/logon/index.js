@@ -78,6 +78,7 @@ var getVerificationCode = function (phone, codeType) {
       mock: !true,
       module: 'logon',
       action: 'generateIdentifyCode',
+      showLoading: false,
       data: {
         phone: phone,
         codeType: codeType
