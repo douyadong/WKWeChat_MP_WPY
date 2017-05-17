@@ -1,7 +1,7 @@
 const region = '区域';
 const sort = '综合排序';
 const more = '更多';
-
+wx.setStorageSync('defineDistrictAndTown', '');
 module.exports = {
   data: {
     screen_region:region,
@@ -202,6 +202,13 @@ module.exports = {
               agentList:agentList
           })
       });
+    }else{
+    //不是不限
+        _this.setData({
+              districtAndTown:event.currentTarget.dataset.pinyin
+        })
+        wx.setStorageSync('defineDistrictAndTown', event.currentTarget.dataset.pinyin)
+        wx.setStorageSync('regionname', event.currentTarget.dataset.regionname)
     }
     for(let i=0;i<plateList.length;i++){
       if(plateList[i].id == id){//点击的不是“不限”，是区域
@@ -214,10 +221,22 @@ module.exports = {
   //点击右边板块
   plateList(event){
     let _this = this;
+    let id = parseInt(event.target.id);//当前点击id
+    let districtAndTown = '';
+    if(id == -1){//不限
+         districtAndTown = wx.getStorageSync('defineDistrictAndTown');
+         _this.setData({
+            screen_region:wx.getStorageSync('regionname')
+        })
+    }else{
+        districtAndTown =  wx.getStorageSync('defineDistrictAndTown')+'-'+event.currentTarget.dataset.pinyin;
+        _this.setData({
+            screen_region:event.currentTarget.dataset.platename
+        })
+    }
     _this.setData({
-      plateActionId:event.target.id,
-      screen_region:event.currentTarget.dataset.platename,
-      districtAndTown:event.currentTarget.dataset.pinyin,//修改筛选经纪人列表状态
+      plateActionId:id,
+      districtAndTown:districtAndTown,//修改筛选经纪人列表状态
       pageIndex:0
     })
       //获取经纪人
