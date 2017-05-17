@@ -1,4 +1,4 @@
-﻿module.exports = {
+module.exports = {
     "status": 1,
     "count": 0,
     "message": "获取小区详情信息成功",
@@ -29,7 +29,7 @@
 		"https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW"
             ],
             "estateImgUrl": "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
-            "sellhouseCount": 0,
+            "sellhouseCount": 20,
             "renthouseCount": 0,
             "sameEstateHouseAmount": 3,
             "propertyCompany": "1",

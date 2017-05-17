@@ -11,7 +11,7 @@ var params = $.extend(true, {}, {
     callEstateExpert: function() { //打电话给小区专家    
         wx.makePhoneCall({
             phoneNumber: this.data.agent && this.data.agent.agentMobile
-        });
+        });              
     } ,
     openLocation: function() {
         wx.openLocation({
@@ -43,13 +43,13 @@ var params = $.extend(true, {}, {
     },
     getEstateInfo: function() { //获取小区详情
         var that = this;
-        request.fetch({
+        request.fetch({                     
             "showLoading": true,
             "module": "estate",
             "action": "detail",
             "data": {
                 subEstateId: that.data.subEstateId,
-                agentId:that.data.agentId,
+                //agentId:that.data.agentId,
                 guestPhoneNum: that.data.guestPhoneNum
             },
             "success": function(data) {
@@ -94,7 +94,8 @@ var params = $.extend(true, {}, {
                     estateInfo,
                     comments,
                     commentsCount: e.comment && e.comment.amount || 0,
-                    imgUrls
+                    imgUrls,
+                    agent
                 });
 
                 wx.setNavigationBarTitle({
