@@ -10,6 +10,7 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
     wx.setStorageSync('scene', options.scene)
+    console.log(options.scene)
   },
   getUserInfo: function (cb) {
     var that = this

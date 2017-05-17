@@ -146,6 +146,9 @@ let main = {
     selectLabel:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
     pageIndex:0,//起始条数 默认从0开始
   },
+  onShareAppMessage:function(){
+    
+  },
   //根据城市id获取区域信息
   getCityAreasInfo(cityId){
     let _this = this;

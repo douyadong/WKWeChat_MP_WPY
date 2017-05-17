@@ -4,7 +4,7 @@ module.exports ={
 	c_df_agentClick:function(e){
 		var _this = this,
 			scene = wx.getStorageSync('scene');
-		if(scene!= 1001){
+		if(scene === (1008 || 1011 || 1012) ){
 			wx.redirectTo({
 		        url: '../agent/detail?agentId='+this.data.agentInfo.agentId
 	      	})
