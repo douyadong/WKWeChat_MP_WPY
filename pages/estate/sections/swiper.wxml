@@ -2,13 +2,13 @@
 <import src="../../components/swiper.wxml"/>
 <view class="panel">
   <template is="swiper" data="{{imgUrls,agentId}}" />
-  <view wx:if="{{agent}}" class="expert-info">
-    <view class="call"><text class="iconfont icon-tel" bindtap="callExport"></text></view>
-    <navigator url="/pages/agent/detail?agentId={{agentId}}" class="outline">
+  <navigator url="/pages/agent/detail?agentId={{agentId}}" wx:if="{{agent}}" class="expert-info">
+    <view class="call" catchtap="callEstateExpert"><text class="iconfont icon-tel" ></text></view>
+    <view class="outline">
       <image src="{{agent.headRoundImgUrl}}" class="head-portrait"/>
       <text>{{agent.agentName}}</text>
       <text class="position">小区专家</text>
-    </navigator>   
-  </view>
+    </view>   
+  </navigator>
 </view>
 <view class="gap"></view>

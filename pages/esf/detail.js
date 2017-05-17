@@ -123,7 +123,10 @@ var params = $.extend(true, {}, {
         options.guestPhoneNum = guestPhoneNum;
 
         this.setData(options);
-        this.getDetail();
+        //this.getDetail();
+    },
+    onShow:function(){
+      this.getDetail();
     }
 }, houseComment, swiper, df);
 
