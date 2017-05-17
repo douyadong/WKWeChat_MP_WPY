@@ -110,11 +110,9 @@ let main = {
           pageIndex:0
       });
      getAgentList(_this.data.key,_this.data.pageIndex,3).then((agentList)=>{
-         if(agentList.length>0){
-            _this.setData({
-                agentList:HighlightTransform( _this.conversionAgent(agentList))
-            })
-         }
+         _this.setData({
+            agentList:HighlightTransform( _this.conversionAgent(agentList))
+         })
      });
      getRegionList(_this.data.key).then((list)=>{
          _this.conversionRegion(list);
@@ -128,11 +126,9 @@ let main = {
           pageIndex:0
       });
       getAgentList(_this.data.key,_this.data.pageIndex,3).then((agentList)=>{
-         if(agentList.length>0){
-            _this.setData({
-                agentList:HighlightTransform( _this.conversionAgent(agentList))
-            })
-         }
+         _this.setData({
+            agentList:HighlightTransform( _this.conversionAgent(agentList))
+        })
      });
      getRegionList(_this.data.key).then((list)=>{
          _this.conversionRegion(list);
