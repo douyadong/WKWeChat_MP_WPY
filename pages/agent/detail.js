@@ -39,6 +39,11 @@ let params = $.extend(true , {} , detailFoot , {
             "mock" : false ,
             success: function(res) {
                 let result = res.data ;
+                //经纪人公司名称取得规则：有简称显示简称，无简称显示全称，全称也没有就不显示
+                let abbreviation = result.simpleAgentDetail.abbreviation ;
+                let companyName = result.simpleAgentDetail.companyName ;
+                let finalCompanyName = abbreviation ? abbreviation : ( companyName ? companyName : "") ;
+                result.simpleAgentDetail.finalCompanyName = finalCompanyName ;
                 //给二手房和新房两个组件赋值，并将agentId带进去
                 result.xfSources = _.addAgentId(result.recommendNewHouseList) ;                 
                 result.esfSources = _.addAgentId(result.recommendOldHouseList) ; 

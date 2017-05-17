@@ -24,9 +24,9 @@
       <view class="row-hd">电话：</view>
       <view class="row-bd"><text class="phone">{{simpleAgentDetail.agentMobile}}</text></view>
     </view>  
-    <view class="row">
+    <view class="row" wx:if="{{simpleAgentDetail.finalCompanyName}}">
       <view class="row-hd">公司：</view>
-      <view class="row-bd">{{simpleAgentDetail.companyName}}</view>
+      <view class="row-bd">{{simpleAgentDetail.finalCompanyName}}</view>
     </view>     
   </view>
 </view>
