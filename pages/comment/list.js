@@ -10,6 +10,7 @@ var params = $.extend(true,{},{
     data: {
         comments: [],
         isLoading:false,
+        isNoData:false
     },
     onLoad: function(option) {
 
@@ -29,7 +30,7 @@ var params = $.extend(true,{},{
                 this.setData({
                     "comments":data.data.commentList
                 })
-                if(data.data.commentList.length<20){
+                if(data.data.commentList.length<10){
                     this.setData({
                         "isNoData":true
                     })
@@ -38,10 +39,10 @@ var params = $.extend(true,{},{
         })
     },
     loadMore:function() {
-        if(isLoading)return;
+        if(isLoading || this.data.isNoData)return;
         isLoading = true;
         offset++;
-        requestData.offset = offset;
+        requestData.offset = offset*10;
         
         request.fetch({
             data:requestData,
@@ -50,10 +51,15 @@ var params = $.extend(true,{},{
             showLoading:true,
             //mock:true,
             success:function(data){
-                if(data.status === 1){
+                if(data.status === 1 && data.data){
                     this.setData({
                         "comments":this.data.comments.concat(data.data.commentList)
                     })
+                    if(data.data.commentList.length < 10){
+                        this.setData({
+                            "isNoData":true
+                        })
+                    }
                     setTimeout(function(){
                         isLoading= false;
                     }.bind(this),200)
@@ -67,6 +73,10 @@ var params = $.extend(true,{},{
                 console.log('加载失败')
             }.bind(this)
         })
+    },
+    bindErrorBtn:function(){
+        isLoading=false;
+        this.loadMore();
     }
 },houseComment);
 
