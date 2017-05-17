@@ -21,10 +21,15 @@ var params = $.extend(true, {}, {
             address: this.data.estateInfo.estateAddr
         })
     },
+    onShareAppMessage: function() {
+        return {
+            title: '买房卖房，找好经纪人就对了！'
+        }
+    },
     onLoad: function(options) {
         /**
-        * options中需要有subEstateId和agentId
-        */
+         * options中需要有subEstateId和agentId
+         */
         let userInfo = wx.getStorageSync('userInfo');
         let guestPhoneNum = userInfo && userInfo.mobile || '';
         options.guestPhoneNum = guestPhoneNum;
@@ -49,7 +54,7 @@ var params = $.extend(true, {}, {
             "action": "detail",
             "data": {
                 subEstateId: that.data.subEstateId,
-                agentId:that.data.agentId,
+                agentId: that.data.agentId,
                 guestPhoneNum: that.data.guestPhoneNum
             },
             "success": function(data) {
@@ -77,7 +82,9 @@ var params = $.extend(true, {}, {
                     subwayName: e.subwayName,
                     schoolName: e.schoolName,
                     sellhouseCount: e.sellhouseCount,
-                    estateAddr: e.estateAddr
+                    estateAddr: e.estateAddr,
+                    latitude: e.latitude,
+                    longitude: e.longitude
                 };
 
                 var comments = e.comment && e.comment.commentList || [];
