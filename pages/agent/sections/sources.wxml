@@ -6,9 +6,9 @@
     <text>看看我推荐的好房源吧</text>
   </view>
   <view class="panel">
-    <view class="tabs" wx:if="{{recommendType === 3}}">
-      <view class="{{currentSourcesTab==='xf'?'on':''}}" data-tab="xf" bindtap="swapToTab">新房</view>
-      <view class="{{currentSourcesTab==='esf'?'on':''}} last" data-tab="esf" bindtap="swapToTab">二手房</view>   
+    <view class="tabs" wx:if="{{recommendType === 3}}">      
+      <view class="{{currentSourcesTab==='esf'?'on':''}}" data-tab="esf" bindtap="swapToTab">二手房</view>
+      <view class="{{currentSourcesTab==='xf'?'on':''}} last" data-tab="xf" bindtap="swapToTab">新房</view>  
     </view>
     <block wx:if="{{recommendType === 2}}">
       <scroll-view scroll-y="true" bindscrolltolower="loadMoreEsf">     

@@ -156,6 +156,12 @@ let params = $.extend(true , {} , detailFoot , {
     onShow : function() {
         //渲染页面
         this.render() ;
+    } ,
+    onShareAppMessage : function() {
+        return {
+            "title" : this.data.simpleAgentDetail.finalCompanyName + this.data.simpleAgentDetail.agentName ,
+            "path" : "/pages/agent/detail?agentId=" + this.data.simpleAgentDetail.agentId
+        }
     }
 }) ;
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
