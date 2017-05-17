@@ -8,7 +8,7 @@ var params = $.extend(true, {}, {
     data: {
         "qqMapKey": app.globalData.qqmapkey
     },
-    callEstateExpert: function() { //打电话给小区专家    
+    callEstateExpert: function(event) { //打电话给小区专家    
         wx.makePhoneCall({
             phoneNumber: this.data.agent && this.data.agent.agentMobile
         });              
@@ -20,11 +20,6 @@ var params = $.extend(true, {}, {
             name: this.data.estateInfo.estateName,
             address: this.data.estateInfo.estateAddr
         })
-    },
-    onShareAppMessage: function() {
-        return {
-            title: '买房卖房，找好经纪人就对了！'
-        }
     },
     onLoad: function(options) {
         /**
@@ -81,10 +76,8 @@ var params = $.extend(true, {}, {
                     developers: e.developers,
                     subwayName: e.subwayName,
                     schoolName: e.schoolName,
-                    sellhouseCount: e.sellhouseCount,
-                    estateAddr: e.estateAddr,
-                    latitude: e.latitude,
-                    longitude: e.longitude
+                    sameEstateHouseAmount: e.sameEstateHouseAmount,
+                    estateAddr: e.estateAddr
                 };
 
                 var comments = e.comment && e.comment.commentList || [];
