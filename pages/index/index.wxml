@@ -16,13 +16,13 @@
     </view>
   </view>
   <view class="buySell">
-      <navigator open-type="navigate" class="list" url="/pages/sell/index">
-        <view class="circular buyCircular"></view>
-        <view class="text">我要卖房</view>
-      </navigator>
       <navigator open-type="navigate" class="list" url="/pages/buy/index">
-        <view class="circular sellCircular"></view>
+        <view class="circular buyCircular"></view>
         <view class="text">我要买房</view>
+      </navigator>
+      <navigator open-type="navigate" class="list" url="/pages/sell/index">
+        <view class="circular sellCircular"></view>
+        <view class="text">我要卖房</view>
       </navigator>
   </view>
   <!-- 筛选-->

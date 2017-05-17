@@ -1,6 +1,7 @@
 const region = '区域';
 const sort = '综合排序';
 const more = '更多';
+wx.setStorageSync('regionname', '不限')
 wx.setStorageSync('defineDistrictAndTown', '');
 module.exports = {
   data: {
@@ -188,7 +189,9 @@ module.exports = {
           towns:[],//点击的左侧的“不限”，没有板块，就是空数组
           //districtAndTown:_this.data.geography.cityPinyin,//修改获取经纪人列表筛选条件 “区域” 状态
           districtAndTown:"",
-          pageIndex:0
+          pageIndex:0,
+          showIndex:-1,
+          isShowMask:false//遮罩消失
       })
       //获取经纪人
       _this.getAgentList(
@@ -239,18 +242,22 @@ module.exports = {
       districtAndTown:districtAndTown,//修改筛选经纪人列表状态
       pageIndex:0
     })
-      //获取经纪人
-      _this.getAgentList(
-          _this.data.geography.cityId,
-          _this.data.districtAndTown,
-          _this.data.orderType,
-          _this.data.selectLabel,
-          _this.data.pageIndex
-      ).then((agentList)=>{
-          _this.setData({
-              agentList:agentList
-          })
-      });
+    //获取经纪人
+    _this.getAgentList(
+        _this.data.geography.cityId,
+        _this.data.districtAndTown,
+        _this.data.orderType,
+        _this.data.selectLabel,
+        _this.data.pageIndex
+    ).then((agentList)=>{
+        _this.setData({
+            agentList:agentList
+        })
+    });
+    _this.setData({
+        showIndex:-1,
+        isShowMask:false,//遮罩消失
+    });
   },
   //点击综合排序
   tapSort(event){
@@ -272,6 +279,10 @@ module.exports = {
         _this.setData({
             agentList:agentList
         })
+    });
+    _this.setData({
+        showIndex:-1,
+        isShowMask:false,//遮罩消失
     });
   },
   //点击筛选更多
@@ -317,5 +328,9 @@ module.exports = {
           })
       });
     }
+    _this.setData({
+        showIndex:-1,
+        isShowMask:false,//遮罩消失
+    });
   }
 }
