@@ -120,7 +120,7 @@ var params = $.extend(true,{},{
                 isSending = false;
                 wx.showModal({
                     title: '提示',
-                    content: data.message,
+                    content: data.message || '评价失败，稍后重试',
                     showCancel: false
                 })
             }.bind(this)

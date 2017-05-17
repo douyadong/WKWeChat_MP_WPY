@@ -15,7 +15,7 @@
   </view>
   <view class="tags">
     <block wx:for="{{simpleAgentCommentTag.tags}}" wx:key="index">
-        <view><text class="{{item.type===2?'bad':''}}">{{item.label}}[{{item.count}}]</text></view>
+        <view><text class="{{item.type==='2'?'bad':''}}">{{item.label}}[{{item.count}}]</text></view>
     </block> 
   </view>
   <view class="rates">
