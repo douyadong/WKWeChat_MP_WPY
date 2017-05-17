@@ -42,10 +42,19 @@ let params = $.extend(true , {} , detailFoot , {
                 //给二手房和新房两个组件赋值，并将agentId带进去
                 result.xfSources = _.addAgentId(result.recommendNewHouseList) ;                 
                 result.esfSources = _.addAgentId(result.recommendOldHouseList) ; 
+                //判断熟悉商圈后面是否需要出...更多
+                let agentBizTownList = result.simpleAgentDetail.agentBizTownList || [] ;
+                agentBizTownList = agentBizTownList.join(",") ;
+                result.agentBizTownListExtendable = agentBizTownList && agentBizTownList.length > 16 ? true : false ;
+                result.simpleAgentDetail.shortAgentBizTownList = agentBizTownList.substr(0, 16) + "..." ;  
+                //判断自我介绍后面是否需要出...更多
+                let agentIntroduction = result.simpleAgentDetail.agentIntroduction || "" ;
+                result.agentIntroductionExtendable = agentIntroduction && agentIntroduction.length > 32 ? true : false ;
+                result.simpleAgentDetail.shortAgentIntroduction = agentIntroduction.substr(0, 32) + "..." ; 
                 //判断成交故事后面是否需要出...更多
                 let agentStory = result.simpleAgentDetail.agentStory || "" ;
-                result.agentStoryExtendable = agentStory && agentStory.length > 34 ? true : false ;
-                result.simpleAgentDetail.shortAgentStory = agentStory.substr(0, 34) + "..." ;                
+                result.agentStoryExtendable = agentStory && agentStory.length > 32 ? true : false ;
+                result.simpleAgentDetail.shortAgentStory = agentStory.substr(0, 32) + "..." ;                
                 //最后赋予模板变量
                 result.agentInfo = result.simpleAgentDetail ;
                 _.setData(result) ;
@@ -64,7 +73,19 @@ let params = $.extend(true , {} , detailFoot , {
       wx.navigateTo({
         url: url
       })  
-    },
+    } ,
+    /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    展开熟悉商圈的方法
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    extendAgentBizTownList : function() {
+        this.setData({ "agentBizTownListExtendable": false }) ;
+    } ,
+    /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    展开自我介绍的方法
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    extendAgentIntroduction : function() {
+        this.setData({ "agentIntroductionExtendable": false }) ;
+    } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     展开成交故事的方法
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
