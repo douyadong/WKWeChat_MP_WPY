@@ -41,16 +41,6 @@
                 <view class="describe" wx:if="{{list.row.describe == 2}}">板块</view>
                 <view class="describe" wx:if="{{list.row.describe == 3}}">小区</view>
             </navigator>
-            <!--
-            <view class="regionList {{regionList.length-1 == index ? 'lastList':''}}"> 
-                <view class="title">
-                    <text wx:for="{{list.glList}}" wx:for-item="li" wx:for-index="i" wx:key="i" class="{{li.isgl ? 'highlight':''}}">{{li.text}}</text>
-                </view>
-                <view class="describe" wx:if="{{list.row.describe == 1}}">行政区</view>
-                <view class="describe" wx:if="{{list.row.describe == 2}}">板块</view>
-                <view class="describe" wx:if="{{list.row.describe == 3}}">小区</view>
-            </view>
-            -->
         </block>
     </view>
 </view>
