@@ -422,6 +422,7 @@ Page({
     let _this = this
     if (options.returnUrl != null && options.returnUrl != '') {
       let returnUrl = decodeURIComponent(options.returnUrl)
+      let type=options.type 
       _this.setData({
         returnUrl: returnUrl,
         type: type
