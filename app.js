@@ -42,7 +42,10 @@ App({
     var userInfo = wx.getStorageSync('userInfo')
     if (!userInfo) {
       // 当前页的地址
-      returnUrl = returnUrl || '/' + this.getCurrentPage().__route__
+      if(!returnUrl){
+        type="navigateBack";
+      }
+      //returnUrl = returnUrl || '/' + this.getCurrentPage().__route__
       returnUrl = encodeURIComponent(returnUrl)
       if (!needRedirect) {
         return false; }

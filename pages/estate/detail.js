@@ -8,10 +8,10 @@ var params = $.extend(true, {}, {
     data: {
         "qqMapKey": app.globalData.qqmapkey
     },
-    callEstateExpert: function() { //打电话给小区专家    
+    callEstateExpert: function(event) { //打电话给小区专家    
         wx.makePhoneCall({
             phoneNumber: this.data.agent && this.data.agent.agentMobile
-        });
+        });              
     } ,
     openLocation: function() {
         wx.openLocation({
@@ -21,15 +21,10 @@ var params = $.extend(true, {}, {
             address: this.data.estateInfo.estateAddr
         })
     },
-    onShareAppMessage: function() {
-        return {
-            title: '买房卖房，找好经纪人就对了！'
-        }
-    },
     onLoad: function(options) {
         /**
-         * options中需要有subEstateId和agentId
-         */
+        * options中需要有subEstateId和agentId
+        */
         let userInfo = wx.getStorageSync('userInfo');
         let guestPhoneNum = userInfo && userInfo.mobile || '';
         options.guestPhoneNum = guestPhoneNum;
@@ -48,13 +43,13 @@ var params = $.extend(true, {}, {
     },
     getEstateInfo: function() { //获取小区详情
         var that = this;
-        request.fetch({
+        request.fetch({                     
             "showLoading": true,
             "module": "estate",
             "action": "detail",
             "data": {
                 subEstateId: that.data.subEstateId,
-                agentId: that.data.agentId,
+                //agentId:that.data.agentId,
                 guestPhoneNum: that.data.guestPhoneNum
             },
             "success": function(data) {
@@ -81,10 +76,8 @@ var params = $.extend(true, {}, {
                     developers: e.developers,
                     subwayName: e.subwayName,
                     schoolName: e.schoolName,
-                    sellhouseCount: e.sellhouseCount,
-                    estateAddr: e.estateAddr,
-                    latitude: e.latitude,
-                    longitude: e.longitude
+                    sameEstateHouseAmount: e.sameEstateHouseAmount,
+                    estateAddr: e.estateAddr
                 };
 
                 var comments = e.comment && e.comment.commentList || [];
@@ -101,7 +94,8 @@ var params = $.extend(true, {}, {
                     estateInfo,
                     comments,
                     commentsCount: e.comment && e.comment.amount || 0,
-                    imgUrls
+                    imgUrls,
+                    agent
                 });
 
                 wx.setNavigationBarTitle({

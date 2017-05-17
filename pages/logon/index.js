@@ -78,6 +78,7 @@ var getVerificationCode = function (phone, codeType) {
       mock: !true,
       module: 'logon',
       action: 'generateIdentifyCode',
+      showLoading: false,
       data: {
         phone: phone,
         codeType: codeType
@@ -304,9 +305,7 @@ Page({
             url: _this.data.returnUrl
           })
         }else {
-          wx.navigateBack({
-            url: _this.data.returnUrl
-          })
+          wx.navigateBack()
         }
       }else {
         app.showTips('登录失败，重新登录')
@@ -422,10 +421,15 @@ Page({
     let _this = this
     if (options.returnUrl != null && options.returnUrl != '') {
       let returnUrl = decodeURIComponent(options.returnUrl)
+      let type=options.type 
       _this.setData({
         returnUrl: returnUrl,
         type: type
       })
+    }else{
+      _this.setData({
+        type:"navigateBack"
+      });
     }
 
     // 1.页面初始化，读取Storage,获取用户登录信息，判断微信用户是否为空

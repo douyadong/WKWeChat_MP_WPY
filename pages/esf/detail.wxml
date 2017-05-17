@@ -159,7 +159,7 @@
         </navigator>
     </view>
     <!--在售房源-->
-    <navigator hidden="{{sourceType=='esfList' ? true : false}}" url="{{sameEstateHouseAmount > 0 ?'/pages/esf/list?subEstateId='+subEstateId+'&type=2&agentId='+agentId:''}}" class="house-link ">
+    <navigator hidden="{{sourceType=='esfList'|| sameEstateHouseAmount == 0 ? true : false}}" url="/pages/esf/list?subEstateId={{subEstateId}}&type=2&agentId={{agentId}}" class="house-link ">
         <view class="panel-hd">
             <view class="head">在售房源</view>
             <view class="assistant">
@@ -172,7 +172,7 @@
     <navigator url="{{commentsCount>0?'/pages/comment/list?subEstateId='+subEstateId:''}}" class="house-link ">
         <view class="panel-hd">
             <view class="head">用户评价</view>
-            <view class="assistant">
+            <view class="assistant" hidden="{{commentsCount>0 ? false:true}}">
                 <text>{{commentsCount}}</text>
                 <text class="iconfont icon-arrow-r"></text>
             </view>

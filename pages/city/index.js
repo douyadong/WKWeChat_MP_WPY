@@ -78,9 +78,9 @@ let main = {
         success:function(data){
             let cityList = data.data;
             for(let i=0;i<cityList.length;i++){
-                if(cityList[i].china){//国内
+                if(cityList[i].china && cityList[i].oldBusiness){//国内
                   domesticCitys.push(cityList[i]);
-                }else{//国际
+                }else if(cityList[i].oldBusiness){//国际
                   InternationalCitys.push(cityList[i]);
                 }
             }
