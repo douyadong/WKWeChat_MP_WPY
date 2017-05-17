@@ -272,23 +272,23 @@ let main = {
     _this.setData({
         pageIndex:pageIndex
     })
-    //获取经纪人列表
+    //获取经纪人
     _this.getAgentList(
-      _this.data.geography.cityId,
-      _this.data.districtAndTown,
-      _this.data.orderType,
-      _this.data.selectLabel,
-      _this.data.pageIndex,
-      function (agentList) {
+        _this.data.geography.cityId,
+        _this.data.districtAndTown,
+        _this.data.orderType,
+        _this.data.selectLabel,
+        _this.data.pageIndex
+    ).then((agentList)=>{
         let oldAgentList = _this.data.agentList;
         for(let i=0;i<agentList.length;i++){
           oldAgentList.push(agentList[i]);
         }
+        console.log(agentList);
         _this.setData({
             agentList:oldAgentList
         })
-      }
-    );
+    });
   }
 }
 Page(_.extend(true,main, filterAgentList))

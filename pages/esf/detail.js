@@ -9,8 +9,8 @@ var app = getApp();
 var params = $.extend(true, {}, {
     data: {
         isCollapsed: true, //基本信息收起
-        "qqMapKey":app.globalData.qqmapkey,
-        "openType":"redirect"
+        "qqMapKey": app.globalData.qqmapkey,
+        "openType": "redirect"
     },
     toggleMoreBasicInfo: function() { //基本信息展开和收起        
         this.setData({
@@ -25,15 +25,20 @@ var params = $.extend(true, {}, {
             address: this.data.estateAddr
         })
     },
-    jump:function(event){
-      let url = event.currentTarget.dataset.url;
-      app.isLogin(true, url);
-      wx.navigateTo({
-        url: url
-      })      
+    jump: function(event) {
+        let url = event.currentTarget.dataset.url;
+        app.isLogin(true, url);
+        wx.navigateTo({
+            url: url
+        })
+    },
+    onShareAppMessage: function() {
+        return {
+            title: '买房卖房，找好经纪人就对了！'
+        }
     },
     getDetail: function() { //获取二手房详情
-        var that = this;      
+        var that = this;
         request.fetch({
             //mock:true,
             "showLoading": true,
@@ -53,11 +58,9 @@ var params = $.extend(true, {}, {
                 fields.forEach(function(item) {
                     newData[item] = h[item];
                 });
-                fields = ['estateId', 'subEstateId', 'estateName', 'subwayName', 'schoolName', 'completedStr', 'totalHouseCount', 'estateAddr', 'sameEstateHouseAmount', 'longitude', 'latitude','estateImgUrl'];
+                fields = ['estateId', 'subEstateId', 'estateName', 'subwayName', 'schoolName', 'completedStr', 'totalHouseCount', 'estateAddr', 'sameEstateHouseAmount', 'longitude', 'latitude', 'estateImgUrl'];
                 fields.forEach(function(item) {
-                    if (item != 'latitude' && item != 'longitude') {
-                        newData[item] = e[item];
-                    }
+                    newData[item] = e[item];
                 });
                 /********百度地图坐标转腾讯地图坐标************/
                 app.getQQMapLocation(e.latitude, e.longitude, function(res) {
@@ -93,10 +96,10 @@ var params = $.extend(true, {}, {
                 newData.esfSources = [];
                 if (data.data.sameTownHouseList) { //相似房源列表
                     newData.esfSources = data.data.sameTownHouseList || []; //相似房源列表
-                    newData.esfSources.forEach(function(element){
-                        element.agentId = that.data.agentId ;
-                    }) ;
-                    
+                    newData.esfSources.forEach(function(element) {
+                        element.agentId = that.data.agentId;
+                    });
+
                 }
 
                 if (a) { //经纪人信息

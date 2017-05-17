@@ -2,7 +2,7 @@
 <view class="panel comments">
  <view class="panel-hd">
     <view class="head">用户评论</view>
-    <navigator class="assistant" url="/pages/comment/list?subEstateId={{subEstateId}}">
+    <navigator class="assistant" hidden="{{commentsCount>0 ? false:true}}" url="/pages/comment/list?subEstateId={{subEstateId}}">
       <text>{{commentsCount}}</text>
       <text class="iconfont icon-arrow-r"></text>
     </navigator>

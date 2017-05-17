@@ -21,6 +21,11 @@ var params = $.extend(true, {}, {
             address: this.data.estateInfo.estateAddr
         })
     },
+    onShareAppMessage: function() {
+        return {
+            title: '买房卖房，找好经纪人就对了！'
+        }
+    },
     onLoad: function(options) {
         /**
         * options中需要有subEstateId和agentId
@@ -77,7 +82,9 @@ var params = $.extend(true, {}, {
                     subwayName: e.subwayName,
                     schoolName: e.schoolName,
                     sellhouseCount: e.sellhouseCount,
-                    estateAddr: e.estateAddr
+                    estateAddr: e.estateAddr,
+                    latitude: e.latitude,
+                    longitude: e.longitude
                 };
 
                 var comments = e.comment && e.comment.commentList || [];

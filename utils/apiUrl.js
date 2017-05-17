@@ -2,9 +2,8 @@
  * @desc:统一定义请求接口地址
  */
 
-//const domain = "https://m.wkzf.com" ;
-//const domain = "http://10.0.90.39:8118"
-const domain = "https://minapp-sim.yfyk365.com";
+//const domain = "https://minapp-sim.yfyk365.com" ;
+const domain = "https://minapp-test.yfyk365.com";
 
 const url = {
   "agent" : {
