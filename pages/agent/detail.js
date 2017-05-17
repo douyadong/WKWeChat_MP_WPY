@@ -45,8 +45,8 @@ let params = $.extend(true , {} , detailFoot , {
                 let finalCompanyName = abbreviation ? abbreviation : ( companyName ? companyName : "") ;
                 result.simpleAgentDetail.finalCompanyName = finalCompanyName ;
                 //给二手房和新房两个组件赋值，并将agentId带进去
-                result.xfSources = _.addAgentId(result.recommendNewHouseList) ;                 
-                result.esfSources = _.addAgentId(result.recommendOldHouseList) ; 
+                result.xfSources = _.mapSource(result.recommendNewHouseList) ;                 
+                result.esfSources = _.mapSource(result.recommendOldHouseList) ; 
                 //判断熟悉商圈后面是否需要出...更多
                 let agentBizTownList = result.simpleAgentDetail.agentBizTownList || [] ;
                 agentBizTownList = agentBizTownList.join(",") ;
@@ -119,7 +119,7 @@ let params = $.extend(true , {} , detailFoot , {
                 }
                 let result = _.data.esfSources ;
                 if(res.data && res.data.length) {
-                    result = result.concat(_.addAgentId(res.data)) ;  
+                    result = result.concat(_.mapSource(res.data)) ;  
                      _.setData({ "esfSources" : result , "loadError" : false }) ;     
                 }
                 else _.setData({ "isNoData" : true }) ;                    
@@ -133,13 +133,19 @@ let params = $.extend(true , {} , detailFoot , {
 
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    把agentId加到房源数据中去的方法
+    对于房源数据的处理：
+    1. 把agentId加到房源数据中去的方法
+    2. 新房价格为0时显示为待定
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-    addAgentId : function(sources) {
+    mapSource : function(sources) {
         if(!sources) return sources ;
         let _ = this ;        
         sources.forEach(function(element){
             element.agentId = _.data.pageParams.agentId ;
+            if ( element.avgPriceWou !== undefined ) {
+                let originalPrice = element.avgPriceWou ;
+                element.avgPriceWou = ( ! originalPrice || parseInt( originalPrice , 10 ) === 0 ) ? "价格待定" : originalPrice + "元/㎡" ;
+            }            
         }) ;
         return sources ;
     } ,
