@@ -1,7 +1,8 @@
 const region = '区域';
 const sort = '综合排序';
 const more = '更多';
-
+wx.setStorageSync('regionname', '不限')
+wx.setStorageSync('defineDistrictAndTown', '');
 module.exports = {
   data: {
     screen_region:region,
@@ -188,7 +189,9 @@ module.exports = {
           towns:[],//点击的左侧的“不限”，没有板块，就是空数组
           //districtAndTown:_this.data.geography.cityPinyin,//修改获取经纪人列表筛选条件 “区域” 状态
           districtAndTown:"",
-          pageIndex:0
+          pageIndex:0,
+          showIndex:-1,
+          isShowMask:false//遮罩消失
       })
       //获取经纪人
       _this.getAgentList(
@@ -202,6 +205,13 @@ module.exports = {
               agentList:agentList
           })
       });
+    }else{
+    //不是不限
+        _this.setData({
+              districtAndTown:event.currentTarget.dataset.pinyin
+        })
+        wx.setStorageSync('defineDistrictAndTown', event.currentTarget.dataset.pinyin)
+        wx.setStorageSync('regionname', event.currentTarget.dataset.regionname)
     }
     for(let i=0;i<plateList.length;i++){
       if(plateList[i].id == id){//点击的不是“不限”，是区域
@@ -214,24 +224,40 @@ module.exports = {
   //点击右边板块
   plateList(event){
     let _this = this;
+    let id = parseInt(event.target.id);//当前点击id
+    let districtAndTown = '';
+    if(id == -1){//不限
+         districtAndTown = wx.getStorageSync('defineDistrictAndTown');
+         _this.setData({
+            screen_region:wx.getStorageSync('regionname')
+        })
+    }else{
+        districtAndTown =  wx.getStorageSync('defineDistrictAndTown')+'-'+event.currentTarget.dataset.pinyin;
+        _this.setData({
+            screen_region:event.currentTarget.dataset.platename
+        })
+    }
     _this.setData({
-      plateActionId:event.target.id,
-      screen_region:event.currentTarget.dataset.platename,
-      districtAndTown:event.currentTarget.dataset.pinyin,//修改筛选经纪人列表状态
+      plateActionId:id,
+      districtAndTown:districtAndTown,//修改筛选经纪人列表状态
       pageIndex:0
     })
-      //获取经纪人
-      _this.getAgentList(
-          _this.data.geography.cityId,
-          _this.data.districtAndTown,
-          _this.data.orderType,
-          _this.data.selectLabel,
-          _this.data.pageIndex
-      ).then((agentList)=>{
-          _this.setData({
-              agentList:agentList
-          })
-      });
+    //获取经纪人
+    _this.getAgentList(
+        _this.data.geography.cityId,
+        _this.data.districtAndTown,
+        _this.data.orderType,
+        _this.data.selectLabel,
+        _this.data.pageIndex
+    ).then((agentList)=>{
+        _this.setData({
+            agentList:agentList
+        })
+    });
+    _this.setData({
+        showIndex:-1,
+        isShowMask:false,//遮罩消失
+    });
   },
   //点击综合排序
   tapSort(event){
@@ -253,6 +279,10 @@ module.exports = {
         _this.setData({
             agentList:agentList
         })
+    });
+    _this.setData({
+        showIndex:-1,
+        isShowMask:false,//遮罩消失
     });
   },
   //点击筛选更多
@@ -298,5 +328,9 @@ module.exports = {
           })
       });
     }
+    _this.setData({
+        showIndex:-1,
+        isShowMask:false,//遮罩消失
+    });
   }
 }
