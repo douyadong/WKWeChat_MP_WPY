@@ -16,14 +16,14 @@
     </view>
   </view>
   <view class="buySell">
-      <view class="list">
+      <navigator class="list" url="/pages/sell/index">
         <view class="circular buyCircular"></view>
-        <navigator url="/pages/sell/index" class="text">我要卖房</navigator>
-      </view>
-      <view class="list">
+        <view class="text">我要卖房</view>
+      </navigator>
+      <navigator class="list" url="/pages/buy/index">
         <view class="circular sellCircular"></view>
-        <navigator url="/pages/buy/index" class="text">我要买房</navigator>
-      </view>
+        <view class="text">我要买房</view>
+      </navigator>
   </view>
   <!-- 筛选-->
   <include src="filterAgentList/filterAgentList.wxml"/>
