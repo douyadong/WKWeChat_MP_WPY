@@ -428,5 +428,11 @@ Page({
         }
       }
     })
+  },
+  onShareAppMessage: function () {
+    return {
+      'title': '我要买房',
+      'path': '/pages/buy/index'
+    }
   }
 })
