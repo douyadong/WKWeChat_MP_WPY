@@ -2,28 +2,27 @@ var request = require('../../utils/request.js');
 var $ = require('../../utils/extend.js');
 var houseComment = require('../components/house-comment.js');
 
-var requestData = {},
-    isLoading = false,
-    offset = 0;
-
 var params = $.extend(true,{},{
     data: {
         comments: [],
         isLoading:false,
         isNoData:false
     },
+    offset:0,
+    isLoading:false,
+    requestData:{},
     onLoad: function(option) {
 
         var mobile =  wx.getStorageSync('userInfo');
             mobile = mobile && mobile.mobile || '';
             
-        requestData = $.extend(true,{},{
-            offset:offset,
+        this.requestData = $.extend(true,{},{
+            offset:this.offset,
             guestPhoneNum:mobile
         },option);
 
         request.fetch({
-            data:requestData,
+            data:this.requestData,
             module:'comment',
             action:'list',
             success:function(data){
@@ -39,13 +38,13 @@ var params = $.extend(true,{},{
         })
     },
     loadMore:function() {
-        if(isLoading || this.data.isNoData)return;
-        isLoading = true;
-        offset++;
-        requestData.offset = offset*10;
+        if(this.isLoading || this.data.isNoData)return;
+        this.isLoading = true;
+        this.offset++;
+        this.requestData.offset = this.offset*10;
         
         request.fetch({
-            data:requestData,
+            data:this.requestData,
             module:'comment',
             action:'list',
             showLoading:true,
@@ -61,7 +60,7 @@ var params = $.extend(true,{},{
                         })
                     }
                     setTimeout(function(){
-                        isLoading= false;
+                        this.isLoading= false;
                     }.bind(this),200)
                 }
             }.bind(this),
@@ -75,7 +74,7 @@ var params = $.extend(true,{},{
         })
     },
     bindErrorBtn:function(){
-        isLoading=false;
+        this.isLoading=false;
         this.loadMore();
     }
 },houseComment);
