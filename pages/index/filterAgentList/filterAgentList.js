@@ -1,6 +1,6 @@
 const region = '区域';
 const sort = '综合排序';
-const more = '更多';
+const more = '筛选';
 wx.setStorageSync('regionname', '不限')
 wx.setStorageSync('defineDistrictAndTown', '');
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
     screen_sort:sort,
     screen_more:more,
     //设置页面默认可以滚动
-    isScroll:false,
+    isScroll:true,
     //点击筛选，设置三角行旋转
     isRotate0:false,
     isRotate1:false,
@@ -76,7 +76,7 @@ module.exports = {
     let actionIndex = parseInt(event.currentTarget.dataset.index);
     //this.actionIndex = actionIndex;
     this.setData({
-      isScroll:true
+      isScroll:false
     })
     if(actionIndex == 0){//区域
       this.setData({
@@ -148,7 +148,7 @@ module.exports = {
   hideMaskBox(event){
     this.setData({
         isShowMask:false,
-        isScroll:false,
+        isScroll:true,
         showIndex:-1
     })
     //判断是否选择了区域筛选条件
@@ -191,6 +191,7 @@ module.exports = {
           districtAndTown:"",
           pageIndex:0,
           showIndex:-1,
+          isScroll:true,
           isShowMask:false//遮罩消失
       })
       //获取经纪人
@@ -257,6 +258,7 @@ module.exports = {
     _this.setData({
         showIndex:-1,
         isShowMask:false,//遮罩消失
+        isScroll:true
     });
   },
   //点击综合排序
@@ -283,6 +285,7 @@ module.exports = {
     _this.setData({
         showIndex:-1,
         isShowMask:false,//遮罩消失
+        isScroll:true
     });
   },
   //点击筛选更多
@@ -331,6 +334,7 @@ module.exports = {
     _this.setData({
         showIndex:-1,
         isShowMask:false,//遮罩消失
+        isScroll:true
     });
   }
 }

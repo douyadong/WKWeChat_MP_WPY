@@ -36,7 +36,7 @@
     "backgroundColor": "#f0f0f0",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "悟空找房+",
+    "navigationBarTitleText": "悟空找房",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": false
   },

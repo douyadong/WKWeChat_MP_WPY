@@ -6,7 +6,7 @@
       <view class="param title">{{source.estateName}}</view>
       <view class="param fit-height">
         <text>{{source.startSpace}} - {{source.endSpace}}</text>
-        <text class="price">{{source.avgPriceWou}}元/㎡</text>
+        <text class="price">{{source.avgPriceWou}}</text>
       </view>
       <view class="param">{{source.districtName}} {{source.townName}}</view>
       <view class="param tags">

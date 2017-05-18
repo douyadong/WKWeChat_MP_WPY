@@ -156,6 +156,7 @@ let main = {
       let newList = [];
       for(let i=0;i<list.length;i++){
           newList.push({
+                pinyin:list[i].pinyin,
                 text:list[i].displayStr,
                 key:_this.data.key,
                 describe:list[i].associationOrder,
