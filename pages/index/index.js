@@ -384,6 +384,12 @@ let main = {
         }
       })
     }
+  },
+  onShareAppMessage(){
+      return {
+        title: '买房卖房，找好经纪人就对了',
+        path: '/page/index/index'
+      }
   }
 }
 Page(_.extend(true,main, filterAgentList))
