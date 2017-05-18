@@ -1,10 +1,6 @@
 var request = require('../../utils/request.js');
 var $ = require('../../utils/extend.js');
 
-var initData = {},
-	isLoading = false,
-    pageIndex = 0;
-
 var params = {
 	data: {
 		isLoading:false,//是否正在加载中
@@ -12,9 +8,9 @@ var params = {
         loadError:false
 	},
 	onLoad: function(option) {
-		initData = $.extend(true,{},{pageIndex:pageIndex,pageSize:20},option);
+		this.initData = $.extend(true,{},{pageIndex:this.pageIndex,pageSize:20},option);
         request.fetch({
-            data:initData,
+            data:this.initData,
             module:'agent',
             action:'rateList',
             success:function(data){
@@ -36,15 +32,15 @@ var params = {
         })
 	},
 	loadMore:function(){
-		if(isLoading || this.data.isNoData)return;
-        isLoading = true;
+		if(this.isLoading || this.data.isNoData)return;
+        this.isLoading = true;
 
-        pageIndex++;
+        this.pageIndex++;
 
-        initData.pageIndex = pageIndex*20;
+        this.initData.pageIndex = this.pageIndex*20;
         
         request.fetch({
-            data:initData,
+            data:this.initData,
             module:'agent',
             action:'moreList',
             showLoading:true,
@@ -60,12 +56,12 @@ var params = {
                         })
                     }
                     setTimeout(function(){
-                        isLoading= false;
+                        this.isLoading= false;
                     }.bind(this),200)
                 }
             }.bind(this),
             fail:function(){
-                pageIndex--;
+                this.pageIndex--;
                 this.setData({
                     "loadError":true
                 })
@@ -74,13 +70,13 @@ var params = {
         })
 	},
     bindErrorBtn:function(){
-        isLoading=false;
+        this.isLoading=false;
         this.loadMore();
     },
     onShareAppMessage() {
         return {
             title: '买房卖房，找好经纪人就对了',
-            path: '/pages/agent/rateList?agentId='+initData.agentId
+            path: '/pages/agent/rateList?agentId='+this.initData.agentId
         }
     }
 };

@@ -65,7 +65,7 @@ var params = $.extend(true,{},{
                 }
             }.bind(this),
             error:function(){
-                pageIndex--;
+                this.offset--;
                 this.setData({
                     "loadError":true
                 })
