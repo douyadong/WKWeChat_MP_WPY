@@ -6,7 +6,7 @@
   <view class="panel-bd lr-padding house-comments">
     <template is="house-comment" data="{{comments}}" />  
     <view class="btn-group">
-      <view bindtap="gotoComment" data-url="/pages/comment/write?subEstateId={{subEstateId}}&commentLocation=2" class="button gray">我来点评</view>
+      <view bindtap="gotoComment" data-url="/pages/comment/write?subEstateId={{newHouseDetail.id}}&commentLocation=2" class="button gray">我来点评</view>
     </view>
   </view>
 </view>
