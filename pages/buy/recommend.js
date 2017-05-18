@@ -226,7 +226,7 @@ Page({
     }
   },
   handleRedirect: function (e) {
-    wx.navigateTo({url: e.currentTarget.dataset.url})
+    wx.redirectTo({url: e.currentTarget.dataset.url})
   },
   backToHomePage: function () {
     wx.reLaunch({
