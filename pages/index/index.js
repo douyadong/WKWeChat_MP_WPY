@@ -124,6 +124,32 @@ var getAgentList = function(cityId,districtAndTown,orderType,selectLabel,pageInd
   })
 }
 
+//添加微信用户到公司数据库
+var addOpenUser = function (encryptedData,iv,code) {
+    return new Promise(function (resolve, reject) {
+        request.fetch({
+            mock:!true,
+            module:'logon',
+            action:'addOpenUser',
+            data:{
+                encryptedData:encryptedData,
+                iv:iv,
+                code:code
+            },
+            success:function(data){
+                if(data.status.toString() == "1"){
+                    resolve("添加用户信息成功");
+                }else{
+                    resolve("添加用户信息失败");
+                }
+            },
+            fail:function (params) {
+                resolve("添加用户信息失败");
+            }
+        });
+    })
+}
+                
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //获取应用实例
@@ -184,15 +210,21 @@ let main = {
   getUserInfo(){
       var that = this
       wx.login({
-        success: function () {
+        success: function (res) {
+          let code = res.code;
+          console.log(code);
           wx.getUserInfo({
             withCredentials:true,
             success: function (res) {
-              wx.setStorage({
-                key:"userAuthorizedInfo",
-                data:res
-              })
-            }
+                console.log(res);
+                wx.setStorage({
+                    key:"userAuthorizedInfo",
+                    data:res
+                })
+                addOpenUser(res.encryptedData,res.iv,code).then((data)=>{
+                    console.log(data);
+                });
+             }
           })
         }
       })

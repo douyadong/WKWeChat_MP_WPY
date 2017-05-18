@@ -42,6 +42,11 @@ Page({
     onShow: function() {
 
     },
+     onShareAppMessage: function() {
+        return {
+            title: '买房卖房，找好经纪人就对了！'
+        }
+    },
     getHouses: function() {
         if (this.data.loading) {
             return;

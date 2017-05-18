@@ -33,4 +33,6 @@
   <view class="agentListBox">
       <include src="agentList/agentList.wxml"/>
   </view>
+  <!--清空条件-->
+  <view class="empty" wx:if="{{agentList.length == 0}}" bindtap="empty">清除条件</view>
 </scroll-view>
