@@ -305,9 +305,7 @@ Page({
             url: _this.data.returnUrl
           })
         }else {
-          wx.navigateBack({
-            url: _this.data.returnUrl
-          })
+          wx.navigateBack()
         }
       }else {
         app.showTips('登录失败，重新登录')
@@ -428,6 +426,10 @@ Page({
         returnUrl: returnUrl,
         type: type
       })
+    }else{
+      _this.setData({
+        type:"navigateBack"
+      });
     }
 
     // 1.页面初始化，读取Storage,获取用户登录信息，判断微信用户是否为空

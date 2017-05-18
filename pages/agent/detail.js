@@ -45,8 +45,8 @@ let params = $.extend(true , {} , detailFoot , {
                 let finalCompanyName = abbreviation ? abbreviation : ( companyName ? companyName : "") ;
                 result.simpleAgentDetail.finalCompanyName = finalCompanyName ;
                 //给二手房和新房两个组件赋值，并将agentId带进去
-                result.xfSources = _.addAgentId(result.recommendNewHouseList) ;                 
-                result.esfSources = _.addAgentId(result.recommendOldHouseList) ; 
+                result.xfSources = _.mapSource(result.recommendNewHouseList) ;                 
+                result.esfSources = _.mapSource(result.recommendOldHouseList) ; 
                 //判断熟悉商圈后面是否需要出...更多
                 let agentBizTownList = result.simpleAgentDetail.agentBizTownList || [] ;
                 agentBizTownList = agentBizTownList.join(",") ;
@@ -119,7 +119,7 @@ let params = $.extend(true , {} , detailFoot , {
                 }
                 let result = _.data.esfSources ;
                 if(res.data && res.data.length) {
-                    result = result.concat(_.addAgentId(res.data)) ;  
+                    result = result.concat(_.mapSource(res.data)) ;  
                      _.setData({ "esfSources" : result , "loadError" : false }) ;     
                 }
                 else _.setData({ "isNoData" : true }) ;                    
@@ -133,24 +133,41 @@ let params = $.extend(true , {} , detailFoot , {
 
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    把agentId加到房源数据中去的方法
+    对于房源数据的处理：
+    1. 把agentId加到房源数据中去的方法
+    2. 新房价格为0时显示为待定
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-    addAgentId : function(sources) {
+    mapSource : function(sources) {
         if(!sources) return sources ;
         let _ = this ;        
         sources.forEach(function(element){
             element.agentId = _.data.pageParams.agentId ;
+            if ( element.avgPriceWou !== undefined ) {
+                let originalPrice = element.avgPriceWou ;
+                element.avgPriceWou = ( ! originalPrice || parseInt( originalPrice , 10 ) === 0 ) ? "价格待定" : originalPrice + "元/㎡" ;
+            }            
         }) ;
         return sources ;
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     页面加载完触发
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-     onLoad : function(options) {        
+    onLoad : function(options) {        
         //把页面参数保存到页面数据中
-        this.setData({ "pageParams" : options }) ;
+        this.setData({ "pageParams" : options }) ;        
+    } ,
+    /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    页面显示完触发
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    onShow : function() {
         //渲染页面
         this.render() ;
+    } ,
+    onShareAppMessage : function() {
+        return {
+            "title" : this.data.simpleAgentDetail.finalCompanyName + this.data.simpleAgentDetail.agentName ,
+            "path" : "/pages/agent/detail?agentId=" + this.data.simpleAgentDetail.agentId
+        }
     }
 }) ;
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
