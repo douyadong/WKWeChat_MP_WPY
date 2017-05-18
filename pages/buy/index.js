@@ -219,7 +219,7 @@ Page({
     let that = this
 
     this.data.houseTypes.forEach(item => {
-      if (item.id == bedRoomSum) {
+      if (item.id == bedRoomSum.toString()) {
         that.data.currentHouseType = item
         wx.setStorageSync('buy_houseType', item.id)
         that.setData({'currentHouseType': that.data.currentHouseType})
