@@ -14,6 +14,11 @@ Page({
 
         this.getAgentInfo();
     },
+    onShareAppMessage: function() {
+        return {
+            title: '买房卖房，找好经纪人就对了！'
+        }
+    },
     getAgentInfo: function () {
         var that = this;
         if (this.data.agentId) {

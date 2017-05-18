@@ -34,6 +34,11 @@ var params = $.extend(true, {}, {
     onShow: function() {
         this.getEstateInfo();
     },
+    onShareAppMessage: function() {
+        return {
+            title: '买房卖房，找好经纪人就对了！'
+        }
+    },
     gotoComment: function(event) {
         let url = event.currentTarget.dataset.url;
         app.isLogin(true, url);

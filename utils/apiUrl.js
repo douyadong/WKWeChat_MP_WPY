@@ -20,6 +20,9 @@ const url = {
     "add" : "/addInterestRecord.rest" ,
     "edit" : "/wxmpInterest/addOrUpdateIntentionAndGetAgentList.rest" 
   } ,
+  "components":{
+    "callAgent":"/wxmpCall/getAgentDial.rest"
+  },
   "estate" : {
     "zan" : "/wxmpEstate/upOrDownEstateComment.rest" ,
     "detail" : "/wxmpEstate/estateDetail.rest" ,

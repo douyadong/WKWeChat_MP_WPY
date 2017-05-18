@@ -143,12 +143,12 @@ var addOpenUser = function (encryptedData,iv,code) {
                     resolve("添加用户信息成功");
                 }else{
                     resolve("添加用户信息失败");
-                    onsole.log("添加用户信息失败");
+                    console.log("添加用户信息失败");
                 }
             },
             fail:function (params) {
                 resolve("添加用户信息失败");
-                onsole.log("添加用户信息失败");
+                console.log("添加用户信息失败");
             }
         });
     })
@@ -213,13 +213,7 @@ let main = {
   //获取用户信息
   getUserInfo(){
       var that = this
-      let userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
-      if(userAuthorizedInfo != ''){//已授权，
-          console.log("已授权");
-          return
-      }else{
-          console.log("未授权");
-      }
+      //let userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       wx.login({
         success: function (res) {
           let code = res.code;
@@ -227,11 +221,14 @@ let main = {
           wx.getUserInfo({
             withCredentials:true,
             success: function (res) {
-                console.log(res);
                 wx.setStorageSync('userAuthorizedInfo', res)
+                //添加
                 addOpenUser(res.encryptedData,res.iv,code).then((data)=>{
                     console.log(data);
                 });
+             },
+             fail:function (params) {
+                 console.log("获取用户授权信息失败");
              }
           })
         }
@@ -353,20 +350,40 @@ let main = {
         });
     }
   },
-  goBuy(e){
-      let url=e.currentTarget.dataset.url;
+  goBuy(e) {
+    let url = e.currentTarget.dataset.url
 
-      //未登录跳转至 /pages/buy/index
-      if(!app.isLogin(false)){
-        wx.navigateTo({
-            url:'/pages/buy/index'
-        })
-      }
-      else{
-         wx.navigateTo({
-            url:'/pages/buy/recommend'
-        })
-      }
+    // 未登录跳转至 /pages/buy/index
+    if (!app.isLogin(false)) {
+      wx.navigateTo({
+        url: '/pages/buy/index'
+      })
+    }else {
+      let cityId = wx.getStorageSync('geography').cityId
+      let guestId = wx.getStorageSync('userInfo').guestId
+
+      request.fetch({
+        'module': 'buy',
+        'action': 'getDetails',
+        'data': {
+          'guestId': guestId,
+          'cityId': cityId
+        },
+        'showBarLoading': false,
+        'showLoading': false,
+        success: function (res) {
+          if (res.data && res.data.orderAgentIdList && res.data.orderAgentIdList.length) {
+            wx.navigateTo({
+              url: '/pages/buy/recommend'
+            })
+          }else {
+            wx.navigateTo({
+              url: '/pages/buy/index'
+            })
+          }
+        }
+      })
+    }
   }
 }
 Page(_.extend(true,main, filterAgentList))

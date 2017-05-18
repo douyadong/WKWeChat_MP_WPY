@@ -110,11 +110,11 @@
         </view>
         <view class="item">
             <text class="caption">业主心态</text>
-            <text>ownerMotivation</text>
+            <text>{{ownerMotivation}}</text>
         </view>
         <view class="item">
             <text class="caption">周边配套</text>
-            <text>aroundSupport</text>
+            <text>{{aroundSupport}}</text>
         </view>
         <view class="" wx:if="{{!isCollapsed}}">
             <view class="item" wx:if="{{houseTypeDesc}}">

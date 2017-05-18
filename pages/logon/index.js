@@ -258,7 +258,7 @@ Page({
       return false
     }
     if (!(/^1[34578]\d{9}$/.test(phone))) {
-      app.showTips('输入正确的手机号码')
+      app.showTips('请输入正确的手机号码')
       return false
     }
     // 显示重新发送
