@@ -20,7 +20,7 @@
       <text class="iconfont icon-hui"></text>
       <text>{{promotion.title}}</text>
     </view>    
-    <navigator url="/pages/xf/promotions?subEstateId={{newHouseDetail.estateId}}"><text class="iconfont icon-more"></text></navigator>
+    <navigator url="/pages/xf/promotions?subEstateId={{newHouseDetail.id}}"><text class="iconfont icon-more"></text></navigator>
   </view>
 </view>
 <view class="gap"></view>
