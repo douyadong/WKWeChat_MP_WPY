@@ -186,6 +186,8 @@ Page({
     let houseTypeId = wx.getStorageSync('buy_houseType')
     let selectedBlockList = wx.getStorageSync('buy_location')
 
+    wx.hideNavigationBarLoading()
+
     if (!this.data.loaded) {
       let that = this
       let price = wx.getStorageSync('buy_price')
