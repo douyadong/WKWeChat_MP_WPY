@@ -48,6 +48,7 @@ let params = $.extend(true , {} , detailFoot , {
                 let companyName = result.simpleAgentDetail.companyName ;
                 let finalCompanyName = abbreviation ? abbreviation : ( companyName ? companyName : "") ;
                 result.simpleAgentDetail.finalCompanyName = finalCompanyName ;
+                result.shareTitle = finalCompanyName + "经纪人" + result.simpleAgentDetail.agentName ;
                 //给二手房和新房两个组件赋值，并将agentId带进去
                 result.xfSources = _.mapSource(result.recommendNewHouseList) ;                 
                 result.esfSources = _.mapSource(result.recommendOldHouseList) ; 
@@ -63,10 +64,17 @@ let params = $.extend(true , {} , detailFoot , {
                 //判断成交故事后面是否需要出...更多
                 let agentStory = result.simpleAgentDetail.agentStory || "" ;
                 result.agentStoryExtendable = agentStory && agentStory.length > 32 ? true : false ;
-                result.simpleAgentDetail.shortAgentStory = agentStory.substr(0, 32) + "..." ;                
+                result.simpleAgentDetail.shortAgentStory = agentStory.substr(0, 32) + "..." ; 
+                /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                 设置导航栏标题，格式为："公司名称 经纪人名称"
+                 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                 wx.setNavigationBarTitle({
+                     title : result.shareTitle
+                 }) ;              
                 //最后赋予模板变量
                 result.agentInfo = result.simpleAgentDetail ;
                 _.setData(result) ;
+                
             }
         }) ;
     } ,
@@ -107,13 +115,13 @@ let params = $.extend(true , {} , detailFoot , {
     loadMoreEsf : function() {
         let _ = this ;
         if(esfIsLoading || this.data.esfIsNoData) return ;  //如果正在加载数据或者已经没有了数据就直接返回
-        if(this.data.esfSources.length <= 10) {
+        if(this.data.esfSources.length < 10) {
             _.setData({ "esfIsNoData" : true }) ;
             return ;
         }
         esfIsLoading = true ;  //开始加载
         pullLoadEsfRequestData.agentId = this.data.pageParams.agentId ;
-        pullLoadEsfRequestData.pageIndex ++ ;
+        pullLoadEsfRequestData.pageIndex += 10 ;
         request.fetch({
             "module" : "agent",
             "action" : "getMoreEsf",            
@@ -123,10 +131,11 @@ let params = $.extend(true , {} , detailFoot , {
                 _.setData({ "esfLoadError" : false }) ;
                 let result = _.data.esfSources ;
                 if(res.data && res.data.length) {
-                    result = result.concat(_.mapSource(res.data)) ;  
+                    result = result.concat(_.mapSource(res.data)) ; 
                      _.setData({ "esfSources" : result }) ;     
                 }
-                else _.setData({ "esfIsNoData" : true }) ;                    
+                else _.setData({ "esfIsNoData" : true }) ; 
+                console.log(_.data.esfSources.length) ;            
             } ,
             fail : function(res) {
                 _.setData({ "esfLoadError" : true }) ;    
@@ -142,13 +151,13 @@ let params = $.extend(true , {} , detailFoot , {
     loadMoreXf : function() {
         let _ = this ;
         if(xfIsLoading || this.data.xfIsNoData) return ;  //如果正在加载数据或者已经没有了数据就直接返回
-        if(this.data.xfSources.length <= 10) {
+        if(this.data.xfSources.length < 10) {
             _.setData({ "xfIsNoData" : true }) ;
             return ;
         }
         xfIsLoading = true ;  //开始加载
         pullLoadXfRequestData.agentId = this.data.pageParams.agentId ;
-        pullLoadXfRequestData.pageIndex ++ ;
+        pullLoadXfRequestData.pageIndex += 10 ;
         request.fetch({
             "module" : "agent",
             "action" : "getMoreXf",            
@@ -161,7 +170,8 @@ let params = $.extend(true , {} , detailFoot , {
                     result = result.concat(_.mapSource(res.data)) ;  
                      _.setData({ "xfSources" : result }) ;     
                 }
-                else _.setData({ "xfIsNoData" : true }) ;                    
+                else _.setData({ "xfIsNoData" : true }) ;
+                console.log(_.data.xfSources.length) ;               
             } ,
             fail : function(res) {
                 _.setData({ "xfLoadError" : true }) ;    
@@ -204,7 +214,7 @@ let params = $.extend(true , {} , detailFoot , {
     } ,
     onShareAppMessage : function() {
         return {
-            "title" : this.data.simpleAgentDetail.finalCompanyName + this.data.simpleAgentDetail.agentName ,
+            "title" : this.data.shareTitle ,
             "path" : "/pages/agent/detail?agentId=" + this.data.simpleAgentDetail.agentId
         }
     }

@@ -8,7 +8,7 @@
 @import "./sections/card.less" ;
 @import "./sections/summary.less" ;
 @import "./sections/rates.less" ;
-page {
+page {    
     padding-bottom : 100rpx ;
 }
 .no-sources {
@@ -23,6 +23,18 @@ page {
     position : fixed ;
     width : 100% ;
 }
-scroll-view {
-    max-height : 2310rpx ;
+scroll-view {    
+    .legend-hd {
+        text {
+            background-color : #fff ;
+        }
+    }
+}
+.loading-error{
+    height : 100rpx ;
+    line-height: 100 rpx ;
+    font-size : @large-font-size ;
+    color : #4081d6 ;
+    border-top : 1rpx solid #4e4e4e ;
+    text-align : center ;
 }
