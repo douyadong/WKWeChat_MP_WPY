@@ -142,10 +142,6 @@ Page({
   onLoad: function (options) {
     let that = this
 
-    if (options.logon) {
-      return
-    }
-
     // clear buy localStorge
     wx.removeStorageSync('buy_price')
     wx.removeStorageSync('buy_houseType')
@@ -422,11 +418,11 @@ Page({
       method: 'post',
       success: function (res) {
         if (res.data && res.data.orderAgentIdList && res.data.orderAgentIdList.length) {
-          wx.navigateTo({
+          wx.redirectTo({
             url: '/pages/buy/recommend'
           })
         }else {
-          wx.navigateTo({
+          wx.redirectTo({
             url: '/pages/buy/success'
           })
         }

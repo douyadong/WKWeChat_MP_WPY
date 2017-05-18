@@ -345,7 +345,6 @@ module.exports = {
     });
   },
   empty(){
-      console.log("------------");
       let _this = this;
       _this.setData({
             screen_region:region,

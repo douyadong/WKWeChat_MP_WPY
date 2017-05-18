@@ -63,6 +63,8 @@ var params = $.extend(true,{},{
             name: 'file',
             success: function(res){
                 var data = res.data;
+                data = JSON.parse(data);
+                data = data.data[0];
 
                 if((i+1)!=file.length){
                     total.push(data);
@@ -138,7 +140,7 @@ var params = $.extend(true,{},{
         })
     },
     bindFormSubmit: function(e) {
-        var reg = /(\d{11})/g,
+        var reg = /(\d{11,15})|((\d{7,8})|(\d{3,4}-?\d{7,8}))|([-——#\/]?\d{7-12}[-——#\/]?)/;,
             value = this.data.uploadTextarea;
         if(value===""){
             wx.showModal({
