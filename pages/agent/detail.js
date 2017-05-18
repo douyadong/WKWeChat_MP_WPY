@@ -113,7 +113,7 @@ let params = $.extend(true , {} , detailFoot , {
         }
         esfIsLoading = true ;  //开始加载
         pullLoadEsfRequestData.agentId = this.data.pageParams.agentId ;
-        pullLoadEsfRequestData.pageIndex ++ ;
+        pullLoadEsfRequestData.pageIndex += 10 ;
         request.fetch({
             "module" : "agent",
             "action" : "getMoreEsf",            
@@ -126,7 +126,8 @@ let params = $.extend(true , {} , detailFoot , {
                     result = result.concat(_.mapSource(res.data)) ; 
                      _.setData({ "esfSources" : result }) ;     
                 }
-                else _.setData({ "esfIsNoData" : true }) ;                    
+                else _.setData({ "esfIsNoData" : true }) ; 
+                console.log(_.data.esfSources.length) ;            
             } ,
             fail : function(res) {
                 _.setData({ "esfLoadError" : true }) ;    
@@ -148,7 +149,7 @@ let params = $.extend(true , {} , detailFoot , {
         }
         xfIsLoading = true ;  //开始加载
         pullLoadXfRequestData.agentId = this.data.pageParams.agentId ;
-        pullLoadXfRequestData.pageIndex ++ ;
+        pullLoadXfRequestData.pageIndex += 10 ;
         request.fetch({
             "module" : "agent",
             "action" : "getMoreXf",            
@@ -161,7 +162,8 @@ let params = $.extend(true , {} , detailFoot , {
                     result = result.concat(_.mapSource(res.data)) ;  
                      _.setData({ "xfSources" : result }) ;     
                 }
-                else _.setData({ "xfIsNoData" : true }) ;                    
+                else _.setData({ "xfIsNoData" : true }) ;
+                console.log(_.data.xfSources.length) ;               
             } ,
             fail : function(res) {
                 _.setData({ "xfLoadError" : true }) ;    
