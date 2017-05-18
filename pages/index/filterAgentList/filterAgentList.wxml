@@ -1,15 +1,15 @@
 <view class="screenListBox">
     <view class="screenList">
         <view class="list {{blue0?'blue':''}}" bindtap="showScreenList" data-index="0">
-            {{screen_region}}
+           <text class="screenTitle">{{screen_region}}</text>
            <text class="iconfont icon-arrow-down down {{isRotate0 ? 'down90':''}}"></text>
         </view>
         <view class="list {{blue1?'blue':''}}" bindtap="showScreenList" data-index="1">
-            {{screen_sort}}
+            <text class="screenTitle">{{screen_sort}}</text>
             <text class="iconfont icon-arrow-down down {{isRotate1 ? 'down90':''}}"></text>
         </view>
         <view class="list {{blue2?'blue':''}}" bindtap="showScreenList" data-index="2">
-            {{screen_more}}
+            <text class="screenTitle">{{screen_more}}</text>
             <text class="iconfont icon-arrow-down down {{isRotate2 ? 'down90':''}}"></text>
         </view>
     </view>
