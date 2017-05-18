@@ -3,6 +3,13 @@ const sort = '综合排序';
 const more = '筛选';
 wx.setStorageSync('regionname', '不限')
 wx.setStorageSync('defineDistrictAndTown', '');
+
+
+
+
+let state = {
+    
+}
 module.exports = {
   data: {
     screen_region:region,
@@ -336,5 +343,69 @@ module.exports = {
         isShowMask:false,//遮罩消失
         isScroll:true
     });
+  },
+  empty(){
+      let _this = this;
+      _this.setData({
+            screen_region:region,
+            screen_sort:sort,
+            screen_more:more,
+            //设置页面默认可以滚动
+            isScroll:true,
+            //点击筛选，设置三角行旋转
+            isRotate0:false,
+            isRotate1:false,
+            isRotate2:false,
+            //点击筛选，设置文本变色
+            blue0:false,
+            blue1:false,
+            blue2:false,
+            //控制区域是否显示
+            isShowMask:false,
+            //显示区域的索引值
+            showIndex:-1,
+            //区域列表数据
+            //regionList:[],
+            //区域id和板块列表数据
+            //plateList:[],
+            //点击板块高亮状态
+            plateActionId:-1,
+            //具体板块数据
+            //towns:[],
+            //点击左边区域，默认选中的id
+            regionActionId:-1,
+            //综合排序列表
+            sortContentList:[{orderType:1,content:"综合排序"},{orderType:2,content:"评价分数从高到低"},{orderType:3,content:"成交量从高到低"}],//1.综合排序 2.评价分数从高到低 3.成交量从高到低
+            //综合排序点击高亮id
+            sortActionId:-1,
+            //更多列表
+            moreContentList:[{selectLabel:0,content:"不限"},{selectLabel:1,content:"好经纪人"},{selectLabel:2,content:"客户热评"},{selectLabel:3,content:"推荐房源数量多"}],//1.好经纪人 2.客户热评 3.推荐房源数量多
+            //更多点击高亮
+            moreActionId:-1
+      });
+      _this.setData({
+        //经纪人列表
+        agentList:[],
+        //获取经纪人列表的筛选条件
+        districtAndTown:"",//选中区域拼音
+        orderType:1,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
+        selectLabel:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
+        pageIndex:0,//起始条数 默认从0开始
+        isScrollIng:true,//是否可以滚动
+        onAgentList:false//是否有经纪人列表
+      });
+      //获取经纪人
+      _this.getAgentList(
+          _this.data.geography.cityId,
+          "",
+          _this.data.orderType,
+          _this.data.selectLabel,
+          0
+      ).then((agentList)=>{
+          _this.setData({
+              agentList:agentList,
+              pageIndex:20
+          })
+     });
   }
 }

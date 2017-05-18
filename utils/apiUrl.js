@@ -50,7 +50,8 @@ const url = {
     "loginFromMobilePhone":"/wxmpLogin/loginFromMobilePhone.rest",
     "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest",
     "getWechatBindGuestInfo":"/wxmpLogin/getWechatBindGuestInfo.rest",//判断是否已经绑定过手机接口
-    "getOpenIdByCode":"/wxmpLogin/getOpenIdByCode.rest"
+    "getOpenIdByCode":"/wxmpLogin/getOpenIdByCode.rest",
+    "addOpenUser":"/wxmpLogin/addOpenUser.rest"
   },
   "screen":{
       "associationalAgentList":"/wxmpAgent/associationalAgentList.rest",

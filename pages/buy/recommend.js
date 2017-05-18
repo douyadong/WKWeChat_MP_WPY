@@ -193,34 +193,37 @@ Page({
   setAgentList: function (data) {
     let that = this
 
-    data.orderAgentIdList.forEach(item => {
-      that.data.matchAgentList.push({
-        'agentId': item.agentId,
-        'agentName': item.agentName,
-        'agentMobile': item.agentMobile,
-        'headRoundImgUrl': item.headRoundImgUrl,
-        'headRoundImgKey': item.headRoundImgKey,
-        'agentBelongToCompanyName': item.agentBelongToCompanyName,
-        'isWellAgent': item.isWellAgent,
-        'recommandInfo': item.recommandInfo
+    if (data.orderAgentIdList && data.orderAgentIdList.length) {
+      data.orderAgentIdList.forEach(item => {
+        that.data.matchAgentList.push({
+          'agentId': item.agentId,
+          'agentName': item.agentName,
+          'agentMobile': item.agentMobile,
+          'headRoundImgUrl': item.headRoundImgUrl,
+          'headRoundImgKey': item.headRoundImgKey,
+          'agentBelongToCompanyName': item.agentBelongToCompanyName,
+          'isWellAgent': item.isWellAgent,
+          'recommandInfo': item.recommandInfo
+        })
       })
-    })
+      this.setData({'matchAgentList': that.data.matchAgentList})
+    }
 
-    data.recommendAgentIdList.forEach(item => {
-      that.data.recommenAgentList.push({
-        'agentId': item.agentId,
-        'agentName': item.agentName,
-        'agentMobile': item.agentMobile,
-        'headRoundImgUrl': item.headRoundImgUrl,
-        'headRoundImgKey': item.headRoundImgKey,
-        'agentBelongToCompanyName': item.agentBelongToCompanyName,
-        'isWellAgent': item.isWellAgent,
-        'recommandInfo': item.recommandInfo
+    if (data.recommendAgentIdList && data.recommendAgentIdList.length) {
+      data.recommendAgentIdList.forEach(item => {
+        that.data.recommenAgentList.push({
+          'agentId': item.agentId,
+          'agentName': item.agentName,
+          'agentMobile': item.agentMobile,
+          'headRoundImgUrl': item.headRoundImgUrl,
+          'headRoundImgKey': item.headRoundImgKey,
+          'agentBelongToCompanyName': item.agentBelongToCompanyName,
+          'isWellAgent': item.isWellAgent,
+          'recommandInfo': item.recommandInfo
+        })
       })
-    })
-
-    this.setData({'matchAgentList': that.data.matchAgentList})
-    this.setData({'recommenAgentList': that.data.recommenAgentList})
+      this.setData({'recommenAgentList': that.data.recommenAgentList})
+    }
   },
   handleRedirect: function (e) {
     wx.navigateTo({url: e.currentTarget.dataset.url})

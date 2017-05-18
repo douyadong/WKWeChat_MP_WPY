@@ -16,10 +16,10 @@
     </view>
   </view>
   <view class="buySell">
-      <navigator open-type="navigate" class="list" url="/pages/buy/index">
+      <view class="list"  bindtap="goBuy">
         <view class="circular buyCircular"></view>
         <view class="text">我要买房</view>
-      </navigator>
+      </view>
       <navigator open-type="navigate" class="list" url="/pages/sell/index">
         <view class="circular sellCircular"></view>
         <view class="text">我要卖房</view>
@@ -33,4 +33,6 @@
   <view class="agentListBox">
       <include src="agentList/agentList.wxml"/>
   </view>
+  <!--清空条件-->
+  <view class="empty" wx:if="{{agentList.length == 0}}" bindtap="empty">清除条件</view>
 </scroll-view>

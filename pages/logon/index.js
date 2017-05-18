@@ -100,7 +100,7 @@ var getVerificationCode = function (phone, codeType) {
 /**
  * 提交登录信息
  */
-var submit = function (phone, verificationCode) {
+var submit = function (phone, verificationCode,openId) {
   return new Promise(function (resolve, reject) {
     request.fetch({
       mock: !true,
@@ -108,7 +108,8 @@ var submit = function (phone, verificationCode) {
       action: 'loginFromMobilePhone',
       data: {
         phone: phone,
-        code: verificationCode
+        code: verificationCode,
+        openId:openId
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != null) {
@@ -179,6 +180,39 @@ var getLocation = function () {
     })
   })
 }
+
+
+/**
+ * 添加微信用户到公司数据库
+ */
+var addOpenUser = function (encryptedData,iv,code) {
+    return new Promise(function (resolve, reject) {
+        request.fetch({
+            mock:!true,
+            module:'logon',
+            action:'addOpenUser',
+            data:{
+                encryptedData:encryptedData,
+                iv:iv,
+                code:code
+            },
+            success:function(data){
+                if(data.status.toString() == "1"){
+                  console.log("添加用户信息成功");
+                    resolve(1);
+                }else{
+                  console.log("添加用户信息失败");
+                    resolve(0);
+                }
+            },
+            fail:function (params) {
+              console.log("添加用户信息失败");
+                resolve(0);
+            }
+        });
+    })
+}
+  
 
 Page({
   data: {
@@ -289,7 +323,7 @@ Page({
     // console.log("手机号"+_this.data.phone)
     // console.log("验证码"+_this.data.verificationCode); 
     // 提交
-    submit(phone, verificationCode).then((data) => {
+    submit(phone, verificationCode,wx.getStorageSync('openId')).then((data) => {
       if (data != '') {
         app.showTips('登录成功')
         console.log('提交成功')
@@ -299,6 +333,7 @@ Page({
           key: 'userInfo',
           data: data
         })
+        wx.setStorageSync('openId', '');
         // 返回到登录前的url
         if (_this.data.type == 'redirect') {
           wx.redirectTo({
@@ -320,36 +355,41 @@ Page({
     // 获取code
     getLoginCode().then((code) => {
       console.log('code:' + code)
-      // 根据code，获取openId
-      getOpenId(code).then((openId) => {
-        console.log(openId)
-        // 根据openId，判断是否已经绑定过手机
-        isBind(openId).then((data) => {
-          console.log(data)
-          if (data == null) { // 没有绑定手机号
-            // 正常登录（即验证手机号码）
-            console.log('已授权，没有绑定过手机号码，走正常登录逻辑（即验证手机号码）')
-          }else { // 返回对象，已经绑定手机号。登录结束
-            // 把最终的用户信息，写如到本地
-            wx.setStorage({
-              key: 'userInfo',
-              data: data
+      let userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
+      //已授权，添加微信用户到本地数据库
+      addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then(()=>{
+          // 根据code，获取openId
+          getOpenId(code).then((openId) => {
+            console.log(openId)
+            // 根据openId，判断是否已经绑定过手机
+            isBind(openId).then((data) => {
+              console.log(data)
+              if (data == null) { // 没有绑定手机号
+                // 正常登录（即验证手机号码）
+                wx.setStorageSync('openId', openId);
+                console.log('已授权，没有绑定过手机号码，走正常登录逻辑（即验证手机号码）')
+              }else { // 返回对象，已经绑定手机号。登录结束
+                // 把最终的用户信息，写如到本地
+                wx.setStorage({
+                  key: 'userInfo',
+                  data: data
+                })
+                // 返回到登录前的url
+                console.log('yesAuthorized.....');
+                console.log(_this.data);
+                if (_this.data.type == 'redirect') {
+                  wx.redirectTo({
+                    url: _this.data.returnUrl
+                  })
+                }else {
+                  wx.navigateBack({
+                    url: _this.data.returnUrl
+                  })
+                }
+              }
             })
-            // 返回到登录前的url
-            console.log('yesAuthorized.....');
-            console.log(_this.data);
-            if (_this.data.type == 'redirect') {
-              wx.redirectTo({
-                url: _this.data.returnUrl
-              })
-            }else {
-              wx.navigateBack({
-                url: _this.data.returnUrl
-              })
-            }
-          }
-        })
-      })
+          })
+       });
     })
   },
   // 写未授权逻辑
