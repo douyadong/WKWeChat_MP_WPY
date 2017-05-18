@@ -33,11 +33,13 @@ var getOpenId = function (code) {
         if (data.status.toString() == '1' && data.data != '') {
           resolve(data.data)
         }else {
-          resolve('')
+          //resolve('')
+          console.log("openId获取失败");
         }
       },
       fail: function () {
-        resolve('')
+        //resolve('')
+        console.log("openId获取失败");
       }
     })
   })
@@ -191,6 +193,7 @@ var addOpenUser = function (encryptedData,iv,code) {
             mock:!true,
             module:'logon',
             action:'addOpenUser',
+            showLoading: false,
             data:{
                 encryptedData:encryptedData,
                 iv:iv,
@@ -225,13 +228,26 @@ Page({
     },
     returnUrl: '/pages/index/index',
     type:'redirect',
-    isShowAgreement: false
+    isShowAgreement: false,
+    isFocus:false
+  },
+  //获取焦点事件
+  bindfocus(event){
+    this.setData({
+      isFocus:true
+    });
   },
   // 获取手机号
   getPhone(event) {
     this.setData({
       phone: event.detail.value
     })
+    if(event.detail.value.toString().length == 11){
+        //自动失去焦点
+        this.setData({
+          isFocus:false//键盘退出
+        });
+    }
   },
   // 手机号获取验证码
   phoneGetCode(event) {
@@ -243,7 +259,7 @@ Page({
       return false
     }
     if (!(/^1[34578]\d{9}$/.test(phone))) {
-      app.showTips('输入正确的手机号码')
+      app.showTips('请输入正确的手机号码')
       return false
     }
     // 显示重新发送
@@ -285,6 +301,7 @@ Page({
       app.showTips('输入正确的手机号码')
       return false
     }
+    app.showTips('语音验证码拨打中，请注意接收来电');
     // 获取验证码
     getVerificationCode(phone, codeType).then((data) => {
       console.log(data)
@@ -325,7 +342,6 @@ Page({
     // 提交
     submit(phone, verificationCode,wx.getStorageSync('openId')).then((data) => {
       if (data != '') {
-        app.showTips('登录成功')
         console.log('提交成功')
         console.log(data)
         // 把最终的用户信息，写如到本地
@@ -343,7 +359,7 @@ Page({
           wx.navigateBack()
         }
       }else {
-        app.showTips('登录失败，重新登录')
+        app.showTips('请输入正确的验证码')
         console.log('登录失败，重新登录')
         console.log(data)
       }

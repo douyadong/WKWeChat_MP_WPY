@@ -5,7 +5,7 @@
             <view class="inputBox">
                 <text class="getCode" wx:if="{{!isShowSend}}" data-codeType="1" bindtap="phoneGetCode">获取验证码</text>
                 <text class="getCode" wx:if="{{isShowSend}}">{{second}} 秒后重发</text>
-                <input type="number" placeholder="请输入手机号码" placeholder-class="formPlaceholder" class="input" bindinput="getPhone"/>
+                <input type="number" placeholder="请输入手机号码" placeholder-class="formPlaceholder" focus="{{isFocus}}" bindfocus="bindfocus" class="input" bindinput="getPhone"/>
             </view>
             <view class="inputBox">
                 <input type="number" placeholder="请输入手机验证码" placeholder-class="formPlaceholder" class="input" bindinput="getVerificationCode"/>

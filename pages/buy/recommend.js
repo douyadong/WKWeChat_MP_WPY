@@ -203,7 +203,8 @@ Page({
           'headRoundImgKey': item.headRoundImgKey,
           'agentBelongToCompanyName': item.agentBelongToCompanyName,
           'isWellAgent': item.isWellAgent,
-          'recommandInfo': item.recommandInfo
+          'recommandInfo': item.recommandInfo,
+          'phone400Dial':item.phone400Dial
         })
       })
       this.setData({'matchAgentList': that.data.matchAgentList})
@@ -219,7 +220,8 @@ Page({
           'headRoundImgKey': item.headRoundImgKey,
           'agentBelongToCompanyName': item.agentBelongToCompanyName,
           'isWellAgent': item.isWellAgent,
-          'recommandInfo': item.recommandInfo
+          'recommandInfo': item.recommandInfo,
+          'phone400Dial':item.phone400Dial
         })
       })
       this.setData({'recommenAgentList': that.data.recommenAgentList})
