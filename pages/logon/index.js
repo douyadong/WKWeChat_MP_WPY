@@ -342,7 +342,6 @@ Page({
     // 提交
     submit(phone, verificationCode,wx.getStorageSync('openId')).then((data) => {
       if (data != '') {
-        app.showTips('登录成功')
         console.log('提交成功')
         console.log(data)
         // 把最终的用户信息，写如到本地
