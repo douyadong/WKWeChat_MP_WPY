@@ -126,6 +126,7 @@ var getAgentList = function(cityId,districtAndTown,orderType,selectLabel,pageInd
 
 //添加微信用户到公司数据库
 var addOpenUser = function (encryptedData,iv,code) {
+    console.log("添加微信用户到公司数据库");
     return new Promise(function (resolve, reject) {
         request.fetch({
             mock:!true,
@@ -138,13 +139,16 @@ var addOpenUser = function (encryptedData,iv,code) {
             },
             success:function(data){
                 if(data.status.toString() == "1"){
+                    console.log("添加用户信息成功");
                     resolve("添加用户信息成功");
                 }else{
                     resolve("添加用户信息失败");
+                    onsole.log("添加用户信息失败");
                 }
             },
             fail:function (params) {
                 resolve("添加用户信息失败");
+                onsole.log("添加用户信息失败");
             }
         });
     })
@@ -209,6 +213,13 @@ let main = {
   //获取用户信息
   getUserInfo(){
       var that = this
+      let userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
+      if(userAuthorizedInfo != ''){//已授权，
+          console.log("已授权");
+          return
+      }else{
+          console.log("未授权");
+      }
       wx.login({
         success: function (res) {
           let code = res.code;
@@ -217,10 +228,7 @@ let main = {
             withCredentials:true,
             success: function (res) {
                 console.log(res);
-                wx.setStorage({
-                    key:"userAuthorizedInfo",
-                    data:res
-                })
+                wx.setStorageSync('userAuthorizedInfo', res)
                 addOpenUser(res.encryptedData,res.iv,code).then((data)=>{
                     console.log(data);
                 });

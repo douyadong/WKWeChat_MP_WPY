@@ -33,11 +33,13 @@ var getOpenId = function (code) {
         if (data.status.toString() == '1' && data.data != '') {
           resolve(data.data)
         }else {
-          resolve('')
+          //resolve('')
+          console.log("openId获取失败");
         }
       },
       fail: function () {
-        resolve('')
+        //resolve('')
+        console.log("openId获取失败");
       }
     })
   })
@@ -225,13 +227,26 @@ Page({
     },
     returnUrl: '/pages/index/index',
     type:'redirect',
-    isShowAgreement: false
+    isShowAgreement: false,
+    isFocus:false
+  },
+  //获取焦点事件
+  bindfocus(event){
+    this.setData({
+      isFocus:true
+    });
   },
   // 获取手机号
   getPhone(event) {
     this.setData({
       phone: event.detail.value
     })
+    if(event.detail.value.toString().length == 11){
+        //自动失去焦点
+        this.setData({
+          isFocus:false//键盘退出
+        });
+    }
   },
   // 手机号获取验证码
   phoneGetCode(event) {

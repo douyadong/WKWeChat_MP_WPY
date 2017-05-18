@@ -1,9 +1,9 @@
 {
-  "pages": [
+  "pages": ["pages/logon/index",
     "pages/index/index",
     "pages/city/index",
     "pages/userAgreement/index",
-    "pages/logon/index",
+    
     "pages/screen/index",
     "pages/xf/detail",
     "pages/xf/infos",
