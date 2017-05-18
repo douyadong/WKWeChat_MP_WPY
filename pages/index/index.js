@@ -175,12 +175,9 @@ let main = {
     orderType:1,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
     selectLabel:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
     pageIndex:0,//起始条数 默认从0开始
-    isScrollIng:true,//是否可以滚动
+    isScrollIng:true,//是否滚动中
     onAgentList:false//是否有经纪人列表
   },
-  onShareAppMessage:function(){
-    
-  },
   //根据城市id获取区域信息
   getCityAreasInfo(cityId){
     let _this = this;
@@ -317,7 +314,7 @@ let main = {
   //onReachBottom(){
    scrolltolower(){
     let _this = this;
-    
+    console.log("-----------------------------");
     if(_this.data.isScrollIng){
         _this.setData({
             isScrollIng:false
