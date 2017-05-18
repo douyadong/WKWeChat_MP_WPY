@@ -156,7 +156,10 @@ module.exports = {
     this.setData({
         isShowMask:false,
         isScroll:true,
-        showIndex:-1
+        showIndex:-1,
+        isRotate0:false,
+        isRotate1:false,
+        isRotate3:false
     })
     //判断是否选择了区域筛选条件
     if(this.data.screen_region == region){//说明没有旋转
@@ -198,7 +201,8 @@ module.exports = {
           districtAndTown:"",
           showIndex:-1,
           isScroll:true,
-          isShowMask:false//遮罩消失
+          isShowMask:false,//遮罩消失
+          isRotate0:false
       })
       //获取经纪人
       _this.getAgentList(
@@ -265,7 +269,8 @@ module.exports = {
     _this.setData({
         showIndex:-1,
         isShowMask:false,//遮罩消失
-        isScroll:true
+        isScroll:true,
+        isRotate0:false
     });
   },
   //点击综合排序
@@ -292,7 +297,8 @@ module.exports = {
     _this.setData({
         showIndex:-1,
         isShowMask:false,//遮罩消失
-        isScroll:true
+        isScroll:true,
+        isRotate1:false
     });
   },
   //点击筛选更多
@@ -341,7 +347,8 @@ module.exports = {
     _this.setData({
         showIndex:-1,
         isShowMask:false,//遮罩消失
-        isScroll:true
+        isScroll:true,
+        isRotate2:false
     });
   },
   empty(){
