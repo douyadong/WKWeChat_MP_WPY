@@ -48,6 +48,7 @@ let params = $.extend(true , {} , detailFoot , {
                 let companyName = result.simpleAgentDetail.companyName ;
                 let finalCompanyName = abbreviation ? abbreviation : ( companyName ? companyName : "") ;
                 result.simpleAgentDetail.finalCompanyName = finalCompanyName ;
+                result.shareTitle = finalCompanyName + "经纪人" + result.simpleAgentDetail.agentName ;
                 //给二手房和新房两个组件赋值，并将agentId带进去
                 result.xfSources = _.mapSource(result.recommendNewHouseList) ;                 
                 result.esfSources = _.mapSource(result.recommendOldHouseList) ; 
@@ -63,10 +64,17 @@ let params = $.extend(true , {} , detailFoot , {
                 //判断成交故事后面是否需要出...更多
                 let agentStory = result.simpleAgentDetail.agentStory || "" ;
                 result.agentStoryExtendable = agentStory && agentStory.length > 32 ? true : false ;
-                result.simpleAgentDetail.shortAgentStory = agentStory.substr(0, 32) + "..." ;                
+                result.simpleAgentDetail.shortAgentStory = agentStory.substr(0, 32) + "..." ; 
+                /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                 设置导航栏标题，格式为："公司名称 经纪人名称"
+                 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                 wx.setNavigationBarTitle({
+                     title : result.shareTitle
+                 }) ;              
                 //最后赋予模板变量
                 result.agentInfo = result.simpleAgentDetail ;
                 _.setData(result) ;
+                
             }
         }) ;
     } ,
@@ -206,7 +214,7 @@ let params = $.extend(true , {} , detailFoot , {
     } ,
     onShareAppMessage : function() {
         return {
-            "title" : this.data.simpleAgentDetail.finalCompanyName + this.data.simpleAgentDetail.agentName ,
+            "title" : this.data.shareTitle ,
             "path" : "/pages/agent/detail?agentId=" + this.data.simpleAgentDetail.agentId
         }
     }
