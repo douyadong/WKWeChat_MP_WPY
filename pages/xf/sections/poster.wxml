@@ -4,13 +4,13 @@
       <view class="head">楼盘画报</view>    
     </view> 
     <view class="panel-bd lr-padding">
-      <block wx:for="{{newHouseDetail.newHouseMagazineList}}" wx:for-item="poster" wx:key="*this">
+      <navigator open-type="redirect" url="/pages/xf/poster-preview?subEstateId={{newHouseDetail.id}}&current=0" wx:for="{{newHouseDetail.newHouseMagazineList}}" wx:for-item="poster" wx:key="*this">
         <text class="title">{{poster.title}}</text>
         <text class="time">{{poster.publishTimeStr}}</text>
         <image mode="aspectFit" src="{{poster.fileKey}}"></image>
         <text class="desc">{{poster.content}}</text> 
         <view class="separator" wx:if="{{index < newHouseDetail.newHouseMagazineList.length-1}}"></view>
-      </block>
+      </navigator>
       <navigator url="/pages/xf/posters?subEstateId={{newHouseDetail.id}}" class="button gray" wx:if="{{newHouseDetail.newHouseMagazineList.length > 1}}">查看更多</navigator>
     </view>  
   </view>
