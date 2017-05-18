@@ -10,35 +10,32 @@
       <view class="{{currentSourcesTab==='esf'?'on':''}}" data-tab="esf" bindtap="swapToTab">二手房</view>
       <view class="{{currentSourcesTab==='xf'?'on':''}} last" data-tab="xf" bindtap="swapToTab">新房</view>  
     </view>
-    <block wx:if="{{recommendType === 2}}">     
-      <template is="esf-sources" data="{{esfSources,agentId}}" />
-      <!--加载数据助手开始-->
+    <!--只有二手房的情况-->
+    <scroll-view scroll-y="true" bindscrolltolower="loadMoreEsf" style="height:{{esfSources.length < 10 ? esfSources.length*230 : 2300}}rpx" wx:if="{{recommendType === 2}}">        
+      <template is="esf-sources" data="{{esfSources,agentId}}" />      
       <view class="legend-hd" wx:if="{{esfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
-      <view class="loading-error" wx:if="{{esfLoadError}}">加载失败，点击重试</view>
-      <!--加载数据助手结束-->     
-    </block>    
-    <block wx:elif="{{recommendType === 1}}">  
-      <template is="xf-sources" data="{{xfSources,agentId}}" />
-      <!--加载数据助手开始-->
+      <view class="loading-error" wx:if="{{esfLoadError}}">加载失败，点击重试</view>          
+    </scroll-view>
+    <!--只有新房的情况-->
+    <scroll-view scroll-y="true" bindscrolltolower="loadMoreXf" style="height:{{xfSources.length < 10 ? xfSources.length*230 : 2300}}rpx" wx:if="{{recommendType === 1}}">     
+      <template is="xf-sources" data="{{xfSources,agentId}}" />      
       <view class="legend-hd" wx:if="{{xfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
-      <view class="loading-error" wx:if="{{xfLoadError}}">加载失败，点击重试</view>
-      <!--加载数据助手结束-->
-    </block>
-    <block wx:elif="{{recommendType === 3}}">     
-      <view hidden="{{currentSourcesTab!=='esf'}}">        
-        <template is="esf-sources" data="{{esfSources,agentId}}" />
-        <!--加载数据助手开始-->
+      <view class="loading-error" wx:if="{{xfLoadError}}">加载失败，点击重试</view>      
+    </scroll-view>
+    <!--既有二手房又有新房的情况-->
+    <block wx:elif="{{recommendType === 3}}">
+      <!--二手房容器-->
+      <scroll-view scroll-y="true" bindscrolltolower="loadMoreEsf" style="height:{{esfSources.length < 10 ? esfSources.length*230 : 2300}}rpx" hidden="{{currentSourcesTab!=='esf'}}">    
+        <template is="esf-sources" data="{{esfSources,agentId}}" />        
         <view class="legend-hd" wx:if="{{esfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
         <view class="loading-error" wx:if="{{esfLoadError}}">加载失败，点击重试</view>
-        <!--加载数据助手结束--> 
-      </view>
-      <view hidden="{{currentSourcesTab!=='xf'}}">        
-        <template is="xf-sources" data="{{xfSources,agentId}}" />
-        <!--加载数据助手开始-->
+      </scroll-view>
+      <!--新房容器-->
+      <scroll-view scroll-y="true" bindscrolltolower="loadMoreXf" style="height:{{xfSources.length < 10 ? xfSources.length*230 : 2300}}rpx" hidden="{{currentSourcesTab!=='xf'}}">
+        <template is="xf-sources" data="{{xfSources,agentId}}" />        
         <view class="legend-hd" wx:if="{{xfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
         <view class="loading-error" wx:if="{{xfLoadError}}">加载失败，点击重试</view>
-        <!--加载数据助手结束-->
-      </view>
+      </scroll-view>
     </block>
   </view>
   <!--<view class="no-sources">没有合适的房源？告诉我您的需求立即匹配房源</view>-->

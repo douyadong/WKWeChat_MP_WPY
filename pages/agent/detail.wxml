@@ -1,12 +1,10 @@
-<scroll-view scroll-y="true" bindscrolltolower="{{currentSourcesTab === 'esf' ? loadMoreEsf : loadMoreXf}}">
-  <!--经纪人名片部分-->
-  <include src="sections/card.wxml"/>
-  <!--经纪人概要部分-->
-  <include src="sections/summary.wxml"/>
-  <!--用户评价部分-->
-  <include src="sections/rates.wxml"/>
-  <!--房源部分-->
-  <include src="sections/sources.wxml"/>
-  <!--页面底部悬浮-->
-  <include src="sections/footer.wxml"/>
-</scroll-view>
+<!--经纪人名片部分-->
+<include src="sections/card.wxml"/>
+<!--经纪人概要部分-->
+<include src="sections/summary.wxml"/>
+<!--用户评价部分-->
+<include src="sections/rates.wxml"/>
+<!--房源部分-->
+<include src="sections/sources.wxml"/>
+<!--页面底部悬浮-->
+<include src="sections/footer.wxml"/>
