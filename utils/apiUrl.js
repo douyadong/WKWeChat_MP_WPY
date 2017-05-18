@@ -4,7 +4,6 @@
 
 //const domain = "https://minapp-sim.yfyk365.com" ;
 const domain = "https://minapp-test.yfyk365.com";
-
 const url = {
   "agent" : {
     "rateList" : "/wxmpAgent/getAgentCustomerCommentList.rest",
@@ -12,8 +11,8 @@ const url = {
     "writeRate" : "/wxmpAgent/commentAgent.rest",
     "detail" : "/wxmpAgent/getAgentDetail.rest",
     "moreList": "/moreAgentCommentList.rest" ,
-    "getMoreEsf" : "/moreAgentOldHouseList.rest" ,
-    "getMoreXf" : "/moreAgentNewHouseList.rest"
+    "getMoreEsf" : "/wxmpOldHouseDetail/getAgentRecommendOldHouseList.rest" ,
+    "getMoreXf" : "/wxmpNewHouseDetail/getAgentRecommendNewHouseList.rest"
   } ,
   "buy" : {
     "getDetails" : "/wxmpInterest/getCustomerHouseIntention.rest" ,

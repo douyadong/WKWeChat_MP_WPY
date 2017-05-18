@@ -19,7 +19,7 @@
     </view>
     <view class="title">以下经纪人会主动与您联系</view>
     <view class="agent-list">
-        <view  class="item {{index==matchAgentList.length-1?'last':''}}" wx:for="{{matchAgentList}}" wx:key="{{item.agentId}}" data-text="{{item.agentMobile}}" catchtap="call">
+        <view  class="item {{index==matchAgentList.length-1?'last':''}}" wx:for="{{matchAgentList}}" wx:key="{{item.agentId}}" data-text="{{item.phone400Dial}}" catchtap="call">
             <view class="main">
                 <view class="img-box">
                     <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
@@ -36,7 +36,7 @@
                 </view>
             </view>
             <view class="tel">
-                <view class="iconfont icon-tel" data-text="{{item.agentMobile}}" catchtap="call"></view>
+                <view class="iconfont icon-tel" data-text="{{item.phone400Dial}}" catchtap="call"></view>
             </view>
         </view>
     </view>

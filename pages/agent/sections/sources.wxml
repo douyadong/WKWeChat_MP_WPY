@@ -10,23 +10,35 @@
       <view class="{{currentSourcesTab==='esf'?'on':''}}" data-tab="esf" bindtap="swapToTab">二手房</view>
       <view class="{{currentSourcesTab==='xf'?'on':''}} last" data-tab="xf" bindtap="swapToTab">新房</view>  
     </view>
-    <block wx:if="{{recommendType === 2}}">
-      <scroll-view scroll-y="true" bindscrolltolower="loadMoreEsf">     
-        <template is="esf-sources" data="{{esfSources,agentId}}" />
-      </scroll-view>
-    </block>
-    <block wx:elif="{{recommendType === 1}}">
-      <scroll-view scroll-y="true" bindscrolltolower="loadMoreXf">  
-        <template is="xf-sources" data="{{xfSources,agentId}}" />
-      </scroll-view>
+    <block wx:if="{{recommendType === 2}}">     
+      <template is="esf-sources" data="{{esfSources,agentId}}" />
+      <!--加载数据助手开始-->
+      <view class="legend-hd" wx:if="{{esfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
+      <view class="loading-error" wx:if="{{esfLoadError}}">加载失败，点击重试</view>
+      <!--加载数据助手结束-->     
+    </block>    
+    <block wx:elif="{{recommendType === 1}}">  
+      <template is="xf-sources" data="{{xfSources,agentId}}" />
+      <!--加载数据助手开始-->
+      <view class="legend-hd" wx:if="{{xfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
+      <view class="loading-error" wx:if="{{xfLoadError}}">加载失败，点击重试</view>
+      <!--加载数据助手结束-->
     </block>
     <block wx:elif="{{recommendType === 3}}">     
-      <scroll-view hidden="{{currentSourcesTab!=='esf'}}" scroll-y="true" bindscrolltolower="loadMoreEsf">        
+      <view hidden="{{currentSourcesTab!=='esf'}}">        
         <template is="esf-sources" data="{{esfSources,agentId}}" />
-      </scroll-view>
-      <scroll-view hidden="{{currentSourcesTab!=='xf'}}" scroll-y="true" bindscrolltolower="loadMoreXf">        
+        <!--加载数据助手开始-->
+        <view class="legend-hd" wx:if="{{esfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
+        <view class="loading-error" wx:if="{{esfLoadError}}">加载失败，点击重试</view>
+        <!--加载数据助手结束--> 
+      </view>
+      <view hidden="{{currentSourcesTab!=='xf'}}">        
         <template is="xf-sources" data="{{xfSources,agentId}}" />
-      </scroll-view>
+        <!--加载数据助手开始-->
+        <view class="legend-hd" wx:if="{{xfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
+        <view class="loading-error" wx:if="{{xfLoadError}}">加载失败，点击重试</view>
+        <!--加载数据助手结束-->
+      </view>
     </block>
   </view>
   <!--<view class="no-sources">没有合适的房源？告诉我您的需求立即匹配房源</view>-->

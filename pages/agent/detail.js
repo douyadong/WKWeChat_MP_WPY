@@ -107,7 +107,7 @@ let params = $.extend(true , {} , detailFoot , {
     loadMoreEsf : function() {
         let _ = this ;
         if(esfIsLoading || this.data.esfIsNoData) return ;  //如果正在加载数据或者已经没有了数据就直接返回
-        if(this.data.esfSources.length <= 10) {
+        if(this.data.esfSources.length < 10) {
             _.setData({ "esfIsNoData" : true }) ;
             return ;
         }
@@ -123,7 +123,7 @@ let params = $.extend(true , {} , detailFoot , {
                 _.setData({ "esfLoadError" : false }) ;
                 let result = _.data.esfSources ;
                 if(res.data && res.data.length) {
-                    result = result.concat(_.mapSource(res.data)) ;  
+                    result = result.concat(_.mapSource(res.data)) ; 
                      _.setData({ "esfSources" : result }) ;     
                 }
                 else _.setData({ "esfIsNoData" : true }) ;                    
@@ -142,7 +142,7 @@ let params = $.extend(true , {} , detailFoot , {
     loadMoreXf : function() {
         let _ = this ;
         if(xfIsLoading || this.data.xfIsNoData) return ;  //如果正在加载数据或者已经没有了数据就直接返回
-        if(this.data.xfSources.length <= 10) {
+        if(this.data.xfSources.length < 10) {
             _.setData({ "xfIsNoData" : true }) ;
             return ;
         }

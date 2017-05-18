@@ -9,6 +9,7 @@
 @import "./sections/summary.less" ;
 @import "./sections/rates.less" ;
 page {
+    height : 1300rpx ;
     padding-bottom : 100rpx ;
 }
 .no-sources {
@@ -24,5 +25,18 @@ page {
     width : 100% ;
 }
 scroll-view {
-    max-height : 2310rpx ;
+    height : 100% ; 
+    .legend-hd {
+        text {
+            background-color : #fff ;
+        }
+    }
+}
+.loading-error{
+    height : 100rpx ;
+    line-height: 100 rpx ;
+    font-size : @large-font-size ;
+    color : #4081d6 ;
+    border-top : 1rpx solid #4e4e4e ;
+    text-align : center ;
 }
