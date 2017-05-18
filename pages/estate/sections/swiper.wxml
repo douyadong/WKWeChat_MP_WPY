@@ -2,7 +2,7 @@
 <import src="../../components/swiper.wxml"/>
 <view class="panel">
   <template is="swiper" data="{{imgUrls,agentId}}" />
-  <navigator url="/pages/agent/detail?agentId={{agentId}}" wx:if="{{agent}}" class="expert-info">
+  <navigator url="/pages/agent/detail?agentId={{agent.agentId}}" wx:if="{{agent}}" class="expert-info">
     <view class="call" catchtap="callEstateExpert"><text class="iconfont icon-tel" ></text></view>
     <view class="outline">
       <image src="{{agent.headRoundImgUrl}}" class="head-portrait"/>
