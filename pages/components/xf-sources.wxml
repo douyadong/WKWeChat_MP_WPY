@@ -10,10 +10,11 @@
       </view>
       <view class="param">{{source.districtName}} {{source.townName}}</view>
       <view class="param tags">
-        <text wx:if="{{source.isSoonOpen}}">即将开盘</text>
-        <text wx:if="{{source.isSubwayEstate}}">地铁</text>
-        <text wx:if="{{source.hasActivity}}">有优惠</text>
-        <text wx:if="{{source.hasVideo}}">有视频</text>        
+        <text wx:if="{{source.isSoonOpen === '1'}}">即将开盘</text>
+        <text wx:else>在售楼盘</text>
+        <text wx:if="{{source.isSubwayEstate === '1'}}">地铁</text>
+        <text wx:if="{{source.hasActivity === '1'}}">有优惠</text>
+        <text wx:if="{{source.hasVideo === '1'}}">有视频</text>        
       </view>
     </navigator>
     <view class="separator" wx:if="{{index < xfSources.length-1}}"></view>
