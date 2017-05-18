@@ -11,9 +11,7 @@ module.exports ={
 		        url: '../agent/detail?agentId='+this.data.agentInfo.agentId
 	      	})
 		}else{
-			wx.makePhoneCall({
-			  	phoneNumber: _this.data.agentInfo.agentMobile //仅为示例，并非真实的电话号码
-			})
+			this.c_df_phoneClick();
 		}
 	},
 	c_df_wechatClick:function(e){
@@ -41,6 +39,13 @@ module.exports ={
 					  	phoneNumber: data.data.dial+data.data.digits //仅为示例，并非真实的电话号码
 					})
             	}
+            },
+            fail:function(data){
+            	wx.showModal({
+                    title: '提示',
+                    content: data.message || '拨打失败，稍后重试',
+                    showCancel: false
+                })
             }
         })
 	},
