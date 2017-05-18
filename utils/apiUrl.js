@@ -4,7 +4,6 @@
 
 //const domain = "https://minapp-sim.yfyk365.com" ;
 const domain = "https://minapp-test.yfyk365.com";
-
 const url = {
   "agent" : {
     "rateList" : "/wxmpAgent/getAgentCustomerCommentList.rest",
