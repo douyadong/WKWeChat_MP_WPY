@@ -76,6 +76,12 @@ var params = {
     bindErrorBtn:function(){
         isLoading=false;
         this.loadMore();
+    },
+    onShareAppMessage() {
+        return {
+            title: '买房卖房，找好经纪人就对了',
+            path: '/pages/agent/rateList?agentId='+initData.agentId
+        }
     }
 };
 Page(params);
