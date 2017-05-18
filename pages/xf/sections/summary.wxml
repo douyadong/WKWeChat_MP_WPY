@@ -8,8 +8,9 @@
     </view>
     <view class="tags">
       <text class="openning" wx:if="{{newHouseDetail.isSoonOpen==='1'}}">即将开盘</text>
-      <text class="subway" wx:if="{{newHouseDetail.isSubwayEstate==='1'}}">地铁</text>
+      <text class="openning" wx:else>在售楼盘</text>
       <text class="promotion" wx:if="{{newHouseDetail.hasActivity==='1'}}">有优惠</text>
+      <text class="subway" wx:if="{{newHouseDetail.isSubwayEstate==='1'}}">地铁</text>      
       <text class="video" wx:if="{{newHouseDetail.hasVideo==='1'}}">有视频</text>
     </view>
     <view class="date">开盘时间：{{newHouseDetail.openTimeStr || "--"}} 交房时间：{{newHouseDetail.launchTimeStr || "--"}}</view>
