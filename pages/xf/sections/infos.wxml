@@ -6,7 +6,12 @@
     <view class="short-items">
       <view class="item"><text class="title">产权年限</text><text class="desc">{{newHouseDetail.propertyRight || "--"}}</text></view>
       <view class="item"><text class="title">规划户数</text><text class="desc">{{newHouseDetail.planRoom}} 户</text></view>
-      <view class="item"><text class="title">装修标准</text><text class="desc">{{newHouseDetail.buildDecoration || "--"}}</text></view>
+      <view class="item">
+        <text class="title">装修标准</text>
+        <text class="desc" wx:if="{{newHouseDetail.buildDecoration === 1}}">毛坯</text>
+        <text class="desc" wx:elif="{{newHouseDetail.buildDecoration === 2}}">精装</text>
+        <text class="desc" wx:else>豪装</text>
+      </view>
       <view class="item"><text class="title">物业类型</text><text class="desc">{{newHouseDetail.propertyTypeStr || "--"}}</text></view>
     </view>
     <view class="separator"></view>

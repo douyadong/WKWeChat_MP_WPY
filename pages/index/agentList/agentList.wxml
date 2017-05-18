@@ -30,7 +30,7 @@
                     <text class="number">{{ list.agentCommentScoreStr}}</text>
                 </view>
                 <view class="evaluateNumber">
-                    <text class="number">{{list.userEvaluateNum }}</text>人评价
+                    <text class="number">{{list.userEvaluateNum }}</text>条评价
                 </view>    
             </view>
         </view>

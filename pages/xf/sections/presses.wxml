@@ -9,7 +9,7 @@
         <text class="desc">{{press.content}}</text>
         <text class="date">{{press.publishTimeStr}}</text>
       </view>    
-      <navigator class="button gray" url="/pages/xf/presses?subEstateId={{newHouseDetail.id}}">查看更多</navigator>
+      <navigator class="button gray" url="/pages/xf/presses?subEstateId={{newHouseDetail.id}}" wx:if="{{newHouseDetail.newHouseDynamicList.length > 2}}">查看更多</navigator>
     </view>
   </view>
   <view class="gap"></view>
