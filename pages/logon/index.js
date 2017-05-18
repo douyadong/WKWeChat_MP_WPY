@@ -193,6 +193,7 @@ var addOpenUser = function (encryptedData,iv,code) {
             mock:!true,
             module:'logon',
             action:'addOpenUser',
+            showLoading: false,
             data:{
                 encryptedData:encryptedData,
                 iv:iv,
@@ -300,6 +301,7 @@ Page({
       app.showTips('输入正确的手机号码')
       return false
     }
+    app.showTips('语音验证码拨打中，请注意接收来电');
     // 获取验证码
     getVerificationCode(phone, codeType).then((data) => {
       console.log(data)
@@ -358,7 +360,7 @@ Page({
           wx.navigateBack()
         }
       }else {
-        app.showTips('登录失败，重新登录')
+        app.showTips('请输入正确的验证码')
         console.log('登录失败，重新登录')
         console.log(data)
       }
