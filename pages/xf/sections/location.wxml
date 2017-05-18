@@ -3,7 +3,7 @@
     <view class="head">位置及周边</view>    
   </view>  
   <view class="map-container">
-    <image bindtap="openLocation" src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{newHouseDetail.latitude}},{{newHouseDetail.longitude}}&key={{qqMapKey}}&size=375*240&center={{newHouseDetail.latitude}},{{newHouseDetail.longitude}}&zoom=18&scale=2"></image>
+    <image bindtap="openLocation" src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{newHouseDetail.latitude}},{{newHouseDetail.longitude}}&key={{qqMapKey}}&size=375*240&center={{newHouseDetail.latitude}},{{newHouseDetail.longitude}}&zoom=12&scale=2"></image>
     <view class="supports">
       <view>
         <text class="iconfont icon-location"></text>
