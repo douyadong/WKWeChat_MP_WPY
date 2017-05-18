@@ -12,8 +12,8 @@ const url = {
     "writeRate" : "/wxmpAgent/commentAgent.rest",
     "detail" : "/wxmpAgent/getAgentDetail.rest",
     "moreList": "/moreAgentCommentList.rest" ,
-    "getMoreEsf" : "/moreAgentOldHouseList.rest" ,
-    "getMoreXf" : "/moreAgentNewHouseList.rest"
+    "getMoreEsf" : "/wxmpOldHouseDetail/getAgentRecommendOldHouseList.rest" ,
+    "getMoreXf" : "/wxmpNewHouseDetail/getAgentRecommendNewHouseList.rest"
   } ,
   "buy" : {
     "getDetails" : "/wxmpInterest/getCustomerHouseIntention.rest" ,
