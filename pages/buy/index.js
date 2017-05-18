@@ -393,12 +393,15 @@ Page({
     }
 
     this.data.blockList.forEach(item => {
-      if (item.selected) {
+      if (!that.data.allCheckedAreas.includes(item.pid) && item.selected) {
         townIdList.push(item.id)
       }
     })
 
-    requestData.townIdList = townIdList
+    if (townIdList.length) {
+      requestData.townIdList = townIdList
+    }
+
 
     this.data.houseFeatures.forEach(item => {
       if (item.selected) {
