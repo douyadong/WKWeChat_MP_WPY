@@ -10,7 +10,10 @@
       </navigator>
       <view class="searchBox">
         <navigator open-type="navigate" url="/pages/screen/index" class="search">
-        	  <text class="iconfont icon-search searchIcon"></text><text class="searchText">搜索小区或地址</text>
+            <!--
+        	  <text class="iconfont icon-search searchIcon"></text>
+            -->
+            <text class="searchText">搜索小区或地址</text>
         </navigator>
       </view>
     </view>
