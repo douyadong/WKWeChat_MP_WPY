@@ -7,13 +7,13 @@
   </view>
 
   <view class="default">定位城市</view>
-  <navigator open-type="redirect" class="defaultCity" url="/pages/index/index?cityid={{locationCity.cityId}}">{{locationCity.cityName}}</navigator>
+  <navigator open-type="navigateTo" class="defaultCity" url="/pages/index/index?cityid={{locationCity.cityId}}">{{locationCity.cityName}}</navigator>
   
   <view class="cityList {{showCityIndex == 0 ? 'showCityList':''}}">
       <view class="default">全部城市</view>
       <view class="allListBox">
         <block wx:for="{{domesticCitys}}" wx:for-item="list" wx:for-index="index" wx:key="index">
-            <navigator open-type="redirect" class="allList {{ domesticCitys.length-1 == index ? 'lastList':''}}" url="/pages/index/index?cityid={{list.cityId}}">{{list.cityName}}</navigator>
+            <navigator open-type="navigateTo" class="allList {{ domesticCitys.length-1 == index ? 'lastList':''}}" url="/pages/index/index?cityid={{list.cityId}}">{{list.cityName}}</navigator>
         </block>
       </view>
   </view>
@@ -21,7 +21,7 @@
       <view class="default">全部城市</view>
       <view class="allListBox">
         <block wx:for="{{InternationalCitys}}" wx:for-item="list" wx:for-index="index" wx:key="index">
-            <navigator open-type="redirect" class="allList {{ InternationalCitys.length-1 == index ? 'lastList':''}}" url="/pages/index/index?cityid={{list.cityId}}">{{list.cityName}}</navigator>
+            <navigator open-type="navigateTo" class="allList {{ InternationalCitys.length-1 == index ? 'lastList':''}}" url="/pages/index/index?cityid={{list.cityId}}">{{list.cityName}}</navigator>
         </block>
       </view>
   </view>

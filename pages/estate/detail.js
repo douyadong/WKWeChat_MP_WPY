@@ -9,9 +9,38 @@ var params = $.extend(true, {}, {
         "qqMapKey": app.globalData.qqmapkey
     },
     callEstateExpert: function(event) { //打电话给小区专家    
-        wx.makePhoneCall({
+      var _this = this,
+        agentInfo = this.data.agent,
+        requestData = {
+          agentMobile: agentInfo.agentMobile,
+          agentId: agentInfo.agentId,
+          workType: 2,
+          guid: wx.getStorageSync('userInfo').guestId || ''
+        };
+      request.fetch({
+        data: requestData,
+        module: 'components',
+        action: 'callAgent',
+        showTitle: '电话拨打中',
+        success: function (data) {
+          if (data.status == 1) {
+            wx.makePhoneCall({
+              phoneNumber: data.data.dial + data.data.digits
+            })
+          }
+        },
+        fail: function (data) {
+          wx.showModal({
+            title: '提示',
+            content: data.message || '拨打失败，稍后重试',
+            showCancel: false
+          })
+        }
+      })
+
+        /*wx.makePhoneCall({
             phoneNumber: this.data.agent && this.data.agent.agentMobile
-        });              
+        });  */            
     } ,
     openLocation: function() {
         wx.openLocation({
@@ -33,11 +62,6 @@ var params = $.extend(true, {}, {
     },
     onShow: function() {
         this.getEstateInfo();
-    },
-    onShareAppMessage: function() {
-        return {
-            title: '买房卖房，找好经纪人就对了！'
-        }
     },
     gotoComment: function(event) {
         let url = event.currentTarget.dataset.url;
