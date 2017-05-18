@@ -344,6 +344,21 @@ let main = {
             }
         });
     }
+  },
+  goBuy(e){
+      let url=e.currentTarget.dataset.url;
+
+      //未登录跳转至 /pages/buy/index
+      if(!app.isLogin(false)){
+        wx.navigateTo({
+            url:'/pages/buy/index'
+        })
+      }
+      else{
+         wx.navigateTo({
+            url:'/pages/buy/recommend'
+        })
+      }
   }
 }
 Page(_.extend(true,main, filterAgentList))
