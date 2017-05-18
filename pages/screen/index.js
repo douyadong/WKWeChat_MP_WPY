@@ -100,16 +100,16 @@ let main = {
     key:'',
     agentList:[],//经纪人列表
     regionList:[],//地区列表
-    pageIndex:0
+    pageIndex:0//从第0条开始
   },
   //时时输入
   inputEvent(event){
       let _this = this;
       _this.setData({
           key:event.detail.value,
-          pageIndex:0
+          pageIndex:3
       });
-     getAgentList(_this.data.key,_this.data.pageIndex,3).then((agentList)=>{
+     getAgentList(_this.data.key,0,3).then((agentList)=>{
          _this.setData({
             agentList:HighlightTransform( _this.conversionAgent(agentList))
          })
@@ -121,11 +121,11 @@ let main = {
   //点击完成触发
   completeEvent(event){
       let _this = this;
-      _this.setData({
+        _this.setData({
           key:event.detail.value,
-          pageIndex:0
+          pageIndex:3
       });
-      getAgentList(_this.data.key,_this.data.pageIndex,3).then((agentList)=>{
+      getAgentList(_this.data.key,0,3).then((agentList)=>{
          _this.setData({
             agentList:HighlightTransform( _this.conversionAgent(agentList))
         })
@@ -171,17 +171,14 @@ let main = {
   moreAgent(event){
     let _this = this; 
     let oldAgentList = _this.data.agentList;
-    let pageIndex = ++_this.data.pageIndex;
-    _this.setData({
-        pageIndex:pageIndex
-    });
-    getAgentList(_this.data.key,_this.data.pageIndex,10).then((agentList)=>{
+    getAgentList(_this.data.key,_this.data.pageIndex,20).then((agentList)=>{
          let newAgentList = HighlightTransform( _this.conversionAgent(agentList));
          for(let i=0;i<newAgentList.length;i++){
              oldAgentList.push(newAgentList[i]);
          }
          _this.setData({
-            agentList:oldAgentList
+            agentList:oldAgentList,
+            pageIndex:_this.data.pageIndex+20
         });
     });
   },

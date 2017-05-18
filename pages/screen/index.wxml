@@ -7,7 +7,7 @@
             </view>
         </view>
     </view>
-    <view class="default">经纪人</view>
+    <view class="default" wx:if="{{agentList.length != 0}}">经纪人</view>
     <view class="listBox">
         <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
             <navigator url="/pages/agent/detail?agentId={{list.row.agentId}}" class="agentList {{agentList.length-1 == index ? 'lastList':''}}">
@@ -29,8 +29,8 @@
             </navigator>
         </block> 
     </view>
-    <view class="more" bindtap="moreAgent" wx:if="{{agentList.length != 0}}">更多经纪人</view>
-    <view class="default">地区</view>
+    <view class="more" bindtap="moreAgent" wx:if="{{agentList.length >= 3}}">更多经纪人</view>
+    <view class="default" wx:if="{{regionList.length != 0}}">地区</view>
     <view class="listBox">
         <block wx:for="{{regionList}}" wx:for-item="list" wx:for-index="index" wx:key="index">
             <navigator open-type="redirect" url="/pages/index/index?districtAndTown={{list.row.pinyin}}" class="regionList {{regionList.length-1 == index ? 'lastList':''}}">

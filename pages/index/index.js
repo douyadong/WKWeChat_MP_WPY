@@ -232,10 +232,11 @@ let main = {
                   _this.data.districtAndTown,
                   _this.data.orderType,
                   _this.data.selectLabel,
-                  _this.data.pageIndex
+                  0
               ).then((agentList)=>{
                   _this.setData({
-                      agentList:agentList
+                      agentList:agentList,
+                      pageIndex:20
                   })
               });
         });
@@ -263,10 +264,11 @@ let main = {
                 _this.data.districtAndTown,
                 _this.data.orderType,
                 _this.data.selectLabel,
-                _this.data.pageIndex
+                0
             ).then((agentList)=>{
                 _this.setData({
-                    agentList:agentList
+                    agentList:agentList,
+                    pageIndex:20
                 })
             });
         });
@@ -280,9 +282,7 @@ let main = {
     let _this = this;
     
     if(_this.data.isScrollIng){
-        let pageIndex = ++_this.data.pageIndex
         _this.setData({
-            pageIndex:pageIndex,
             isScrollIng:false
         })
         //获取经纪人
@@ -293,26 +293,25 @@ let main = {
             _this.data.selectLabel,
             _this.data.pageIndex
         ).then((agentList)=>{
-            let oldAgentList = _this.data.agentList;
-            for(let i=0;i<agentList.length;i++){
-                oldAgentList.push(agentList[i]);
-            }
-            _this.setData({
-                agentList:oldAgentList,
-                isScrollIng:true
-            })
             if(agentList.length == 0){
                 wx.showToast({
                     title: '没有数据啦',
                     icon: 'success',
                     duration: 1000
                 })                      
+            }else{
+                let oldAgentList = _this.data.agentList;
+                for(let i=0;i<agentList.length;i++){
+                    oldAgentList.push(agentList[i]);
+                }
+                _this.setData({
+                    agentList:oldAgentList,
+                    isScrollIng:true,
+                    pageIndex:_this.data.pageIndex+20
+                })
             }
         });
     }
-
-    
-
   }
 }
 Page(_.extend(true,main, filterAgentList))
