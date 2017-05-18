@@ -189,7 +189,6 @@ module.exports = {
           towns:[],//点击的左侧的“不限”，没有板块，就是空数组
           //districtAndTown:_this.data.geography.cityPinyin,//修改获取经纪人列表筛选条件 “区域” 状态
           districtAndTown:"",
-          pageIndex:0,
           showIndex:-1,
           isScroll:true,
           isShowMask:false//遮罩消失
@@ -200,10 +199,11 @@ module.exports = {
           _this.data.districtAndTown,
           _this.data.orderType,
           _this.data.selectLabel,
-          _this.data.pageIndex
+          0
       ).then((agentList)=>{
           _this.setData({
-              agentList:agentList
+              agentList:agentList,
+              pageIndex:20
           })
       });
     }else{
@@ -240,8 +240,7 @@ module.exports = {
     }
     _this.setData({
       plateActionId:id,
-      districtAndTown:districtAndTown,//修改筛选经纪人列表状态
-      pageIndex:0
+      districtAndTown:districtAndTown//修改筛选经纪人列表状态
     })
     //获取经纪人
     _this.getAgentList(
@@ -249,10 +248,11 @@ module.exports = {
         _this.data.districtAndTown,
         _this.data.orderType,
         _this.data.selectLabel,
-        _this.data.pageIndex
+        0
     ).then((agentList)=>{
         _this.setData({
-            agentList:agentList
+            agentList:agentList,
+            pageIndex:20
         })
     });
     _this.setData({
@@ -267,8 +267,7 @@ module.exports = {
     _this.setData({
          sortActionId:parseInt(event.currentTarget.dataset.index),//排序的点击id
          screen_sort:event.currentTarget.dataset.content, //设置点击的值回显
-         orderType:parseInt(event.currentTarget.dataset.ordertype),
-         pageIndex:0
+         orderType:parseInt(event.currentTarget.dataset.ordertype)
     })
     //获取经纪人
     _this.getAgentList(
@@ -276,10 +275,11 @@ module.exports = {
         _this.data.districtAndTown,
         _this.data.orderType,
         _this.data.selectLabel,
-        _this.data.pageIndex
+        0
     ).then((agentList)=>{
         _this.setData({
-            agentList:agentList
+            agentList:agentList,
+            pageIndex:20
         })
     });
     _this.setData({
@@ -298,8 +298,7 @@ module.exports = {
     //console.log(event.currentTarget.dataset.selectlabel);
     if(parseInt(event.currentTarget.dataset.selectlabel) != 0){
       _this.setData({
-          selectLabel:parseInt(event.currentTarget.dataset.selectlabel),
-          pageIndex:0
+          selectLabel:parseInt(event.currentTarget.dataset.selectlabel)
       })
       //获取经纪人
       _this.getAgentList(
@@ -307,16 +306,16 @@ module.exports = {
           _this.data.districtAndTown,
           _this.data.orderType,
           _this.data.selectLabel,
-          _this.data.pageIndex
+          0
       ).then((agentList)=>{
           _this.setData({
-              agentList:agentList
+              agentList:agentList,
+              pageIndex:20
           })
       });
     }else{
       _this.setData({
-          selectLabel:-1,
-          pageIndex:0
+          selectLabel:-1
       })
       //获取经纪人
       _this.getAgentList(
@@ -324,10 +323,11 @@ module.exports = {
           _this.data.districtAndTown,
           _this.data.orderType,
           _this.data.selectLabel,
-          _this.data.pageIndex
+          0
       ).then((agentList)=>{
           _this.setData({
-              agentList:agentList
+              agentList:agentList,
+              pageIndex:20
           })
       });
     }

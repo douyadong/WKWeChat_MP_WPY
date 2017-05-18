@@ -7,23 +7,27 @@
 import request from "../../utils/request" ;
 import $ from "../../utils/extend" ;
 import detailFoot from "../components/detailfoot" ;
-var app = getApp();
+var app = getApp() ;
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 用来标识页面当前是否正在下拉加载数据
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-let isLoading = false ; 
+let esfIsLoading = false ; 
+let xfIsLoading = false ; 
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-定义上拉加载请求数据对象格式，并赋予初始值
+定义上拉加载新房请求数据对象格式，并赋予初始值
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-let pullLoadRequestData =  { "agentId" : null , "pageIndex" : 0 , "pageSize" : 10 } ; 
+let pullLoadXfRequestData =  { "agentId" : null , "pageIndex" : 0 , "pageSize" : 10 } ; 
+let pullLoadEsfRequestData =  { "agentId" : null , "pageIndex" : 0 , "pageSize" : 10 } ; 
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 定义页面初始化参数
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
 let params = $.extend(true , {} , detailFoot , {
     data : {
         "pageParams" : {} ,  //页面参数对象
-        "isNoData" : false ,  //用来标识页面数据是否加载完毕
-        "loadError" : false ,  //是否存在加载错误
+        "esfIsNoData" : false ,  //用来标识页面二手房数据是否加载完毕
+        "esfLoadError" : false ,  //是否存在二手房数据加载错误
+        "xfIsNoData" : false ,  //用来标识页面新房数据是否加载完毕
+        "xfLoadError" : false ,  //是否存在新房数据加载错误
         "currentSourcesTab" : "xf"  //默认设置推荐房源停留在新房这个tab，等待切换
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -102,35 +106,56 @@ let params = $.extend(true , {} , detailFoot , {
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     loadMoreEsf : function() {
         let _ = this ;
-        if(isLoading || isNoData) return ;  //如果正在加载数据或者已经没有了数据就直接返回
-        isLoading = true ;  //开始加载
-        pullLoadRequestData.agentId = this.data.pageParams.agentId ;
-        pullLoadRequestData.agentId.pageIndex ++ ;
+        if(esfIsLoading || this.data.esfIsNoData) return ;  //如果正在加载数据或者已经没有了数据就直接返回
+        esfIsLoading = true ;  //开始加载
+        pullLoadEsfRequestData.agentId = this.data.pageParams.agentId ;
+        pullLoadEsfRequestData.pageIndex ++ ;
         request.fetch({
             "module" : "agent",
             "action" : "getMoreEsf",            
-            "data" : pullLoadRequestData ,
-            "showLoading" : false ,
+            "data" : pullLoadEsfRequestData ,            
             "mock" : false ,
             success : function(res) {
-                if(res.status.toString() !== "1") {
-                    wx.showModal({ "title" : "错误提示" , "content" : res.message , "showCancel" : false , "confirmText" : "我知道了"}) ;
-                    return ;
-                }
+                _.setData({ "esfLoadError" : false }) ;
                 let result = _.data.esfSources ;
                 if(res.data && res.data.length) {
                     result = result.concat(_.mapSource(res.data)) ;  
-                     _.setData({ "esfSources" : result , "loadError" : false }) ;     
+                     _.setData({ "esfSources" : result }) ;     
                 }
-                else _.setData({ "isNoData" : true }) ;                    
-            }
+                else _.setData({ "esfIsNoData" : true }) ;                    
+            } ,
+            fail : function(res) {
+                _.setData({ "esfLoadError" : true }) ;    
+            } 
         }) ;
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     新房房源下拉加载方法
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     loadMoreXf : function() {
-
+        let _ = this ;
+        if(xfIsLoading || this.data.xfIsNoData) return ;  //如果正在加载数据或者已经没有了数据就直接返回
+        xfIsLoading = true ;  //开始加载
+        pullLoadXfRequestData.agentId = this.data.pageParams.agentId ;
+        pullLoadXfRequestData.pageIndex ++ ;
+        request.fetch({
+            "module" : "agent",
+            "action" : "getMoreXf",            
+            "data" : pullLoadXfRequestData ,            
+            "mock" : false ,
+            success : function(res) {
+                _.setData({ "xfLoadError" : false }) ;
+                let result = _.data.xfSources ;
+                if(res.data && res.data.length) {
+                    result = result.concat(_.mapSource(res.data)) ;  
+                     _.setData({ "xfSources" : result }) ;     
+                }
+                else _.setData({ "xfIsNoData" : true }) ;                    
+            } ,
+            fail : function(res) {
+                _.setData({ "xfLoadError" : true }) ;    
+            } 
+        }) ;
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     对于房源数据的处理：
