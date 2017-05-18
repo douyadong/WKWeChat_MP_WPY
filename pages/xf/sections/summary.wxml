@@ -3,7 +3,7 @@
     <text class="head">{{newHouseDetail.estateName || "--"}}</text>
     <text class="highlight" wx:if="{{newHouseDetail.houseSellPoint}}">{{newHouseDetail.houseSellPoint}}</text>
     <view class="price-series">
-      <text class="price">{{newHouseDetail.lowestTotalPrice}} 元／㎡</text>
+      <text class="price">{{newHouseDetail.avgPriceWou}} 元／㎡</text>
       <text>[ 参考价格 ]</text>
     </view>
     <view class="tags">
