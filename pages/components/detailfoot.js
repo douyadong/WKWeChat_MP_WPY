@@ -1,3 +1,5 @@
+var request = require('../../utils/request.js')
+
 module.exports ={
 	data:{
 	} ,
@@ -20,10 +22,27 @@ module.exports ={
       	})
 	},
 	c_df_phoneClick:function(){
-		var _this = this;
-		wx.makePhoneCall({
-		  	phoneNumber: _this.data.agentInfo.agentMobile //仅为示例，并非真实的电话号码
-		})
+		var _this = this,
+			agentInfo = this.data.agentInfo,
+			requestData ={
+				agentMobile:agentInfo.agentMobile,
+				agentId:agentInfo.agentId,
+				workType:2,
+				guid:wx.getStorageSync('userInfo').guestId || ''
+			};
+		request.fetch({
+            data:requestData,
+            module:'components',
+            action:'callAgent',
+            showTitle:'电话拨打中',
+            success:function(data){
+            	if(data.status == 1){
+            		wx.makePhoneCall({
+					  	phoneNumber: data.data.dial+data.data.digits //仅为示例，并非真实的电话号码
+					})
+            	}
+            }
+        })
 	},
 	c_df_hideClick:function(e){
 		if(e.currentTarget.id==="agentCodeShadow"){

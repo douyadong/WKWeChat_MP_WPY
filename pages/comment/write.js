@@ -140,7 +140,7 @@ var params = $.extend(true,{},{
         })
     },
     bindFormSubmit: function(e) {
-        var reg = /(\d{11,15})|((\d{7,8})|(\d{3,4}-?\d{7,8}))|([-——#\/]?\d{7-12}[-——#\/]?)/;,
+        var reg = /(\d{11,15})|((\d{7,8})|(\d{3,4}-?\d{7,8}))|([-——#\/]?\d{7-12}[-——#\/]?)/,
             value = this.data.uploadTextarea;
         if(value===""){
             wx.showModal({
