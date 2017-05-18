@@ -28,7 +28,7 @@ let params = $.extend(true , {} , detailFoot , {
         "esfLoadError" : false ,  //是否存在二手房数据加载错误
         "xfIsNoData" : false ,  //用来标识页面新房数据是否加载完毕
         "xfLoadError" : false ,  //是否存在新房数据加载错误
-        "currentSourcesTab" : "xf"  //默认设置推荐房源停留在新房这个tab，等待切换
+        "currentSourcesTab" : "esf"  //默认设置推荐房源停留在新房这个tab，等待切换
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     渲染页面方法
@@ -107,6 +107,10 @@ let params = $.extend(true , {} , detailFoot , {
     loadMoreEsf : function() {
         let _ = this ;
         if(esfIsLoading || this.data.esfIsNoData) return ;  //如果正在加载数据或者已经没有了数据就直接返回
+        if(this.data.esfSources.length <= 10) {
+            _.setData({ "esfIsNoData" : true }) ;
+            return ;
+        }
         esfIsLoading = true ;  //开始加载
         pullLoadEsfRequestData.agentId = this.data.pageParams.agentId ;
         pullLoadEsfRequestData.pageIndex ++ ;
@@ -126,7 +130,10 @@ let params = $.extend(true , {} , detailFoot , {
             } ,
             fail : function(res) {
                 _.setData({ "esfLoadError" : true }) ;    
-            } 
+            } ,
+            complete : function() {
+                esfIsLoading = false ;
+            }
         }) ;
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -135,6 +142,10 @@ let params = $.extend(true , {} , detailFoot , {
     loadMoreXf : function() {
         let _ = this ;
         if(xfIsLoading || this.data.xfIsNoData) return ;  //如果正在加载数据或者已经没有了数据就直接返回
+        if(this.data.xfSources.length <= 10) {
+            _.setData({ "xfIsNoData" : true }) ;
+            return ;
+        }
         xfIsLoading = true ;  //开始加载
         pullLoadXfRequestData.agentId = this.data.pageParams.agentId ;
         pullLoadXfRequestData.pageIndex ++ ;
@@ -154,7 +165,10 @@ let params = $.extend(true , {} , detailFoot , {
             } ,
             fail : function(res) {
                 _.setData({ "xfLoadError" : true }) ;    
-            } 
+            } ,
+            complete : function() {
+                xfIsLoading = false ;
+            }
         }) ;
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
