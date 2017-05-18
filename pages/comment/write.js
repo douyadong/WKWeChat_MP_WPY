@@ -63,6 +63,8 @@ var params = $.extend(true,{},{
             name: 'file',
             success: function(res){
                 var data = res.data;
+                data = JSON.parse(data);
+                data = data.data[0];
 
                 if((i+1)!=file.length){
                     total.push(data);
@@ -75,6 +77,11 @@ var params = $.extend(true,{},{
             },
             fail: function (e) {
                 var n = i+1;
+                if (wx.canIUse('showLoading')) {
+                    wx.hideLoading()
+                }else{
+                    wx.hideToast()
+                }
                 wx.showModal({
                     title: '提示',
                     content: '第'+n+'张图片上传失败',
@@ -93,7 +100,12 @@ var params = $.extend(true,{},{
             commentLocation:initData.commentLocation,
             imageKeys:total.join(',')
         }
-        wx.hideLoading()
+        if (wx.canIUse('showLoading')) {
+            wx.hideLoading()
+        }else{
+            wx.hideToast()
+        }
+        
         request.fetch({
             data:requestData,
             module:'comment',
@@ -106,6 +118,7 @@ var params = $.extend(true,{},{
                     wx.showModal({
                         title: '成功',
                         content: '评价成功',
+                        showCancel:false,
                         success: function(res) {
                             if (res.confirm) {
                                 wx.navigateBack()
@@ -127,21 +140,39 @@ var params = $.extend(true,{},{
         })
     },
     bindFormSubmit: function(e) {
-        if(this.data.uploadTextarea===""){
+        var reg = /(\d{11,15})|((\d{7,8})|(\d{3,4}-?\d{7,8}))|([-——#\/]?\d{7-12}[-——#\/]?)/,
+            value = this.data.uploadTextarea;
+        if(value===""){
             wx.showModal({
                 title: '提示',
                 content: '请填写评论',
                 showCancel: false
             })
-        }else{
-            if(this.data.uploadImages.length>0){
+            return;
+        }
+        if(reg.test(value)){
+            wx.showModal({
+                title: '提示',
+                content: '您所发布的评论不能包含联系方式哦，请修改。',
+                showCancel: false
+            })
+            return;
+        }
+        if(this.data.uploadImages.length>0){
+            if (wx.canIUse('showLoading')) {
                 wx.showLoading({
                     title: '图片上传中'
                 })
-                this.uploadFile(this.data.uploadImages,0)
             }else{
-                this.uploadFormSubmit()
+                wx.showToast({
+                    icon:'loading',
+                    title: '图片上传中'
+                })
             }
+            
+            this.uploadFile(this.data.uploadImages,0)
+        }else{
+            this.uploadFormSubmit()
         }
     }
 })
