@@ -27,7 +27,7 @@
                     <text class="iconfont icon-star-2 star" wx:if="{{list.agentCommentScore >= 2 && list.agentCommentScore < 3}}"></text>
                     <text class="iconfont icon-star-1 star" wx:if="{{list.agentCommentScore >= 1 && list.agentCommentScore < 2}}"></text>
                     <text class="iconfont icon-star-empty star" wx:if="{{list.agentCommentScore >= 0 && list.agentCommentScore < 1}}"></text>
-                    <text class="number">{{ list.agentCommentScore}}</text>
+                    <text class="number">{{ list.agentCommentScoreStr}}</text>
                 </view>
                 <view class="evaluateNumber">
                     <text class="number">{{list.userEvaluateNum }}</text>人评价
