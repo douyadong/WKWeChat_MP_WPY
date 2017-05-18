@@ -2,7 +2,7 @@
   <swiper-item wx:for="{{posters}}" wx:for-item="poster" wx:key="*this">
     <view class="page-no"><text>{{index}} / {{posters.length}}</text></view>
     <view class="pict">
-      <image src="{{poster.fileName}}"></image>
+      <image src="{{poster.fileKey}}"></image>
     </view>
     <text class="title">{{poster.title}}</text>
     <text class="desc">{{poster.content}}</text>
