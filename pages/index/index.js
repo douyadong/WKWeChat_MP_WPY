@@ -310,9 +310,6 @@ let main = {
             }
         });
     }
-
-    
-
   }
 }
 Page(_.extend(true,main, filterAgentList))
