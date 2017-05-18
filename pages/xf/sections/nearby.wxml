@@ -3,5 +3,5 @@
   <view class="panel-hd">
     <view class="head">周边楼盘</view>    
   </view>  
-  <template is="xf-sources" data="{{xfSources}}" />
+  <template is="xf-sources" data="{{xfSources , openType}}" />
 </view>
