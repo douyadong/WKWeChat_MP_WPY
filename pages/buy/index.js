@@ -434,7 +434,7 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      'title': '我要买房',
+      'title': '买房卖房，找好经纪人就对了！',
       'path': '/pages/buy/index'
     }
   }
