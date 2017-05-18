@@ -19,7 +19,7 @@
     </view>
     <view class="title">以下经纪人会主动与您联系</view>
     <view class="agent-list">
-        <view  class="item {{index==matchAgentList.length-1?'last':''}}" wx:for="{{matchAgentList}}" wx:key="{{item.agentId}}">
+        <view  class="item {{index==matchAgentList.length-1?'last':''}}" wx:for="{{matchAgentList}}" wx:key="{{item.agentId}}" data-text="{{item.agentMobile}}" catchtap="call">
             <view class="main">
                 <view class="img-box">
                     <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
@@ -43,7 +43,7 @@
     <block wx:if="{{recommenAgentList.length}}">
         <view class="title">更多推荐</view>
         <view class="agent-list more">
-            <view wx:if="{{index<2||showMore}}" class="item {{index==recommenAgentList.length-1?'last':''}}" wx:for="{{recommenAgentList}}" wx:key="{{item.agentId}}">
+            <view wx:if="{{index<2||showMore}}" class="item {{index==recommenAgentList.length-1?'last':''}}" wx:for="{{recommenAgentList}}" wx:key="{{item.agentId}}" data-text="{{item.agentMobile}}" catchtap="call">
                 <view class="main">
                     <view class="img-box">
                         <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
@@ -60,7 +60,7 @@
                     </view>
                 </view>
                 <view class="tel">
-                    <view class="iconfont icon-tel" data-text="{{item.agentMobile}}" catchtap="call"></view>
+                    <view class="iconfont icon-tel"></view>
                 </view>
             </view>
 
