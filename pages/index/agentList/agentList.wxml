@@ -10,13 +10,13 @@
             <view class="left">
                 <view class="title">{{list.agentName}}</view>
                 <view class="company">{{list.agentBelongToCompanyName}}</view>
-                <block wx:if="{{list.agentBizTownList != null && list.agentBizTownList.length != 0}}">
-                    <view class="businessCenter">熟悉商圈:<text wx:for="{{list.agentBizTownList}}" wx:for-item="list" wx:for-index="index" wx:key="index">{{list}},</text></view>
-                </block>
-                <block wx:if="{{list.agentBizTownList == null || list.agentBizTownList.length == 0}}">
-                    <view class="bubbles" wx:if="{{list.wellAgentBizMessageList != null && list.wellAgentBizMessageList.length != 0}}" >
+                <block wx:if="{{list.isWellAgent == 1}}">
+                   <view class="bubbles">
                         <text class="bubbleList" wx:for="{{ list.wellAgentBizMessageList }}" wx:for-item="list" wx:for-index="index" wx:key="index">{{list}}</text>
                     </view>
+                </block>
+                <block wx:if="{{list.isWellAgent != 1}}">
+                    <view class="businessCenter">熟悉商圈:<text wx:for="{{list.agentBizTownList}}" wx:for-item="list" wx:for-index="index" wx:key="index">{{list}},</text></view>
                 </block>
             </view>
             <view class="right">

@@ -1,7 +1,7 @@
 <import src="../components/develop.wxml" />
 
 <!--index.wxml-->
-<view class="page {{isScroll ? 'noScroll':''}}">
+<scroll-view class="page " scroll-y="{{isScroll}}" bindscrolltolower="scrolltolower">
   <view class="searchNavBox">
     <view class="searchNav">
       <navigator open-type="navigate" url="/pages/city/index" class="city">
@@ -33,5 +33,4 @@
   <view class="agentListBox">
       <include src="agentList/agentList.wxml"/>
   </view>
-  
-</view>
+</scroll-view>

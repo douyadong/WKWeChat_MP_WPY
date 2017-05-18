@@ -145,6 +145,8 @@ let main = {
     orderType:1,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
     selectLabel:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
     pageIndex:0,//起始条数 默认从0开始
+    isScrollIng:true,//是否可以滚动
+    onAgentList:false//是否有经纪人列表
   },
   onShareAppMessage:function(){
     
@@ -213,10 +215,17 @@ let main = {
               });
               //根据定位的地理信息，获取区域信息
               _this.getCityAreasInfo(_this.data.geography.cityId);
-              //设置区域
-              _this.setData({
-                  districtAndTown:""
-              })
+              if(options.districtAndTown == undefined){
+                    //设置区域
+                    _this.setData({
+                        districtAndTown:""
+                    })
+              }else{
+                    //设置区域
+                    _this.setData({
+                        districtAndTown:options.districtAndTown
+                    })
+              }
               //获取经纪人
               _this.getAgentList(
                   _this.data.geography.cityId,
@@ -266,29 +275,44 @@ let main = {
     _this.getUserInfo();
   },
   //滚动到底部异步加载经纪人列表
-  onReachBottom(){
+  //onReachBottom(){
+   scrolltolower(){
     let _this = this;
-    let pageIndex = ++_this.data.pageIndex
-    _this.setData({
-        pageIndex:pageIndex
-    })
-    //获取经纪人
-    _this.getAgentList(
-        _this.data.geography.cityId,
-        _this.data.districtAndTown,
-        _this.data.orderType,
-        _this.data.selectLabel,
-        _this.data.pageIndex
-    ).then((agentList)=>{
-        let oldAgentList = _this.data.agentList;
-        for(let i=0;i<agentList.length;i++){
-          oldAgentList.push(agentList[i]);
-        }
-        console.log(agentList);
+    
+    if(_this.data.isScrollIng){
+        let pageIndex = ++_this.data.pageIndex
         _this.setData({
-            agentList:oldAgentList
+            pageIndex:pageIndex,
+            isScrollIng:false
         })
-    });
+        //获取经纪人
+        _this.getAgentList(
+            _this.data.geography.cityId,
+            _this.data.districtAndTown,
+            _this.data.orderType,
+            _this.data.selectLabel,
+            _this.data.pageIndex
+        ).then((agentList)=>{
+            let oldAgentList = _this.data.agentList;
+            for(let i=0;i<agentList.length;i++){
+                oldAgentList.push(agentList[i]);
+            }
+            _this.setData({
+                agentList:oldAgentList,
+                isScrollIng:true
+            })
+            if(agentList.length == 0){
+                wx.showToast({
+                    title: '没有数据啦',
+                    icon: 'success',
+                    duration: 1000
+                })                      
+            }
+        });
+    }
+
+    
+
   }
 }
 Page(_.extend(true,main, filterAgentList))

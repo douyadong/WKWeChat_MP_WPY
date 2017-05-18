@@ -46,7 +46,7 @@ Page({
             hasSold: this.data.hasSold,
             priceNotReal: this.data.priceNotReal,
             imgNotReal: this.data.imgNotReal,
-            othreReason: this.data.othreReason,
+            otherReason: this.data.othreReason,
             memo: this.data.memo
         };
         if (requestData.notExist || requestData.hasSold || requestData.priceNotReal || requestData.imgNotReal || requestData.othreReason || requestData.memo) {
