@@ -100,7 +100,8 @@ let main = {
     key:'',
     agentList:[],//经纪人列表
     regionList:[],//地区列表
-    pageIndex:0//从第0条开始
+    pageIndex:0,//从第0条开始
+    isFocus:true
   },
   //时时输入
   inputEvent(event){
@@ -117,6 +118,9 @@ let main = {
      getRegionList(_this.data.key).then((list)=>{
          _this.conversionRegion(list);
      });
+     _this.setData({
+         isFocus:true
+     });
   },
   //点击完成触发
   completeEvent(event){
@@ -132,6 +136,9 @@ let main = {
      });
      getRegionList(_this.data.key).then((list)=>{
          _this.conversionRegion(list);
+     });
+      _this.setData({
+         isFocus:false
      });
   },
   //把经纪人列表转化成能使用的列表
