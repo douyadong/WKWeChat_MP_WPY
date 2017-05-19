@@ -76,6 +76,12 @@ var params = $.extend(true,{},{
     bindErrorBtn:function(){
         this.isLoading=false;
         this.loadMore();
+    },
+    onShareAppMessage() {
+        return {
+            title: '买房卖房，找好经纪人就对了',
+            path: '/pages/comment/list?subEstateId='+this.requestData.subEstateId
+        }
     }
 },houseComment);
 
