@@ -3,7 +3,7 @@
     <view class="panel poster">
       <text class="title">{{poster.title}}</text>
       <text class="time">{{poster.publishTimeStr}}</text>
-      <image mode="aspectFit" src="{{poster.fileKey}}"></image>
+      <image mode="scaleToFill" src="{{poster.fileKey}}"></image>
       <text class="desc">{{poster.content}}</text>    
     </view>
     <view class="gap" wx:if="{{index < posters.length-1}}"></view>
