@@ -238,16 +238,17 @@ Page({
     });
   },
   // 获取手机号
-  getPhone(event) {
-    this.setData({
-      phone: event.detail.value
-    })
-    if(event.detail.value.toString().length == 11){
+  getPhone(event) { 
+    if( event.detail.value.toString().length >= 11 ){
         //自动失去焦点
         this.setData({
           isFocus:false//键盘退出
         });
+        return
     }
+    this.setData({
+      phone: event.detail.value
+    })
   },
   // 手机号获取验证码
   phoneGetCode(event) {

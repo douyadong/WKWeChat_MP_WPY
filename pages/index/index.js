@@ -312,6 +312,8 @@ let main = {
   getAgentList:getAgentList,
   onLoad(options){
     let _this = this;
+    //获取用户信息
+    _this.getUserInfo();
     //判断是否选择了城市
     if(options.cityid == undefined){//说明没有没选择城市，调用地理定位获取
         //根据经纬度，获取地理定位信息
@@ -391,8 +393,6 @@ let main = {
             searchText:options.selectCity
         });
     }
-    //获取用户信息
-    _this.getUserInfo();
   },
   //滚动到底部异步加载经纪人列表
    scrolltolower(){
