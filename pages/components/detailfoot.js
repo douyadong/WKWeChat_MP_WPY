@@ -8,7 +8,7 @@ module.exports ={
 			scene = wx.getStorageSync('scene');
 		if(scene === (1008 || 1011 || 1012) ){
 			wx.redirectTo({
-		        url: '../agent/detail?agentId='+this.data.agentInfo.agentId
+		        url: '/pages/agent/detail?agentId='+this.data.agentInfo.agentId
 	      	})
 		}else{
 			this.c_df_phoneClick();
@@ -16,18 +16,18 @@ module.exports ={
 	},
 	c_df_wechatClick:function(e){
 		wx.navigateTo({
-	        url: '../agent/qrcode?agentId='+this.data.agentInfo.agentId
+	        url: '/pages/agent/qrcode?agentId='+this.data.agentInfo.agentId
       	})
 	},
 	c_df_phoneClick:function(){
 		var _this = this,
-			agentInfo = this.data.agentInfo,
+			agentInfo = this.data.agentInfo,			
 			requestData ={
 				agentMobile:agentInfo.agentMobile,
 				agentId:agentInfo.agentId,
 				workType:2,
 				guid:wx.getStorageSync('userInfo').guestId || ''
-			};
+			};			
 		request.fetch({
             data:requestData,
             module:'components',

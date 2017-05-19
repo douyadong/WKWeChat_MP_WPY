@@ -143,7 +143,7 @@ Page({
       that.setAgentList(data)
     })
   },
-  onShow:function(){
+  onShow: function () {
     wx.hideNavigationBarLoading()
   },
   setPrice: function (startPrice, endPrice) {
@@ -200,14 +200,14 @@ Page({
       data.orderAgentIdList.forEach(item => {
         that.data.matchAgentList.push({
           'agentId': item.agentId,
-          'agentName': item.agentName,
+          'agentName': item.agentName ? item.agentName : '',
           'agentMobile': item.agentMobile,
           'headRoundImgUrl': item.headRoundImgUrl,
           'headRoundImgKey': item.headRoundImgKey,
-          'agentBelongToCompanyName': item.agentBelongToCompanyName,
+          'agentBelongToCompanyName': item.agentBelongToCompanyName ? item.agentBelongToCompanyName : '',
           'isWellAgent': item.isWellAgent,
           'recommandInfo': item.recommandInfo,
-          'phone400Dial':item.phone400Dial
+          'phone400Dial': item.phone400Dial
         })
       })
       this.setData({'matchAgentList': that.data.matchAgentList})
@@ -217,14 +217,14 @@ Page({
       data.recommendAgentIdList.forEach(item => {
         that.data.recommenAgentList.push({
           'agentId': item.agentId,
-          'agentName': item.agentName,
+          'agentName': item.agentName ? item.agentName : '',
           'agentMobile': item.agentMobile,
           'headRoundImgUrl': item.headRoundImgUrl,
           'headRoundImgKey': item.headRoundImgKey,
-          'agentBelongToCompanyName': item.agentBelongToCompanyName,
+          'agentBelongToCompanyName': item.agentBelongToCompanyName ? item.agentBelongToCompanyName : '',
           'isWellAgent': item.isWellAgent,
           'recommandInfo': item.recommandInfo,
-          'phone400Dial':item.phone400Dial
+          'phone400Dial': item.phone400Dial
         })
       })
       this.setData({'recommenAgentList': that.data.recommenAgentList})

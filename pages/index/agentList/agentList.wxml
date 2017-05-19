@@ -12,7 +12,7 @@
                 <view class="company">{{list.agentBelongToCompanyName}}</view>
                 <block wx:if="{{list.isWellAgent == 1}}">
                    <view class="bubbles">
-                        <text class="bubbleList" wx:for="{{ list.wellAgentBizMessageList }}" wx:for-item="list" wx:for-index="index" wx:key="index">{{list}}</text>
+                        <text class="bubbleList" wx:for="{{ list.wellAgentBizMessageList }}" wx:for-item="list" wx:for-index="index" wx:key="index" wx:if="{{index<2}}">{{list}}</text>
                     </view>
                 </block>
                 <block wx:if="{{list.isWellAgent != 1}}">
