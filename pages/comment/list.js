@@ -18,6 +18,7 @@ var params = $.extend(true,{},{
             
         this.requestData = $.extend(true,{},{
             offset:this.offset,
+            pageSize : 20 ,
             guestPhoneNum:mobile
         },option);
 
@@ -41,7 +42,8 @@ var params = $.extend(true,{},{
         if(this.isLoading || this.data.isNoData)return;
         this.isLoading = true;
         this.offset++;
-        this.requestData.offset = this.offset*10;
+        this.requestData.offset = 20 +  (this.offset - 1)*10;
+        this.requestData.pageSize = 10 ,
         
         request.fetch({
             data:this.requestData,
