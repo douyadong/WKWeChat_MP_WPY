@@ -239,14 +239,16 @@ var isBind = function (openId) {
         openId: openId
       },
       success: function (data) {
-        if (data.status.toString() == '1') {
+        if (data.status.toString() == '1' && data.data != null && data.data != "") {
+          console.log("通过 openId 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地");
+          wx.setStorageSync('userBindInfo',data.data);
           resolve(data.data)
         }else {
-          reject('')
+          console.log("通过 openId 判断是否已经绑定过手机接口 -----  没绑定");
         }
       },
       fail: function () {
-        reject('')
+        console.log("通过 openId 判断是否已经绑定过手机接口 失败");
       }
     })
   })
