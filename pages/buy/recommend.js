@@ -119,7 +119,8 @@ Page({
     currentHouseFeatures: [],
     currentLocationStr: '',
     matchAgentList: [],
-    recommenAgentList: []
+    recommenAgentList: [],
+    showFooter: false
   },
   onLoad: function () {
     let that = this
@@ -141,6 +142,9 @@ Page({
 
       // 设置经纪人列表
       that.setAgentList(data)
+
+      //显示Footer
+      that.setData({'showFooter': true})
     })
   },
   onShow: function () {
@@ -243,14 +247,13 @@ Page({
   },
   getData: function (callback) {
     let cityId = wx.getStorageSync('geography').cityId
-    let guestId = wx.getStorageSync('userInfo').guestId
-
+  
     request.fetch({
       'module': 'buy',
       'action': 'getDetails',
       'showLoading': true,
       'data': {
-        'guestId': guestId,
+        'guestId': appInstance.getUserBindInfo().guestId,
         'cityId': cityId
       },
       success: function (res) {

@@ -71,7 +71,7 @@
             </view>
         </block>
     </view>
-    <view class="footer">
+    <view class="footer {{showFooter?'':'hidden'}} {{recommenAgentList.length?'static':''}}">
         <view class="tips">
             <text>若经纪人长时间未与您联系，可致电：</text>
             <text class="tel" catchtap="call" data-text='400-821-5365'>400-821-5365</text>
