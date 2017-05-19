@@ -211,7 +211,7 @@ module.exports = {
       ).then((agentList)=>{
           _this.setData({
               agentList:agentList,
-              pageIndex:20
+              pageIndex:10
           })
       });
     }else{
@@ -262,7 +262,7 @@ module.exports = {
     ).then((agentList)=>{
         _this.setData({
             agentList:agentList,
-            pageIndex:20
+            pageIndex:10
         })
     });
     _this.setData({
@@ -292,7 +292,7 @@ module.exports = {
     ).then((agentList)=>{
         _this.setData({
             agentList:agentList,
-            pageIndex:20
+            pageIndex:10
         })
     });
     _this.setData({
@@ -325,7 +325,7 @@ module.exports = {
       ).then((agentList)=>{
           _this.setData({
               agentList:agentList,
-              pageIndex:20
+              pageIndex:10
           })
       });
     }else{
@@ -342,7 +342,7 @@ module.exports = {
       ).then((agentList)=>{
           _this.setData({
               agentList:agentList,
-              pageIndex:20
+              pageIndex:10
           })
       });
     }
@@ -415,7 +415,7 @@ module.exports = {
       ).then((agentList)=>{
           _this.setData({
               agentList:agentList,
-              pageIndex:20
+              pageIndex:10
           })
      });
   },

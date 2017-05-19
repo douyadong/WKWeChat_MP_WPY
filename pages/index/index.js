@@ -107,7 +107,7 @@ var getAgentList = function(cityId,districtAndTown,orderType,selectLabel,pageInd
                 "orderType": orderType,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
                 "selectLabel":selectLabel,//1.好经纪人 2.客户热评 3.推荐房源数量多
                 "pageIndex": pageIndex,//起始条数 默认从0开始
-                "pageSize": 20,//每页数量 默认20条
+                "pageSize": 10,//每页数量 默认10条
                 "device":wx.getStorageSync('device')
             },
             success:function(data){
@@ -320,6 +320,7 @@ let main = {
               //获取code，调用添加微信用户接口
               getLoginCode().then((code)=>{
                 console.log("code:"+code);
+                debugger
                 //添加用户信息
                 addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openid)=>{
                     console.log("openid:"+openid);
@@ -389,7 +390,7 @@ let main = {
                     ).then((agentList)=>{
                         _this.setData({
                             agentList:agentList,
-                            pageIndex:20
+                            pageIndex:10
                         })
                     });
                 });
@@ -421,7 +422,7 @@ let main = {
                     ).then((agentList)=>{
                         _this.setData({
                             agentList:agentList,
-                            pageIndex:20
+                            pageIndex:10
                         })
                     });
                 });
@@ -463,7 +464,7 @@ let main = {
                 _this.setData({
                     agentList:oldAgentList,
                     isScrollIng:true,
-                    pageIndex:_this.data.pageIndex+20
+                    pageIndex:_this.data.pageIndex+10
                 })
             }
         });
