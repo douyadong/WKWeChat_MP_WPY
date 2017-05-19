@@ -30,7 +30,7 @@ let params = {
                  let abbreviation = result.abbreviation ;
                  let companyName = result.companyName ;
                  let finalCompanyName = abbreviation ? abbreviation : ( companyName ? companyName : "") ;
-                 result.cardName = finalCompanyName + result.agentName ;                
+                 result.cardName = finalCompanyName + "经纪人" + result.agentName ;                
                   _.setData(res.data) ;
                   /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                  设置导航栏标题，格式为："公司名称 经纪人名称"
