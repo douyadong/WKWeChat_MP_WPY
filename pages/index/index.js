@@ -20,7 +20,7 @@ var getGeography = function() {
         "townId": null,
         "cityPinyin":"shanghaishi"
     }
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {  
       //地理定位
       wx.getLocation({
         type: 'wgs84',
@@ -214,6 +214,7 @@ var addOpenUser = function (encryptedData,iv,code) {
                 if(data.status.toString() == "1" && data.data != null && data.data.openid != null && data.data.openid != ""){
                      console.log("添加用户信息成功,返回openid成功");
                      wx.setStorageSync('openid',data.data.openid);
+                     wx.setStorageSync('unionId',data.data.unionId);
                      resolve(data.data.openid);
                 }else{
                     console.log("添加用户信息失败，获取openid失败");
@@ -226,9 +227,9 @@ var addOpenUser = function (encryptedData,iv,code) {
     })
 }
 /**
- * 通过 openId 判断是否已经绑定过手机接口
+ * 通过 openid 判断是否已经绑定过手机接口
  */
-var isBind = function (openId) {
+var isBind = function (openid) {
   return new Promise(function (resolve, reject) {
     request.fetch({
       mock: !true,
@@ -236,19 +237,19 @@ var isBind = function (openId) {
       action: 'getWechatBindGuestInfo',
       showLoading: false,
       data: {
-        openId: openId
+        openId: openid
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != null && data.data != "") {
-          console.log("通过 openId 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地");
+          console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地");
           wx.setStorageSync('userBindInfo',data.data);
           resolve(data.data)
         }else {
-          console.log("通过 openId 判断是否已经绑定过手机接口 -----  没绑定");
+          console.log("通过 openid 判断是否已经绑定过手机接口 -----  没绑定");
         }
       },
       fail: function () {
-        console.log("通过 openId 判断是否已经绑定过手机接口 失败");
+        console.log("通过 openid 判断是否已经绑定过手机接口 失败");
       }
     })
   })
@@ -308,21 +309,22 @@ let main = {
     });
   },
   //获取用户信息
-  getUserInfo(){
+  getUserInfo(fn){
       var that = this
       //判断是否授权
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       if(userAuthorizedInfo == ''){//没有授权过
           console.log("没有授权过，调授权接口");
           getUserAuthorizedInfo().then((userAuthorizedInfo)=>{
+              fn();
               //获取code，调用添加微信用户接口
               getLoginCode().then((code)=>{
                 console.log("code:"+code);
                 //添加用户信息
-                addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openId)=>{
-                    console.log("openId:"+openId);
+                addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openid)=>{
+                    console.log("openid:"+openid);
                     //判断是否绑定手机号码
-                    isBind(openId).then((data)=>{
+                    isBind(openid).then((data)=>{
                         console.log(data);
                     });
                 });
@@ -330,104 +332,107 @@ let main = {
           });
       }else{//授权过
           console.log("授权过");
+          
           //获取code，调用添加微信用户接口
           getLoginCode().then((code)=>{
             console.log("code:"+code);
             //添加用户信息
-            addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openId)=>{
-                console.log("openId:"+openId);
+            addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openid)=>{
+                console.log("openid:"+openid);
                 //判断是否绑定手机号码
-                isBind(openId).then((data)=>{
+                isBind(openid).then((data)=>{
                     console.log(data);
                 });
             });
           });
       }
+      fn();
   },
   getAgentList:getAgentList,
   onLoad(options){
     let _this = this;
     //获取用户信息
-    _this.getUserInfo();
-    //判断是否选择了城市
-    if(options.cityid == undefined){//说明没有没选择城市，调用地理定位获取
-        //根据经纬度，获取地理定位信息
-        getGeography().then((data)=>{
-              //更新地理信息状态
-              _this.setData({
-                  geography:data
-              });
-              //把成功后的地理位置信息写入本地
-              wx.setStorage({
-                key:"geography",
-                data:data
-              });
-              //根据定位的地理信息，获取区域信息
-              _this.getCityAreasInfo(_this.data.geography.cityId);
-              if(options.districtAndTown == undefined){
+    _this.getUserInfo(function() {
+            //判断是否选择了城市
+            if(options.cityid == undefined){//说明没有没选择城市，调用地理定位获取
+                //根据经纬度，获取地理定位信息
+                getGeography().then((data)=>{
+                    //更新地理信息状态
+                    _this.setData({
+                        geography:data
+                    });
+                    //把成功后的地理位置信息写入本地
+                    wx.setStorage({
+                        key:"geography",
+                        data:data
+                    });
+                    //根据定位的地理信息，获取区域信息
+                    _this.getCityAreasInfo(_this.data.geography.cityId);
+                    if(options.districtAndTown == undefined){
+                            //设置区域
+                            _this.setData({
+                                districtAndTown:""
+                            })
+                    }else{
+                            //设置区域
+                            _this.setData({
+                                districtAndTown:options.districtAndTown
+                            })
+                    }
+                    //获取经纪人
+                    _this.getAgentList(
+                        _this.data.geography.cityId,
+                        _this.data.districtAndTown,
+                        _this.data.orderType,
+                        _this.data.selectLabel,
+                        0
+                    ).then((agentList)=>{
+                        _this.setData({
+                            agentList:agentList,
+                            pageIndex:20
+                        })
+                    });
+                });
+            }else{//说明用户选择的是具体的城市
+                //根据城市id获取地理位置定位信息
+                getCityBusinessById(options.cityid).then((data)=>{
+                    //更新地理信息状态
+                    _this.setData({
+                        geography:data
+                    });
+                    //把成功后的地理位置信息写入本地
+                    wx.setStorage({
+                    key:"geography",
+                    data:data
+                    });
+                    //根据定位的地理信息，获取区域信息
+                    _this.getCityAreasInfo(_this.data.geography.cityId);
                     //设置区域
                     _this.setData({
                         districtAndTown:""
                     })
-              }else{
-                    //设置区域
-                    _this.setData({
-                        districtAndTown:options.districtAndTown
-                    })
-              }
-              //获取经纪人
-              _this.getAgentList(
-                  _this.data.geography.cityId,
-                  _this.data.districtAndTown,
-                  _this.data.orderType,
-                  _this.data.selectLabel,
-                  0
-              ).then((agentList)=>{
-                  _this.setData({
-                      agentList:agentList,
-                      pageIndex:20
-                  })
-              });
-        });
-    }else{//说明用户选择的是具体的城市
-        //根据城市id获取地理位置定位信息
-        getCityBusinessById(options.cityid).then((data)=>{
-            //更新地理信息状态
-            _this.setData({
-                geography:data
-            });
-            //把成功后的地理位置信息写入本地
-            wx.setStorage({
-              key:"geography",
-              data:data
-            });
-            //根据定位的地理信息，获取区域信息
-            _this.getCityAreasInfo(_this.data.geography.cityId);
-            //设置区域
-            _this.setData({
-                districtAndTown:""
-            })
-            //获取经纪人
-            _this.getAgentList(
-                _this.data.geography.cityId,
-                _this.data.districtAndTown,
-                _this.data.orderType,
-                _this.data.selectLabel,
-                0
-            ).then((agentList)=>{
+                    //获取经纪人
+                    _this.getAgentList(
+                        _this.data.geography.cityId,
+                        _this.data.districtAndTown,
+                        _this.data.orderType,
+                        _this.data.selectLabel,
+                        0
+                    ).then((agentList)=>{
+                        _this.setData({
+                            agentList:agentList,
+                            pageIndex:20
+                        })
+                    });
+                });
+            }
+            //设置搜索默认显示
+            if(options.selectCity != undefined){
                 _this.setData({
-                    agentList:agentList,
-                    pageIndex:20
-                })
-            });
-        });
-    }
-    //设置搜索默认显示
-    if(options.selectCity != undefined){
-        _this.setData({
-            searchText:options.selectCity
-        });
-    }
+                    searchText:options.selectCity
+                });
+            }
+    });
   },
   //滚动到底部异步加载经纪人列表
    scrolltolower(){

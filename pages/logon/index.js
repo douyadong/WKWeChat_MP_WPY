@@ -1,6 +1,57 @@
 var request = require('../../utils/request.js')
 let app = getApp()
 /**
+ * 根据经纬度获取地理定位
+ */
+var getGeography = function() {
+    let defineGeography = {
+        "cityId": 43,
+        "cityName": "上海市",
+        "districtId": 45,
+        "townId": null,
+        "cityPinyin":"shanghaishi"
+    }
+    return new Promise(function (resolve, reject) {  
+      //地理定位
+      wx.getLocation({
+        type: 'wgs84',
+        success: function(res) {//地理定位成功，获取经纬度
+          var latitude = res.latitude
+          var longitude = res.longitude
+          var speed = res.speed
+          var accuracy = res.accuracy
+          //根据精度纬度，获取当前所在的城市信息
+          request.fetch({
+              mock:!true,
+              module:'index',
+              action:'findCityInfoByLonAndLat',
+              data:{
+                lon:longitude,
+                lat:latitude
+              },
+              success:function(data){//获取城市信息成功
+                if(data.status.toString() == '1' && data.data != null){
+                    wx.setStorage({
+                      key:"location",
+                      data:data.data
+                    });
+                    resolve(data.data);
+                }else{
+                    resolve(defineGeography);
+                }
+              },
+              fail:function() {//获取城市信息失败
+                  resolve(defineGeography);
+              }
+          });
+        },
+        fail:function() {//用户取消地理定位
+            resolve(defineGeography);
+        }
+      })
+  })
+}
+/**
  * 获取code方法
  */
 var getLoginCode = function () {
@@ -58,14 +109,16 @@ var isBind = function (openId) {
         openId: openId
       },
       success: function (data) {
-        if (data.status.toString() == '1') {
+        if (data.status.toString() == '1' && data.data != null && data.data != "") {
+          console.log("通过 openId 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地");
+          wx.setStorageSync('userBindInfo',data.data);
           resolve(data.data)
         }else {
-          reject('')
+          console.log("通过 openId 判断是否已经绑定过手机接口 -----  没绑定，需要手动登录");
         }
       },
       fail: function () {
-        reject('')
+        console.log("通过 openId 判断是否已经绑定过手机接口 失败");
       }
     })
   })
@@ -102,7 +155,7 @@ var getVerificationCode = function (phone, codeType) {
 /**
  * 提交登录信息
  */
-var submit = function (phone, verificationCode,openId) {
+var submit = function (phone, verificationCode,openid,unionId) {
   return new Promise(function (resolve, reject) {
     request.fetch({
       mock: !true,
@@ -111,10 +164,13 @@ var submit = function (phone, verificationCode,openId) {
       data: {
         phone: phone,
         code: verificationCode,
-        openId:openId
+        openId:openid,
+        unionId:unionId
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != null) {
+          //把登录完成绑定的用户信息存储下来
+          wx.setStorageSync('userBindInfo',data);
           resolve(data.data)
         }else {
           resolve('')
@@ -126,96 +182,62 @@ var submit = function (phone, verificationCode,openId) {
     })
   })
 }
-
-/**
- * 根据经纬度，获取地理位置信息
- */
-var getLocation = function () {
-  let defineGeography = {
-    'cityId': 43,
-    'cityName': '上海市',
-    'districtId': 45,
-    'townId': null,
-    'cityPinyin': 'shanghaishi'
-  }
-  return new Promise(function (resolve, reject) {
-    wx.getLocation({
-      type: 'wgs84',
-      success: function (res) {
-        var latitude = res.latitude
-        var longitude = res.longitude
-        var speed = res.speed
-        var accuracy = res.accuracy
-        request.fetch({
-          mock: !true,
-          module: 'index',
-          action: 'findCityInfoByLonAndLat',
-          data: {
-            lon: longitude,
-            lat: latitude
-          },
-          success: function (data) { // 获取城市信息成功
-            if (data.status.toString() == '1' && data.data != null) {
-              // 把成功后的地理位置信息写入本地
-              wx.setStorage({
-                key: 'geography',
-                data: data.data
-              })
-              resolve(data.data)
-            }else {
-              wx.setStorage({
-                key: 'geography',
-                data: defineGeography
-              })
-              resolve(defineGeography)
-            }
-          },
-          fail: function () {
-            wx.setStorage({
-              key: 'geography',
-              data: defineGeography
-            })
-            resolve(defineGeography)
-          }
-        })
-      }
-    })
-  })
-}
-
-
 /**
  * 添加微信用户到公司数据库
+ * 返回openid
  */
 var addOpenUser = function (encryptedData,iv,code) {
+    console.log("添加微信用户到公司数据库");
     return new Promise(function (resolve, reject) {
+        let openid = wx.getStorageSync('openid');
+        if(openid != ''){
+            resolve(openid);
+            return
+        }
         request.fetch({
             mock:!true,
             module:'logon',
             action:'addOpenUser',
-            showLoading: false,
             data:{
                 encryptedData:encryptedData,
                 iv:iv,
                 code:code
             },
             success:function(data){
-                if(data.status.toString() == "1"){
-                  console.log("添加用户信息成功");
-                    resolve(1);
+                if(data.status.toString() == "1" && data.data != null && data.data.openid != null && data.data.openid != ""){
+                     console.log("添加用户信息成功,返回openid成功");
+                     wx.setStorageSync('openid',data.data.openid);
+                     wx.setStorageSync('unionId',data.data.unionId);
+                     resolve(data.data.openid);
                 }else{
-                  console.log("添加用户信息失败");
-                    resolve(0);
+                    console.log("添加用户信息失败，获取openid失败");
                 }
             },
-            fail:function (params) {
-              console.log("添加用户信息失败");
-                resolve(0);
+            fail:function () {
+                console.log("添加用户信息失败，获取openid失败");
             }
         });
     })
 }
-  
+/**
+ * 获取用户授权信息
+ */
+var getUserAuthorizedInfo = function() {
+    return new Promise(function (resolve, reject) {
+        wx.getUserInfo({
+            withCredentials: true,
+            success: function (res) {
+                // 把用户授权信息写入到本地
+                wx.setStorageSync('userAuthorizedInfo',res);
+                resolve(res);
+            },
+            fail: function () {
+                console.log("获取用户授权信息失败");
+            }
+        })
+    })
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Page({
   data: {
@@ -279,7 +301,7 @@ Page({
       if (data == '') { // 获取验证码失败
         app.showTips('获取验证码失败,请重新获取')
       }else {
-        app.showTips('获取验证码成功')
+        //app.showTips('获取验证码成功')
       }
     })
   },
@@ -318,7 +340,7 @@ Page({
       return false
     }
     if (!(/^1[34578]\d{9}$/.test(phone))) {
-      app.showTips('输入正确的手机号码')
+      app.showTips('请输入正确的手机号码')
       return false
     }
 
@@ -331,19 +353,9 @@ Page({
       app.showTips('验证码为数字')
       return false
     }
-    // console.log("手机号"+_this.data.phone)
-    // console.log("验证码"+_this.data.verificationCode); 
+
     // 提交
-    submit(phone, verificationCode,wx.getStorageSync('openId')).then((data) => {
-      if (data != '') {
-        console.log('提交成功')
-        console.log(data)
-        // 把最终的用户信息，写如到本地
-        wx.setStorage({
-          key: 'userInfo',
-          data: data
-        })
-        wx.setStorageSync('openId', '');
+    submit(phone, verificationCode,wx.getStorageSync('openid'),wx.getStorageSync('unionId')).then((data) => {
         // 返回到登录前的url
         if (_this.data.type == 'redirect') {
           wx.redirectTo({
@@ -352,108 +364,17 @@ Page({
         }else {
           wx.navigateBack()
         }
-      }else {
-        app.showTips('请输入正确的验证码')
-        console.log('登录失败，重新登录')
-        console.log(data)
-      }
     })
   },
   // 写已授权逻辑
   yesAuthorized() {
     let _this = this
-    // 获取code
-    getLoginCode().then((code) => {
-      console.log('code:' + code)
-      let userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
-      //已授权，添加微信用户到本地数据库
-      addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then(()=>{
-          // 根据code，获取openId
-          getOpenId(code).then((openId) => {
-            console.log(openId)
-            // 根据openId，判断是否已经绑定过手机
-            isBind(openId).then((data) => {
-              console.log(data)
-              if (data == null) { // 没有绑定手机号
-                // 正常登录（即验证手机号码）
-                wx.setStorageSync('openId', openId);
-                console.log('已授权，没有绑定过手机号码，走正常登录逻辑（即验证手机号码）')
-              }else { // 返回对象，已经绑定手机号。登录结束
-                // 把最终的用户信息，写如到本地
-                wx.setStorage({
-                  key: 'userInfo',
-                  data: data
-                })
-                // 返回到登录前的url
-                console.log('yesAuthorized.....');
-                console.log(_this.data);
-                if (_this.data.type == 'redirect') {
-                  wx.redirectTo({
-                    url: _this.data.returnUrl
-                  })
-                }else {
-                  wx.navigateBack({
-                    url: _this.data.returnUrl
-                  })
-                }
-              }
-            })
-          })
-       });
-    })
+    
   },
   // 写未授权逻辑
   notAuthorized() {
     let _this = this
-    // 提示授权
-    wx.showModal({
-      title: '授权提示',
-      content: '检测到您没有打开悟空找房的用户信息权限，是否去设置打开？',
-      success: function (res) {
-        // 去设置授权
-        if (res.confirm) {
-          console.log('用户点击确定')
-          // 打开设置页面
-          wx.openSetting({
-            success: (res) => {
-              if (res.authSetting['scope.userInfo']) { // 用户勾选了获取“用户信息”选项
-                // 获取用户授权信息
-                wx.login({
-                  success: function () {
-                    wx.getUserInfo({
-                      withCredentials: true,
-                      success: function (res) {
-                        console.log('获取到用户信息，在调用已授权逻辑，进行一系列处理')
-                        // 把用户授权信息写入到本地
-                        wx.setStorage({
-                          key: 'userAuthorizedInfo',
-                          data: res
-                        })
-                        // 在调用用户授权逻辑
-                        _this.yesAuthorized()
-                      },
-                      fail: function () {
-                        console.log('获取到用户信息失败，只能输入手机号和验证码进行登录')
-                      }
-                    })
-                  }
-                })
-              }else { // 用户没勾选了获取“用户信息”选项，走正常登录
-                console.log('用户没勾选获取“用户信息”选项，只能输入手机号和验证码进行登录')
-              }
-
-              if (res.authSetting['scope.userLocation']) { // 用户勾选了获取“地理位置”选项
-                getLocation()
-              }else { // 用户没勾选了获取“地理位置”选项，走正常登录
-
-              }
-            }
-          })
-        }else { // 用户点击取消，就需要自己输入手机号，验证码，走正常登录逻辑
-          console.log('用户点击取消打开设置，什么都获取不到，只能输入手机号和验证码进行登录')
-        }
-      }
-    })
+    
   },
   showAgreement() {
     let _this = this
@@ -482,17 +403,61 @@ Page({
       });
     }
 
-    // 1.页面初始化，读取Storage,获取用户登录信息，判断微信用户是否为空
-    wx.getStorage({
-      key: 'userAuthorizedInfo',
-      success: function (res) { // 已授权
-        console.log('已授权')
-        _this.yesAuthorized()
-      },
-      fail: function () { // 未授权
-        console.log('未授权，没有获取到userAuthorizedInfo信息')
-        _this.notAuthorized()
+    //本地读取openid是否存在
+    var openid = wx.getStorageSync('openid')
+    if(openid == ''){//不存在
+        console.log("openid不存在，调用授权");
+        wx.openSetting({
+          success: (res) => {
+            if(res.authSetting['scope.userInfo']){//用户同意授权
+                //调用授权
+                getUserAuthorizedInfo().then((data)=>{
+                  //获取code
+                  getLoginCode().then((code)=>{
+                      //调用添加用户信息，获取openid
+                      addOpenUser(data.encryptedData,data.iv,code).then((openid)=>{
+                          //根据openid绑定关心，返回用户绑定信息
+                          isBind(openid).then((data)=>{//返回用户绑定信息
+                            console.log("userBindInfo:"+userBindInfo );
+                            toPage();
+                          });
+                      });
+                  })
+                });
+            }else{//用户不同意授权
+                console.log("用户拒绝授权，只能输入手机号码+验证码，手动登录");
+            }
+
+            if(res.authSetting['scope.userLocation']){
+              //重新获取地理位置
+              getGeography();
+            }
+          }
+        })
+    }else{//存在
+      //读取用户绑定信息
+      let userBindInfo = wx.getStorageSync('userBindInfo');
+      if(userBindInfo == ''){
+        console.log("没有获取到用户绑定信息，去获取");
+        isBind(openid).then((data)=>{//返回用户绑定信息,手动登录
+          console.log("userBindInfo:"+userBindInfo );
+          toPage();
+        });
+      }else{
+          console.log("获取到用户绑定信息存在，说明已登录，直接调回入口页");
+          toPage();
       }
-    })
+    }
+  },
+  toPage(){
+      let _this = this;
+      // 返回到登录前的url
+      if (_this.data.type == 'redirect') {
+        wx.redirectTo({
+          url: _this.data.returnUrl
+        })
+      }else {
+        wx.navigateBack()
+      }
   }
 })
