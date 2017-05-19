@@ -24,7 +24,7 @@
                         <text class="vip" wx:if="{{list.row.isVip}}">vip</text>
                     </view>
                     <view class="city">
-                        <text class="cityName">{{list.row.text}}</text>
+                        <text class="cityName">{{list.row.cityName}}</text>
                         <text class="phone">{{list.row.phone}}</text>
                     </view>
                 </view>

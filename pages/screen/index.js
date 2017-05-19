@@ -178,6 +178,7 @@ let main = {
         let newAgentList = [];
         for(var i=0;i<agentList.length;i++){
             newAgentList.push({
+                cityName:agentList[i].abbreviation,
                 agentId:agentList[i].agentId,
                 text:agentList[i].agentName,
                 key:_this.data.key,
