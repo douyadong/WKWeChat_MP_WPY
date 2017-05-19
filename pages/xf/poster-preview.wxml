@@ -1,6 +1,6 @@
-<swiper>  
+<swiper current="{{pageParams.current}}">  
   <swiper-item wx:for="{{posters}}" wx:for-item="poster" wx:key="*this">
-    <view class="page-no"><text>{{index}} / {{posters.length}}</text></view>
+    <view class="page-no"><text>{{index + 1}} / {{posters.length}}</text></view>
     <view class="pict">
       <image src="{{poster.fileKey}}" mode="scaleToFill"></image>
     </view>

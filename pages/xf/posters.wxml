@@ -1,11 +1,11 @@
 <view class="posters">
   <block wx:for="{{posters}}" wx:for-item="poster" wx:key="*this">
-    <view class="panel poster">
+    <navigator open-type="redirect" class="panel poster" url="/pages/xf/poster-preview?subEstateId={{pageParams.subEstateId}}&current={{index}}">
       <text class="title">{{poster.title}}</text>
       <text class="time">{{poster.publishTimeStr}}</text>
       <image mode="scaleToFill" src="{{poster.fileKey}}"></image>
       <text class="desc">{{poster.content}}</text>    
-    </view>
+    </navigator>
     <view class="gap" wx:if="{{index < posters.length-1}}"></view>
   </block>
 </view>
