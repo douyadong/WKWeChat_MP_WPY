@@ -3,8 +3,8 @@
     <text class="head">{{newHouseDetail.estateName || "--"}}</text>
     <text class="highlight" wx:if="{{newHouseDetail.houseSellPoint}}">{{newHouseDetail.houseSellPoint}}</text>
     <view class="price-series">
-      <text class="price">{{newHouseDetail.avgPriceWou}} 元／㎡</text>
-      <text>[ 参考价格 ]</text>
+      <block wx:if="{{newHouseDetail.avgPriceWou !== '0'}}"><text class="price">{{newHouseDetail.avgPriceWou}} 元／㎡</text><text>[ 参考价格 ]</text></block>
+      <text class="price" wx:else>价格待定</text>
     </view>
     <view class="tags">
       <text class="openning" wx:if="{{newHouseDetail.isSoonOpen==='1'}}">即将开盘</text>
