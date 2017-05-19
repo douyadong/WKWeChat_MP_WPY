@@ -40,7 +40,8 @@ module.exports = {
     //更多列表
     moreContentList:[{selectLabel:0,content:"不限"},{selectLabel:1,content:"好经纪人"},{selectLabel:2,content:"客户热评"},{selectLabel:3,content:"推荐房源数量多"}],//1.好经纪人 2.客户热评 3.推荐房源数量多
     //更多点击高亮
-    moreActionId:-1
+    moreActionId:-1,
+    filterAgentisFixed:false
   },
   //组件初始化
   filterAgentListInit(regionList){
@@ -351,6 +352,7 @@ module.exports = {
         isScrollIng:true
     });
   },
+  //点击清除
   empty(){
       let _this = this;
       _this.setData({
@@ -414,5 +416,17 @@ module.exports = {
               pageIndex:20
           })
      });
+  },
+  bindscroll(event){
+      let _this = this;
+      if(event.detail.scrollTop >= 160){
+          _this.setData({
+              filterAgentisFixed:true
+          });
+      }else{
+          _this.setData({
+              filterAgentisFixed:false
+          });
+      }
   }
 }

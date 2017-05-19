@@ -1,4 +1,4 @@
-<view class="screenListBox {{isFixed ? 'fixed':''}}">
+<view class="screenListBox {{filterAgentisFixed ? 'fixed':''}}">
     <view class="screenList">
         <view class="list {{blue0?'blue':''}}" bindtap="showScreenList" data-index="0">
            <text class="screenTitle">{{screen_region}}</text>
