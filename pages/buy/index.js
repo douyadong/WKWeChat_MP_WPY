@@ -186,6 +186,8 @@ Page({
     let houseTypeId = wx.getStorageSync('buy_houseType')
     let selectedBlockList = wx.getStorageSync('buy_location')
 
+    wx.hideNavigationBarLoading()
+
     if (!this.data.loaded) {
       let that = this
       let price = wx.getStorageSync('buy_price')
@@ -434,7 +436,7 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      'title': '我要买房',
+      'title': '买房卖房，找好经纪人就对了！',
       'path': '/pages/buy/index'
     }
   }

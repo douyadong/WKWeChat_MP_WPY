@@ -4,12 +4,6 @@ const more = '筛选';
 wx.setStorageSync('regionname', '不限')
 wx.setStorageSync('defineDistrictAndTown', '');
 
-
-
-
-let state = {
-    
-}
 module.exports = {
   data: {
     screen_region:region,
@@ -202,7 +196,8 @@ module.exports = {
           showIndex:-1,
           isScroll:true,
           isShowMask:false,//遮罩消失
-          isRotate0:false
+          isRotate0:false,
+          isScrollIng:true
       })
       //获取经纪人
       _this.getAgentList(
@@ -220,7 +215,9 @@ module.exports = {
     }else{
     //不是不限
         _this.setData({
-              districtAndTown:event.currentTarget.dataset.pinyin
+              districtAndTown:event.currentTarget.dataset.pinyin,
+              isScroll:true,
+              isScrollIng:true
         })
         wx.setStorageSync('defineDistrictAndTown', event.currentTarget.dataset.pinyin)
         wx.setStorageSync('regionname', event.currentTarget.dataset.regionname)
@@ -270,7 +267,8 @@ module.exports = {
         showIndex:-1,
         isShowMask:false,//遮罩消失
         isScroll:true,
-        isRotate0:false
+        isRotate0:false,
+        isScrollIng:true
     });
   },
   //点击综合排序
@@ -298,7 +296,8 @@ module.exports = {
         showIndex:-1,
         isShowMask:false,//遮罩消失
         isScroll:true,
-        isRotate1:false
+        isRotate1:false,
+        isScrollIng:true
     });
   },
   //点击筛选更多
@@ -348,7 +347,8 @@ module.exports = {
         showIndex:-1,
         isShowMask:false,//遮罩消失
         isScroll:true,
-        isRotate2:false
+        isRotate2:false,
+        isScrollIng:true
     });
   },
   empty(){
@@ -398,7 +398,7 @@ module.exports = {
         orderType:1,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
         selectLabel:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
         pageIndex:0,//起始条数 默认从0开始
-        isScrollIng:true,//是否可以滚动
+        isScrollIng:true,//是否滚动中
         onAgentList:false//是否有经纪人列表
       });
       //获取经纪人
