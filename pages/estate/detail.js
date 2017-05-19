@@ -106,7 +106,9 @@ var params = $.extend(true, {}, {
                     subwayName: e.subwayName,
                     schoolName: e.schoolName,
                     sameEstateHouseAmount: e.sameEstateHouseAmount,
-                    estateAddr: e.estateAddr
+                    estateAddr: e.estateAddr,
+                    latitude:e.latitude,
+                    longitude:e.longitude
                 };
 
                 var comments = e.comment && e.comment.commentList || [];
