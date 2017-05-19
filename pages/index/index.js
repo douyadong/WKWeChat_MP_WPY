@@ -177,7 +177,7 @@ let main = {
     pageIndex:0,//起始条数 默认从0开始
     isScrollIng:true,//是否滚动中
     onAgentList:false,//是否有经纪人列表,
-    searchText:'搜索小区或地址'
+    searchText:'搜索小区或经纪人姓名'
   },
   //根据城市id获取区域信息
   getCityAreasInfo(cityId){

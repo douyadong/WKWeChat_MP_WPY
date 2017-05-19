@@ -186,7 +186,7 @@ module.exports = {
     //设置点击背景变白
     _this.setData({
         regionActionId:id,
-        searchText:'搜索小区或地址'
+        searchText:'搜索小区或经纪人姓名'
     })
     //点击的是“不限”，towns：设置显现的板块
     if(id == -1){
@@ -271,7 +271,7 @@ module.exports = {
         isScroll:true,
         isRotate0:false,
         isScrollIng:true,
-        searchText:'搜索小区或地址'
+        searchText:'搜索小区或经纪人姓名'
     });
   },
   //点击综合排序
