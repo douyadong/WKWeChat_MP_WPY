@@ -13,7 +13,7 @@
             <!--
         	  <text class="iconfont icon-search searchIcon"></text>
             -->
-            <text class="searchText">搜索小区或地址</text>
+            <text class="searchText">{{searchText}}</text>
         </navigator>
       </view>
     </view>
