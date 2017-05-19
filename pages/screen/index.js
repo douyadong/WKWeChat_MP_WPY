@@ -111,7 +111,7 @@ let main = {
           key:event.detail.value,
           pageIndex:3
       });
-     getAgentList(_this.data.key,0,20).then((agentList)=>{
+     getAgentList(_this.data.key,0,10).then((agentList)=>{
          let newAgentList = [];
          if(agentList.length>3){
                 _this.setData({
@@ -145,7 +145,7 @@ let main = {
           key:event.detail.value,
           pageIndex:3
       });
-      getAgentList(_this.data.key,0,20).then((agentList)=>{
+      getAgentList(_this.data.key,0,10).then((agentList)=>{
          let newAgentList = [];
          if(agentList.length>3){
                 _this.setData({
@@ -211,14 +211,14 @@ let main = {
   moreAgent(event){
     let _this = this; 
     let oldAgentList = _this.data.agentList;
-    getAgentList(_this.data.key,_this.data.pageIndex,20).then((agentList)=>{
+    getAgentList(_this.data.key,_this.data.pageIndex,10).then((agentList)=>{
          let newAgentList = HighlightTransform( _this.conversionAgent(agentList));
          for(let i=0;i<newAgentList.length;i++){
              oldAgentList.push(newAgentList[i]);
          }
          _this.setData({
             agentList:oldAgentList,
-            pageIndex:_this.data.pageIndex+20
+            pageIndex:_this.data.pageIndex+10
         });
     });
   },

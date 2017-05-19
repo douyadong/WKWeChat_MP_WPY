@@ -225,7 +225,32 @@ var addOpenUser = function (encryptedData,iv,code) {
         });
     })
 }
-
+/**
+ * 通过 openId 判断是否已经绑定过手机接口
+ */
+var isBind = function (openId) {
+  return new Promise(function (resolve, reject) {
+    request.fetch({
+      mock: !true,
+      module: 'logon',
+      action: 'getWechatBindGuestInfo',
+      showLoading: false,
+      data: {
+        openId: openId
+      },
+      success: function (data) {
+        if (data.status.toString() == '1') {
+          resolve(data.data)
+        }else {
+          reject('')
+        }
+      },
+      fail: function () {
+        reject('')
+      }
+    })
+  })
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //获取应用实例
@@ -290,10 +315,14 @@ let main = {
           getUserAuthorizedInfo().then((userAuthorizedInfo)=>{
               //获取code，调用添加微信用户接口
               getLoginCode().then((code)=>{
-                console.log(code);
+                console.log("code:"+code);
                 //添加用户信息
                 addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openId)=>{
-                    console.log(openId);
+                    console.log("openId:"+openId);
+                    //判断是否绑定手机号码
+                    isBind(openId).then((data)=>{
+                        console.log(data);
+                    });
                 });
               });
           });
@@ -301,10 +330,14 @@ let main = {
           console.log("授权过");
           //获取code，调用添加微信用户接口
           getLoginCode().then((code)=>{
-            console.log(code);
+            console.log("code:"+code);
             //添加用户信息
             addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openId)=>{
-                console.log(openId);
+                console.log("openId:"+openId);
+                //判断是否绑定手机号码
+                isBind(openId).then((data)=>{
+                    console.log(data);
+                });
             });
           });
       }
