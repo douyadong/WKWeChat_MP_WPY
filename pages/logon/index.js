@@ -239,13 +239,6 @@ Page({
   },
   // 获取手机号
   getPhone(event) { 
-    if( event.detail.value.toString().length >= 11 ){
-        //自动失去焦点
-        this.setData({
-          isFocus:false//键盘退出
-        });
-        return
-    }
     this.setData({
       phone: event.detail.value
     })
