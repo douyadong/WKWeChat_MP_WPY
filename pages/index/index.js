@@ -153,8 +153,50 @@ var addOpenUser = function (encryptedData,iv,code) {
         });
     })
 }
-                
-
+/**
+ * 获取code方法
+ */
+var getLoginCode = function () {
+  return new Promise(function (resolve, reject) {
+    wx.login({
+      success: function (res) {
+        if (res.code) {
+          resolve(res.code)
+        } else {
+          reject(res.errMsg)
+        }
+      }
+    })
+  })
+}               
+/**
+ * 通过code获取openId
+ */
+var getOpenId = function (code) {
+  return new Promise(function (resolve, reject) {
+    request.fetch({
+      mock: !true,
+      module: 'logon',
+      action: 'getOpenIdByCode',
+      showLoading: false,
+      data: {
+        code: code
+      },
+      success: function (data) {
+        if (data.status.toString() == '1' && data.data != '') {
+          resolve(data.data)
+        }else {
+          //resolve('')
+          console.log("openId获取失败");
+        }
+      },
+      fail: function () {
+        //resolve('')
+        console.log("openId获取失败");
+      }
+    })
+  })
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //获取应用实例
 let app = getApp()
@@ -211,26 +253,13 @@ let main = {
   //获取用户信息
   getUserInfo(){
       var that = this
-      //let userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
-      wx.login({
-        success: function (res) {
-          let code = res.code;
-          console.log(code);
-          wx.getUserInfo({
-            withCredentials:true,
-            success: function (res) {
-                wx.setStorageSync('userAuthorizedInfo', res)
-                //添加
-                addOpenUser(res.encryptedData,res.iv,code).then((data)=>{
-                    console.log(data);
-                });
-             },
-             fail:function (params) {
-                 console.log("获取用户授权信息失败");
-             }
-          })
-        }
-      })
+      //获取code
+      getLoginCode().then((code)=>{
+          getOpenId(code).then((openId)=>{
+              console.log("-----------------");
+              console.log(openId);
+          });
+      });
   },
   getAgentList:getAgentList,
   onLoad(options){
