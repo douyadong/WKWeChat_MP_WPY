@@ -101,7 +101,8 @@ let main = {
     agentList:[],//经纪人列表
     regionList:[],//地区列表
     pageIndex:0,//从第0条开始
-    isFocus:true
+    isFocus:true,
+    isMore:false
   },
   //时时输入
   inputEvent(event){
@@ -110,10 +111,25 @@ let main = {
           key:event.detail.value,
           pageIndex:3
       });
-     getAgentList(_this.data.key,0,3).then((agentList)=>{
+     getAgentList(_this.data.key,0,20).then((agentList)=>{
+         let newAgentList = [];
+         if(agentList.length>3){
+                _this.setData({
+                    isMore:true
+                });
+                let oldAgentList = HighlightTransform( _this.conversionAgent(agentList));
+                for(let i=0;i<3;i++){
+                   newAgentList.push(oldAgentList[i]); 
+                }
+         }else{
+             _this.setData({
+                isMore:false
+            });
+            newAgentList = HighlightTransform( _this.conversionAgent(agentList));
+         }
          _this.setData({
-            agentList:HighlightTransform( _this.conversionAgent(agentList))
-         })
+            agentList:newAgentList
+        })
      });
      getRegionList(_this.data.key).then((list)=>{
          _this.conversionRegion(list);
@@ -129,9 +145,24 @@ let main = {
           key:event.detail.value,
           pageIndex:3
       });
-      getAgentList(_this.data.key,0,3).then((agentList)=>{
+      getAgentList(_this.data.key,0,20).then((agentList)=>{
+         let newAgentList = [];
+         if(agentList.length>3){
+                _this.setData({
+                    isMore:true
+                });
+                let oldAgentList = HighlightTransform( _this.conversionAgent(agentList));
+                for(let i=0;i<3;i++){
+                   newAgentList.push(oldAgentList[i]); 
+                }
+         }else{
+             _this.setData({
+                isMore:false
+            });
+            newAgentList = HighlightTransform( _this.conversionAgent(agentList));
+         }
          _this.setData({
-            agentList:HighlightTransform( _this.conversionAgent(agentList))
+            agentList:newAgentList
         })
      });
      getRegionList(_this.data.key).then((list)=>{
@@ -170,6 +201,7 @@ let main = {
                 cityId:list[i].value
           });
       }
+      console.log(HighlightTransform(newList));
       _this.setData({
         regionList:HighlightTransform(newList)
       })

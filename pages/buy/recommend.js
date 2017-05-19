@@ -143,6 +143,9 @@ Page({
       that.setAgentList(data)
     })
   },
+  onShow:function(){
+    wx.hideNavigationBarLoading()
+  },
   setPrice: function (startPrice, endPrice) {
     let that = this
 
