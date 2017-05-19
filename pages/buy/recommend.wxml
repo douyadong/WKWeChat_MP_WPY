@@ -46,7 +46,7 @@
             <view class="title">更多推荐</view>
             <view class="agent-list more">
                 <view wx:if="{{index<2||showMore}}" class="item {{index==recommenAgentList.length-1?'last':''}}" wx:for="{{recommenAgentList}}"
-                    wx:key="{{item.agentId}}" data-text="{{item.agentMobile}}" catchtap="call">
+                    wx:key="{{item.agentId}}" data-text="{{item.phone400Dial}}" catchtap="call">
                     <view class="main">
                         <view class="img-box">
                             <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
