@@ -6,10 +6,10 @@
  
  @import "../variables.less";
  @import "../mixins.less";
-  @import "../xf/sections/location.less";
-  page{
-    padding-bottom:100rpx;
-  }
+ @import "../xf/sections/location.less";
+ page {
+     padding-bottom: 100rpx;
+ }
  /******************房屋详情********************/
  
  .panel {
@@ -138,11 +138,8 @@
      .report {
          background: #f6f6f6;
          color: @navigator-active-color;
-         position: absolute;
-         right: 30rpx;
          font-size: 24rpx;
          padding: 6rpx 12rpx;
-         top: 26rpx;
      }
      .item {
          font-size: 32rpx;
@@ -199,8 +196,8 @@
              border-bottom: 0;
              padding: 0;
          }
-         .separator{
-            color:@separator-color ;
+         .separator {
+             color: @separator-color ;
          }
      }
  }
@@ -220,4 +217,8 @@
  .icon-arrow-r {
      font-size: 26rpx;
      color: @navigator-active-color;
+ }
+ 
+ .no-bottom-padding {
+     padding-bottom: 0rpx !important;
  }
