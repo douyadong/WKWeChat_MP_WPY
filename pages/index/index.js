@@ -176,7 +176,8 @@ let main = {
     selectLabel:-1,//更多：-1.不限 1.好经纪人 2.客户热评 3.推荐房源数量多
     pageIndex:0,//起始条数 默认从0开始
     isScrollIng:true,//是否滚动中
-    onAgentList:false//是否有经纪人列表
+    onAgentList:false,//是否有经纪人列表,
+    searchText:'搜索小区或地址'
   },
   //根据城市id获取区域信息
   getCityAreasInfo(cityId){
@@ -305,6 +306,12 @@ let main = {
                     pageIndex:20
                 })
             });
+        });
+    }
+    //设置搜索默认显示
+    if(options.selectCity != undefined){
+        _this.setData({
+            searchText:options.selectCity
         });
     }
     //获取用户信息

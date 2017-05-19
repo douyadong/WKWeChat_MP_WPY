@@ -201,6 +201,7 @@ let main = {
                 cityId:list[i].value
           });
       }
+      console.log(HighlightTransform(newList));
       _this.setData({
         regionList:HighlightTransform(newList)
       })
