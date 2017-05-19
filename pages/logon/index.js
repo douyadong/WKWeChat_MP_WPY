@@ -260,10 +260,16 @@ Page({
     });
   },
   // 获取手机号
-  getPhone(event) { 
-    this.setData({
+  getPhone(event) {
+    let _this = this; 
+    _this.setData({
       phone: event.detail.value
     })
+    if(event.detail.value.toString().length == 11){
+      _this.setData({
+        isFocus:false
+      });
+    }
   },
   // 手机号获取验证码
   phoneGetCode(event) {
@@ -365,16 +371,6 @@ Page({
           wx.navigateBack()
         }
     })
-  },
-  // 写已授权逻辑
-  yesAuthorized() {
-    let _this = this
-    
-  },
-  // 写未授权逻辑
-  notAuthorized() {
-    let _this = this
-    
   },
   showAgreement() {
     let _this = this
