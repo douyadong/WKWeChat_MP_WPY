@@ -124,35 +124,7 @@ var getAgentList = function(cityId,districtAndTown,orderType,selectLabel,pageInd
   })
 }
 
-//添加微信用户到公司数据库
-var addOpenUser = function (encryptedData,iv,code) {
-    console.log("添加微信用户到公司数据库");
-    return new Promise(function (resolve, reject) {
-        request.fetch({
-            mock:!true,
-            module:'logon',
-            action:'addOpenUser',
-            data:{
-                encryptedData:encryptedData,
-                iv:iv,
-                code:code
-            },
-            success:function(data){
-                if(data.status.toString() == "1"){
-                    console.log("添加用户信息成功");
-                    resolve("添加用户信息成功");
-                }else{
-                    resolve("添加用户信息失败");
-                    console.log("添加用户信息失败");
-                }
-            },
-            fail:function (params) {
-                resolve("添加用户信息失败");
-                console.log("添加用户信息失败");
-            }
-        });
-    })
-}
+
 /**
  * 获取code方法
  */
@@ -197,6 +169,64 @@ var getOpenId = function (code) {
     })
   })
 }
+
+/**
+ * 获取用户授权信息
+ */
+var getUserAuthorizedInfo = function() {
+    return new Promise(function (resolve, reject) {
+        wx.getUserInfo({
+            withCredentials: true,
+            success: function (res) {
+                // 把用户授权信息写入到本地
+                wx.setStorageSync('userAuthorizedInfo',res);
+                resolve(res);
+            },
+            fail: function () {
+                console.log("获取用户授权信息失败");
+            }
+        })
+    })
+}
+
+/**
+ * 添加微信用户到公司数据库
+ * 返回openid
+ */
+var addOpenUser = function (encryptedData,iv,code) {
+    console.log("添加微信用户到公司数据库");
+    return new Promise(function (resolve, reject) {
+        let openid = wx.getStorageSync('openid');
+        if(openid != ''){
+            resolve(openid);
+            return
+        }
+        request.fetch({
+            mock:!true,
+            module:'logon',
+            action:'addOpenUser',
+            data:{
+                encryptedData:encryptedData,
+                iv:iv,
+                code:code
+            },
+            success:function(data){
+                if(data.status.toString() == "1" && data.data != null && data.data.openid != null && data.data.openid != ""){
+                     console.log("添加用户信息成功,返回openid成功");
+                     wx.setStorageSync('openid',data.data.openid);
+                     resolve(data.data.openid);
+                }else{
+                    console.log("添加用户信息失败，获取openid失败");
+                }
+            },
+            fail:function () {
+                console.log("添加用户信息失败，获取openid失败");
+            }
+        });
+    })
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //获取应用实例
 let app = getApp()
@@ -253,13 +283,31 @@ let main = {
   //获取用户信息
   getUserInfo(){
       var that = this
-      //获取code
-      getLoginCode().then((code)=>{
-          getOpenId(code).then((openId)=>{
-              console.log("-----------------");
-              console.log(openId);
+      //判断是否授权
+      var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
+      if(userAuthorizedInfo == ''){//没有授权过
+          console.log("没有授权过，调授权接口");
+          getUserAuthorizedInfo().then((userAuthorizedInfo)=>{
+              //获取code，调用添加微信用户接口
+              getLoginCode().then((code)=>{
+                console.log(code);
+                //添加用户信息
+                addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openId)=>{
+                    console.log(openId);
+                });
+              });
           });
-      });
+      }else{//授权过
+          console.log("授权过");
+          //获取code，调用添加微信用户接口
+          getLoginCode().then((code)=>{
+            console.log(code);
+            //添加用户信息
+            addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openId)=>{
+                console.log(openId);
+            });
+          });
+      }
   },
   getAgentList:getAgentList,
   onLoad(options){
