@@ -79,8 +79,7 @@ var params = $.extend(true,{},{
     },
     onShareAppMessage() {
         return {
-            title: '买房卖房，找好经纪人就对了',
-            path: '/pages/comment/list?subEstateId='+this.requestData.subEstateId
+            title : "买房卖房，找好经纪人就对了"
         }
     }
 },houseComment);

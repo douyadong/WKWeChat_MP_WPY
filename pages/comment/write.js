@@ -174,6 +174,11 @@ var params = $.extend(true,{},{
         }else{
             this.uploadFormSubmit()
         }
+    } ,
+    onShareAppMessage() {
+        return {
+            title : "买房卖房，找好经纪人就对了"            
+        }
     }
 })
 
