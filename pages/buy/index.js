@@ -344,13 +344,12 @@ Page({
   },
   getData: function (callback) {
     let cityId = wx.getStorageSync('geography').cityId
-    let guestId = wx.getStorageSync('userInfo').guestId
 
     request.fetch({
       'module': 'buy',
       'action': 'getDetails',
       'data': {
-        'guestId': guestId,
+        'guestId': appInstance.getUserBindInfo().guestId,
         'cityId': cityId
       },
       'showLoading': true,
@@ -361,7 +360,7 @@ Page({
   },
   submit: function () {
     let that = this
-    let guestId,bedRoomSum,sellPriceStart,sellPriceEnd,townIdStr
+    let bedRoomSum,sellPriceStart,sellPriceEnd,townIdStr
     let houseFeatureLists = [],townIdList = [],districtIdList = []
     let requestData = {}
 
@@ -384,7 +383,7 @@ Page({
     appInstance.isLogin(true, '', 'back')
 
     // 构造请求数据
-    requestData.guestId = wx.getStorageSync('userInfo').guestId
+    requestData.guestId = appInstance.getUserBindInfo().guestId
     requestData.cityId = wx.getStorageSync('geography').cityId
     requestData.sellPriceStart = this.data.currentPrice.min
     requestData.sellPriceEnd = this.data.currentPrice.max

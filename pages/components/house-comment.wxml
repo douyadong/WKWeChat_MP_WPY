@@ -1,4 +1,5 @@
 <template name="house-comment">
+  <view class="no-data" wx:if="{{!comments.length}}">暂时还没有用户评论</view>
 	<view class="comment" wx:for="{{comments}}" wx:key="index">
       <view class="comment-hd clearfix">
         <image mode="aspectFill" src="{{item.guest.avatar.url}}" class="comment-photo" />

@@ -99,20 +99,23 @@
 <view class="gap"></view>
 <!--基本信息-->
 <view class="panel basicBox">
-    <view data-url="/pages/report/write?houseId={{houseId}}" bindtap="jump" class="report">举报</view>
+    
     <view class="panel-hd">
         <view class="head">基本信息</view>
+        <view class="assistant">
+            <text data-url="/pages/report/write?houseId={{houseId}}" bindtap="jump" class="report">举报</text>
+        </view>
     </view>
     <view class="panel-bd lr-padding">
-        <view class="item">
+        <view class="item" wx:if="{{sellPoint}}">
             <text class="caption">主要卖点</text>
             <text>{{sellPoint}}</text>
         </view>
-        <view class="item">
+        <view class="item" wx:if="{{ownerMotivation}}">
             <text class="caption">业主心态</text>
             <text>{{ownerMotivation}}</text>
         </view>
-        <view class="item">
+        <view class="item" wx:if="{{aroundSupport}}">
             <text class="caption">周边配套</text>
             <text>{{aroundSupport}}</text>
         </view>
@@ -179,7 +182,7 @@
         </view>
         <view class="separator"></view>
     </navigator>
-    <view class="panel-bd lr-padding">
+    <view class="panel-bd lr-padding no-bottom-padding">
         <view class="house-comments">
             <template is="house-comment" data="{{comments}}" />
             <view class="btn-group">
