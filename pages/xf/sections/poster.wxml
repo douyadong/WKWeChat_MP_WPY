@@ -7,7 +7,7 @@
       <navigator open-type="redirect" url="/pages/xf/poster-preview?subEstateId={{newHouseDetail.id}}&current=0" wx:for="{{newHouseDetail.newHouseMagazineList}}" wx:for-item="poster" wx:key="*this">
         <text class="title">{{poster.title}}</text>
         <text class="time">{{poster.publishTimeStr}}</text>
-        <image mode="aspectFit" src="{{poster.fileKey}}"></image>
+        <image mode="scaleToFill" src="{{poster.fileKey}}"></image>
         <text class="desc">{{poster.content}}</text> 
         <view class="separator" wx:if="{{index < newHouseDetail.newHouseMagazineList.length-1}}"></view>
       </navigator>
