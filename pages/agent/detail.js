@@ -69,7 +69,7 @@ let params = $.extend(true , {} , detailFoot , {
                  设置导航栏标题，格式为："公司名称 经纪人名称"
                  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
                  wx.setNavigationBarTitle({
-                     title : result.shareTitle
+                     title : result.simpleAgentDetail.agentName
                  }) ;              
                 //最后赋予模板变量
                 result.agentInfo = result.simpleAgentDetail ;
