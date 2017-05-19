@@ -6,13 +6,11 @@
 
 @import "../variables.less";
 @import "../mixins.less";
-
-
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: space-between;
+    // padding-bottom: 280rpx;
     .title {
         padding: 0 @common-margin;
         display: block;
@@ -22,6 +20,7 @@
         line-height: 70rpx;
     }
     .info {
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.10);
         margin: 0 @common-margin;
         background-color: @white-font-color;
         .border-radius(6rpx);
@@ -104,7 +103,7 @@
             .tel {
                 float: right;
                 position: relative;
-                top:44rpx;
+                top: 44rpx;
                 .icon-tel {
                     font-size: 34rpx;
                     color: @dark-blue-font-color;
@@ -114,21 +113,18 @@
                 border-bottom: none;
             }
         }
-
-        &.more{
+        &.more {
             padding-bottom: @common-margin;
-            .button{
+            .button {
                 margin: 30rpx 30rpx 0 30rpx;
             }
         }
     }
     .footer {
-        margin-top: 25rpx;
-        padding: @common-margin;
-        // left: @common-margin;
-        // right: @common-margin;
-        // position: fixed;
-        // bottom: 30rpx;
+        left: @common-margin;
+        right: @common-margin;
+        bottom: @common-margin;
+        position: fixed;
         .tips {
             text-align: center;
             line-height: 40rpx;
@@ -142,9 +138,17 @@
         .button {
             font-size: @large-font-size;
             width: 100%;
-            &:after{
-                border:none;
+            &:after {
+                border: none;
             }
+        }
+        &.static {
+            margin-top: 25rpx;
+            padding: @common-margin;
+            position: static;
+        }
+        &.hidden {
+            display: none;
         }
     }
 }

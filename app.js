@@ -32,6 +32,13 @@ App({
       })
     }
   },
+  getUserBindInfo: function () {
+    let u = {}
+    if (wx.getStorageSync('userInfo')) {
+      u = wx.getStorageSync('userInfo')
+    }
+    return u
+  },
   globalData: {
     userInfo: null,
     qqmapkey: 'FJ6BZ-QZG3P-LASD7-VHLJJ-AG5FT-4KB2U'
@@ -42,10 +49,10 @@ App({
     var userInfo = wx.getStorageSync('userInfo')
     if (!userInfo) {
       // 当前页的地址
-      if(!returnUrl){
-        type="navigateBack";
+      if (!returnUrl) {
+        type = 'navigateBack'
       }
-      //returnUrl = returnUrl || '/' + this.getCurrentPage().__route__
+      // returnUrl = returnUrl || '/' + this.getCurrentPage().__route__
       returnUrl = encodeURIComponent(returnUrl)
       if (!needRedirect) {
         return false; }

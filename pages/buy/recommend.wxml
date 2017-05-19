@@ -46,7 +46,7 @@
             <view class="title">更多推荐</view>
             <view class="agent-list more">
                 <view wx:if="{{index<2||showMore}}" class="item {{index==recommenAgentList.length-1?'last':''}}" wx:for="{{recommenAgentList}}"
-                    wx:key="{{item.agentId}}" data-text="{{item.agentMobile}}" catchtap="call">
+                    wx:key="{{item.agentId}}" data-text="{{item.phone400Dial}}" catchtap="call">
                     <view class="main">
                         <view class="img-box">
                             <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
@@ -71,7 +71,7 @@
             </view>
         </block>
     </view>
-    <view class="footer">
+    <view class="footer {{showFooter?'':'hidden'}} {{recommenAgentList.length?'static':''}}">
         <view class="tips">
             <text>若经纪人长时间未与您联系，可致电：</text>
             <text class="tel" catchtap="call" data-text='400-821-5365'>400-821-5365</text>

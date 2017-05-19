@@ -13,17 +13,17 @@
           <text class="price">{{source.unitPrice}}元/㎡</text>
         </view>
         <view class="param tags">
-          <text class="selected" wx:if="{{source.isTopHouse === 1}}">精选</text>
+          <text class="selected" wx:if="{{source.isTopHouse >1}}">精选</text>         
           <text wx:elif="{{source.isStorePush === 1}}">店长推荐</text>
           <text wx:elif="{{source.commAgent > 0}}">急售</text>
+
           <text wx:if="{{source.fullYears >= 5 && source.onlyOne == 1}}">满五唯一</text>
           <text wx:elif="{{source.fullYears >= 2}}">满二</text>
+
           <text wx:if="{{source.isSubwayHouse === 1}}">地铁</text>
           <text wx:if="{{source.isSchoolHouse === 1}}">近学校</text>
           <text wx:if="{{source.isNewOnStore === 1}}">新上</text>
           <text wx:if="{{source.orientation === 9}}">南北通透</text>
-          
-          
         </view>
       </navigator>
       <view class="separator" wx:if="{{index < esfSources.length-1}}"></view>
