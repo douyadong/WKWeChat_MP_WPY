@@ -4,12 +4,6 @@ const more = '筛选';
 wx.setStorageSync('regionname', '不限')
 wx.setStorageSync('defineDistrictAndTown', '');
 
-
-
-
-let state = {
-    
-}
 module.exports = {
   data: {
     screen_region:region,

@@ -311,10 +311,8 @@ let main = {
     _this.getUserInfo();
   },
   //滚动到底部异步加载经纪人列表
-  //onReachBottom(){
    scrolltolower(){
     let _this = this;
-    console.log("-----------------------------");
     if(_this.data.isScrollIng){
         _this.setData({
             isScrollIng:false
