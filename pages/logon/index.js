@@ -156,19 +156,15 @@ var submit = function (phone, verificationCode) {
 /**
  * 添加微信用户到公司数据库
  */
-var addOpenUser = function (openId,avatarUrl,city,country,gender,language,nickName,province) {
+var addOpenUser = function (openid,avatarUrl,city,country,gender,language,nickName,province) {
     return new Promise(function (resolve, reject) {
-        if(openid != ''){
-            resolve(openid);
-            return
-        }
         request.fetch({
             mock:!true,
             module:'logon',
             action:'addWeixinUser',
             //method:'POST',
             data:{
-                openId:openId,
+                openId:openid,
                 avatarUrl:avatarUrl,
                 city:city,
                 country:country,
@@ -385,6 +381,11 @@ Page({
 
     // 提交
     submit(phone, verificationCode).then((data) => {
+      var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
+      var openid = wx.getStorageSync('openid');
+      addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province).then(()=>{
+                             console.log("3");
+                           });
       _this.toPage();
     },(msg)=>{
         app.showTips(msg);

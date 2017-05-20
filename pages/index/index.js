@@ -196,10 +196,6 @@ var getUserAuthorizedInfo = function() {
  */
 var addOpenUser = function (openId,avatarUrl,city,country,gender,language,nickName,province) {
     return new Promise(function (resolve, reject) {
-        if(openid != ''){
-            resolve(openid);
-            return
-        }
         request.fetch({
             mock:!true,
             module:'logon',
