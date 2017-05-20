@@ -1,7 +1,7 @@
 <template name="agent-rates">
     <view class="agent-rates">
         <block wx:for="{{simpleAgentCommentList}}" wx:key="index">
-            <view class="rate">
+            <view class="rate" wx:if="{{item.guestId}}">
                 <view class="star">
                     <block wx:for="{{item.score}}" wx:key="index">
                         <text class="iconfont icon-star-all"></text>
@@ -13,6 +13,7 @@
                 <view class="content">{{item.comment}}</view>
                 <view class="params">{{item.guestName}} | {{item.createTimeString}}</view>
             </view>
+            <view class="blank-item" wx:else></view>
         </block>
     </view>
 </template>
