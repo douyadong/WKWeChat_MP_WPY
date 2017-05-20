@@ -143,11 +143,11 @@ var submit = function (phone, verificationCode,openid) {
           wx.setStorageSync('userInfo',data.data);
           resolve(data.data)
         }else {
-          resolve('')
+          reject(data.message)
         }
       },
       fail: function () {
-        resolve('')
+        reject('网络异常')
       }
     })
   })
@@ -361,12 +361,9 @@ Page({
 
     // 提交
     submit(phone, verificationCode,wx.getStorageSync('openid')).then((data) => {
-      if(data == ''){
-        app.showTips('登录失败，请重新登录')
-        return
-      }
-      console.log("跳页面");
       _this.toPage();
+    },(msg)=>{
+        app.showTips(msg);
     })
   },
   showAgreement() {
