@@ -205,6 +205,7 @@ var addOpenUser = function (encryptedData,iv,code) {
             mock:!true,
             module:'logon',
             action:'addOpenUser',
+            method:'POST',
             data:{
                 encryptedData:encryptedData,
                 iv:iv,
@@ -320,7 +321,6 @@ let main = {
               //获取code，调用添加微信用户接口
               getLoginCode().then((code)=>{
                 console.log("code:"+code);
-                debugger
                 //添加用户信息
                 addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openid)=>{
                     console.log("openid:"+openid);
