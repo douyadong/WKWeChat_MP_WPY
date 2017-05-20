@@ -87,9 +87,9 @@ let params = $.extend(true , {} , detailFoot , {
     gotoRate:function(event){
         let url = event.currentTarget.dataset.url;
       app.isLogin(true, url);
-      wx.navigateTo({
-        url: url
-      })  
+      wx.redirectTo({
+        url : url
+      })  ;
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     展开熟悉商圈的方法
