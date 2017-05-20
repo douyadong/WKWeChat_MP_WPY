@@ -53,7 +53,7 @@
   <view class="separator"></view> 
   <view class="extendable" hidden="{{estateInfo.sameEstateHouseAmount > 0 ? false:true }}" >
     <view class="head">在售房源</view>
-    <navigator url="{{estateInfo.sameEstateHouseAmount > 0 ? '/pages/esf/list?subEstateId='+subEstateId+'&type=2&agent='+agentId:''}}" class="assistant">
+    <navigator url="{{estateInfo.sameEstateHouseAmount > 0 ? '/pages/esf/list?subEstateId='+subEstateId+'&type=2&agentId='+agentId:''}}" class="assistant">
       <text>{{estateInfo.sameEstateHouseAmount}} 套</text>
       <text class="iconfont icon-arrow-r"></text>
     </navigator>
