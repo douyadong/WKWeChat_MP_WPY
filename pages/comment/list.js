@@ -8,7 +8,7 @@ var params = $.extend(true,{},{
         isLoading:false,
         isNoData:false
     },
-    offset:0,
+    offset:1,
     isLoading:false,
     requestData:{},
     onLoad: function(option) {
@@ -17,7 +17,7 @@ var params = $.extend(true,{},{
             mobile = mobile && mobile.mobile || '';
             
         this.requestData = $.extend(true,{},{
-            offset:this.offset,
+            offset:0,
             pageSize : 20 ,
             guestPhoneNum:mobile
         },option);
@@ -30,7 +30,7 @@ var params = $.extend(true,{},{
                 this.setData({
                     "comments":data.data.commentList
                 })
-                if(data.data.commentList.length<10){
+                if(data.data.commentList.length<20){
                     this.setData({
                         "isNoData":true
                     })
@@ -42,8 +42,7 @@ var params = $.extend(true,{},{
         if(this.isLoading || this.data.isNoData)return;
         this.isLoading = true;
         this.offset++;
-        this.requestData.offset = 20 +  (this.offset - 1)*10;
-        this.requestData.pageSize = 10 ,
+        this.requestData.offset = this.offset*10;
         
         request.fetch({
             data:this.requestData,

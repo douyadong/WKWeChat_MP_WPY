@@ -3,27 +3,38 @@ var $ = require('../../utils/extend.js');
 
 var params = {
 	data: {
-		isLoading:false,//是否正在加载中
-        isNoData:false,//是否没有数据了
-        loadError:false
+		isLoading:false,
+        loadError:false,
+        isNoData:false,
+        simpleAgentCommentTag:{},
+        simpleAgentCommentList:[{},{},{},{},{},{},{},{},{},{},{},{},{},{}]
 	},
+    pageIndex:0,
 	onLoad: function(option) {
-		this.initData = $.extend(true,{},{pageIndex:this.pageIndex,pageSize:20},option);
+        var _this = this;
+		this.initData = $.extend(true,{},{
+            pageIndex:this.pageIndex,
+            pageSize:20
+        },option);
+        
         request.fetch({
             data:this.initData,
             module:'agent',
             action:'rateList',
             success:function(data){
             	if(data.status === 1){
-            		this.setData({
-	                    "simpleAgentCommentTag":data.data.simpleAgentCommentTag,
-	                    "simpleAgentCommentList":data.data.simpleAgentCommentList
-	                })
-	                if(data.data.simpleAgentCommentList.length<20){
-	                    this.setData({
-	                        "isNoData":true
-	                    })
-	                }
+                    if(data.data.simpleAgentCommentList.length<20){
+                        this.setData({
+                            "isNoData":true,
+                            "simpleAgentCommentList":data.data.simpleAgentCommentList,
+                            "simpleAgentCommentTag":data.data.simpleAgentCommentTag
+                        }) 
+                    }else{
+                        this.setData({
+                            "simpleAgentCommentList":data.data.simpleAgentCommentList,
+                            "simpleAgentCommentTag":data.data.simpleAgentCommentTag
+                        }) 
+                    }
             	}
             }.bind(this),
             fail:function(){
@@ -32,7 +43,9 @@ var params = {
         })
 	},
 	loadMore:function(){
-		if(this.isLoading || this.data.isNoData)return;
+		if(this.isLoading || this.data.isNoData){
+            return
+        };
         this.isLoading = true;
 
         this.pageIndex++;
