@@ -39,6 +39,7 @@
             overflow: hidden;
             .title{
                 width: 100%;
+                height: 40rpx;
                 line-height: 36rpx;
                 font-size: 36rpx;
                 color: #4E4E4E;
@@ -48,24 +49,25 @@
                 white-space:nowrap;
                 margin-top: 35rpx;
             }
-            .company,.businessCenter{
+            .company{
                 width: 100%;
+                height: 30rpx;
                 line-height: 28rpx;
                 font-size: 28rpx;
                 color: #4E4E4E;
                 text-overflow:ellipsis;
                 overflow:hidden;
                 white-space:nowrap;
-                margin-top: 13rpx;
+                margin-top:10rpx;
             }
             .bubbles{
                 width: 100%;
-                //height: 30rpx;
+                height: 37rpx;
                 line-height: 30rpx;
                 text-overflow:ellipsis;
                 overflow:hidden;
                 white-space:nowrap;
-                margin-top: 13rpx;
+                margin-top: 7rpx;
                 text{
                     border-radius: 10rpx;
                     font-size: 24rpx;
@@ -78,6 +80,17 @@
                     line-height: 40rpx;
                 }
             }
+            .businessCenter{
+                width: 100%;
+                height: 30rpx;
+                line-height: 28rpx;
+                font-size: 28rpx;
+                color: #4E4E4E;
+                text-overflow:ellipsis;
+                overflow:hidden;
+                white-space:nowrap;
+                margin-top:10rpx;
+            }
         }
         .right{
             width:120rpx;
@@ -86,21 +99,25 @@
             float: right;
             margin-right: 50rpx;
             overflow: hidden;
+            position: relative;
             .starNumber{
-                margin-top: 45rpx;
+                position: absolute;
+                top: 56rpx;
                 .star{
                     color: #FDD700;
                     margin-left: 10rpx;
                 }
                 .number{
-                    font-size: 36rpx;
+                    font-size: 32rpx;
                     padding-left: 15rpx;
                 }
             }
             .evaluateNumber{
+                position: absolute;
+                top: 120rpx;
                 font-size: 24rpx;
                 color: #999999;
-                margin-top: 30rpx;
+                text-indent: 15rpx;
                 .number{
                     margin-right: 5rpx;
                 }

@@ -13,13 +13,13 @@
     <!--只有二手房的情况-->
     <view wx:if="{{recommendType === 2}}">        
       <template is="esf-sources" data="{{esfSources,agentId}}" />      
-      <view class="legend-hd" wx:if="{{esfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
+      <view class="legend-hd no-more" wx:if="{{esfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
       <view class="loading-error" wx:if="{{esfLoadError}}">加载失败，点击重试</view>          
     </view>
     <!--只有新房的情况-->
     <view wx:if="{{recommendType === 1}}">     
       <template is="xf-sources" data="{{xfSources,agentId}}" />      
-      <view class="legend-hd" wx:if="{{xfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
+      <view class="legend-hd no-more" wx:if="{{xfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
       <view class="loading-error" wx:if="{{xfLoadError}}">加载失败，点击重试</view>      
     </view>
     <!--既有二手房又有新房的情况-->
@@ -27,13 +27,13 @@
       <!--二手房容器-->
       <view hidden="{{currentSourcesTab!=='esf'}}">    
         <template is="esf-sources" data="{{esfSources,agentId}}" />        
-        <view class="legend-hd" wx:if="{{esfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
+        <view class="legend-hd no-more" wx:if="{{esfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
         <view class="loading-error" wx:if="{{esfLoadError}}">加载失败，点击重试</view>
       </view>
       <!--新房容器-->
       <view hidden="{{currentSourcesTab!=='xf'}}">
         <template is="xf-sources" data="{{xfSources,agentId}}" />        
-        <view class="legend-hd" wx:if="{{xfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
+        <view class="legend-hd no-more" wx:if="{{xfIsNoData}}"><view class="bg-line"></view><text>没有更多了</text></view>
         <view class="loading-error" wx:if="{{xfLoadError}}">加载失败，点击重试</view>
       </view>
     </block>

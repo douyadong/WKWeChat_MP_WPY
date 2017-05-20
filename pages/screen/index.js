@@ -1,3 +1,6 @@
+//工具方法
+let _ = require('../../utils/extend.js')
+var request = require('../../utils/request.js');
 //关键字高亮
 function HighlightTransform(data) {
     let newList = [];
@@ -27,9 +30,7 @@ function HighlightTransform(data) {
       return  newList;
 }
 
-var request = require('../../utils/request.js');
-//工具方法
-let _ = require('../../utils/extend.js')
+
 /**
  * 获取经纪人列表
  */
@@ -178,6 +179,7 @@ let main = {
         let newAgentList = [];
         for(var i=0;i<agentList.length;i++){
             newAgentList.push({
+                vipType:agentList[i].vipType,
                 cityName:agentList[i].abbreviation,
                 agentId:agentList[i].agentId,
                 text:agentList[i].agentName,

@@ -8,8 +8,8 @@
         </view>
         <view class="content">
             <view class="left">
-                <view class="title">{{list.agentName}}</view>
-                <view class="company">{{list.agentBelongToCompanyName}}</view>
+                <view class="title">{{list.agentName == null? '': list.agentName}}</view>
+                <view class="company">{{list.agentBelongToCompanyName == null ? '' : list.agentBelongToCompanyName}}</view>
                 <block wx:if="{{list.isWellAgent == 1}}">
                    <view class="bubbles">
                         <text class="bubbleList" wx:for="{{ list.wellAgentBizMessageList }}" wx:for-item="list" wx:for-index="index" wx:key="index" wx:if="{{index<2}}">{{list}}</text>
@@ -30,7 +30,7 @@
                     <text class="number">{{ list.agentCommentScoreStr}}</text>
                 </view>
                 <view class="evaluateNumber">
-                    <text class="number">{{list.userEvaluateNum }}</text>条评价
+                    <text class="number">{{list.userEvaluateNum }}</text>人评价
                 </view>    
             </view>
         </view>
