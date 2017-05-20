@@ -20,7 +20,7 @@
         <text wx:for="{{simpleAgentDetail.wellAgentBizMessageList}}" wx:key="*this">{{item}}</text>              
       </view>
     </view>
-    <view class="row">
+    <view class="row tel">
       <view class="row-hd">电话：</view>
       <view class="row-bd"><text class="phone">{{simpleAgentDetail.agentMobile}}</text></view>
     </view>  

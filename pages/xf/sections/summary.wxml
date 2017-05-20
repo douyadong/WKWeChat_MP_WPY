@@ -14,7 +14,9 @@
       <text class="video" wx:if="{{newHouseDetail.hasVideo==='1'}}">有视频</text>
     </view>
     <view class="date">开盘时间：{{newHouseDetail.openTimeStr || "--"}} 交房时间：{{newHouseDetail.launchTimeStr || "--"}}</view>
-    <view class="separator" wx:if="{{newHouseDetail.activityList}}"></view>   
+    <block wx:if="{{newHouseDetail.activityList}}">
+      <view class="gap"></view><view class="separator"></view>
+    </block>
   </view>  
   <view class="promotions lr-padding" wx:if="{{newHouseDetail.activityList}}">    
     <view class="promotion" wx:for="{{newHouseDetail.activityList}}" wx:for-item="promotion" wx:key="*this">

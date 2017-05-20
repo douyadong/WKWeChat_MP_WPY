@@ -26,6 +26,6 @@
       <template is="agent-rates" data="{{simpleAgentCommentList}}" />
     </block>
     <view class="gap"></view>
-    <view bindtap="gotoRate" data-url="/pages/agent/writeRate?agentId={{simpleAgentDetail.agentId}}" class="button gray" open-type="redirect">我来评价</view>
+    <view bindtap="gotoRate" data-url="/pages/agent/writeRate?agentId={{simpleAgentDetail.agentId}}" class="button gray">我来评价</view>
   </view>
 </view>

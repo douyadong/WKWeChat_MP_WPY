@@ -1,5 +1,5 @@
 <view class="panel summary">
-  <view class="panel-bd">
+  <view class="body">
     <view class="row">
       <view class="row-hd">熟悉商圈：</view>
       <view class="row-bd">

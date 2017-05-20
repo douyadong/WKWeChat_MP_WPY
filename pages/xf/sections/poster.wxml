@@ -4,7 +4,7 @@
       <view class="head">楼盘画报</view>    
     </view> 
     <view class="panel-bd lr-padding">
-      <navigator open-type="redirect" url="/pages/xf/poster-preview?subEstateId={{newHouseDetail.id}}&current=0" wx:for="{{newHouseDetail.newHouseMagazineList}}" wx:for-item="poster" wx:key="*this">
+      <navigator open-type="redirect" url="/pages/xf/poster-preview?subEstateId={{newHouseDetail.id}}&magazineId={{poster.id}}&current=0" wx:for="{{newHouseDetail.newHouseMagazineList}}" wx:for-item="poster" wx:key="*this">
         <text class="title">{{poster.title}}</text>
         <text class="time">{{poster.publishTimeStr}}</text>
         <image mode="scaleToFill" src="{{poster.fileKey}}"></image>

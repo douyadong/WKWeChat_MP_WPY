@@ -73,6 +73,8 @@ let params = $.extend(true, {}, {
                 赋值页面数据
                 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
                 _.setData({ "agentId" : _.data.pageParams.agentId }) ;  //swiper组件必须要传agentId
+                //最后赋予模板变量
+                result.agentInfo = result.agent ;
                 _.setData(result) ;
             },
             fail: function() {

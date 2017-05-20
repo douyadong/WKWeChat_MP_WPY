@@ -364,14 +364,7 @@ Page({
 
     // 提交
     submit(phone, verificationCode,wx.getStorageSync('openid'),wx.getStorageSync('unionId')).then((data) => {
-        // 返回到登录前的url
-        if (_this.data.type == 'redirect') {
-          wx.redirectTo({
-            url: _this.data.returnUrl
-          })
-        }else {
-          wx.navigateBack()
-        }
+        toPage();
     })
   },
   showAgreement() {

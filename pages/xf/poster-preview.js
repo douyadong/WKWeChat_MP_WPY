@@ -22,7 +22,8 @@ let params = {
               "action" : "poster-preview" ,              
               "mock" : false ,
               "data" : {
-                "subEstateId" : _.data.pageParams.subEstateId
+                "subEstateId" : _.data.pageParams.subEstateId ,
+                "magazineId" : _.data.pageParams.magazineId
               } ,         
               success : function (res) {
                   _.setData({ "posters" : res.data }) ;

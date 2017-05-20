@@ -184,6 +184,7 @@ var getUserAuthorizedInfo = function() {
             },
             fail: function () {
                 console.log("获取用户授权信息失败");
+                reject();
             }
         })
     })
@@ -311,14 +312,14 @@ let main = {
     });
   },
   //获取用户信息
-  getUserInfo(fn){
+  getUserInfo(fu){
       var that = this
       //判断是否授权
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       if(userAuthorizedInfo == ''){//没有授权过
           console.log("没有授权过，调授权接口");
           getUserAuthorizedInfo().then((userAuthorizedInfo)=>{
-              fn();
+              fu();
               //获取code，调用添加微信用户接口
               getLoginCode().then((code)=>{
                 console.log("code:"+code);
@@ -331,10 +332,12 @@ let main = {
                     });
                 });
               });
+          }).catch(function(err){
+              fu();
           });
       }else{//授权过
           console.log("授权过");
-          
+           fu();
           //获取code，调用添加微信用户接口
           getLoginCode().then((code)=>{
             console.log("code:"+code);
@@ -348,13 +351,13 @@ let main = {
             });
           });
       }
-      fn();
   },
   getAgentList:getAgentList,
   onLoad(options){
     let _this = this;
     //获取用户信息
-    _this.getUserInfo(function() {
+    _this.getUserInfo(function(){
+            console.log("授权成功");
             //判断是否选择了城市
             if(options.cityid == undefined){//说明没有没选择城市，调用地理定位获取
                 //根据经纬度，获取地理定位信息
@@ -435,6 +438,8 @@ let main = {
                 });
             }
     });
+    
+   
   },
   //滚动到底部异步加载经纪人列表
    scrolltolower(){

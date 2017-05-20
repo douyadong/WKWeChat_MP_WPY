@@ -2,8 +2,9 @@
  * @desc:统一定义请求接口地址
  */
 
-//const domain = "https://minapp-sim.yfyk365.com" ;
-const domain = "https://minapp-test.yfyk365.com";
+const domain = "https://minapp-sim.yfyk365.com" ;
+//const domain = "https://minapp-test.yfyk365.com";
+
 const url = {
   "agent" : {
     "rateList" : "/wxmpAgent/getAgentCustomerCommentList.rest",
@@ -69,7 +70,7 @@ const url = {
     "posters" : "/wxmpNewHouseDetail/getMagazineList.rest" ,
     "layouts" : "/wxmpNewHouseDetail/getHouseTypeDetail.rest" ,
     "promotions" : "/wxmpNewHouseDetail/getNewHouseActivityInfo.rest" ,
-    "poster-preview" : "/wxmpNewHouseDetail/getMagazineList.rest"
+    "poster-preview" : "/wxmpNewHouseDetail/getMagazineDetail.rest"
   }
 }
 
