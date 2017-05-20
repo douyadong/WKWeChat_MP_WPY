@@ -69,7 +69,7 @@ const url = {
     "posters" : "/wxmpNewHouseDetail/getMagazineList.rest" ,
     "layouts" : "/wxmpNewHouseDetail/getHouseTypeDetail.rest" ,
     "promotions" : "/wxmpNewHouseDetail/getNewHouseActivityInfo.rest" ,
-    "poster-preview" : "/wxmpNewHouseDetail/getMagazineList.rest"
+    "poster-preview" : "/wxmpNewHouseDetail/getMagazineDetail.rest"
   }
 }
 
