@@ -196,7 +196,6 @@ var getUserAuthorizedInfo = function() {
  */
 var addOpenUser = function (openId,avatarUrl,city,country,gender,language,nickName,province) {
     return new Promise(function (resolve, reject) {
-        let openid = wx.getStorageSync('openid');
         if(openid != ''){
             resolve(openid);
             return

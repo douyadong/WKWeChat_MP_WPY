@@ -82,6 +82,7 @@ var getOpenId = function (code) {
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != '') {
+          wx.setStorageSync('openid',data.data);
           resolve(data.data)
         }else {
           //resolve('')
@@ -126,7 +127,7 @@ var getVerificationCode = function (phone, codeType) {
 /**
  * 提交登录信息
  */
-var submit = function (phone, verificationCode,openid) {
+var submit = function (phone, verificationCode) {
   return new Promise(function (resolve, reject) {
     request.fetch({
       mock: !true,
@@ -135,7 +136,7 @@ var submit = function (phone, verificationCode,openid) {
       data: {
         phone: phone,
         code: verificationCode,
-        openId:openid
+        openId:wx.getStorageSync('openid')
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != null) {
@@ -157,7 +158,6 @@ var submit = function (phone, verificationCode,openid) {
  */
 var addOpenUser = function (openId,avatarUrl,city,country,gender,language,nickName,province) {
     return new Promise(function (resolve, reject) {
-        let openid = wx.getStorageSync('openid');
         if(openid != ''){
             resolve(openid);
             return
@@ -180,6 +180,7 @@ var addOpenUser = function (openId,avatarUrl,city,country,gender,language,nickNa
             success:function(data){
                 if(data.status.toString() == "1" && data.data != null){
                      console.log("添加微信用户到公司数据库 成功");
+                     resolve(data.data);
                 }else{
                     console.log("添加微信用户到公司数据库 失败");
                 }
@@ -383,7 +384,7 @@ Page({
     }
 
     // 提交
-    submit(phone, verificationCode,wx.getStorageSync('openid')).then((data) => {
+    submit(phone, verificationCode).then((data) => {
       _this.toPage();
     },(msg)=>{
         app.showTips(msg);
@@ -428,10 +429,14 @@ Page({
                 console.log("code:"+code);
                 //根据code，获取openid
                 getOpenId(code).then((openid)=>{
+                    console.log("1----------");
+                    console.log(openid);
                     if(openid != ''){
                            //添加微信用户到本地
-                           let userInfo = userAuthorizedInfo.userInfo;
-                           addOpenUser(openid, userInfo.avatarUrl, userInfo.city, userInfo.country, userInfo.gender, userInfo.language, userInfo.nickName, userInfo.province).then(()=>{});
+                           console.log("2---------------"+openid);
+                           addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province).then(()=>{
+                             console.log("3");
+                           });
                            isBind(openid).then(()=>{
                                 _this.toPage();
                            });
