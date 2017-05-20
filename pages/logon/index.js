@@ -223,17 +223,40 @@ var isBind = function (openid) {
  */
 var getUserAuthorizedInfo = function() {
     return new Promise(function (resolve, reject) {
-        wx.getUserInfo({
-            withCredentials: true,
-            success: function (res) {
-                // 把用户授权信息写入到本地
-                wx.setStorageSync('userAuthorizedInfo',res);
-                resolve(res);
-            },
-            fail: function () {
-                console.log("获取用户授权信息失败");
+        wx.openSetting({
+          success: (res) => {
+            /*
+            * res.authSetting = {
+            *   "scope.userInfo": true,
+            *   "scope.userLocation": true
+            * }
+            */
+            //是否勾选过授权
+            if(res.authSetting["scope.userInfo"]){
+                wx.getUserInfo({
+                    withCredentials: true,
+                    success: function (res) {
+                        // 把用户授权信息写入到本地
+                        wx.setStorageSync('userAuthorizedInfo',res);
+                        resolve(res);
+                    },
+                    fail: function () {
+                        console.log("获取用户授权信息失败");
+                    }
+                })
+            }else{
+                console.log("用户没有勾选授权，获取不到授权信息");
             }
-        })
+
+            //是否勾选过地理位置
+            if(res.authSetting["scope.userLocation"]){
+                //根据经纬度，获取地理位置
+                getGeography();
+            }else{
+              console.log("用户没有勾选地理位置，获取不到地理位置信息");
+            }
+          }
+        })  
     })
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
