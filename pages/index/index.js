@@ -348,7 +348,6 @@ let main = {
     let _this = this;
     //获取用户信息
     _this.getUserInfo(function(){
-            console.log("授权成功");
             //判断是否选择了城市
             if(options.cityid == undefined){//说明没有没选择城市，调用地理定位获取
                 //根据经纬度，获取地理定位信息
