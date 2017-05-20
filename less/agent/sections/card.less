@@ -6,19 +6,22 @@
 .card {
     margin : @common-margin ;
     .panel-bd {
-        padding-left : @gap-dimension ;
-        padding-right : @gap-dimension ;
+        padding-left : @common-margin ;
+       // padding-right : @common-margin ;
     }
     .row {
-        padding : 0 0 0 30rpx ;
+        padding : 0 ;
         .row-hd {
             font-size : @large-font-size ;
             width : 120rpx ;
         }
         .row-bd {
             font-size : @large-font-size ;
-            margin-left : 164rpx ;
+            margin-left : 155rpx ;
         }
+    }
+    .tel {
+        margin : @common-margin 0 @gap-dimension 0 ;
     }
     text {
         vertical-align : middle ;
@@ -55,7 +58,7 @@
             color : @default-font-color ;
             display : inline-block ;
             font-size : @mini-font-size ;
-            margin : 10rpx 10rpx 0 0 ;
+            margin : 6rpx 6rpx 0 0 ;
             padding : 0 10rpx ;
         }
     }
