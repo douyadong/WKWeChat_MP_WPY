@@ -1,6 +1,6 @@
 <view class="posters">
   <block wx:for="{{posters}}" wx:for-item="poster" wx:key="*this">
-    <navigator open-type="redirect" class="panel poster" url="/pages/xf/poster-preview?subEstateId={{pageParams.subEstateId}}&current={{index}}">
+    <navigator open-type="redirect" class="panel poster" url="/pages/xf/poster-preview?subEstateId={{pageParams.subEstateId}}&magazineId={{poster.id}}&current=0">
       <text class="title">{{poster.title}}</text>
       <text class="time">{{poster.publishTimeStr}}</text>
       <image mode="scaleToFill" src="{{poster.fileKey}}"></image>
