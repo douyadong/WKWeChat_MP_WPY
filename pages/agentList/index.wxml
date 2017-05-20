@@ -1,0 +1,9 @@
+<scroll-view class="page " scroll-y="true" bindscrolltolower="scrolltolower" bindscroll="bindscroll">
+    <view class="screenBox">
+        <view class="screen">
+            <view class="screenInputBox"><!--bindinput="inputEvent"-->
+                <input type="text" placeholder="搜索小区或经纪人姓名" placeholder-class="screenPlaceholder" class="screenInput" focus="{{isFocus}}" bindinput="inputEvent"  bindconfirm="completeEvent"/>
+            </view>
+        </view>
+    </view>
+</scroll-view>

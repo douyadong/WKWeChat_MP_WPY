@@ -244,6 +244,7 @@ var isBind = function (openid) {
         if (data.status.toString() == '1' && data.data != null && data.data != "") {
           console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地");
           wx.setStorageSync('userBindInfo',data.data);
+          wx.setStorageSync('userInfo',data.data);
           resolve(data.data)
         }else {
           console.log("通过 openid 判断是否已经绑定过手机接口 -----  没绑定");
