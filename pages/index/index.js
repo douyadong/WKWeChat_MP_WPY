@@ -156,14 +156,15 @@ var getOpenId = function (code) {
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != '') {
-          resolve(data.data)
+            wx.setStorageSync('openid',data.data);
+            resolve(data.data)
         }else {
-          //resolve('')
-          console.log("openId获取失败");
+          resolve('')
+          console.log("openId获取失败为空");
         }
       },
       fail: function () {
-        //resolve('')
+        resolve('')
         console.log("openId获取失败");
       }
     })
@@ -192,10 +193,8 @@ var getUserAuthorizedInfo = function() {
 
 /**
  * 添加微信用户到公司数据库
- * 返回openid
  */
-var addOpenUser = function (encryptedData,iv,code) {
-    console.log("添加微信用户到公司数据库");
+var addOpenUser = function (openId,avatarUrl,city,country,gender,language,nickName,province) {
     return new Promise(function (resolve, reject) {
         let openid = wx.getStorageSync('openid');
         if(openid != ''){
@@ -205,25 +204,27 @@ var addOpenUser = function (encryptedData,iv,code) {
         request.fetch({
             mock:!true,
             module:'logon',
-            action:'addOpenUser',
-            method:'POST',
+            action:'addWeixinUser',
+            //method:'POST',
             data:{
-                encryptedData:encryptedData,
-                iv:iv,
-                code:code
+                openId:openId,
+                avatarUrl:avatarUrl,
+                city:city,
+                country:country,
+                gender:gender,
+                language:language,
+                nickName:nickName,
+                province:province
             },
             success:function(data){
-                if(data.status.toString() == "1" && data.data != null && data.data.openid != null && data.data.openid != ""){
-                     console.log("添加用户信息成功,返回openid成功");
-                     wx.setStorageSync('openid',data.data.openid);
-                     wx.setStorageSync('unionId',data.data.unionId);
-                     resolve(data.data.openid);
+                if(data.status.toString() == "1" && data.data != null){
+                     console.log("添加微信用户到公司数据库 成功");
                 }else{
-                    console.log("添加用户信息失败，获取openid失败");
+                    console.log("添加微信用户到公司数据库 失败");
                 }
             },
             fail:function () {
-                console.log("添加用户信息失败，获取openid失败");
+                console.log("添加微信用户到公司数据库 失败");
             }
         });
     })
@@ -243,8 +244,7 @@ var isBind = function (openid) {
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != null && data.data != "") {
-          console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地");
-          wx.setStorageSync('userBindInfo',data.data);
+          console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地，userInfo 有值");
           wx.setStorageSync('userInfo',data.data);
           resolve(data.data)
         }else {
@@ -323,13 +323,16 @@ let main = {
               //获取code，调用添加微信用户接口
               getLoginCode().then((code)=>{
                 console.log("code:"+code);
-                //添加用户信息
-                addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openid)=>{
-                    console.log("openid:"+openid);
-                    //判断是否绑定手机号码
-                    isBind(openid).then((data)=>{
-                        console.log(data);
-                    });
+                //根据code，获取openid
+                getOpenId(code).then((openid)=>{
+                    if(openid != ''){
+                           //添加微信用户到本地
+                           let userInfo = userAuthorizedInfo.userInfo;
+                           addOpenUser(openid, userInfo.avatarUrl, userInfo.city, userInfo.country, userInfo.gender, userInfo.language, userInfo.nickName, userInfo.province).then(()=>{
+
+                           });
+                           isBind(openid);
+                    }
                 });
               });
           }).catch(function(err){
@@ -337,19 +340,7 @@ let main = {
           });
       }else{//授权过
           console.log("授权过");
-           fu();
-          //获取code，调用添加微信用户接口
-          getLoginCode().then((code)=>{
-            console.log("code:"+code);
-            //添加用户信息
-            addOpenUser(userAuthorizedInfo.encryptedData,userAuthorizedInfo.iv,code).then((openid)=>{
-                console.log("openid:"+openid);
-                //判断是否绑定手机号码
-                isBind(openid).then((data)=>{
-                    console.log(data);
-                });
-            });
-          });
+          fu();
       }
   },
   getAgentList:getAgentList,

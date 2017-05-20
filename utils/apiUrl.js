@@ -54,7 +54,7 @@ const url = {
     "getCityAreasInfo":"/houseMap/getCityAreasInfo.rest",
     "getWechatBindGuestInfo":"/wxmpLogin/getWechatBindGuestInfo.rest",//判断是否已经绑定过手机接口
     "getOpenIdByCode":"/wxmpLogin/getOpenIdByCode.rest",
-    "addOpenUser":"/wxmpLogin/addOpenUser.rest"
+    "addWeixinUser":"/wxmpLogin/addWeixinUser.rest"
   },
   "screen":{
       "associationalAgentList":"/wxmpAgent/associationalAgentList.rest",
