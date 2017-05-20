@@ -12,7 +12,7 @@
       <view class="comment-bd">
         {{item.comment}}
         <view class="comment-images" wx:if="{{item.imgList&&item.imgList.length>0}}">
-          <image wx:for="{{item.imgList}}" wx:for-item="image" wx:for-index="imageIndex" wx:key="imageIndex" src="{{image.url}}" class="{{imageIndex==2?'last':''}}" bindtap="hc_previewImage" data-img-url="{{image.url}}" data-comment-id="{{item.pkid}}"></image>
+          <image mode="aspectFill" wx:for="{{item.imgList}}" wx:for-item="image" wx:for-index="imageIndex" wx:key="imageIndex" src="{{image.url}}" class="{{imageIndex==2?'last':''}}" bindtap="hc_previewImage" data-img-url="{{image.url}}" data-comment-id="{{item.pkid}}"></image>
         </view>
       </view>
       <view class="comment-ft">

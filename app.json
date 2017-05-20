@@ -5,6 +5,7 @@
     "pages/userAgreement/index",
     "pages/logon/index",
     "pages/screen/index",
+    "pages/agentList/index",
     "pages/xf/detail",
     "pages/xf/infos",
     "pages/xf/layouts",
