@@ -4,7 +4,7 @@ Page({
     data: {
         offset: 0,
         pageSize: 10,
-        totalCount: 0,
+        isOnReachBottomFlag: true,
         loading: false,
         sourceType:'esfList',
         openType:'redirect'
@@ -35,7 +35,7 @@ Page({
         this.getHouses();
     },
     onReachBottom: function() {
-        if (this.data.type == 2 && this.data.offset < this.data.totalCount) {
+        if (this.data.type == 2 && this.data.isOnReachBottomFlag) {
             this.getHouses();
         }
     },
@@ -87,8 +87,9 @@ Page({
                 data.data.map(function(item) {
                     return esfSources.push(item);
                 });
-
-                that.data.totalCount = data.count;
+                if(data.data.length<that.data.pageSize){
+                    that.data.isOnReachBottomFlag = false;
+                }
                 that.data.offset = that.data.offset + data.data.length;
                 that.setData({
                     esfSources
