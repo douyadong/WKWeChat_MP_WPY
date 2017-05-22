@@ -8,7 +8,9 @@ module.exports = {
     let self = this;
     let item = event.currentTarget.dataset.item;
     //判断是否登录
-    app.isLogin();
+    if(!app.isLogin()){
+      return;
+    }
     //判断是否点亮
     if(item.isUp){
       return;

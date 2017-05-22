@@ -380,7 +380,9 @@ Page({
     }
 
     // 判断是否登录
-    appInstance.isLogin(true, '', 'back')
+    if(!appInstance.isLogin(true, '', 'back')){
+      return;
+    }
 
     // 构造请求数据
     requestData.guestId = appInstance.getUserBindInfo().guestId

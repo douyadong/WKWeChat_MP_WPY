@@ -27,10 +27,11 @@ var params = $.extend(true, {}, {
     },
     jump: function(event) {
         let url = event.currentTarget.dataset.url;
-        app.isLogin(true, url);
-        wx.navigateTo({
-            url: url
-        })
+        if(app.isLogin(true, url)){
+            wx.navigateTo({
+                url: url
+            })
+        }        
     },
     onShareAppMessage: function() {
         return {
