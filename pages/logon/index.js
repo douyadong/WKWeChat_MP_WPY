@@ -148,7 +148,7 @@ var submit = function (phone, verificationCode) {
         }
       },
       fail: function () {
-        reject('网络异常')
+        reject('请输入正确的验证码')
       }
     })
   })
@@ -388,7 +388,7 @@ Page({
 
     // 校验验证码
     if (verificationCode == '') {
-      app.showTips('验证码不得为空')
+      app.showTips('请输入正确的验证码')
       return false
     }
     if (isNaN(verificationCode)) { // || (verificationCode+'').length != 6
