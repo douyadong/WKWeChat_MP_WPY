@@ -50,13 +50,15 @@
       <view class="row-bd">{{estateInfo.schoolName}}</view>
     </view>         
   </view>
-  <view class="separator"></view> 
-  <view class="extendable" hidden="{{estateInfo.sameEstateHouseAmount > 0 ? false:true }}" >
-    <view class="head">在售房源</view>
-    <navigator url="{{estateInfo.sameEstateHouseAmount > 0 ? '/pages/esf/list?subEstateId='+subEstateId+'&type=2&agentId='+agentId:''}}" class="assistant">
-      <text>{{estateInfo.sameEstateHouseAmount}} 套</text>
-      <text class="iconfont icon-arrow-r"></text>
-    </navigator>
-  </view>  
+  <block wx:if="{{sourceType!=='esfList'&&estateInfo.sameEstateHouseAmount > 0 }}">
+    <view class="separator"></view> 
+    <view class="extendable" hidden="{{estateInfo.sameEstateHouseAmount > 0 ? false:true }}" >
+      <view class="head">在售房源</view>
+      <navigator url="/pages/esf/list?subEstateId={{subEstateId}}&type=2&agentId={{agentId}}" class="assistant">
+        <text>{{estateInfo.sameEstateHouseAmount}} 套</text>
+        <text class="iconfont icon-arrow-r"></text>
+      </navigator>
+    </view> 
+  </block> 
 </view>
 <view class="gap"></view>

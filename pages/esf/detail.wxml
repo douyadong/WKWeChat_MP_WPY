@@ -78,7 +78,7 @@
         <view class="separator"></view>
         <!--小区周边-->
         <view class="areaAround">
-            <navigator open-type="redirect" url="/pages/estate/detail?subEstateId={{subEstateId}}&agentId={{agentId}}">
+            <navigator open-type="redirect" url="/pages/estate/detail?subEstateId={{subEstateId}}&agentId={{agentId}}&sourceType={{sourceType}}">
                 <view class="row">
                     <view class="row-hd">小区</view>
                     <view class="row-bd">{{estateName}}</view>
@@ -147,7 +147,7 @@
         <view class="head">小区信息</view>
     </view>
     <view class="panel-bd lr-padding">
-        <navigator open-type="redirect" url="/pages/estate/detail?subEstateId={{subEstateId}}&agentId={{agentId}}">
+        <navigator open-type="redirect" url="/pages/estate/detail?subEstateId={{subEstateId}}&agentId={{agentId}}&sourceType={{sourceType}}">
             <view class="item">
                 <icon class="arrow iconfont icon-arrow-r" />
                 <view class="item-hd">
