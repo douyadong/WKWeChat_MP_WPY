@@ -267,7 +267,6 @@ var showModal = function(){
                 resolve();
               } else if (res.cancel) {
                 console.log('用户点击取消');
-                reject();
               }
           }
       })
@@ -320,30 +319,31 @@ Page({
       app.showTips('请输入正确的手机号码')
       return false
     }
-    // 显示重新发送
-    this.setData({
-      isShowSend: true,
-      second: 60
-    })
-    let s = this.data.second
-    let t = setInterval(() => {
-      --s
-      if (s == 0) {
-        _this.setData({
-          isShowSend: false
-        })
-        clearInterval(t)
-      }
-      _this.setData({
-        second: s
-      })
-    }, 1000)
+    
     // 获取验证码
     getVerificationCode(phone, codeType).then((data) => {
       if (data == '') { // 获取验证码失败
-        app.showTips('获取验证码失败,请重新获取')
+        app.showTips('获取验证码失败,请重新获取');
       }else {
-        //app.showTips('获取验证码成功')
+          // 显示重新发送
+          _this.setData({
+            isShowSend: true,
+            second: 60
+          })
+          //app.showTips('获取验证码成功')
+          let s = _this.data.second
+          let t = setInterval(() => {
+            --s
+            if (s == 0) {
+              _this.setData({
+                isShowSend: false
+              })
+              clearInterval(t)
+            }
+            _this.setData({
+              second: s
+            })
+          }, 1000)
       }
     })
   },
