@@ -47,6 +47,8 @@ App({
   timer: null,
   isLogin: function (needRedirect = true , returnUrl = '' , type = 'redirect') { // 判断是否登录了小程序
     var userInfo = wx.getStorageSync('userInfo')
+    console.log("/////////////////////////////////");
+    console.log(userInfo);
     if (!userInfo) {
       // 当前页的地址
       if (!returnUrl) {
