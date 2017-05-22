@@ -16,7 +16,12 @@
                     </view>
                 </block>
                 <block wx:if="{{list.isWellAgent != 1}}">
-                    <view class="businessCenter">熟悉商圈:<text wx:for="{{list.agentBizTownList}}" wx:for-item="list" wx:for-index="index" wx:key="index">{{list}},</text></view>
+                    <view class="businessCenter">
+                        熟悉商圈:
+                         <block wx:for="{{list.agentBizTownList}}" wx:for-item="li" wx:for-index="index" wx:key="index">
+                            <text>{{li}}{{list.agentBizTownList.length-1 == index ? '':','}}</text>
+                         </block>
+                    </view>
                 </block>
             </view>
             <view class="right">
