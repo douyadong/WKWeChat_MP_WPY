@@ -340,6 +340,8 @@ let main = {
   },
   getAgentList:getAgentList,
   onLoad(options){
+         
+      
     let _this = this;
     //获取用户信息
     _this.getUserInfo(function(){
