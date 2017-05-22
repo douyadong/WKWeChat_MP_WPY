@@ -36,7 +36,7 @@ module.exports ={
             success:function(data){
             	if(data.status == 1){
             		wx.makePhoneCall({
-					  	phoneNumber: data.data.dial+data.data.digits //仅为示例，并非真实的电话号码
+					  	phoneNumber: data.data.dial + "," + data.data.digits //仅为示例，并非真实的电话号码
 					})
             	}
             },
