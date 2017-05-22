@@ -49,6 +49,7 @@ let params = $.extend(true , {} , detailFoot , {
                 let finalCompanyName = abbreviation ? abbreviation : ( companyName ? companyName : "") ;
                 result.simpleAgentDetail.finalCompanyName = finalCompanyName ;
                 result.shareTitle = finalCompanyName + "经纪人" + result.simpleAgentDetail.agentName ;
+                if(result.simpleAgentDetail.vipType === 5) result.shareTitle = "我是" + finalCompanyName + "小区专家" + result.simpleAgentDetail.agentName ;                
                 //给二手房和新房两个组件赋值，并将agentId带进去
                 result.xfSources = _.mapSource(result.recommendNewHouseList) ;                 
                 result.esfSources = _.mapSource(result.recommendOldHouseList) ; 
@@ -118,9 +119,14 @@ let params = $.extend(true , {} , detailFoot , {
     loadMoreEsf : function() {
         let _ = this ;
         /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        如果正在加载数据或者已经没有了数据就直接返回
+        如果正在加载数据就直接返回
+        如果已经没有了数据，先将pageIndex=0后返回
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        if(esfIsLoading || this.data.esfIsNoData) return ; 
+        if(esfIsLoading) return ; 
+        if(this.data.esfIsNoData) {
+            pullLoadEsfRequestData.pageIndex = 0 ;
+            return ;
+        }
         /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         如果页面本身房源就少于10 条，那都不需要加载了，枝江显示无数据了返回
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -143,7 +149,8 @@ let params = $.extend(true , {} , detailFoot , {
         request.fetch({
             "module" : "agent",
             "action" : "getMoreEsf",            
-            "data" : pullLoadEsfRequestData ,            
+            "data" : pullLoadEsfRequestData ,   
+            "showLoading": true ,         
             "mock" : false ,
             success : function(res) {
                 _.setData({ "esfLoadError" : false }) ;
@@ -167,9 +174,14 @@ let params = $.extend(true , {} , detailFoot , {
     loadMoreXf : function() {
         let _ = this ;
         /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        如果正在加载数据或者已经没有了数据就直接返回
+        如果正在加载数据就直接返回
+        如果已经没有了数据，先将偏移值置为0 再返回
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        if(xfIsLoading || this.data.xfIsNoData) return ; 
+        if(xfIsLoading) return ; 
+        if(this.data.xfIsNoData) {
+            pullLoadXfRequestData.pageIndex = 0 ;
+            return ;
+        }
         /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         如果页面本身房源就少于10 条，那都不需要加载了，枝江显示无数据了返回
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -192,7 +204,8 @@ let params = $.extend(true , {} , detailFoot , {
         request.fetch({
             "module" : "agent",
             "action" : "getMoreXf",            
-            "data" : pullLoadXfRequestData ,            
+            "data" : pullLoadXfRequestData ,
+            "showLoading": true ,
             "mock" : false ,
             success : function(res) {
                 _.setData({ "xfLoadError" : false }) ;
@@ -215,8 +228,7 @@ let params = $.extend(true , {} , detailFoot , {
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     页面拉到底部的时候的处理
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-    onReachBottom : function() {
-        console.log("到底了") ;
+    onReachBottom : function() {       
         if(this.data.recommendType === 0) return ;
         if(this.data.recommendType === 2) this.loadMoreEsf() ;
         else if(this.data.recommendType === 1) this.loadMoreXf() ;
