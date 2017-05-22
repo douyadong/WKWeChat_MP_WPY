@@ -27,10 +27,12 @@ var params = $.extend(true,{},{
             module:'comment',
             action:'list',
             success:function(data){
-                this.setData({
-                    "comments":data.data.commentList
-                })
-                if(data.data.commentList.length<20){
+                if(data.status === 1 && data.data){
+                    this.setData({
+                        "comments":data.data.commentList
+                    })
+                }
+                if(!data.data){
                     this.setData({
                         "isNoData":true
                     })
@@ -55,14 +57,14 @@ var params = $.extend(true,{},{
                     this.setData({
                         "comments":this.data.comments.concat(data.data.commentList)
                     })
-                    if(data.data.commentList.length < 10){
-                        this.setData({
-                            "isNoData":true
-                        })
-                    }
                     setTimeout(function(){
                         this.isLoading= false;
                     }.bind(this),200)
+                }
+                if(!data.data){
+                    this.setData({
+                        "isNoData":true
+                    })
                 }
             }.bind(this),
             error:function(){
@@ -70,7 +72,6 @@ var params = $.extend(true,{},{
                 this.setData({
                     "loadError":true
                 })
-                console.log('加载失败')
             }.bind(this)
         })
     },

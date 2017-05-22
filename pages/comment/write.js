@@ -77,14 +77,14 @@ var params = $.extend(true,{},{
             },
             fail: function (e) {
                 var n = i+1;
-                if (wx.canIUse('showLoading')) {
+                /*if (wx.canIUse('showLoading')) {
                     wx.hideLoading()
                 }else{
                     wx.hideToast()
-                }
+                }*/
                 wx.showModal({
                     title: '提示',
-                    content: '第'+n+'张图片上传失败',
+                    content: '第'+n+'张图片上传失败,ERROR:'+e,
                     showCancel: true
                 })
             }
@@ -100,11 +100,11 @@ var params = $.extend(true,{},{
             commentLocation:initData.commentLocation,
             imageKeys:total.join(',')
         }
-        if (wx.canIUse('showLoading')) {
+        /*if (wx.canIUse('showLoading')) {
             wx.hideLoading()
         }else{
             wx.hideToast()
-        }
+        }*/
         
         request.fetch({
             data:requestData,
@@ -159,7 +159,7 @@ var params = $.extend(true,{},{
             return;
         }
         if(this.data.uploadImages.length>0){
-            if (wx.canIUse('showLoading')) {
+            /*if (wx.canIUse('showLoading')) {
                 wx.showLoading({
                     title: '图片上传中'
                 })
@@ -168,7 +168,7 @@ var params = $.extend(true,{},{
                     icon:'loading',
                     title: '图片上传中'
                 })
-            }
+            }*/
             
             this.uploadFile(this.data.uploadImages,0)
         }else{
