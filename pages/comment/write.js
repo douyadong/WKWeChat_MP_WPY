@@ -3,25 +3,25 @@ var $ = require('../../utils/extend.js')
 var request = require('../../utils/request.js')
 var apiUrl = require('../../utils/apiUrl.js')
 
-var total = [],
-    textareaValue = "",
-    userInfo = '',
-    initData = {},
-    isSending = false;
 
 var params = $.extend(true,{},{
     data: {
         "uploadImages":[],
         "uploadTextarea":""
     },
+    total : [],
+    textareaValue : "",
+    userInfo:'',
+    initData :{},
+    isSending :false,
     onLoad: function(option) {
-        initData = $.extend(true,{},option);
-        userInfo = wx.getStorageSync('userInfo');
+        this.initData = $.extend(true,{},option);
+        this.userInfo = wx.getStorageSync('userInfo');
     },
     bindblur: function(e){
-        textareaValue = e.detail.value;
+        this.textareaValue = e.detail.value;
         this.setData({
-            "uploadTextarea":textareaValue
+            "uploadTextarea":this.textareaValue
         })
     },
     chooseImg: function(e) {
@@ -67,10 +67,10 @@ var params = $.extend(true,{},{
                 data = data.data[0];
 
                 if((i+1)!=file.length){
-                    total.push(data);
+                    _this.total.push(data);
                     _this.uploadFile(file,i+1);
                 }else{
-                    total.push(data);
+                    _this.total.push(data);
                     wx.hideToast();  //隐藏Toast
                     _this.uploadFormSubmit();
                 }
@@ -82,30 +82,29 @@ var params = $.extend(true,{},{
                 }else{
                     wx.hideToast()
                 }*/
+                wx.hideToast()
                 wx.showModal({
                     title: '提示',
-                    content: '第'+n+'张图片上传失败,ERROR:'+e,
+                    content: '第'+n+'张图片上传失败,ERROR:'+JSON.stringify(e),
                     showCancel: true
                 })
             }
         })
     },
     uploadFormSubmit:function(){
-        if(isSending) return;
-            isSending = true;
         var requestData = {
-            guestPhoneNum:userInfo.mobile,
-            subEstateId:parseFloat(initData.subEstateId),
-            comment:textareaValue,
-            commentLocation:initData.commentLocation,
-            imageKeys:total.join(',')
+            guestPhoneNum:this.userInfo.mobile,
+            subEstateId:parseFloat(this.initData.subEstateId),
+            comment:this.textareaValue,
+            commentLocation:this.initData.commentLocation,
+            imageKeys:this.total.join(',')
         }
         /*if (wx.canIUse('showLoading')) {
             wx.hideLoading()
         }else{
             wx.hideToast()
         }*/
-        
+        wx.hideToast()
         request.fetch({
             data:requestData,
             module:'comment',
@@ -114,7 +113,7 @@ var params = $.extend(true,{},{
             showTitle:'提交中',
             success:function(data){
                 if(data.status === 1){
-                    isSending = false;
+                    this.isSending = false;
                     wx.showModal({
                         title: '成功',
                         content: '评价成功',
@@ -130,7 +129,7 @@ var params = $.extend(true,{},{
                 }
             }.bind(this),
             fail:function(data){
-                isSending = false;
+                this.isSending = false;
                 wx.showModal({
                     title: '提示',
                     content: data.message || '评价失败，稍后重试',
@@ -158,6 +157,12 @@ var params = $.extend(true,{},{
             })
             return;
         }
+        if(this.isSending){
+            console.log('退出提交')
+            return;
+        }
+        this.isSending = true;
+
         if(this.data.uploadImages.length>0){
             /*if (wx.canIUse('showLoading')) {
                 wx.showLoading({
@@ -169,6 +174,10 @@ var params = $.extend(true,{},{
                     title: '图片上传中'
                 })
             }*/
+            wx.showToast({
+                icon:'loading',
+                title: '图片上传中'
+            })
             
             this.uploadFile(this.data.uploadImages,0)
         }else{
