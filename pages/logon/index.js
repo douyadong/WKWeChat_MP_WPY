@@ -450,13 +450,9 @@ Page({
                       console.log("code:"+code);
                       //根据code，获取openid
                       getOpenId(code).then((openid)=>{
-                          console.log("1----------");
                           if(openid != ''){
                                 //添加微信用户到本地
-                                console.log("2---------------"+openid);
-                                addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province).then(()=>{
-                                  console.log("3");
-                                });
+                                addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province).then(()=>{});
                                 isBind(openid).then(()=>{
                                       _this.toPage();
                                 });
@@ -469,13 +465,11 @@ Page({
           console.log("授权过");
       }
    }else{
-     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
      _this.toPage();
    }
   },
   toPage(){
       let _this = this;
-      console.log("跳页面");
       // 返回到登录前的url
       if (_this.data.type == 'redirect') {
         wx.redirectTo({
