@@ -464,6 +464,7 @@ Page({
             title: '提示',
             content: '是否同意授权',
             success: function(res) {
+                console.log("是否点击确定按钮");
                 if (res.confirm) {
                     getUserAuthorizedInfo().then((userAuthorizedInfo)=>{
                         //获取code，调用添加微信用户接口
@@ -492,6 +493,7 @@ Page({
           console.log("授权过");
       }
    }else{
+     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
      _this.toPage();
    }
   },
