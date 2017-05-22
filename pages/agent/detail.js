@@ -49,7 +49,7 @@ let params = $.extend(true , {} , detailFoot , {
                 let finalCompanyName = abbreviation ? abbreviation : ( companyName ? companyName : "") ;
                 result.simpleAgentDetail.finalCompanyName = finalCompanyName ;
                 result.shareTitle = finalCompanyName + "经纪人" + result.simpleAgentDetail.agentName ;
-                if(result.simpleAgentDetail.vipType === 5) result.shareTitle = "我是" + finalCompanyName + "小区专家" + result.simpleAgentDetail.agentName ;                
+                if(result.simpleAgentDetail.vipType === 5) result.shareTitle = finalCompanyName + "小区专家" + result.simpleAgentDetail.agentName ;                
                 //给二手房和新房两个组件赋值，并将agentId带进去
                 result.xfSources = _.mapSource(result.recommendNewHouseList) ;                 
                 result.esfSources = _.mapSource(result.recommendOldHouseList) ; 
