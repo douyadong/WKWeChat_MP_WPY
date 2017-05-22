@@ -99,10 +99,11 @@ let params = $.extend(true, {}, {
     gotoComment: function(event) {
         let url = event.currentTarget.dataset.url;
         let app = getApp();
-        app.isLogin(true, url);
-        wx.navigateTo({
-            url: url
-        })
+        if(app.isLogin(true, url)){
+            wx.navigateTo({
+                url: url
+            })
+        }        
     } ,    
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     对于房源数据的处理：

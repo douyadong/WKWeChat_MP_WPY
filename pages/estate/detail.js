@@ -65,10 +65,11 @@ var params = $.extend(true, {}, {
     },
     gotoComment: function(event) {
         let url = event.currentTarget.dataset.url;
-        app.isLogin(true, url);
-        wx.navigateTo({
-            url: url
-        })
+        if(app.isLogin(true, url)){
+            wx.navigateTo({
+                url: url
+            })
+        }
     },
     getEstateInfo: function() { //获取小区详情
         var that = this;
