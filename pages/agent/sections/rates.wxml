@@ -2,7 +2,7 @@
 <view class="panel rates">
   <view class="panel-hd">
     <view class="head">用户评价</view>
-    <navigator class="assistant" url="/pages/agent/rateList?agentId={{simpleAgentDetail.agentId}}" wx:if="{{simpleAgentCommentTag.agentCommentCount}}">
+    <navigator open-type="redirect" class="assistant" url="/pages/agent/rateList?agentId={{simpleAgentDetail.agentId}}" wx:if="{{simpleAgentCommentTag.agentCommentCount}}">
       <text>{{simpleAgentCommentTag.agentCommentCount}}</text>
       <text class="iconfont icon-arrow-r"></text>
     </navigator>
@@ -21,7 +21,7 @@
         <block wx:for="{{simpleAgentCommentTag.tags}}" wx:key="*this">
           <text wx:if="{{item.type === '1'}}">{{item.label}} {{item.count}}</text>
           <text class="bad" wx:else>{{item.label}} {{item.count}}</text>
-        </block>        
+        </block>
       </view>
       <template is="agent-rates" data="{{simpleAgentCommentList}}" />
     </block>
