@@ -22,7 +22,7 @@
     </view>
     <view class="row tel">
       <view class="row-hd">电话：</view>
-      <view class="row-bd"><text class="phone">{{simpleAgentDetail.agentMobile}}</text></view>
+      <view class="row-bd"><text class="phone">{{simpleAgentDetail.agentMobileDisplay}}</text></view>
     </view>  
     <view class="row" wx:if="{{simpleAgentDetail.agentBelongToCompanyName}}">
       <view class="row-hd">公司：</view>
