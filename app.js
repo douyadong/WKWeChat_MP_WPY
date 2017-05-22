@@ -54,14 +54,15 @@ App({
       }
       // returnUrl = returnUrl || '/' + this.getCurrentPage().__route__
       returnUrl = encodeURIComponent(returnUrl)
-      if (!needRedirect) {
-        return false; }
-      wx.navigateTo({
-        url: '/pages/logon/index?returnUrl=' + returnUrl + '&type=' + type
-      })
-    }
-
-    return true
+      if (needRedirect) {
+        wx.navigateTo({
+          url: '/pages/logon/index?returnUrl=' + returnUrl + '&type=' + type
+        })        
+      }
+      return false;       
+    }else{
+      return true;
+    }    
   },
   getQQMapLocation: function (latitude, longitude, cb) {
     wx.request({
