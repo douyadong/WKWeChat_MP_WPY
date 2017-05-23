@@ -44,54 +44,54 @@ var params = {
         "tagList":{
             'good':[
                 {
-                    id:0,
+                    id:4,
                     text:'礼貌热情',
                     isActive:false
                 },{
-                    id:1,
+                    id:2,
                     text:'仪表整洁',
                     isActive:false
                 },{
-                    id:2,
+                    id:6,
                     text:'比较专业',
                     isActive:false
                 },{
-                    id:3,
-                    text:'诚实可靠',
-                    isActive:false
-                },{
-                    id:4,
-                    text:'熟悉房源',
+                    id:10,
+                    text:'诚信可靠',
                     isActive:false
                 },{
                     id:5,
+                    text:'熟悉房源',
+                    isActive:false
+                },{
+                    id : 12 ,
                     text:'勤于联系',
                     isActive:false
                 }
             ],
             'bad':[
                 {
-                    id:10,
+                    id:16,
                     text:'不够热情',
                     isActive:true
                 },{
-                    id:11,
+                    id:14,
                     text:'仪表不整',
                     isActive:false
                 },{
-                    id:12,
+                    id:18,
                     text:'不够专业',
                     isActive:false
                 },{
-                    id:13,
+                    id:19,
                     text:'不够诚信',
                     isActive:false
                 },{
-                    id:14,
+                    id:17,
                     text:'房源不熟',
                     isActive:true
                 },{
-                    id:15,
+                    id:21,
                     text:'不给回音',
                     isActive:true
                 }

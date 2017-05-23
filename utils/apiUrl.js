@@ -9,6 +9,7 @@ const url = {
   "agent" : {
     "rateList" : "/wxmpAgent/getAgentCustomerCommentList.rest",
     "getAgentInfo" : "/wxmpAgent/getSimpleAgent.rest",
+    "getTagList" : "/wxmpAgent/getAgentCommentTag" ,
     "writeRate" : "/wxmpAgent/commentAgent.rest",
     "detail" : "/wxmpAgent/getAgentDetail.rest",
     "moreList": "/moreAgentCommentList.rest" ,
