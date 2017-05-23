@@ -11,6 +11,7 @@ const url = {
     "getAgentInfo" : "/wxmpAgent/getSimpleAgent.rest",
     "getTagList" : "/wxmpAgent/getAgentCommentTag" ,
     "writeRate" : "/wxmpAgent/commentAgent.rest",
+    "getCommentTag":"/wxmpAgent/getAgentCommentTag.rest",
     "detail" : "/wxmpAgent/getAgentDetail.rest",
     "moreList": "/moreAgentCommentList.rest" ,
     "getMoreEsf" : "/wxmpOldHouseDetail/getAgentRecommendOldHouseList.rest" ,
