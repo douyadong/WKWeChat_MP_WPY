@@ -503,6 +503,12 @@ let main = {
         title: '买房卖房，找好经纪人就对了!',
         path: '/pages/index/index'
       }
+  },
+  goCity(){
+    console.log("------------------------------");
+    wx.navigateTo({
+      url: '/pages/city/index'
+    })
   }
 }
 Page(_.extend(true,main, filterAgentList))

@@ -12,7 +12,7 @@
     <view class="default" wx:if="{{agentList.length != 0}}">经纪人</view>
     <view class="listBox">
         <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-            <navigator open-type="navigateTo" url="/pages/agent/detail?agentId={{list.row.agentId}}" class="agentList {{agentList.length-1 == index ? 'lastList':''}}">
+            <navigator open-type="navigate" url="/pages/agent/detail?agentId={{list.row.agentId}}" class="agentList {{agentList.length-1 == index ? 'lastList':''}}">
                 <view class="portrait">
                     <image src="{{list.row.portrait}}" class="portraitImg"></image>
                 </view>
@@ -34,7 +34,7 @@
     <!--
     <view class="more" bindtap="moreAgent" wx:if="{{isMore}}">更多经纪人</view>
     -->
-    <navigator open-type="navigateTo" url="/pages/agentList/index?key={{key}}" class="more" wx:if="{{isMore}}">更多经纪人</navigator>
+    <navigator open-type="navigate" url="/pages/agentList/index?key={{key}}" class="more" wx:if="{{isMore}}">更多经纪人</navigator>
     <view class="default" wx:if="{{regionList.length != 0}}">地区</view>
     <view class="listBox">
         <block wx:for="{{regionList}}" wx:for-item="list" wx:for-index="index" wx:key="index">
