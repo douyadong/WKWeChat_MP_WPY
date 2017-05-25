@@ -1,15 +1,13 @@
-<import src="../components/develop.wxml" />
-
 <!--index.wxml-->
 <scroll-view class="page " scroll-y="{{isScroll}}" bindscrolltolower="scrolltolower" bindscroll="bindscroll">
   <view class="searchNavBox">
     <view class="searchNav">
-      <navigator open-type="navigateTo" url="/pages/city/index" class="city">
+      <navigator open-type="navigate" url="/pages/city/index" class="city">
           <text class="cityName">{{geography.cityName}}</text>
           <text class="down"></text>
       </navigator>
       <view class="searchBox">
-        <navigator open-type="navigateTo" url="/pages/screen/index" class="search">
+        <navigator open-type="navigate" url="/pages/screen/index" class="search">
             <!--
         	  <text class="iconfont icon-search searchIcon"></text>
             -->

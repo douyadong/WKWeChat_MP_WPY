@@ -64,7 +64,7 @@ let main = {
     })
   },
   selectedCity(event){
-    console.log(event.currentTarget.dataset.cityid);
+    //console.log(event.currentTarget.dataset.cityid);
   },
   getCity(){
     let _this =this;
@@ -97,7 +97,6 @@ let main = {
     let location = wx.getStorageSync('location');
     if(location == ''){
       getGeography().then((data)=>{
-        console.log(data);
         wx.setStorage({
           key:"location",
           data:data

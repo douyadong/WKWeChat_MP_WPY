@@ -24,7 +24,7 @@
                   data-index="index" 
                   bindtap="bindLabelClick"
                   class="{{item.isActive?'active':''}}"
-            ><text>{{item.text}}</text></view>
+            ><text>{{item.label}}</text></view>
         </block> 
     </view>
 </block>
@@ -35,7 +35,7 @@
                   data-index="index" 
                   bindtap="bindLabelClick"
                   class="{{item.isActive?'active':''}}"
-            ><text>{{item.text}}</text></view>
+            ><text>{{item.label}}</text></view>
         </block> 
     </view>
 </block>

@@ -73,7 +73,6 @@ var getCityBusinessById = function (cityId) {
             cityId:cityId
           },
           success:function(data){//获取城市信息成功
-            console.log(data);
             if(data.status.toString() == "1" && data.data != null){
                 resolve(data.data);
             }else{
@@ -160,12 +159,12 @@ var getOpenId = function (code) {
             resolve(data.data)
         }else {
           resolve('')
-          console.log("openId获取失败为空");
+          //console.log("openId获取失败为空");
         }
       },
       fail: function () {
         resolve('')
-        console.log("openId获取失败");
+        //console.log("openId获取失败");
       }
     })
   })
@@ -184,7 +183,7 @@ var getUserAuthorizedInfo = function() {
                 resolve(res);
             },
             fail: function () {
-                console.log("获取用户授权信息失败");
+                //console.log("获取用户授权信息失败");
                 reject();
             }
         })
@@ -213,13 +212,13 @@ var addOpenUser = function (openId,avatarUrl,city,country,gender,language,nickNa
             },
             success:function(data){
                 if(data.status.toString() == "1" && data.data != null){
-                     console.log("添加微信用户到公司数据库 成功");
+                     //console.log("添加微信用户到公司数据库 成功");
                 }else{
-                    console.log("添加微信用户到公司数据库 失败");
+                    //console.log("添加微信用户到公司数据库 失败");
                 }
             },
             fail:function () {
-                console.log("添加微信用户到公司数据库 失败");
+                //console.log("添加微信用户到公司数据库 失败");
             }
         });
     })
@@ -239,15 +238,15 @@ var isBind = function (openid) {
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != null && data.data != "") {
-          console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地，userInfo 有值");
+          //console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地，userInfo 有值");
           wx.setStorageSync('userInfo',data.data);
           resolve(data.data)
         }else {
-          console.log("通过 openid 判断是否已经绑定过手机接口 -----  没绑定");
+          //console.log("通过 openid 判断是否已经绑定过手机接口 -----  没绑定");
         }
       },
       fail: function () {
-        console.log("通过 openid 判断是否已经绑定过手机接口 失败");
+        //console.log("通过 openid 判断是否已经绑定过手机接口 失败");
       }
     })
   })
@@ -290,7 +289,6 @@ let main = {
           houseType:0//0表示不区分新房和二手房1新房2二手房3租房
         },
         success:function(data){
-            //console.log(data);
             _this.filterAgentListInit(data.data);
             wx.setStorage({
                 key:"cityInfo",
@@ -312,12 +310,10 @@ let main = {
       //判断是否授权
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       if(userAuthorizedInfo == ''){//没有授权过
-          console.log("没有授权过，调授权接口");
           getUserAuthorizedInfo().then((userAuthorizedInfo)=>{
               fu();
               //获取code，调用添加微信用户接口
               getLoginCode().then((code)=>{
-                console.log("code:"+code);
                 //根据code，获取openid
                 getOpenId(code).then((openid)=>{
                     if(openid != ''){
@@ -334,7 +330,6 @@ let main = {
               fu();
           });
       }else{//授权过
-          console.log("授权过");
           fu();
       }
   },
@@ -503,6 +498,11 @@ let main = {
         title: '买房卖房，找好经纪人就对了!',
         path: '/pages/index/index'
       }
+  },
+  goCity(){
+    wx.navigateTo({
+      url: '/pages/city/index'
+    })
   }
 }
 Page(_.extend(true,main, filterAgentList))

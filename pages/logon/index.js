@@ -86,12 +86,12 @@ var getOpenId = function (code) {
           resolve(data.data)
         }else {
           //resolve('')
-          console.log("openId获取失败");
+          //console.log("openId获取失败");
         }
       },
       fail: function () {
         //resolve('')
-        console.log("openId获取失败");
+        //console.log("openId获取失败");
       }
     })
   })
@@ -175,14 +175,14 @@ var addOpenUser = function (openid,avatarUrl,city,country,gender,language,nickNa
             },
             success:function(data){
                 if(data.status.toString() == "1" && data.data != null){
-                     console.log("添加微信用户到公司数据库 成功");
+                     //console.log("添加微信用户到公司数据库 成功");
                      resolve(data.data);
                 }else{
-                    console.log("添加微信用户到公司数据库 失败");
+                    //console.log("添加微信用户到公司数据库 失败");
                 }
             },
             fail:function () {
-                console.log("添加微信用户到公司数据库 失败");
+                //console.log("添加微信用户到公司数据库 失败");
             }
         });
     })
@@ -202,15 +202,15 @@ var isBind = function (openid) {
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != null && data.data != "") {
-          console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地，userInfo 有值");
+          //console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地，userInfo 有值");
           wx.setStorageSync('userInfo',data.data);
           resolve(data.data)
         }else {
-          console.log("通过 openid 判断是否已经绑定过手机接口 -----  没绑定");
+          //console.log("通过 openid 判断是否已经绑定过手机接口 -----  没绑定");
         }
       },
       fail: function () {
-        console.log("通过 openid 判断是否已经绑定过手机接口 失败");
+        //console.log("通过 openid 判断是否已经绑定过手机接口 失败");
       }
     })
   })
@@ -232,11 +232,11 @@ var getUserAuthorizedInfo = function() {
                           resolve(res);
                       },
                       fail: function () {
-                          console.log("获取用户授权信息失败");
+                          //console.log("获取用户授权信息失败");
                       }
                   })
               }else{
-                  console.log("用户没有勾选授权，获取不到授权信息");
+                  //console.log("用户没有勾选授权，获取不到授权信息");
               }
 
               //是否勾选过地理位置
@@ -244,7 +244,7 @@ var getUserAuthorizedInfo = function() {
                   //根据经纬度，获取地理位置
                   getGeography();
               }else{
-                console.log("用户没有勾选地理位置，获取不到地理位置信息");
+                //console.log("用户没有勾选地理位置，获取不到地理位置信息");
               }
             }
         })
@@ -257,16 +257,15 @@ var getUserAuthorizedInfo = function() {
  */
 var showModal = function(){
   return new Promise(function (resolve, reject) {
-      console.log("打开提示对话框");
       wx.showModal({
           title: '',
           content: '检测到你没有打开悟空找房的用户信息权限，是否去设置打开？',
           success: function(res) {
               if (res.confirm) {
-                console.log('用户点击确定');
+                //console.log('用户点击确定');
                 resolve();
               } else if (res.cancel) {
-                console.log('用户点击取消');
+                //console.log('用户点击取消');
               }
           }
       })
@@ -361,9 +360,7 @@ Page({
     }
     app.showTips('语音验证码拨打中，请注意接收来电');
     // 获取验证码
-    getVerificationCode(phone, codeType).then((data) => {
-      console.log(data)
-    })
+    getVerificationCode(phone, codeType).then((data) => {})
   },
   // 获取用户输入的验证码
   getVerificationCode(event) {
@@ -401,9 +398,7 @@ Page({
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       var openid = wx.getStorageSync('openid');
       if(userAuthorizedInfo != ''){
-          addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province).then(()=>{
-                             console.log("3");
-                           });
+          addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province).then(()=>{});
       }
       _this.toPage();
     },(msg)=>{
@@ -442,12 +437,10 @@ Page({
       //判断是否授权
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       if(userAuthorizedInfo == ''){//没有授权过
-          console.log("没有授权过，调授权接口");
           showModal().then(()=>{
                 getUserAuthorizedInfo().then((userAuthorizedInfo)=>{
                     //获取code，调用添加微信用户接口
                     getLoginCode().then((code)=>{
-                      console.log("code:"+code);
                       //根据code，获取openid
                       getOpenId(code).then((openid)=>{
                           if(openid != ''){
@@ -462,7 +455,7 @@ Page({
                 });
           });
       }else{//授权过
-          console.log("授权过");
+          //console.log("授权过");
       }
    }else{
      _this.toPage();

@@ -35,7 +35,6 @@ function HighlightTransform(data) {
  * 获取经纪人列表
  */
 var getAgentList = function(associationalWord,pageIndex,pageSize) {
-    console.log(associationalWord,pageIndex,pageSize);
     return new Promise(function (resolve, reject) {
         request.fetch({
           mock:!true,
@@ -204,7 +203,6 @@ let main = {
                 cityId:list[i].value
           });
       }
-      console.log(HighlightTransform(newList));
       _this.setData({
         regionList:HighlightTransform(newList)
       })
@@ -225,19 +223,6 @@ let main = {
     });
   },
   onLoad(){    
-    /*
-    let list2 = [
-        {
-            text:"徐家汇",
-            key:"徐",
-            describe:"行政"
-        }
-    ];
-    console.log(HighlightTransform(list2));
-    this.setData({
-        regionList:HighlightTransform(list2)
-    })
-    */
   }
 }
 Page(_.extend(true,main))
