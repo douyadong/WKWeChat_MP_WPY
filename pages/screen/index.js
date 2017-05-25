@@ -34,8 +34,7 @@ function HighlightTransform(data) {
 /**
  * 获取经纪人列表
  */
-var getAgentList = function(associationalWord,pageIndex,pageSize) {
-    return new Promise(function (resolve, reject) {
+var getAgentList = function(associationalWord,pageIndex,pageSize,fn) {
         request.fetch({
           mock:!true,
           module:'screen',
@@ -49,23 +48,21 @@ var getAgentList = function(associationalWord,pageIndex,pageSize) {
           },
           success:function(data){
               if(data.status.toString() == "1" && data.data != null && data.data.length > 0){
-                resolve(data.data);
+                fn(data.data);
               }else{
-                resolve([]);
+                fn([]);
               }
           },
           fail:function() {
-            resolve([]);
+            fn([]);
           }
       });
-    });
 }
 
 /**
  * 获取地区列表
  */
-var getRegionList = function(associationalWord) {
-    return new Promise(function (resolve, reject) {
+var getRegionList = function(associationalWord,fn) {
         request.fetch({
           mock:!true,
           module:'screen',
@@ -76,16 +73,15 @@ var getRegionList = function(associationalWord) {
           },
           success:function(data){
               if(data.status.toString() == "1" && data.data != null && data.data.length > 0){
-                resolve(data.data);
+                fn(data.data);
               }else{
-                resolve([]);
+                fn([]);
               }
           },
           fail:function() {
-            resolve([]);
+            fn([]);
           }
       });
-    })
 }
 
 
@@ -111,9 +107,9 @@ let main = {
           key:event.detail.value,
           pageIndex:3
       });
-     getAgentList(_this.data.key,0,10).then((agentList)=>{
-         let newAgentList = [];
-         if(agentList.length>3){
+     getAgentList(_this.data.key,0,10,function(agentList){
+        let newAgentList = [];
+        if(agentList.length>3){
                 _this.setData({
                     isMore:true
                 });
@@ -121,18 +117,18 @@ let main = {
                 for(let i=0;i<3;i++){
                    newAgentList.push(oldAgentList[i]); 
                 }
-         }else{
+        }else{
              _this.setData({
                 isMore:false
             });
             newAgentList = HighlightTransform( _this.conversionAgent(agentList));
-         }
-         _this.setData({
+        }
+        _this.setData({
             agentList:newAgentList
         })
      });
-     getRegionList(_this.data.key).then((list)=>{
-         _this.conversionRegion(list);
+     getRegionList(_this.data.key,function(list){
+        _this.conversionRegion(list);
      });
      _this.setData({
          isFocus:true
@@ -145,28 +141,28 @@ let main = {
           key:event.detail.value,
           pageIndex:3
       });
-      getAgentList(_this.data.key,0,10).then((agentList)=>{
-         let newAgentList = [];
-         if(agentList.length>3){
-                _this.setData({
-                    isMore:true
-                });
-                let oldAgentList = HighlightTransform( _this.conversionAgent(agentList));
-                for(let i=0;i<3;i++){
-                   newAgentList.push(oldAgentList[i]); 
-                }
-         }else{
-             _this.setData({
-                isMore:false
-            });
-            newAgentList = HighlightTransform( _this.conversionAgent(agentList));
-         }
-         _this.setData({
-            agentList:newAgentList
-        })
-     });
-     getRegionList(_this.data.key).then((list)=>{
-         _this.conversionRegion(list);
+      getAgentList(_this.data.key,0,10,function(agentList){
+          let newAgentList = [];
+          if(agentList.length>3){
+                  _this.setData({
+                      isMore:true
+                  });
+                  let oldAgentList = HighlightTransform( _this.conversionAgent(agentList));
+                  for(let i=0;i<3;i++){
+                     newAgentList.push(oldAgentList[i]); 
+                  }
+          }else{
+              _this.setData({
+                  isMore:false
+              });
+              newAgentList = HighlightTransform( _this.conversionAgent(agentList));
+          }
+          _this.setData({
+              agentList:newAgentList
+          })
+      });
+     getRegionList(_this.data.key,function(list){
+        _this.conversionRegion(list);
      });
       _this.setData({
          isFocus:false
@@ -211,12 +207,12 @@ let main = {
   moreAgent(event){
     let _this = this; 
     let oldAgentList = _this.data.agentList;
-    getAgentList(_this.data.key,_this.data.pageIndex,10).then((agentList)=>{
-         let newAgentList = HighlightTransform( _this.conversionAgent(agentList));
-         for(let i=0;i<newAgentList.length;i++){
-             oldAgentList.push(newAgentList[i]);
-         }
-         _this.setData({
+    getAgentList(_this.data.key,_this.data.pageIndex,10,function(agentList){
+        let newAgentList = HighlightTransform( _this.conversionAgent(agentList));
+        for(let i=0;i<newAgentList.length;i++){
+            oldAgentList.push(newAgentList[i]);
+        }
+        _this.setData({
             agentList:oldAgentList,
             pageIndex:_this.data.pageIndex+10
         });

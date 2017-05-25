@@ -29,18 +29,21 @@ page{
                 overflow: hidden;
                 color: #4E4E4E;
                 .cityName{
-                    display: inline-block;
+                    width: 105rpx;
                     height: 35rpx;
-                    overflow: hidden;
                     margin-top: 30rpx;
-                    margin-left: 20rpx;
+                    text-align: right;
                     font-size: 28rpx;
                     letter-spacing: 0;
+                    text-overflow:ellipsis;
+                    overflow:hidden;
+                    white-space:nowrap;
                 }
                 .down{
-                    .triangle-down(10rpx , #444);
                     position: absolute;
                     top: 45rpx;
+                    right:5rpx;
+                    .triangle-down(10rpx , #444);
                 }
                 .down:before{
                     color: blue;

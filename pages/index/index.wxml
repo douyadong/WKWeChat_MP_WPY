@@ -3,14 +3,11 @@
   <view class="searchNavBox">
     <view class="searchNav">
       <navigator open-type="navigate" url="/pages/city/index" class="city">
-          <text class="cityName">{{geography.cityName}}</text>
+          <view class="cityName">{{geography.cityName}}</view>
           <text class="down"></text>
       </navigator>
       <view class="searchBox">
         <navigator open-type="navigate" url="/pages/screen/index" class="search">
-            <!--
-        	  <text class="iconfont icon-search searchIcon"></text>
-            -->
             <text class="searchText">{{searchText}}</text>
         </navigator>
       </view>

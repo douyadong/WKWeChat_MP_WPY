@@ -2,7 +2,7 @@ var request = require('../../utils/request.js');
 /**
  * 根据经纬度获取地理定位
  */
-var getGeography = function() {
+var getGeography = function(fn) {
     let defineGeography = {
         "cityId": 43,
         "cityName": "上海市",
@@ -10,7 +10,6 @@ var getGeography = function() {
         "townId": null,
         "cityPinyin":"shanghaishi"
     }
-    return new Promise(function (resolve, reject) {
       //地理定位
       wx.getLocation({
         type: 'wgs84',
@@ -34,21 +33,20 @@ var getGeography = function() {
                       key:"location",
                       data:data.data
                     });
-                    resolve(data.data);
+                    fn(data.data);
                 }else{
-                    resolve(defineGeography);
+                    fn(defineGeography);
                 }
               },
               fail:function() {//获取城市信息失败
-                  resolve(defineGeography);
+                  fn(defineGeography);
               }
           });
         },
         fail:function() {//用户取消地理定位
-            resolve(defineGeography);
+            fn(defineGeography);
         }
       })
-  })
 }
 let main = {
   data: {
@@ -96,14 +94,11 @@ let main = {
     let _this =this;
     let location = wx.getStorageSync('location');
     if(location == ''){
-      getGeography().then((data)=>{
-        wx.setStorage({
-          key:"location",
-          data:data
-        });
-        _this.setData({
-          locationCity:data,
-        });
+      getGeography(function(data){
+          wx.setStorageSync("location",data);
+          _this.setData({
+            locationCity:data,
+          });
       });
     }else{
         _this.setData({

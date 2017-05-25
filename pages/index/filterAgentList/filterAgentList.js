@@ -207,13 +207,14 @@ module.exports = {
           _this.data.districtAndTown,
           _this.data.orderType,
           _this.data.selectLabel,
-          0
-      ).then((agentList)=>{
-          _this.setData({
+          0,
+          function(agentList){
+            _this.setData({
               agentList:agentList,
               pageIndex:10
-          })
-      });
+            })
+          }
+      );
     }else{
     //不是不限
         _this.setData({
@@ -258,13 +259,14 @@ module.exports = {
         _this.data.districtAndTown,
         _this.data.orderType,
         _this.data.selectLabel,
-        0
-    ).then((agentList)=>{
-        _this.setData({
+        0,
+        function(agentList){
+          _this.setData({
             agentList:agentList,
             pageIndex:10
-        })
-    });
+          })
+        }
+    );
     _this.setData({
         showIndex:-1,
         isShowMask:false,//遮罩消失
@@ -288,13 +290,14 @@ module.exports = {
         _this.data.districtAndTown,
         _this.data.orderType,
         _this.data.selectLabel,
-        0
-    ).then((agentList)=>{
-        _this.setData({
-            agentList:agentList,
-            pageIndex:10
-        })
-    });
+        0,
+        function(agentList){
+          _this.setData({
+              agentList:agentList,
+              pageIndex:10
+          })
+        }
+    );
     _this.setData({
         showIndex:-1,
         isShowMask:false,//遮罩消失
@@ -321,13 +324,14 @@ module.exports = {
           _this.data.districtAndTown,
           _this.data.orderType,
           _this.data.selectLabel,
-          0
-      ).then((agentList)=>{
-          _this.setData({
-              agentList:agentList,
-              pageIndex:10
-          })
-      });
+          0,
+          function(agentList){
+            _this.setData({
+                agentList:agentList,
+                pageIndex:10
+            })
+          }
+      );
     }else{
       _this.setData({
           selectLabel:-1
@@ -338,13 +342,14 @@ module.exports = {
           _this.data.districtAndTown,
           _this.data.orderType,
           _this.data.selectLabel,
-          0
-      ).then((agentList)=>{
-          _this.setData({
-              agentList:agentList,
-              pageIndex:10
-          })
-      });
+          0,
+          function(agentList){
+            _this.setData({
+                agentList:agentList,
+                pageIndex:10
+            })
+          }
+      );
     }
     _this.setData({
         showIndex:-1,
@@ -411,13 +416,14 @@ module.exports = {
           "",
           _this.data.orderType,
           _this.data.selectLabel,
-          0
-      ).then((agentList)=>{
-          _this.setData({
-              agentList:agentList,
-              pageIndex:10
-          })
-     });
+          0,
+          function(agentList){
+            _this.setData({
+                agentList:agentList,
+                pageIndex:10
+            })
+          }
+      );
   },
   bindscroll(event){
       let _this = this;

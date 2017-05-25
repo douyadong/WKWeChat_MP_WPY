@@ -33,9 +33,7 @@ function HighlightTransform(data) {
 /**
  * 获取经纪人列表
  */
-var getAgentList = function(associationalWord,pageIndex,pageSize) {
-    console.log(associationalWord,pageIndex,pageSize);
-    return new Promise(function (resolve, reject) {
+var getAgentList = function(associationalWord,pageIndex,pageSize,fn) {
         request.fetch({
           mock:!true,
           module:'screen',
@@ -49,16 +47,15 @@ var getAgentList = function(associationalWord,pageIndex,pageSize) {
           },
           success:function(data){
               if(data.status.toString() == "1" && data.data != null && data.data.length > 0){
-                resolve(data.data);
+                fn(data.data);
               }else{
-                resolve([]);
+                fn([]);
               }
           },
           fail:function() {
-            resolve([]);
+            fn([]);
           }
       });
-    });
 }
 
 Page({
@@ -91,11 +88,11 @@ Page({
         _this.setData({
           key:options.key
         });
-        getAgentList(_this.data.key,_this.data.pageIndex,20).then((agentList)=>{
-          _this.setData({
-            agentList:HighlightTransform(_this.conversionAgent(agentList)),
-            pageIndex:20
-          });
+        getAgentList(_this.data.key,_this.data.pageIndex,20,function(agentList){
+            _this.setData({
+              agentList:HighlightTransform(_this.conversionAgent(agentList)),
+              pageIndex:20
+            });
         });
     },
     bindscrolltolower(event){
@@ -104,7 +101,7 @@ Page({
             _this.setData({
               isLoadIng:false
             });
-            getAgentList(_this.data.key,_this.data.pageIndex,20).then((agentList)=>{
+            getAgentList(_this.data.key,_this.data.pageIndex,20,function(agentList){
                 if(agentList.length == 0){
                   wx.showToast({
                     title: '没有数据拉',

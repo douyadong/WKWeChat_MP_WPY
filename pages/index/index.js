@@ -63,71 +63,66 @@ var getGeography = function(fu) {
 /**
  * 根据城市id获取详细信息
  */
-var getCityBusinessById = function (cityId) {
-  return new Promise(function (resolve, reject) {
-      request.fetch({
-          mock:!true,
-          module:'index',
-          action:'getCityBusinessById',
-          data:{
-            cityId:cityId
-          },
-          success:function(data){//获取城市信息成功
-            if(data.status.toString() == "1" && data.data != null){
-                resolve(data.data);
-            }else{
-                //使用地理定位的信息
-                getGeography(function(data){
-                  resolve(data);
-                });
-            }
-          },
-          fail:function() {//获取城市信息失败
+var getCityBusinessById = function (cityId,fn) {
+    request.fetch({
+        mock:!true,
+        module:'index',
+        action:'getCityBusinessById',
+        data:{
+          cityId:cityId
+        },
+        success:function(data){//获取城市信息成功
+          if(data.status.toString() == "1" && data.data != null){
+              fn(data.data);
+          }else{
               //使用地理定位的信息
               getGeography(function(data){
-                resolve(data);
+                fn(data);
               });
           }
-      });
-  });
+        },
+        fail:function() {//获取城市信息失败
+            //使用地理定位的信息
+            getGeography(function(data){
+              fn(data);
+            });
+        }
+    });
 }
 /**
  * 获取经纪人列表
  */
-var getAgentList = function(cityId,districtAndTown,orderType,selectLabel,pageIndex) {
-  return new Promise(function (resolve, reject) {
-      request.fetch({
-            mock:!true,
-            module:'index',
-            action:'searchAgentList',
-            data:{
-                "cityId": cityId,//城市主键
-                "districtAndTown": districtAndTown,//选中区域拼音。区域选的如果是不限，就传当前城市
-                "orderType": orderType,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
-                "selectLabel":selectLabel,//1.好经纪人 2.客户热评 3.推荐房源数量多
-                "pageIndex": pageIndex,//起始条数 默认从0开始
-                "pageSize": 10,//每页数量 默认10条
-                "device":wx.getStorageSync('device')
-            },
-            success:function(data){
-                if(data.status.toString() == "1" && data.data != null && data.data.agentList !=null && data.data.agentList.length > 0){
-                    resolve(data.data.agentList);
-                }else{
-                    resolve([]);
-                }
-            },
-            fail:function() {
-              resolve([]);
-            }
-      });
-  })
+var getAgentList = function(cityId,districtAndTown,orderType,selectLabel,pageIndex,fn) {
+    request.fetch({
+          mock:!true,
+          module:'index',
+          action:'searchAgentList',
+          data:{
+              "cityId": cityId,//城市主键
+              "districtAndTown": districtAndTown,//选中区域拼音。区域选的如果是不限，就传当前城市
+              "orderType": orderType,//排序类型 1.综合排序 2.评价分数从高到低 3.成交量从高到低 默认综合排序
+              "selectLabel":selectLabel,//1.好经纪人 2.客户热评 3.推荐房源数量多
+              "pageIndex": pageIndex,//起始条数 默认从0开始
+              "pageSize": 10,//每页数量 默认10条
+              "device":wx.getStorageSync('device')
+          },
+          success:function(data){
+              if(data.status.toString() == "1" && data.data != null && data.data.agentList !=null && data.data.agentList.length > 0){
+                  fn(data.data.agentList);
+              }else{
+                  fn([]);
+              }
+          },
+          fail:function() {
+            fn([]);
+          }
+    });
 }
             
 /**
  * 通过code获取openId
  */
-var getOpenId = function () {
-  return new Promise(function (resolve, reject) {
+var getOpenId = function (fn) {
     request.fetch({
       mock: !true,
       module: 'logon',
@@ -139,18 +134,17 @@ var getOpenId = function () {
       success: function (data) {
         if (data.status.toString() == '1' && data.data != '') {
             wx.setStorageSync('openid',data.data);
-            resolve(data.data)
+            fn(data.data)
         }else {
-          resolve('')
+          fn('fail')
           //console.log("openId获取失败为空");
         }
       },
       fail: function () {
-        resolve('')
+        fn('fail')
         //console.log("openId获取失败");
       }
     })
-  })
 }
 
 /**
@@ -182,7 +176,6 @@ var getUserAuthorizedInfo = function(fu) {
  * 添加微信用户到公司数据库
  */
 var addOpenUser = function (openId,avatarUrl,city,country,gender,language,nickName,province) {
-    return new Promise(function (resolve, reject) {
         request.fetch({
             mock:!true,
             module:'logon',
@@ -209,13 +202,11 @@ var addOpenUser = function (openId,avatarUrl,city,country,gender,language,nickNa
                 //console.log("添加微信用户到公司数据库 失败");
             }
         });
-    })
 }
 /**
  * 通过 openid 判断是否已经绑定过手机接口
  */
-var isBind = function (openid) {
-  return new Promise(function (resolve, reject) {
+var isBind = function (openid,fn) {
     request.fetch({
       mock: !true,
       module: 'logon',
@@ -228,7 +219,7 @@ var isBind = function (openid) {
         if (data.status.toString() == '1' && data.data != null && data.data != "") {
           //console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地，userInfo 有值");
           wx.setStorageSync('userInfo',data.data);
-          resolve(data.data)
+          fn(data.data)
         }else {
           //console.log("通过 openid 判断是否已经绑定过手机接口 -----  没绑定");
         }
@@ -237,7 +228,6 @@ var isBind = function (openid) {
         //console.log("通过 openid 判断是否已经绑定过手机接口 失败");
       }
     })
-  })
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -305,12 +295,12 @@ let main = {
               }
               fu();
               //根据code，获取openid
-              getOpenId().then((openid)=>{
-                  if(openid != ''){
+              getOpenId(function(openid){
+                  if(openid != 'fail'){
                          //添加微信用户到本地
                          let userInfo = userAuthorizedInfo.userInfo;
-                         addOpenUser(openid, userInfo.avatarUrl, userInfo.city, userInfo.country, userInfo.gender, userInfo.language, userInfo.nickName, userInfo.province).then(()=>{});
-                         isBind(openid);
+                         addOpenUser(openid, userInfo.avatarUrl, userInfo.city, userInfo.country, userInfo.gender, userInfo.language, userInfo.nickName, userInfo.province);
+                         isBind(openid,function(){});
                   }
               });
           });
@@ -323,7 +313,6 @@ let main = {
     let _this = this;
     //获取用户信息
     _this.getUserInfo(function(){
-
             //判断是否选择了城市
             if(options.cityid == undefined){//说明没有没选择城市，调用地理定位获取
                 //根据经纬度，获取地理定位信息
@@ -356,17 +345,18 @@ let main = {
                         _this.data.districtAndTown,
                         _this.data.orderType,
                         _this.data.selectLabel,
-                        0
-                    ).then((agentList)=>{
-                        _this.setData({
+                        0,
+                        function(agentList){
+                          _this.setData({
                             agentList:agentList,
                             pageIndex:10
-                        })
-                    });
+                          })
+                        }
+                    );
                 })
             }else{//说明用户选择的是具体的城市
                 //根据城市id获取地理位置定位信息
-                getCityBusinessById(options.cityid).then((data)=>{
+                getCityBusinessById(options.cityid,function(data){
                     //更新地理信息状态
                     _this.setData({
                         geography:data
@@ -388,13 +378,14 @@ let main = {
                         _this.data.districtAndTown,
                         _this.data.orderType,
                         _this.data.selectLabel,
-                        0
-                    ).then((agentList)=>{
-                        _this.setData({
+                        0,
+                        function(agentList){
+                          _this.setData({
                             agentList:agentList,
                             pageIndex:10
-                        })
-                    });
+                          })
+                        }
+                    );
                 });
             }
             //设置搜索默认显示
@@ -420,26 +411,27 @@ let main = {
             _this.data.districtAndTown,
             _this.data.orderType,
             _this.data.selectLabel,
-            _this.data.pageIndex
-        ).then((agentList)=>{
-            if(agentList.length == 0){
-                wx.showToast({
-                    title: '没有数据啦',
-                    icon: 'success',
-                    duration: 1000
-                })                      
-            }else{
-                let oldAgentList = _this.data.agentList;
-                for(let i=0;i<agentList.length;i++){
-                    oldAgentList.push(agentList[i]);
+            _this.data.pageIndex,
+            function(agentList){
+                if(agentList.length == 0){
+                    wx.showToast({
+                        title: '没有数据啦',
+                        icon: 'success',
+                        duration: 1000
+                    })                      
+                }else{
+                    let oldAgentList = _this.data.agentList;
+                    for(let i=0;i<agentList.length;i++){
+                        oldAgentList.push(agentList[i]);
+                    }
+                    _this.setData({
+                        agentList:oldAgentList,
+                        isScrollIng:true,
+                        pageIndex:_this.data.pageIndex+10
+                    })
                 }
-                _this.setData({
-                    agentList:oldAgentList,
-                    isScrollIng:true,
-                    pageIndex:_this.data.pageIndex+10
-                })
             }
-        });
+        );
     }
   },
   goBuy(e) {
