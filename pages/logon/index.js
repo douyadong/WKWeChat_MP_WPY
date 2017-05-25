@@ -232,21 +232,19 @@ var getUserAuthorizedInfo = function(fn) {
 /**
  * showModal
  */
-var showModal = function(){
-  return new Promise(function (resolve, reject) {
+var showModal = function(fn){
       wx.showModal({
           title: '',
           content: '检测到你没有打开悟空找房的用户信息权限，是否去设置打开？',
           success: function(res) {
               if (res.confirm) {
                 //console.log('用户点击确定');
-                resolve();
+                fn();
               } else if (res.cancel) {
                 //console.log('用户点击取消');
               }
           }
       })
-  })
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -414,7 +412,7 @@ Page({
       //判断是否授权
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       if(userAuthorizedInfo == ''){//没有授权过
-          showModal().then(()=>{
+          showModal(function(){
               getUserAuthorizedInfo(function(userAuthorizedInfo){
                   //根据code，获取openid
                   getOpenId(function(openid){

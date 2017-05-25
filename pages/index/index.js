@@ -20,45 +20,44 @@ var getGeography = function(fu) {
         "townId": null,
         "cityPinyin":"shanghaishi"
     }
-    return new Promise(function (resolve, reject) {  
-      //地理定位
-      wx.getLocation({
-        type: 'wgs84',
-        success: function(res) {//地理定位成功，获取经纬度
-          var latitude = res.latitude
-          var longitude = res.longitude
-          var speed = res.speed
-          var accuracy = res.accuracy
-          //根据精度纬度，获取当前所在的城市信息
-          request.fetch({
-              mock:!true,
-              module:'index',
-              action:'findCityInfoByLonAndLat',
-              data:{
-                lon:longitude,
-                lat:latitude
-              },
-              success:function(data){//获取城市信息成功
-                if(data.status.toString() == '1' && data.data != null){
-                    wx.setStorage({
-                      key:"location",
-                      data:data.data
-                    });
-                    fu(data.data);
-                }else{
-                    fu(defineGeography);
-                }
-              },
-              fail:function() {//获取城市信息失败
+
+    //地理定位
+    wx.getLocation({
+      type: 'wgs84',
+      success: function(res) {//地理定位成功，获取经纬度
+        var latitude = res.latitude
+        var longitude = res.longitude
+        var speed = res.speed
+        var accuracy = res.accuracy
+        //根据精度纬度，获取当前所在的城市信息
+        request.fetch({
+            mock:!true,
+            module:'index',
+            action:'findCityInfoByLonAndLat',
+            data:{
+              lon:longitude,
+              lat:latitude
+            },
+            success:function(data){//获取城市信息成功
+              if(data.status.toString() == '1' && data.data != null){
+                  wx.setStorage({
+                    key:"location",
+                    data:data.data
+                  });
+                  fu(data.data);
+              }else{
                   fu(defineGeography);
               }
-          });
-        },
-        fail:function() {//用户取消地理定位
-            fu(defineGeography);
-        }
-      })
-  })
+            },
+            fail:function() {//获取城市信息失败
+                fu(defineGeography);
+            }
+        });
+      },
+      fail:function() {//用户取消地理定位
+          fu(defineGeography);
+      }
+    })
 }
 /**
  * 根据城市id获取详细信息
