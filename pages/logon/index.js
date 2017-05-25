@@ -3,7 +3,7 @@ let app = getApp()
 /**
  * 根据经纬度获取地理定位
  */
-var getGeography = function() {
+var getGeography = function(fu) {
     let defineGeography = {
         "cityId": 43,
         "cityName": "上海市",
@@ -11,79 +11,56 @@ var getGeography = function() {
         "townId": null,
         "cityPinyin":"shanghaishi"
     }
-    return new Promise(function (resolve, reject) {  
-      //地理定位
-      wx.getLocation({
-        type: 'wgs84',
-        success: function(res) {//地理定位成功，获取经纬度
-          var latitude = res.latitude
-          var longitude = res.longitude
-          var speed = res.speed
-          var accuracy = res.accuracy
-          //根据精度纬度，获取当前所在的城市信息
-          request.fetch({
-              mock:!true,
-              module:'index',
-              action:'findCityInfoByLonAndLat',
-              data:{
-                lon:longitude,
-                lat:latitude
-              },
-              success:function(data){//获取城市信息成功
-                if(data.status.toString() == '1' && data.data != null){
-                    wx.setStorage({
-                      key:"location",
-                      data:data.data
-                    });
-                    resolve(data.data);
-                }else{
-                    resolve(defineGeography);
-                }
-              },
-              fail:function() {//获取城市信息失败
-                  resolve(defineGeography);
+    //地理定位
+    wx.getLocation({
+      type: 'wgs84',
+      success: function(res) {//地理定位成功，获取经纬度
+        var latitude = res.latitude
+        var longitude = res.longitude
+        var speed = res.speed
+        var accuracy = res.accuracy
+        //根据精度纬度，获取当前所在的城市信息
+        request.fetch({
+            mock:!true,
+            module:'index',
+            action:'findCityInfoByLonAndLat',
+            data:{
+              lon:longitude,
+              lat:latitude
+            },
+            success:function(data){//获取城市信息成功
+              if(data.status.toString() == '1' && data.data != null){
+                  fu(data.data);
+              }else{
+                  fu(defineGeography);
               }
-          });
-        },
-        fail:function() {//用户取消地理定位
-            resolve(defineGeography);
-        }
-      })
-  })
-}
-/**
- * 获取code方法
- */
-var getLoginCode = function () {
-  return new Promise(function (resolve, reject) {
-    wx.login({
-      success: function (res) {
-        if (res.code) {
-          resolve(res.code)
-        } else {
-          reject(res.errMsg)
-        }
+            },
+            fail:function() {//获取城市信息失败
+                fu(defineGeography);
+            }
+        });
+      },
+      fail:function() {//用户取消地理定位
+          fu(defineGeography);
       }
     })
-  })
 }
 /**
  * 通过code获取openId
  */
-var getOpenId = function (code) {
-  return new Promise(function (resolve, reject) {
+var getOpenId = function (fn) {
     request.fetch({
       mock: !true,
       module: 'logon',
       action: 'getOpenIdByCode',
       showLoading: false,
       data: {
-        code: code
+        code: wx.getStorageSync('code')
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != '') {
           wx.setStorageSync('openid',data.data);
-          resolve(data.data)
+          fn(data.data)
         }else {
           //resolve('')
           //console.log("openId获取失败");
@@ -94,13 +71,11 @@ var getOpenId = function (code) {
         //console.log("openId获取失败");
       }
     })
-  })
 }
 /**
  * 根据手机号，获取短信验证码和语音验证码
  */
-var getVerificationCode = function (phone, codeType) {
-  return new Promise(function (resolve, reject) {
+var getVerificationCode = function (phone, codeType,fn) {
     request.fetch({
       mock: !true,
       module: 'logon',
@@ -112,23 +87,21 @@ var getVerificationCode = function (phone, codeType) {
       },
       success: function (data) {
         if (data.status.toString() == '1') {
-          resolve(data.data)
+          fn(data.data)
         }else {
-          resolve('')
+          fn('fail')
         }
       },
       fail: function () {
-        resolve('')
+        fn('fail')
       }
     })
-  })
 }
 
 /**
  * 提交登录信息
  */
-var submit = function (phone, verificationCode) {
-  return new Promise(function (resolve, reject) {
+var submit = function (phone, verificationCode,successCb,failCb) {
     request.fetch({
       mock: !true,
       module: 'logon',
@@ -142,56 +115,51 @@ var submit = function (phone, verificationCode) {
         if (data.status.toString() == '1' && data.data != null) {
           //把登录完成绑定的用户信息存储下来
           wx.setStorageSync('userInfo',data.data);
-          resolve(data.data)
+          successCb(data.data)
         }else {
-          reject(data.message)
+          failCb(data.message)
         }
       },
       fail: function () {
-        reject('请输入正确的验证码')
+        failCb('请输入正确的验证码')
       }
     })
-  })
 }
 /**
  * 添加微信用户到公司数据库
  */
 var addOpenUser = function (openid,avatarUrl,city,country,gender,language,nickName,province) {
-    return new Promise(function (resolve, reject) {
-        request.fetch({
-            mock:!true,
-            module:'logon',
-            action:'addWeixinUser',
-            //method:'POST',
-            data:{
-                openId:openid,
-                avatarUrl:avatarUrl,
-                city:city,
-                country:country,
-                gender:gender,
-                language:language,
-                nickName:nickName,
-                province:province
-            },
-            success:function(data){
-                if(data.status.toString() == "1" && data.data != null){
-                     //console.log("添加微信用户到公司数据库 成功");
-                     resolve(data.data);
-                }else{
-                    //console.log("添加微信用户到公司数据库 失败");
-                }
-            },
-            fail:function () {
-                //console.log("添加微信用户到公司数据库 失败");
-            }
-        });
-    })
+      request.fetch({
+          mock:!true,
+          module:'logon',
+          action:'addWeixinUser',
+          //method:'POST',
+          data:{
+              openId:openid,
+              avatarUrl:avatarUrl,
+              city:city,
+              country:country,
+              gender:gender,
+              language:language,
+              nickName:nickName,
+              province:province
+          },
+          success:function(data){
+              if(data.status.toString() == "1" && data.data != null){
+                   //console.log("添加微信用户到公司数据库 成功");
+              }else{
+                  //console.log("添加微信用户到公司数据库 失败");
+              }
+          },
+          fail:function () {
+              //console.log("添加微信用户到公司数据库 失败");
+          }
+      });
 }
 /**
  * 通过 openid 判断是否已经绑定过手机接口
  */
-var isBind = function (openid) {
-  return new Promise(function (resolve, reject) {
+var isBind = function (openid,fn) {
     request.fetch({
       mock: !true,
       module: 'logon',
@@ -204,7 +172,7 @@ var isBind = function (openid) {
         if (data.status.toString() == '1' && data.data != null && data.data != "") {
           //console.log("通过 openid 判断是否已经绑定过手机接口 ------已绑定，保存用户绑定信息到本地，userInfo 有值");
           wx.setStorageSync('userInfo',data.data);
-          resolve(data.data)
+          fn(data.data);
         }else {
           //console.log("通过 openid 判断是否已经绑定过手机接口 -----  没绑定");
         }
@@ -213,41 +181,50 @@ var isBind = function (openid) {
         //console.log("通过 openid 判断是否已经绑定过手机接口 失败");
       }
     })
-  })
 }
 /**
  * 获取用户授权信息
  */
-var getUserAuthorizedInfo = function() {
-    return new Promise(function (resolve, reject) {
-        wx.openSetting({
-            success: (res) => {
-              //是否勾选过授权
-              if(res.authSetting["scope.userInfo"]){
+var getUserAuthorizedInfo = function(fn) {
+    wx.openSetting({
+        success: (res) => {
+          //是否勾选过授权
+          if(res.authSetting["scope.userInfo"]){
+              wx.login({
+                success: function (msg) {
+                  if(msg.code) {
+                      wx.setStorageSync('code',msg.code);
+                  }
                   wx.getUserInfo({
                       withCredentials: true,
                       success: function (res) {
-                          // 把用户授权信息写入到本地
-                          wx.setStorageSync('userAuthorizedInfo',res);
-                          resolve(res);
+                        // 把用户授权信息写入到本地
+                        wx.setStorageSync('userAuthorizedInfo',res);
+                        fn(res);
                       },
                       fail: function () {
                           //console.log("获取用户授权信息失败");
                       }
                   })
-              }else{
-                  //console.log("用户没有勾选授权，获取不到授权信息");
-              }
+                }
+              })
+          }else{
+              //console.log("用户没有勾选授权，获取不到授权信息");
+          }
 
-              //是否勾选过地理位置
-              if(res.authSetting["scope.userLocation"]){
-                  //根据经纬度，获取地理位置
-                  getGeography();
-              }else{
-                //console.log("用户没有勾选地理位置，获取不到地理位置信息");
-              }
-            }
-        })
+          //是否勾选过地理位置
+          if(res.authSetting["scope.userLocation"]){
+              //根据经纬度，获取地理位置
+              getGeography(function(data){
+                  wx.setStorage({
+                    key:"location",
+                    data:data
+                  });
+              });
+          }else{
+            //console.log("用户没有勾选地理位置，获取不到地理位置信息");
+          }
+        }
     })
 }
 
@@ -320,31 +297,31 @@ Page({
     }
     
     // 获取验证码
-    getVerificationCode(phone, codeType).then((data) => {
-      if (data == '') { // 获取验证码失败
-        app.showTips('获取验证码失败,请重新获取');
-      }else {
-          // 显示重新发送
-          _this.setData({
-            isShowSend: true,
-            second: 60
-          })
-          //app.showTips('获取验证码成功')
-          let s = _this.data.second
-          let t = setInterval(() => {
-            --s
-            if (s == 0) {
-              _this.setData({
-                isShowSend: false
-              })
-              clearInterval(t)
-            }
+    getVerificationCode(phone, codeType,function(data){
+        if (data == 'fail') { // 获取验证码失败
+            app.showTips('获取验证码失败,请重新获取');
+        }else {
+            // 显示重新发送
             _this.setData({
-              second: s
+              isShowSend: true,
+              second: 60
             })
-          }, 1000)
-      }
-    })
+            //app.showTips('获取验证码成功')
+            let s = _this.data.second
+            let t = setInterval(() => {
+              --s
+              if (s == 0) {
+                _this.setData({
+                  isShowSend: false
+                })
+                clearInterval(t)
+              }
+              _this.setData({
+                second: s
+              })
+            }, 1000)
+        }
+    });
   },
   // 语音获取验证码
   voiceGetCode(event) {
@@ -360,7 +337,7 @@ Page({
     }
     app.showTips('语音验证码拨打中，请注意接收来电');
     // 获取验证码
-    getVerificationCode(phone, codeType).then((data) => {})
+    getVerificationCode(phone, codeType,function(data){});
   },
   // 获取用户输入的验证码
   getVerificationCode(event) {
@@ -394,16 +371,16 @@ Page({
     }
 
     // 提交
-    submit(phone, verificationCode).then((data) => {
+    submit(phone, verificationCode,function(data){
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       var openid = wx.getStorageSync('openid');
       if(userAuthorizedInfo != ''){
-          addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province).then(()=>{});
+          addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province);
       }
       _this.toPage();
-    },(msg)=>{
-        app.showTips(msg);
-    })
+    },function(msg){
+      app.showTips(msg);
+    });
   },
   showAgreement() {
     let _this = this
@@ -438,21 +415,18 @@ Page({
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       if(userAuthorizedInfo == ''){//没有授权过
           showModal().then(()=>{
-                getUserAuthorizedInfo().then((userAuthorizedInfo)=>{
-                    //获取code，调用添加微信用户接口
-                    getLoginCode().then((code)=>{
-                      //根据code，获取openid
-                      getOpenId(code).then((openid)=>{
-                          if(openid != ''){
-                                //添加微信用户到本地
-                                addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province).then(()=>{});
-                                isBind(openid).then(()=>{
-                                      _this.toPage();
-                                });
-                          }
-                      });
-                    });
-                });
+              getUserAuthorizedInfo(function(userAuthorizedInfo){
+                  //根据code，获取openid
+                  getOpenId(function(openid){
+                      if(openid != ''){
+                            //添加微信用户到本地
+                            addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province);
+                            isBind(openid,function(data){
+                              _this.toPage();
+                            });
+                      }
+                  });
+              });
           });
       }else{//授权过
           //console.log("授权过");

@@ -12,7 +12,7 @@ if(wx.getStorageSync('device') == ''){
 /**
  * 根据经纬度获取地理定位
  */
-var getGeography = function() {
+var getGeography = function(fu) {
     let defineGeography = {
         "cityId": 43,
         "cityName": "上海市",
@@ -44,18 +44,18 @@ var getGeography = function() {
                       key:"location",
                       data:data.data
                     });
-                    resolve(data.data);
+                    fu(data.data);
                 }else{
-                    resolve(defineGeography);
+                    fu(defineGeography);
                 }
               },
               fail:function() {//获取城市信息失败
-                  resolve(defineGeography);
+                  fu(defineGeography);
               }
           });
         },
         fail:function() {//用户取消地理定位
-            resolve(defineGeography);
+            fu(defineGeography);
         }
       })
   })
@@ -77,16 +77,16 @@ var getCityBusinessById = function (cityId) {
                 resolve(data.data);
             }else{
                 //使用地理定位的信息
-                getGeography().then((data)=>{
-                    resolve(data)
+                getGeography(function(data){
+                  resolve(data);
                 });
             }
           },
           fail:function() {//获取城市信息失败
               //使用地理定位的信息
-                getGeography().then((data)=>{
-                    resolve(data)
-                });
+              getGeography(function(data){
+                resolve(data);
+              });
           }
       });
   });
@@ -122,28 +122,11 @@ var getAgentList = function(cityId,districtAndTown,orderType,selectLabel,pageInd
       });
   })
 }
-
-
-/**
- * 获取code方法
- */
-var getLoginCode = function () {
-  return new Promise(function (resolve, reject) {
-    wx.login({
-      success: function (res) {
-        if (res.code) {
-          resolve(res.code)
-        } else {
-          reject(res.errMsg)
-        }
-      }
-    })
-  })
-}               
+            
 /**
  * 通过code获取openId
  */
-var getOpenId = function (code) {
+var getOpenId = function () {
   return new Promise(function (resolve, reject) {
     request.fetch({
       mock: !true,
@@ -151,7 +134,7 @@ var getOpenId = function (code) {
       action: 'getOpenIdByCode',
       showLoading: false,
       data: {
-        code: code
+        code: wx.getStorageSync('code')
       },
       success: function (data) {
         if (data.status.toString() == '1' && data.data != '') {
@@ -173,21 +156,26 @@ var getOpenId = function (code) {
 /**
  * 获取用户授权信息
  */
-var getUserAuthorizedInfo = function() {
-    return new Promise(function (resolve, reject) {
-        wx.getUserInfo({
-            withCredentials: true,
-            success: function (res) {
-                // 把用户授权信息写入到本地
-                wx.setStorageSync('userAuthorizedInfo',res);
-                resolve(res);
-            },
-            fail: function () {
-                //console.log("获取用户授权信息失败");
-                reject();
-            }
-        })
-    })
+var getUserAuthorizedInfo = function(fu) {
+      wx.login({
+        success: function (msg) {
+          if (msg.code) {
+              wx.setStorageSync('code',msg.code);
+          }
+          wx.getUserInfo({
+              withCredentials: true,
+              success: function (res) {
+                  // 把用户授权信息写入到本地
+                  wx.setStorageSync('userAuthorizedInfo',res);
+                  fu(res);
+              },
+              fail: function (msg) {
+                  console.log("获取用户授权信息失败");
+                  fu("fail");
+              }
+          })
+        }
+      })
 }
 
 /**
@@ -310,24 +298,21 @@ let main = {
       //判断是否授权
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       if(userAuthorizedInfo == ''){//没有授权过
-          getUserAuthorizedInfo().then((userAuthorizedInfo)=>{
+          getUserAuthorizedInfo(function(userAuthorizedInfo){
+              if(userAuthorizedInfo == "fail"){
+                fu();
+                return
+              }
               fu();
-              //获取code，调用添加微信用户接口
-              getLoginCode().then((code)=>{
-                //根据code，获取openid
-                getOpenId(code).then((openid)=>{
-                    if(openid != ''){
-                           //添加微信用户到本地
-                           let userInfo = userAuthorizedInfo.userInfo;
-                           addOpenUser(openid, userInfo.avatarUrl, userInfo.city, userInfo.country, userInfo.gender, userInfo.language, userInfo.nickName, userInfo.province).then(()=>{
-
-                           });
-                           isBind(openid);
-                    }
-                });
+              //根据code，获取openid
+              getOpenId().then((openid)=>{
+                  if(openid != ''){
+                         //添加微信用户到本地
+                         let userInfo = userAuthorizedInfo.userInfo;
+                         addOpenUser(openid, userInfo.avatarUrl, userInfo.city, userInfo.country, userInfo.gender, userInfo.language, userInfo.nickName, userInfo.province).then(()=>{});
+                         isBind(openid);
+                  }
               });
-          }).catch(function(err){
-              fu();
           });
       }else{//授权过
           fu();
@@ -335,15 +320,14 @@ let main = {
   },
   getAgentList:getAgentList,
   onLoad(options){
-         
-      
     let _this = this;
     //获取用户信息
     _this.getUserInfo(function(){
+
             //判断是否选择了城市
             if(options.cityid == undefined){//说明没有没选择城市，调用地理定位获取
                 //根据经纬度，获取地理定位信息
-                getGeography().then((data)=>{
+                getGeography(function(data){
                     //更新地理信息状态
                     _this.setData({
                         geography:data
@@ -379,7 +363,7 @@ let main = {
                             pageIndex:10
                         })
                     });
-                });
+                })
             }else{//说明用户选择的是具体的城市
                 //根据城市id获取地理位置定位信息
                 getCityBusinessById(options.cityid).then((data)=>{
