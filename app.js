@@ -4,15 +4,10 @@ wx.showLLL = function () {
 }
 
 App({
-  onLaunch: function (options) {
-    // 调用API从本地缓存中获取数据
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-    wx.setStorageSync('scene', options.scene)
-    console.log(options.scene)
-  },
-  getUserInfo: function (cb) {
+  onLaunch: function (options) {   
+    wx.setStorageSync('scene', options.scene) ;    
+  } ,
+  getUserInfo : function (cb) {
     var that = this
     if (this.globalData.userInfo) {
       typeof cb == 'function' && cb(this.globalData.userInfo)
@@ -46,9 +41,7 @@ App({
   mock: true,
   timer: null,
   isLogin: function (needRedirect = true , returnUrl = '' , type = 'redirect') { // 判断是否登录了小程序
-    var userInfo = wx.getStorageSync('userInfo')
-    console.log("/////////////////////////////////");
-    console.log(userInfo);
+    var userInfo = wx.getStorageSync('userInfo') ;    
     if (!userInfo) {
       // 当前页的地址
       if (!returnUrl) {
