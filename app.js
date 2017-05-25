@@ -12,7 +12,7 @@ App({
     var that = this
     if (this.globalData.userInfo) {
       typeof cb == 'function' && cb(this.globalData.userInfo)
-    }else {
+    } else {
       // 调用登录接口
       wx.login({
         success: function () {
@@ -41,7 +41,7 @@ App({
   },
   mock: true,
   timer: null,
-  isLogin: function (needRedirect = true , returnUrl = '' , type = 'redirect') { // 判断是否登录了小程序
+  isLogin: function (needRedirect = true, returnUrl = '', type = 'redirect') { // 判断是否登录了小程序
     var userInfo = wx.getStorageSync('userInfo')
     if (!userInfo) {
       // 当前页的地址
@@ -53,12 +53,12 @@ App({
       if (needRedirect) {
         wx.navigateTo({
           url: '/pages/logon/index?returnUrl=' + returnUrl + '&type=' + type
-        })        
+        })
       }
-      return false;       
-    }else{
+      return false;
+    } else {
       return true;
-    }    
+    }
   },
   getQQMapLocation: function (latitude, longitude, cb) {
     wx.request({
@@ -74,10 +74,10 @@ App({
     })
   },
   showLoading: function (title = '加载中...') {
-    this.getCurrentPage().setData({'loading': {'show': true,title: title}})
+    this.getCurrentPage().setData({ 'loading': { 'show': true, title: title } })
   },
   hideLoading: function (cb) {
-    this.getCurrentPage().setData({'loading': {'show': false}})
+    this.getCurrentPage().setData({ 'loading': { 'show': false } })
     typeof cb == 'function' && cb()
   },
   showTips: function (obj) {
@@ -86,15 +86,15 @@ App({
       cb
 
     if (typeof obj === 'object') {
-      ({text, duration=2000, cb} = obj)
-    }else {
+      ({ text, duration=2000, cb } = obj)
+    } else {
       text = obj
     }
 
-    this.getCurrentPage().setData({'tips': {'show': true,text: text}})
+    this.getCurrentPage().setData({ 'tips': { 'show': true, text: text } })
     clearTimeout(this.timer)
     this.timer = setTimeout(function () {
-      that.getCurrentPage().setData({'tips': {'show': false}})
+      that.getCurrentPage().setData({ 'tips': { 'show': false } })
       typeof cb == 'function' && cb()
     }, duration)
   },
@@ -116,7 +116,7 @@ App({
       wx.redirectTo({
         url: url
       })
-    }else {
+    } else {
       wx.navigateTo({
         url: url
       })
