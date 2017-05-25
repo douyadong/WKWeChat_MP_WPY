@@ -1,5 +1,3 @@
-<import src="../components/develop.wxml" />
-
 <!--index.wxml-->
 <scroll-view class="page " scroll-y="{{isScroll}}" bindscrolltolower="scrolltolower" bindscroll="bindscroll">
   <view class="searchNavBox">
