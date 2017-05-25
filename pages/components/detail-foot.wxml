@@ -7,11 +7,11 @@
         </view>
         <view class="con">
             <view class="name">{{agentName}}</view>
-            <view class="company">{{abbreviation}}</view>
+            <view class="company">{{agentBelongToCompanyName}}</view>
         </view>
     </view>
     <view class="agentContact">
-        <view class="tel" bindtap="c_df_phoneClick">
+        <view class="tel {{ agentWChatId ? '' : 'single'}}" bindtap="c_df_phoneClick">
             <view class="iconfont icon-telkf"></view>
             电话咨询
         </view>

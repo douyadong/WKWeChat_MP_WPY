@@ -42,60 +42,6 @@ var params = {
             'nameless':0
         },
         "tagList":{
-            'good':[
-                {
-                    id:0,
-                    text:'礼貌热情',
-                    isActive:false
-                },{
-                    id:1,
-                    text:'仪表整洁',
-                    isActive:false
-                },{
-                    id:2,
-                    text:'比较专业',
-                    isActive:false
-                },{
-                    id:3,
-                    text:'诚实可靠',
-                    isActive:false
-                },{
-                    id:4,
-                    text:'熟悉房源',
-                    isActive:false
-                },{
-                    id:5,
-                    text:'勤于联系',
-                    isActive:false
-                }
-            ],
-            'bad':[
-                {
-                    id:10,
-                    text:'不够热情',
-                    isActive:true
-                },{
-                    id:11,
-                    text:'仪表不整',
-                    isActive:false
-                },{
-                    id:12,
-                    text:'不够专业',
-                    isActive:false
-                },{
-                    id:13,
-                    text:'不够诚信',
-                    isActive:false
-                },{
-                    id:14,
-                    text:'房源不熟',
-                    isActive:true
-                },{
-                    id:15,
-                    text:'不给回音',
-                    isActive:true
-                }
-            ]
         }
     },
     onLoad: function(option) {
@@ -112,6 +58,30 @@ var params = {
                         "agentInfo.agentName":data.data.agentName,
                         "agentInfo.headRoundImgUrl":data.data.headRoundImgUrl,
                         "agentInfo.isWellAgent":data.data.isWellAgent
+                    })
+                }
+            }.bind(this),
+            fail:function(){
+                console.log('获取经纪人id失败')
+            }
+        })
+        request.fetch({
+            data:{},
+            module:'agent',
+            action:'getCommentTag',
+            success:function(data){
+                if(data.status ===1){
+                    var goods = data.data.goodComments,
+                        bads = data.data.badComments;
+                    goods.forEach(function(item,index){
+                        item['isActive']=false;
+                    })
+                    bads.forEach(function(item,index){
+                        item['isActive']=false;
+                    })
+                    this.setData({
+                        "tagList.good":data.data.goodComments,
+                        "tagList.bad":data.data.badComments
                     })
                 }
             }.bind(this),
