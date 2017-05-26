@@ -287,20 +287,16 @@ let main = {
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       if(userAuthorizedInfo == ''){//没有授权过
           getUserAuthorizedInfo(function(userAuthorizedInfo){
-              if(userAuthorizedInfo == "fail"){
-                fu();
-                return
-              }
-              fu();
               //根据code，获取openid
               getOpenId(function(openid){
-                  if(openid != 'fail'){
+                  if(openid != 'fail' && userAuthorizedInfo != "fail"){
                          //添加微信用户到本地
                          let userInfo = userAuthorizedInfo.userInfo;
                          addOpenUser(openid, userInfo.avatarUrl, userInfo.city, userInfo.country, userInfo.gender, userInfo.language, userInfo.nickName, userInfo.province);
                          isBind(openid,function(){});
                   }
               });
+              fu();
           });
       }else{//授权过
           fu();
