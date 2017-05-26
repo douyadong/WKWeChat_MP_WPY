@@ -203,7 +203,8 @@ var getUserAuthorizedInfo = function(fn) {
                         fn(res);
                       },
                       fail: function () {
-                          //console.log("获取用户授权信息失败");
+                        //console.log("获取用户授权信息失败");
+                        fn('fail');
                       }
                   })
                 }
@@ -416,7 +417,7 @@ Page({
               getUserAuthorizedInfo(function(userAuthorizedInfo){
                   //根据code，获取openid
                   getOpenId(function(openid){
-                      if(openid != ''){
+                      if(openid != '' && userAuthorizedInfo != 'fail'){
                             //添加微信用户到本地
                             addOpenUser(openid, userAuthorizedInfo.userInfo.avatarUrl, userAuthorizedInfo.userInfo.city, userAuthorizedInfo.userInfo.country, userAuthorizedInfo.userInfo.gender, userAuthorizedInfo.userInfo.language, userAuthorizedInfo.userInfo.nickName, userAuthorizedInfo.userInfo.province);
                             isBind(openid,function(data){

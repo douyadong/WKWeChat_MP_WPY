@@ -131,7 +131,7 @@ var getOpenId = function (fn) {
         code: wx.getStorageSync('code')
       },
       success: function (data) {
-        if (data.status.toString() == '1' && data.data != '') {
+        if (data.status.toString() == '1' && data.data != null && data.data != '') {
             wx.setStorageSync('openid',data.data);
             fn(data.data)
         }else {
