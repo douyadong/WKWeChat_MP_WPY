@@ -13,8 +13,8 @@ if(wx.getStorageSync('device') == ''){
  * 根据经纬度获取地理定位
  */
 var getGeography = function(fu) {
-    var location = wx.getStorageSync('location');
-    if(location == ''){
+    var geography = wx.getStorageSync('geography');
+    if(geography == ''){
         let defineGeography = {
             "cityId": 43,
             "cityName": "上海市",
@@ -41,18 +41,22 @@ var getGeography = function(fu) {
                 },
                 success:function(data){//获取城市信息成功
                   if(data.status.toString() == '1' && data.data != null){
-                      wx.setStorageSync('location', data.data);//当前定位的城市
+                      wx.setStorageSync('location', data.data);//本地城市
+                      wx.setStorageSync('geography', data.data);
                       fu(data.data);
                   }else{
+                      wx.setStorageSync('geography', defineGeography);
                       fu(defineGeography);
                   }
                 },
                 fail:function() {//获取城市信息失败
+                    wx.setStorageSync('geography', defineGeography);
                     fu(defineGeography);
                 }
             });
           },
           fail:function() {//用户取消地理定位
+              wx.setStorageSync('geography', defineGeography);
               fu(defineGeography);
           }
         })
