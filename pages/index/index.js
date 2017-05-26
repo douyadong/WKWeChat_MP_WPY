@@ -163,7 +163,6 @@ var getUserAuthorizedInfo = function(fu) {
                   fu(res);
               },
               fail: function (msg) {
-                  console.log("获取用户授权信息失败");
                   fu("fail");
               }
           })
