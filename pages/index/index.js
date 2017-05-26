@@ -13,51 +13,52 @@ if(wx.getStorageSync('device') == ''){
  * 根据经纬度获取地理定位
  */
 var getGeography = function(fu) {
-    let defineGeography = {
-        "cityId": 43,
-        "cityName": "上海市",
-        "districtId": 45,
-        "townId": null,
-        "cityPinyin":"shanghaishi"
+    var location = wx.getStorageSync('location');
+    if(location == ''){
+        let defineGeography = {
+            "cityId": 43,
+            "cityName": "上海市",
+            "districtId": 45,
+            "townId": null,
+            "cityPinyin":"shanghaishi"
+        }
+        //地理定位
+        wx.getLocation({
+          type: 'wgs84',
+          success: function(res) {//地理定位成功，获取经纬度
+            var latitude = res.latitude
+            var longitude = res.longitude
+            var speed = res.speed
+            var accuracy = res.accuracy
+            //根据精度纬度，获取当前所在的城市信息
+            request.fetch({
+                mock:!true,
+                module:'index',
+                action:'findCityInfoByLonAndLat',
+                data:{
+                  lon:longitude,
+                  lat:latitude
+                },
+                success:function(data){//获取城市信息成功
+                  if(data.status.toString() == '1' && data.data != null){
+                      wx.setStorageSync('location', data.data);//当前定位的城市
+                      fu(data.data);
+                  }else{
+                      fu(defineGeography);
+                  }
+                },
+                fail:function() {//获取城市信息失败
+                    fu(defineGeography);
+                }
+            });
+          },
+          fail:function() {//用户取消地理定位
+              fu(defineGeography);
+          }
+        })
+    }else{
+        fu(wx.getStorageSync('geography'));
     }
-
-    //地理定位
-    wx.getLocation({
-      type: 'wgs84',
-      success: function(res) {//地理定位成功，获取经纬度
-        var latitude = res.latitude
-        var longitude = res.longitude
-        var speed = res.speed
-        var accuracy = res.accuracy
-        //根据精度纬度，获取当前所在的城市信息
-        request.fetch({
-            mock:!true,
-            module:'index',
-            action:'findCityInfoByLonAndLat',
-            data:{
-              lon:longitude,
-              lat:latitude
-            },
-            success:function(data){//获取城市信息成功
-              if(data.status.toString() == '1' && data.data != null){
-                  wx.setStorage({
-                    key:"location",
-                    data:data.data
-                  });
-                  fu(data.data);
-              }else{
-                  fu(defineGeography);
-              }
-            },
-            fail:function() {//获取城市信息失败
-                fu(defineGeography);
-            }
-        });
-      },
-      fail:function() {//用户取消地理定位
-          fu(defineGeography);
-      }
-    })
 }
 /**
  * 根据城市id获取详细信息
@@ -315,11 +316,6 @@ let main = {
                     _this.setData({
                         geography:data
                     });
-                    //把成功后的地理位置信息写入本地
-                    wx.setStorage({
-                        key:"geography",
-                        data:data
-                    });
                     //根据定位的地理信息，获取区域信息
                     _this.getCityAreasInfo(_this.data.geography.cityId);
                     if(options.districtAndTown == undefined){
@@ -356,10 +352,7 @@ let main = {
                         geography:data
                     });
                     //把成功后的地理位置信息写入本地
-                    wx.setStorage({
-                    key:"geography",
-                    data:data
-                    });
+                    wx.setStorageSync('geography',data);
                     //根据定位的地理信息，获取区域信息
                     _this.getCityAreasInfo(_this.data.geography.cityId);
                     //设置区域
