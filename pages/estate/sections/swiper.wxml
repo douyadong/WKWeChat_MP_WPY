@@ -5,7 +5,7 @@
   <navigator open-type="redirect" url="/pages/agent/detail?agentId={{agent.agentId}}" wx:if="{{agent}}" class="expert-info">
     <view class="call" catchtap="callEstateExpert"><text class="iconfont icon-tel" ></text></view>
     <view class="outline">
-      <image src="{{agent.headRoundImgUrl}}" class="head-portrait"/>
+      <image src="{{agent.headRoundImgUrl}}?x-oss-process=image/resize,w_120" class="head-portrait"/>
       <text>{{agent.agentName}}</text>
       <text class="position">小区专家</text>
     </view>   
