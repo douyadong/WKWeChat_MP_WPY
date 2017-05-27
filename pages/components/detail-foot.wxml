@@ -2,7 +2,7 @@
 <view class="detail-foot">
     <view class="agent" bindtap="c_df_agentClick">
         <view class="pic">
-            <image class="img" mode="aspectFill" src="{{headRoundImgUrl}}"></image>
+            <image class="img" mode="aspectFill" src="{{headRoundImgUrl}}?x-oss-process=image/resize,w_120"></image>
             <view class="tag"></view>
         </view>
         <view class="con">
