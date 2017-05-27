@@ -2,7 +2,7 @@
   <view class="xf-sources">
     <block wx:for="{{xfSources}}" wx:key="*this" wx:for-item="source">
     <navigator open-type="{{openType || 'navigate'}}" class="source" url="/pages/xf/detail?subEstateId={{source.id}}&agentId={{source.agentId}}">
-      <image mode="aspectFill" src="{{source.imageUrl}}" class="thumbnail"></image>
+      <image mode="aspectFill" src="{{source.imageUrl}}?x-oss-process=image/resize,w_260" class="thumbnail"></image>
       <view class="param title">{{source.estateName}}</view>
       <view class="param fit-height">
         <text>{{source.startSpace}} - {{source.endSpace}}㎡</text>

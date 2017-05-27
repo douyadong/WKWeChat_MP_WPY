@@ -3,7 +3,7 @@
     <view class="row">
       <view class="row-hd portrait-container">
         <view class="sprite sprite-jingu" wx:if="{{simpleAgentDetail.isWellAgent}}"></view>
-        <image mode="aspectFill" src="{{simpleAgentDetail.headRoundImgUrl}}" class="head-portrait"></image>
+        <image mode="aspectFill" src="{{simpleAgentDetail.headRoundImgUrl}}?x-oss-process=image/resize,w_120" class="head-portrait"></image>
       </view>
       <view class="row-bd">
         <text class="agent-name">{{simpleAgentDetail.agentName}}</text>

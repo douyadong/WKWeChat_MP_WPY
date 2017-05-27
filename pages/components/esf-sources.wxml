@@ -2,7 +2,7 @@
   <view class="esf-sources">
     <block wx:for="{{esfSources}}" wx:for-item="source" wx:key="*this">
       <navigator open-type="{{openType || 'navigate'}}" class="source" url="/pages/esf/detail?houseId={{source.houseId}}&agentId={{source.agentId || agentId}}&sourceType={{sourceType || ''}}">
-        <image mode="aspectFill" src="{{source.houseImgUrl}}" class="thumbnail"></image>
+        <image mode="aspectFill" src="{{source.houseImgUrl}}?x-oss-process=image/resize,w_260" class="thumbnail"></image>
         <view class="param title">{{source.houseTitle}}</view>
         <view class="param fit-height">
           <text>{{source.houseChild}} {{source.areaStr}}</text>
