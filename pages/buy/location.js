@@ -18,8 +18,8 @@ Page({
   onShow: function (options) {
     let that = this
     let matchIndexArray = []
-    
-    let areaInfo=wx.getStorageSync('cityInfo');
+
+    let areaInfo = wx.getStorageSync('cityInfo');
 
     this.convertData(areaInfo)
 
@@ -30,7 +30,7 @@ Page({
   convertData: function (data) {
     let that = this
     let superAreaObject = {}
-    let areaList = [],blockList = [],index = 0
+    let areaList = [], blockList = [], index = 0
 
     data.forEach(oData => {
       let oArea = {}
@@ -88,7 +88,7 @@ Page({
   },
   getMatchIndexArray: function () {
     let that = this
-    let matchIndexArray = [],allCheckedAreas = []
+    let matchIndexArray = [], allCheckedAreas = []
     let selectedBlockList = wx.getStorageSync('buy_location')
     let superAreaObject = this.data.superAreaObject
 
@@ -99,7 +99,7 @@ Page({
     this.data.blockList.forEach(oBlock1 => {
       selectedBlockList.forEach(oBlock2 => {
         if (oBlock1.id == oBlock2.townId) {
-          if (!matchIndexArray.includes(oBlock1.pIndex)) {
+          if (matchIndexArray.indexOf(oBlock1.pIndex) < 0) {
             matchIndexArray.push(oBlock1.pIndex)
           }
           oBlock1.selected = true
@@ -135,12 +135,12 @@ Page({
           }
         })
       })
-    }else {
+    } else {
       that.data.currentArea = this.data.areaList[0]
       this.data.areaList[0].active = true
     }
 
-    this.setData({'areaList': this.data.areaList})
+    this.setData({ 'areaList': this.data.areaList })
   },
   setBlock: function () {
     let that = this
@@ -157,10 +157,10 @@ Page({
       if (oBlock1.id != '0' /*不限*/) {
         if (oBlock1.pid == that.data.currentArea.id) {
           oBlock1.hidden = false
-        }else {
+        } else {
           oBlock1.hidden = true
         }
-      }else {
+      } else {
         oBlock1.hidden = false
       }
     })
@@ -170,14 +170,14 @@ Page({
       filtered.forEach(item => {
         item.selected = false
       })
-    }else {
+    } else {
       unlimitedBlock.selected = false
     }
 
-    this.setData({blockList: this.data.blockList})
+    this.setData({ blockList: this.data.blockList })
   },
   chooseBlock: function (e) {
-    let count = 0,filtered = []
+    let count = 0, filtered = []
     let currentArea = this.data.currentArea
     let currentBlock = this.data.blockList[e.currentTarget.dataset.index]
     let unlimitedBlock = this.data.blockList[0]
@@ -196,17 +196,17 @@ Page({
           })
           unlimitedBlock.selected = true
           this.data.areaList[currentArea.index].allChecked = true
-        }else {
+        } else {
           unlimitedBlock.selected = false
           this.data.areaList[currentArea.index].allChecked = false
         }
         this.data.areaList[currentArea.index].selected = true
-      }else {
+      } else {
         if (filtered.length == 0) {
           this.data.areaList[currentArea.index].selected = false
         }
       }
-    }else {
+    } else {
       if (currentBlock.selected) {
         this.data.blockList.forEach(item => {
           if (currentArea.id == item.pid) {
@@ -215,14 +215,14 @@ Page({
         })
         this.data.areaList[currentArea.index].allChecked = true
         this.data.areaList[currentArea.index].selected = true
-      }else {
+      } else {
         this.data.areaList[currentArea.index].allChecked = false
         this.data.areaList[currentArea.index].selected = false
       }
     }
 
-    this.setData({'areaList': this.data.areaList})
-    this.setData({'blockList': this.data.blockList})
+    this.setData({ 'areaList': this.data.areaList })
+    this.setData({ 'blockList': this.data.blockList })
   },
   chooseArea: function (e) {
     let that = this
@@ -233,12 +233,12 @@ Page({
       if (item.index == index) {
         that.data.currentArea = item
         item.active = true
-      }else {
+      } else {
         item.active = false
       }
     })
 
-    this.setData({'areaList': this.data.areaList})
+    this.setData({ 'areaList': this.data.areaList })
 
     this.setBlock()
   },
@@ -250,7 +250,7 @@ Page({
     let allCheckedAreas = areaList.map(item => {
       if (item.allChecked) {
         return item.id
-      }else {
+      } else {
         return ''
       }
     })
@@ -267,9 +267,9 @@ Page({
     })
 
     blockList.forEach(oBlock => {
-      if (!allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
+      if (allCheckedAreas.indexOf(oBlock.pid) < 0 && oBlock.selected) {
         towns.push({
-          townId:oBlock.id,
+          townId: oBlock.id,
           id: oBlock.id,
           townName: oBlock.name
         })
@@ -283,6 +283,6 @@ Page({
 
     wx.setStorageSync('buy_location', towns)
 
-    wx.navigateBack({url: '/pages/buy/index'})
+    wx.navigateBack({ url: '/pages/buy/index' })
   }
 })
