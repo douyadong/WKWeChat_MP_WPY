@@ -7,6 +7,7 @@
 import request from "../../utils/request" ;
 import $ from "../../utils/extend" ;
 import detailFoot from "../components/detailfoot" ;
+let bigData = require('../../utils/bigData');
 var app = getApp() ;
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 用来标识页面当前是否正在下拉加载数据
@@ -74,6 +75,13 @@ let params = $.extend(true , {} , detailFoot , {
                  }) ;              
                 //最后赋予模板变量
                 result.agentInfo = result.simpleAgentDetail ;
+                if(result.agentInfo){
+                  result.agentInfo.imgEventName = 0;//todo::还没提供
+                  result.agentInfo.phoneEventName = 1002001;
+                  result.agentInfo.wechatEventName = 1002007;
+                  result.agentInfo.agentId = _.data.pageParams.agentId;                  
+
+                }
                 _.setData(result) ;
                 
             }
@@ -89,6 +97,8 @@ let params = $.extend(true , {} , detailFoot , {
     点击"我来评价"先判断是否登录来决定跳转到哪个页面
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/    
     gotoRate : function(event){
+        this.bigData(event);
+
         let url = event.currentTarget.dataset.url;
         if(app.isLogin(true, url)){
           wx.redirectTo({
@@ -276,6 +286,11 @@ let params = $.extend(true , {} , detailFoot , {
         return {
             "title" : this.data.shareTitle
         }
+    },
+    /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    埋点    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    bigData: function (e) {
+      bigData.send(e.currentTarget.dataset);
     }
 }) ;
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------

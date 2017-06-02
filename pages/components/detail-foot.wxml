@@ -1,6 +1,6 @@
 <template name="detail-foot">
 <view class="detail-foot">
-    <view class="agent" bindtap="c_df_agentClick">
+    <view class="agent" bindtap="c_df_agentClick" data-event-name="{{imgEventName}}" data-agent_id="{{agentId}}" data-new_house_id="{{newHouseId}}" data-house_id="{{houseId}}" data-boutique="{{boutique}}">
         <view class="pic">
             <image class="img" mode="aspectFill" src="{{headRoundImgUrl}}?x-oss-process=image/resize,w_120"></image>
             <view class="tag"></view>
@@ -11,11 +11,11 @@
         </view>
     </view>
     <view class="agentContact">
-        <view class="tel {{ agentWChatId ? '' : 'single'}}" bindtap="c_df_phoneClick">
+        <view class="tel {{ agentWChatId ? '' : 'single'}}" bindtap="c_df_phoneClick" data-event-name="{{phoneEventName}}" data-agent_id="{{agentId}}" data-new_house_id="{{newHouseId}}" data-house_id="{{houseId}}" data-boutique="{{boutique}}">
             <view class="iconfont icon-telkf"></view>
             电话咨询
         </view>
-        <view class="wechat" bindtap="c_df_wechatClick" wx:if="{{agentWChatId}}">
+        <view class="wechat" bindtap="c_df_wechatClick" wx:if="{{agentWChatId}}" data-event-name="{{wechatEventName}}" data-agent_id="{{agentId}}" data-new_house_id="{{newHouseId}}" data-house_id="{{houseId}}" data-boutique="{{boutique}}">
             <view class="iconfont icon-wxkf"></view>
             添加微信
         </view>

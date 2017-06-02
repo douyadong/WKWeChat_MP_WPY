@@ -7,18 +7,18 @@
           <text class="down"></text>
       </navigator>
       <view class="searchBox">
-        <navigator open-type="navigate" url="/pages/screen/index" class="search">
+        <navigator open-type="navigate" url="/pages/screen/index" class="search" bindtap="bigData" data-event-name="1026026">
             <text class="searchText">{{searchText}}</text>
         </navigator>
       </view>
     </view>
   </view>
   <view class="buySell">
-      <view class="list"  bindtap="goBuy">
+      <view class="list"  bindtap="goBuy" data-event-name="1026100">
         <view class="circular buyCircular"></view>
         <view class="text">我要买房</view>
       </view>
-      <navigator open-type="navigate" class="list" url="/pages/sell/index">
+      <navigator open-type="navigate" class="list" url="/pages/sell/index" data-event-name="1026005" bindtap="bigData">
         <view class="circular sellCircular"></view>
         <view class="text">我要卖房</view>
       </navigator>

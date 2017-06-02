@@ -2,6 +2,7 @@
 
 const request = require('../../utils/request')
 const appInstance = getApp()
+const bigData = require('../../utils/bigData');
 
 Page({
   data: {
@@ -235,6 +236,7 @@ Page({
     }
   },
   handleRedirect: function (e) {
+    this.bigData(e);
     wx.redirectTo({url: e.currentTarget.dataset.url})
   },
   backToHomePage: function () {
@@ -262,8 +264,12 @@ Page({
     })
   },
   call: function (e) {
+    this.bigData(e);
     wx.makePhoneCall({
       phoneNumber: e.currentTarget.dataset.text
     })
+  },
+  bigData(event){
+    bigData.send(event.currentTarget.dataset);
   }
 })

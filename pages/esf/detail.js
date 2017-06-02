@@ -5,6 +5,7 @@ var houseComment = require('../components/house-comment.js');
 var swiper = require('../components/swiper.js');
 var request = require('../../utils/request.js');
 var df = require('../components/detailfoot.js');
+var bigData = require('../../utils/bigData');
 var app = getApp();
 var params = $.extend(true, {}, {
     data: {
@@ -106,6 +107,12 @@ var params = $.extend(true, {}, {
                 if (a) { //经纪人信息
                     newData.agentInfo = a;
                     newData.agentInfo.isShowWXCode = false;
+                    newData.agentInfo.imgEventName = 1067030;
+                    newData.agentInfo.phoneEventName = 1067032;
+                    newData.agentInfo.wechatEventName = 1067031;
+                    newData.agentInfo.agentId = that.data.agentId;
+                    newData.agentInfo.houseId = that.data.houseId;
+                    newData.agentInfo.boutique = h.isTopHouse > 1?1:0;
                 }
 
                 that.setData(newData);
@@ -128,6 +135,9 @@ var params = $.extend(true, {}, {
     },
     onShow:function(){
       this.getDetail();
+    },
+    bigData:function(e){
+      bigData.send(e.currentTarget.dataset);
     }
 }, houseComment, swiper, df);
 

@@ -207,23 +207,24 @@ const collections = {
 const deviceId = wx.getStorageSync("device");
 
 module.exports = {
-  send:function(eventName,params){
+  send:function(params){
     try{
+      let eventName = params.eventName;
       let eventConfig = collections[eventName];
       let copyConfig = $.extend(true,{},eventConfig);
       //解析页面参数
       if(copyConfig.pageParams && copyConfig.pageParams.length){
-        copyconfig.pageParam = [];
+        copyConfig.pageParam = [];
         copyConfig.pageParams.forEach(function(item,index){
-          copyConfig.pageParam[item] = params[item];
+          copyConfig.pageParam.push({ key: item, value: params[item]});
         });
       }
 
       //解析事件参数
       if (copyConfig.eventParams && copyConfig.eventParams.length) {
-        copyconfig.eventParam = [];
+        copyConfig.eventParam = [];
         copyConfig.eventParams.forEach(function (item, index) {
-          copyConfig.eventParam[item] = params[item];
+          copyConfig.eventParam.push({ key: item, value: params[item] });
         });
       }
 
@@ -233,6 +234,7 @@ module.exports = {
 
       copyConfig.deviceId = deviceId;
 
+      console.log(copyConfig);
       //发送请求
       request.fetch({
         module:"bigData",

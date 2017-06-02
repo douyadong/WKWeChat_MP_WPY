@@ -9,7 +9,9 @@ import $ from "../../utils/extend" ;
 import houseComment from "../components/house-comment" ;
 import swiper from "../components/swiper" ;
 import detailFoot from "../components/detailfoot" ;
+import bigData from "../../utils/bigData";
 let app = getApp() ;
+
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 定义页面初始化参数
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -75,6 +77,13 @@ let params = $.extend(true, {}, {
                 _.setData({ "agentId" : _.data.pageParams.agentId }) ;  //swiper组件必须要传agentId
                 //最后赋予模板变量
                 result.agentInfo = result.agent ;
+                if(result.agentInfo){
+                  result.agentInfo.imgEventName = 1045071;
+                  result.agentInfo.phoneEventName = 1045027;
+                  result.agentInfo.wechatEventName = 1045029;
+                  result.agentInfo.agentId = _.data.pageParams.agentId;
+                  result.agentInfo.newHouseId = _.data.pageParams.subEstateId;
+                }
                 _.setData(result) ;
             },
             fail: function() {
@@ -145,6 +154,11 @@ let params = $.extend(true, {}, {
         return {
             title : "买房卖房，找好经纪人就对了！"
         }
+    },
+    /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    埋点    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    bigData:function(e){
+      bigData.send(e.currentTarget.dataset);
     } 
 }, houseComment, swiper, detailFoot) ;
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------

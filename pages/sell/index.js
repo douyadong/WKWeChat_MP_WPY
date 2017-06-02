@@ -1,8 +1,11 @@
 //index.js
 var util = require('../../utils/util.js')
+var bigData = require('../../utils/bigData');
 Page({
     data: {},
-    call: function() {
+    call: function(e) {
+        this.bigData(e);
+
         wx.makePhoneCall({
             phoneNumber: '400-821-5365' //仅为示例，并非真实的电话号码
         })
@@ -14,5 +17,8 @@ Page({
     },
     onLoad: function() {
 
+    },
+    bigData:function(event){
+      bigData.send(event.currentTarget.dataset);
     }
 })
