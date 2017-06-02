@@ -9,7 +9,7 @@
         <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
             <navigator url="/pages/agent/detail?agentId={{list.row.agentId}}" class="agentList {{agentList.length-1 == index ? 'lastList':''}}">
                 <view class="portrait">
-                    <image src="{{list.row.portrait}}" class="portraitImg"></image>
+                    <image src="{{list.row.portrait}}?x-oss-process=image/resize,w_120" class="portraitImg"></image>
                 </view>
                 <view class="details">
                     <view class="nameAndVip">

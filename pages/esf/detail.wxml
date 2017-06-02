@@ -151,7 +151,7 @@
             <view class="item">
                 <icon class="arrow iconfont icon-arrow-r" />
                 <view class="item-hd">
-                    <image src="{{estateImgUrl}}"></image>
+                    <image src="{{estateImgUrl}}?x-oss-process=image/resize,w_120"></image>
                 </view>
                 <view class="item-bd">
                     <view class="caption">{{estateName}}</view>

@@ -1,53 +1,4 @@
 var request = require('../../utils/request.js');
-/**
- * 根据经纬度获取地理定位
- */
-var getGeography = function(fn) {
-    let defineGeography = {
-        "cityId": 43,
-        "cityName": "上海市",
-        "districtId": 45,
-        "townId": null,
-        "cityPinyin":"shanghaishi"
-    }
-      //地理定位
-      wx.getLocation({
-        type: 'wgs84',
-        success: function(res) {//地理定位成功，获取经纬度
-          var latitude = res.latitude
-          var longitude = res.longitude
-          var speed = res.speed
-          var accuracy = res.accuracy
-          //根据精度纬度，获取当前所在的城市信息
-          request.fetch({
-              mock:!true,
-              module:'index',
-              action:'findCityInfoByLonAndLat',
-              data:{
-                lon:longitude,
-                lat:latitude
-              },
-              success:function(data){//获取城市信息成功
-                if(data.status.toString() == '1' && data.data != null){
-                    wx.setStorage({
-                      key:"location",
-                      data:data.data
-                    });
-                    fn(data.data);
-                }else{
-                    fn(defineGeography);
-                }
-              },
-              fail:function() {//获取城市信息失败
-                  fn(defineGeography);
-              }
-          });
-        },
-        fail:function() {//用户取消地理定位
-            fn(defineGeography);
-        }
-      })
-}
 let main = {
   data: {
       showCityIndex:0,
@@ -92,19 +43,13 @@ let main = {
   setLocationCity(){
     //读取地理定位，判断是国内还是国外，设置不同的地理定位
     let _this =this;
-    let location = wx.getStorageSync('location');
-    if(location == ''){
-      getGeography(function(data){
-          wx.setStorageSync("location",data);
-          _this.setData({
-            locationCity:data,
-          });
-      });
-    }else{
-        _this.setData({
-          locationCity:wx.getStorageSync('location'),
-        });
+    let locationCity = wx.getStorageSync('location');
+    if(locationCity == ''){
+        locationCity = wx.getStorageSync('geography');
     }
+    _this.setData({
+        locationCity:locationCity
+    });
   },
   onLoad(){
     this.getCity();

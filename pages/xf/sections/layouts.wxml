@@ -7,7 +7,7 @@
       <view style="width:{{newHouseDetail.houseTypeImages.length * 300}}rpx">
         <view class="layout" wx:for="{{newHouseDetail.houseTypeImages}}" wx:key="*this" wx:for-item="layout">
           <navigator url="/pages/xf/layouts?subEstateId={{newHouseDetail.id}}&current={{index}}">
-            <image src="{{layout.thumbnail}}"></image>
+            <image src="{{layout.thumbnail}}?x-oss-process=image/resize,w_248"></image>
             <view>
               <text class="layout-name">{{layout.name}}</text>
               <text class="money">{{layout.price}}万起</text>

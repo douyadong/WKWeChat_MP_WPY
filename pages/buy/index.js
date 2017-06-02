@@ -59,12 +59,12 @@ Page({
       min: 0,
       max: 0
     },
-      {
-        id: '-1',
-        text: '请选择总价范围',
-        min: -1,
-        max: -1
-      }],
+    {
+      id: '-1',
+      text: '请选择总价范围',
+      min: -1,
+      max: -1
+    }],
     houseTypes: [{
       id: '1',
       text: '一室'
@@ -84,10 +84,10 @@ Page({
       id: '0',
       text: '不限'
     },
-      {
-        id: '',
-        text: '请选择户型'
-      }],
+    {
+      id: '',
+      text: '请选择户型'
+    }],
     houseFeatures: [{
       id: 10,
       type: 'Subway',
@@ -153,7 +153,7 @@ Page({
       that.setPrice(-1, -1)
       that.setHouseType('')
       that.setLocation([])
-    }else {
+    } else {
       // get data
       this.getData(function (res) {
         let data = res.data
@@ -170,7 +170,7 @@ Page({
 
           // 房源特色信息
           that.setHouseFeatures(data.cusHouseFeatures)
-        }else {
+        } else {
           that.setPrice(-1, -1)
           that.setHouseType('')
           that.setLocation([])
@@ -201,10 +201,10 @@ Page({
       this.setLocation(selectedBlockList)
     }
   },
-  onHide: function () {},
+  onHide: function () { },
   handleRedirect: function (e) {
     this.data.loaded = false
-    wx.navigateTo({url: e.currentTarget.dataset.url})
+    wx.navigateTo({ url: e.currentTarget.dataset.url })
   },
   setPrice: function (startPrice, endPrice) {
     let that = this
@@ -213,7 +213,7 @@ Page({
       if (item.min == startPrice && item.max == endPrice) {
         this.data.currentPrice = item
         wx.setStorageSync('buy_price', item)
-        that.setData({'currentPrice': that.data.currentPrice})
+        that.setData({ 'currentPrice': that.data.currentPrice })
       }
     })
   },
@@ -224,13 +224,13 @@ Page({
       if (item.id == bedRoomSum.toString()) {
         that.data.currentHouseType = item
         wx.setStorageSync('buy_houseType', item.id)
-        that.setData({'currentHouseType': that.data.currentHouseType})
+        that.setData({ 'currentHouseType': that.data.currentHouseType })
       }
     })
   },
   setLocation: function (townList) {
     let that = this
-    let locationStr,location = []
+    let locationStr, location = []
 
     let areaInfo = wx.getStorageSync('cityInfo')
 
@@ -254,7 +254,7 @@ Page({
       })
 
       this.data.blockList.forEach(oBlock => {
-        if (!that.data.allCheckedAreas.includes(oBlock.pid) && oBlock.selected) {
+        if (that.data.allCheckedAreas.indexOf(oBlock.pid) < 0 && oBlock.selected) {
           location.push(oBlock.name)
         }
       })
@@ -268,7 +268,7 @@ Page({
         locationStr += ' ...'
       }
 
-      this.setData({'currentLocationStr': locationStr })
+      this.setData({ 'currentLocationStr': locationStr })
     }
 
     wx.setStorageSync('buy_location', townList)
@@ -284,12 +284,12 @@ Page({
       })
     })
 
-    this.setData({'houseFeatures': this.data.houseFeatures})
+    this.setData({ 'houseFeatures': this.data.houseFeatures })
   },
   convertData: function (data) {
     let that = this
     let superAreaObject = {}
-    let areaList = [],blockList = [],index = 0
+    let areaList = [], blockList = [], index = 0
 
     data.forEach(oData => {
       let oArea = {}
@@ -340,7 +340,7 @@ Page({
     let tmpFeature = this.data.houseFeatures[event.target.dataset.index]
     tmpFeature.selected = !tmpFeature.selected
 
-    this.setData({'houseFeatures': this.data.houseFeatures})
+    this.setData({ 'houseFeatures': this.data.houseFeatures })
   },
   getData: function (callback) {
     let cityId = wx.getStorageSync('geography').cityId
@@ -360,8 +360,8 @@ Page({
   },
   submit: function () {
     let that = this
-    let bedRoomSum,sellPriceStart,sellPriceEnd,townIdStr
-    let houseFeatureLists = [],townIdList = [],districtIdList = []
+    let bedRoomSum, sellPriceStart, sellPriceEnd, townIdStr
+    let houseFeatureLists = [], townIdList = [], districtIdList = []
     let requestData = {}
 
     if (that.data.currentPrice.min == '-1') {
@@ -380,7 +380,7 @@ Page({
     }
 
     // 判断是否登录
-    if(!appInstance.isLogin(true, '', 'back')){
+    if (!appInstance.isLogin(true, '', 'back')) {
       return;
     }
 
@@ -396,7 +396,7 @@ Page({
     }
 
     this.data.blockList.forEach(item => {
-      if (!that.data.allCheckedAreas.includes(item.pid) && item.selected) {
+      if (that.data.allCheckedAreas.indexOf(item.pid) < 0 && item.selected) {
         townIdList.push(item.id)
       }
     })
@@ -427,7 +427,7 @@ Page({
           wx.redirectTo({
             url: '/pages/buy/recommend'
           })
-        }else {
+        } else {
           wx.redirectTo({
             url: '/pages/buy/success'
           })

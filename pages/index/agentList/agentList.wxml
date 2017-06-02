@@ -1,7 +1,7 @@
 <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
     <navigator open-type="navigate" url="/pages/agent/detail?agentId={{list.agentId}}" class="agentList">
         <view class="portrait">
-            <image mode="aspectFill" src="{{list.agentHeadImgUrl}}"/>
+            <image mode="aspectFill" src="{{list.agentHeadImgUrl}}?x-oss-process=image/resize,w_120"/>
             <block wx:if="{{list.isWellAgent == 1}}">
                 <view class="tag"></view>
             </block>

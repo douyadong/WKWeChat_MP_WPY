@@ -13,52 +13,56 @@ if(wx.getStorageSync('device') == ''){
  * 根据经纬度获取地理定位
  */
 var getGeography = function(fu) {
-    let defineGeography = {
-        "cityId": 43,
-        "cityName": "上海市",
-        "districtId": 45,
-        "townId": null,
-        "cityPinyin":"shanghaishi"
-    }
-    return new Promise(function (resolve, reject) {  
-      //地理定位
-      wx.getLocation({
-        type: 'wgs84',
-        success: function(res) {//地理定位成功，获取经纬度
-          var latitude = res.latitude
-          var longitude = res.longitude
-          var speed = res.speed
-          var accuracy = res.accuracy
-          //根据精度纬度，获取当前所在的城市信息
-          request.fetch({
-              mock:!true,
-              module:'index',
-              action:'findCityInfoByLonAndLat',
-              data:{
-                lon:longitude,
-                lat:latitude
-              },
-              success:function(data){//获取城市信息成功
-                if(data.status.toString() == '1' && data.data != null){
-                    wx.setStorage({
-                      key:"location",
-                      data:data.data
-                    });
-                    fu(data.data);
-                }else{
+    var geography = wx.getStorageSync('geography');
+    if(geography == ''){
+        let defineGeography = {
+            "cityId": 43,
+            "cityName": "上海市",
+            "districtId": 45,
+            "townId": null,
+            "cityPinyin":"shanghaishi"
+        }
+        //地理定位
+        wx.getLocation({
+          type: 'wgs84',
+          success: function(res) {//地理定位成功，获取经纬度
+            var latitude = res.latitude
+            var longitude = res.longitude
+            var speed = res.speed
+            var accuracy = res.accuracy
+            //根据精度纬度，获取当前所在的城市信息
+            request.fetch({
+                mock:!true,
+                module:'index',
+                action:'findCityInfoByLonAndLat',
+                data:{
+                  lon:longitude,
+                  lat:latitude
+                },
+                success:function(data){//获取城市信息成功
+                  if(data.status.toString() == '1' && data.data != null){
+                      wx.setStorageSync('location', data.data);//本地城市
+                      wx.setStorageSync('geography', data.data);
+                      fu(data.data);
+                  }else{
+                      wx.setStorageSync('geography', defineGeography);
+                      fu(defineGeography);
+                  }
+                },
+                fail:function() {//获取城市信息失败
+                    wx.setStorageSync('geography', defineGeography);
                     fu(defineGeography);
                 }
-              },
-              fail:function() {//获取城市信息失败
-                  fu(defineGeography);
-              }
-          });
-        },
-        fail:function() {//用户取消地理定位
-            fu(defineGeography);
-        }
-      })
-  })
+            });
+          },
+          fail:function() {//用户取消地理定位
+              wx.setStorageSync('geography', defineGeography);
+              fu(defineGeography);
+          }
+        })
+    }else{
+        fu(wx.getStorageSync('geography'));
+    }
 }
 /**
  * 根据城市id获取详细信息
@@ -132,7 +136,7 @@ var getOpenId = function (fn) {
         code: wx.getStorageSync('code')
       },
       success: function (data) {
-        if (data.status.toString() == '1' && data.data != '') {
+        if (data.status.toString() == '1' && data.data != null && data.data != '') {
             wx.setStorageSync('openid',data.data);
             fn(data.data)
         }else {
@@ -164,7 +168,6 @@ var getUserAuthorizedInfo = function(fu) {
                   fu(res);
               },
               fail: function (msg) {
-                  console.log("获取用户授权信息失败");
                   fu("fail");
               }
           })
@@ -289,20 +292,16 @@ let main = {
       var userAuthorizedInfo = wx.getStorageSync('userAuthorizedInfo');
       if(userAuthorizedInfo == ''){//没有授权过
           getUserAuthorizedInfo(function(userAuthorizedInfo){
-              if(userAuthorizedInfo == "fail"){
-                fu();
-                return
-              }
-              fu();
               //根据code，获取openid
               getOpenId(function(openid){
-                  if(openid != 'fail'){
+                  if(openid != 'fail' && userAuthorizedInfo != "fail"){
                          //添加微信用户到本地
                          let userInfo = userAuthorizedInfo.userInfo;
                          addOpenUser(openid, userInfo.avatarUrl, userInfo.city, userInfo.country, userInfo.gender, userInfo.language, userInfo.nickName, userInfo.province);
                          isBind(openid,function(){});
                   }
               });
+              fu();
           });
       }else{//授权过
           fu();
@@ -320,11 +319,6 @@ let main = {
                     //更新地理信息状态
                     _this.setData({
                         geography:data
-                    });
-                    //把成功后的地理位置信息写入本地
-                    wx.setStorage({
-                        key:"geography",
-                        data:data
                     });
                     //根据定位的地理信息，获取区域信息
                     _this.getCityAreasInfo(_this.data.geography.cityId);
@@ -362,10 +356,7 @@ let main = {
                         geography:data
                     });
                     //把成功后的地理位置信息写入本地
-                    wx.setStorage({
-                    key:"geography",
-                    data:data
-                    });
+                    wx.setStorageSync('geography',data);
                     //根据定位的地理信息，获取区域信息
                     _this.getCityAreasInfo(_this.data.geography.cityId);
                     //设置区域
