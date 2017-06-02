@@ -73,6 +73,9 @@ const url = {
     "layouts" : "/wxmpNewHouseDetail/getHouseTypeDetail.rest" ,
     "promotions" : "/wxmpNewHouseDetail/getNewHouseActivityInfo.rest" ,
     "poster-preview" : "/wxmpNewHouseDetail/getMagazineDetail.rest"
+  },
+  "bigData":{
+    "bigData":"/buriedPoint/sendData.rest"
   }
 }
 
