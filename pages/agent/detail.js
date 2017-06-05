@@ -76,7 +76,7 @@ let params = $.extend(true , {} , detailFoot , {
                 //最后赋予模板变量
                 result.agentInfo = result.simpleAgentDetail ;
                 if(result.agentInfo){
-                  result.agentInfo.imgEventName = 0;//todo::还没提供
+                  result.agentInfo.imgEventName = 1002021;
                   result.agentInfo.phoneEventName = 1002001;
                   result.agentInfo.wechatEventName = 1002007;
                   result.agentInfo.agentId = _.data.pageParams.agentId;                  
