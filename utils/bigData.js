@@ -234,7 +234,7 @@ module.exports = {
 
       copyConfig.deviceId = deviceId;
 
-      console.log(JSON.stringify(copyConfig));
+      //console.log(JSON.stringify(copyConfig));
       //发送请求
       request.fetch({
         module:"bigData",
@@ -245,8 +245,8 @@ module.exports = {
 
         },
         fail:function(res){
-          console.log('调用埋点接口失败');
-          console.log(res);
+          //console.log('调用埋点接口失败');
+          //console.log(res);
         }
       });
     }catch(ex){
