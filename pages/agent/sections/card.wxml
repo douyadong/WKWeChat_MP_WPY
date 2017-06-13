@@ -1,9 +1,10 @@
 <view class="panel card">
+  <image class="agentQRCode" src="{{QRUrl}}"></image>
   <view class="panel-bd">
     <view class="row">
       <view class="row-hd portrait-container">
         <view class="sprite sprite-jingu" wx:if="{{simpleAgentDetail.isWellAgent}}"></view>
-        <image mode="aspectFill" src="{{simpleAgentDetail.headRoundImgUrl}}?x-oss-process=image/resize,w_120" class="head-portrait"></image>
+        <image bindtap="saveAgentQRCode" data-phone="{{simpleAgentDetail.headRoundImgUrl}}" mode="aspectFill" src="{{simpleAgentDetail.headRoundImgUrl}}?x-oss-process=image/resize,w_120" class="head-portrait"></image>
       </view>
       <view class="row-bd">
         <text class="agent-name">{{simpleAgentDetail.agentName}}</text>
@@ -22,7 +23,7 @@
     </view>
     <view class="row tel">
       <view class="row-hd">电话：</view>
-      <view class="row-bd"><text class="phone">{{simpleAgentDetail.agentMobileDisplay}}</text></view>
+      <view class="row-bd"><text class="phone" bindtap="callAgent" data-phone="{{simpleAgentDetail.agentMobileDisplay}}">{{simpleAgentDetail.agentMobileDisplay}}</text></view>
     </view>  
     <view class="row" wx:if="{{simpleAgentDetail.agentBelongToCompanyName}}">
       <view class="row-hd">公司：</view>
