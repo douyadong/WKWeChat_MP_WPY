@@ -235,6 +235,8 @@ module.exports = {
   },
   //点击右边板块
   plateList(event){
+    this.bigData(event);
+
     let _this = this;
     let id = parseInt(event.target.id);//当前点击id
     let districtAndTown = '';
@@ -278,6 +280,7 @@ module.exports = {
   },
   //点击综合排序
   tapSort(event){
+    this.bigData(event);
     let _this = this;
     _this.setData({
          sortActionId:parseInt(event.currentTarget.dataset.index),//排序的点击id
@@ -308,6 +311,7 @@ module.exports = {
   },
   //点击筛选更多
   tapMore(event){
+    this.bigData(event);
     let _this = this;
     _this.setData({
         moreActionId:parseInt(event.currentTarget.dataset.index),//设置当前点击高亮

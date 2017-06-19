@@ -5,6 +5,7 @@
 
 const request = require('../../utils/request')
 const appInstance = getApp()
+const bigData = require('../../utils/bigData');
 
 Page({
   data: {
@@ -358,7 +359,9 @@ Page({
       }
     })
   },
-  submit: function () {
+  submit: function (event) {
+    this.bigData(event);
+
     let that = this
     let bedRoomSum, sellPriceStart, sellPriceEnd, townIdStr
     let houseFeatureLists = [], townIdList = [], districtIdList = []
@@ -440,5 +443,8 @@ Page({
       'title': '买房卖房，找好经纪人就对了！',
       'path': '/pages/buy/index'
     }
+  },
+  bigData:function(event){
+    bigData.send(event.currentTarget.dataset);
   }
 })

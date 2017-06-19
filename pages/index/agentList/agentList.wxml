@@ -1,5 +1,5 @@
 <block wx:for="{{agentList}}" wx:for-item="list" wx:for-index="index" wx:key="index"> 
-    <navigator open-type="navigate" url="/pages/agent/detail?agentId={{list.agentId}}" class="agentList">
+    <navigator open-type="navigate" url="/pages/agent/detail?agentId={{list.agentId}}" class="agentList" bindtap="bigData" data-event-name="1026093" data-event-agent_id="{{list.agentId}}">
         <view class="portrait">
             <image mode="aspectFill" src="{{list.agentHeadImgUrl}}?x-oss-process=image/resize,w_120"/>
         </view>

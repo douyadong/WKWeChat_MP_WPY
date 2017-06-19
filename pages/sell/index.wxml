@@ -3,7 +3,7 @@
     <image src="http://img.wkzf.com/ddb77f35db3e4f9c964f3dfd56ea0a5d" mode="widthFix" ></image>
 </view>
 <view class="lr-padding">
-    <view class="button blue" bindtap="call">
+    <view class="button blue" bindtap="call" data-event-name="1132001">
         <icon class="iconfont icon-tel"></icon>
         400-821-5365</view>
      <image src="http://img.wkzf.com/4c484128cb7f414b8069bd897127e350" mode="widthFix"></image>

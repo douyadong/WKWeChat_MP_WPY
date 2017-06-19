@@ -94,63 +94,83 @@ page{
     //买卖
     .buySell{
         width: 100%;
-        height: 174rpx;
+        height: 200rpx;
         background-color: #fff;
-        position: relative;
-        display: -webkit-box;
+        padding: 30rpx;
         .list{
-            height: 100%;
-            -webkit-box-flex: 1;
-            overflow: hidden;
-            position: relative;
+            overflow: hidden;            
+            float:left;            
+            width:330rpx;
+            padding-top: 60rpx;
+            padding-bottom: 50rpx;
+
+            &.buy{
+                background-image: linear-gradient(-215deg, #DFFAFF 0%, #B4E1F8 100%);
+                box-shadow: 0 2rpx 8rpx 0 rgba(0,0,0,0.10);
+            }
+
+            &.sell{
+                background-image: linear-gradient(-212deg, #FFE6BA 0%, #FFCDBA 100%);
+                box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+            }
+
             //圆
             .circular{
-                width: 95rpx;
-                height: 95rpx;
-                border-radius: 50%;
-                margin-top: 40rpx;
-                margin-left: 50rpx;
+                width: 80rpx;
+                height: 90rpx;
+                //border-radius: 50%;                
+                margin-left: 32rpx;
                 overflow: hidden;
                 float: left;
             }
             .buyCircular{
-                background-image: linear-gradient(-180deg,#1CC7F4 0,#3779D8 100%);
+                //background-image: linear-gradient(-180deg,#1CC7F4 0,#3779D8 100%);
             }
             .buyCircular:after{
                 content:" ";
                 display: block;
                 width: 100%;
                 height: 100%;
-                background-image: url('https://cdn.wkzf.com/wkwap_fe/img/source/index/oldhouse.png');
+                //background-image: url('https://cdn.wkzf.com/wkwap_fe/img/source/index/oldhouse.png');
+                background-image: url('http://img.wkzf.com/4b7cff5013e04084a05d9bf39d9910ae');
                 background-repeat: no-repeat;
                 background-position: center center;
-                background-size: 70%;
+                background-size: 110%;
             }
             .sellCircular{
-                background-image: linear-gradient(-180deg,#FFD500 0,#FF8342 100%);
+                //background-image: linear-gradient(-180deg,#FFD500 0,#FF8342 100%);
             }
             .sellCircular:after{
                 content:" ";
                 display: block;
                 width: 100%;
                 height: 100%;
-                background-image: url('https://cdn.wkzf.com/wkwap_fe/img/source/index/sellhouse.png');
+                //background-image: url('https://cdn.wkzf.com/wkwap_fe/img/source/index/sellhouse.png');
+                background-image: url('http://img.wkzf.com/c4166366adc54807b2f8936e16419871');
                 background-repeat: no-repeat;
                 background-position: center center;
-                background-size: 50%;
+                background-size: 110%;
             }
             //描述
             .text{
-                width: 150rpx;
-                height: 174rpx;
-                line-height: 174rpx;
-                font-size: 36rpx;
-                color: #4E4E4E;
+                width: 147rpx;
+                //height: 36rpx;                
+                font-size: 36rpx;                
                 letter-spacing: 0.24px;
                 float: left;
-                //margin-top:58rpx;
-                margin-left: 38rpx;
+                margin-top:12rpx;
+                margin-left: 34rpx;   
+                font-weight: 600;                             
 
+                &.buy{
+                    color: #2F69B4;                
+                    text-shadow: 2px 4px 8px #68B9E0;
+                }
+
+                &.sell{
+                    color: #C34223;
+                    text-shadow: 2px 4px 8px #FF9A6E;
+                }
             }
         }
     }

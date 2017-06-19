@@ -4,6 +4,7 @@ var request = require('../../utils/request.js');
 //筛选区域脚本
 let filterAgentList = require('./filterAgentList/filterAgentList.js')
 let util = require('../../utils/util.js')
+let bigData = require('../../utils/bigData');
 //写入一个唯一标识符
 if(wx.getStorageSync('device') == ''){
   wx.setStorageSync('device', util.guid());
@@ -427,6 +428,8 @@ let main = {
     }
   },
   goBuy(e) {
+    this.bigData(e);
+
     let url = e.currentTarget.dataset.url
 
     // 未登录跳转至 /pages/buy/index
@@ -471,6 +474,9 @@ let main = {
     wx.navigateTo({
       url: '/pages/city/index'
     })
+  },
+  bigData:function(e){
+    bigData.send(e.currentTarget.dataset);
   }
 }
 Page(_.extend(true,main, filterAgentList))

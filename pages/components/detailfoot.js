@@ -4,6 +4,7 @@ module.exports ={
 	data:{
 	} ,
 	c_df_agentClick:function(e){
+    this.bigData(e);
 		var _this = this,
 			scene = wx.getStorageSync('scene');
 		if(scene === (1007 || 1008 || 1011 || 1012 || 1047 || 1048) ){
@@ -15,11 +16,15 @@ module.exports ={
 		}
 	},
 	c_df_wechatClick:function(e){
+    this.bigData(e);
 		wx.navigateTo({
 	        url: '/pages/agent/qrcode?agentId='+this.data.agentInfo.agentId
       	})
 	},
-	c_df_phoneClick:function(){
+	c_df_phoneClick:function(e){
+    if(e){
+      this.bigData(e);
+    }
 		var _this = this,
 			agentInfo = this.data.agentInfo,			
 			requestData ={

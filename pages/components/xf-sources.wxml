@@ -1,7 +1,7 @@
 <template name="xf-sources">
   <view class="xf-sources">
     <block wx:for="{{xfSources}}" wx:key="*this" wx:for-item="source">
-    <navigator open-type="{{openType || 'navigate'}}" class="source" url="/pages/xf/detail?subEstateId={{source.id}}&agentId={{source.agentId}}">
+    <navigator open-type="{{openType || 'navigate'}}" class="source" url="/pages/xf/detail?subEstateId={{source.id}}&agentId={{source.agentId}}" bindtap="bigData" data-event-name="1002010" data-agent_id="{{source.agentId}}" data-new_house_id="{{source.id}}">
       <image mode="aspectFill" src="{{source.imageUrl}}?x-oss-process=image/resize,w_260" class="thumbnail"></image>
       <view class="param title">{{source.estateName}}</view>
       <view class="param fit-height">
