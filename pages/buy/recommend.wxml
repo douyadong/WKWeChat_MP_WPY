@@ -25,11 +25,11 @@
                 <view class="main">
                     <view class="img-box">
                         <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
-                        <view class="sprite sprite-jingu" wx:if="{{item.isWellAgent=='1'}}"></view>
                     </view>
                     <view class="content">
                         <view class="name-info">
                             <text class="name">{{item.agentName}}</text>
+                            <text class="good-agent" wx:if="{{item.isWellAgent=='1'}}">好</text>
                             <text class="company">{{item.agentBelongToCompanyName}}</text>
                         </view>
                         <view class="tips">
@@ -50,11 +50,11 @@
                     <view class="main">
                         <view class="img-box">
                             <image mode="aspectFill" src="{{item.headRoundImgUrl}}" class="head-portrait"></image>
-                            <view class="sprite sprite-jingu" wx:if="{{item.isWellAgent=='1'}}"></view>
                         </view>
                         <view class="content">
                             <view class="name-info">
                                 <text class="name">{{item.agentName}}</text>
+                                <text class="good-agent" wx:if="{{item.isWellAgent=='1'}}">好</text>
                                 <text class="company">{{item.agentBelongToCompanyName}}</text>
                             </view>
                             <view class="tips">

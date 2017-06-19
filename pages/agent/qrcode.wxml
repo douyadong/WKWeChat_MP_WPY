@@ -1,7 +1,9 @@
 <view class="dialog">
   <view><image src="{{agentWChartQRImgUrl}}"></image></view>
-  <text>长按识别二维码</text>
   <text bindtap="copyWechatId">微信号：{{agentWChatId}}</text>
-  <text class="memo">无法识别请搜索微信号码添加</text>
+  <text class="memo">若无法保存二维码请搜索微信号码添加</text>
   <view class="button blue" bindtap="saveAgentQRCode" data-url="{{agentWChartQRImgUrl}}">保存到相册</view>
 </view>
+<!--tips模板-->
+<import src="../components/tips.wxml"/>
+<template is="tips" data="{{tips}}" />

@@ -1,128 +1,143 @@
-.agentList{
+.agentList {
     width: 100%;
     height: 180rpx;
     background-color: #fff;
     border-bottom: 1px #E4E4E4 solid;
     position: relative;
-    .portrait{
+    .good-agent {
+        color: #cd8000;
+        background-color: #fbe69a;
+        width: 32rpx;
+        height: 32rpx;
+        line-height: 32rpx;
+        text-align: center;
+        font-size: 24rpx;
+        border-radius: 5rpx;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10rpx;
+    }
+    .portrait {
         width: 120rpx;
         height: 120rpx;
         position: absolute;
         margin-top: 30rpx;
         margin-left: 30rpx;
         overflow: hidden;
-        image{
+        image {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
         }
-        .tag{
-            position:absolute;
-            z-index:1;
-            bottom:-7rpx;
-            right:0rpx;
-            background-image:url(https://cdn.wkzf.com/wkwap_fe/img/sprite/agent/tag_small.png);
-            background-repeat:no-repeat;
-            background-size:100% auto;
-            width:66rpx;
-            height:32rpx;
+        .tag {
+            position: absolute;
+            z-index: 1;
+            bottom: -7rpx;
+            right: 0rpx;
+            background-image: url(https://cdn.wkzf.com/wkwap_fe/img/sprite/agent/tag_small.png);
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            width: 66rpx;
+            height: 32rpx;
         }
     }
-    .content{
+    .content {
         height: 100%;
         padding-left: 170rpx;
         position: relative;
-        .left{
+        .left {
             width: 390rpx;
             height: 100%;
             float: left;
             overflow: hidden;
-            .title{
-                width: 100%;
+            .info {
+                margin-top: 35rpx;
+            }
+            .title {
                 height: 40rpx;
                 line-height: 36rpx;
                 font-size: 36rpx;
                 color: #4E4E4E;
                 font-weight: bold;
-                text-overflow:ellipsis;
-                overflow:hidden;
-                white-space:nowrap;
-                margin-top: 35rpx;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                display: inline-block;
+                vertical-align: top;
             }
-            .company{
+            .company {
                 width: 100%;
                 height: 30rpx;
                 line-height: 28rpx;
                 font-size: 28rpx;
                 color: #4E4E4E;
-                text-overflow:ellipsis;
-                overflow:hidden;
-                white-space:nowrap;
-                margin-top:10rpx;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                margin-top: 10rpx;
             }
-            .bubbles{
+            .bubbles {
                 width: 100%;
                 height: 37rpx;
                 line-height: 30rpx;
-                text-overflow:ellipsis;
-                overflow:hidden;
-                white-space:nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
                 margin-top: 7rpx;
-                text{
+                text {
                     border-radius: 10rpx;
                     font-size: 24rpx;
                     padding: 15rpx 10rpx 15rpx 10rpx;
                 }
-                .bubbleList{
+                .bubbleList {
                     background: #F5F5F5;
                     margin-right: 10rpx;
                     color: #7C7C7C;
                     line-height: 40rpx;
                 }
             }
-            .businessCenter{
+            .businessCenter {
                 width: 100%;
                 height: 30rpx;
                 line-height: 28rpx;
                 font-size: 28rpx;
                 color: #4E4E4E;
-                text-overflow:ellipsis;
-                overflow:hidden;
-                white-space:nowrap;
-                margin-top:10rpx;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                margin-top: 10rpx;
             }
         }
-        .right{
-            width:120rpx;
+        .right {
+            width: 120rpx;
             height: 100%;
             //background-color: blueviolet;
             float: right;
             margin-right: 50rpx;
             overflow: hidden;
             position: relative;
-            .starNumber{
+            .starNumber {
                 position: absolute;
                 top: 56rpx;
-                .star{
+                .star {
                     color: #FDD700;
                     margin-left: 10rpx;
                 }
-                .number{
+                .number {
                     font-size: 32rpx;
                     padding-left: 15rpx;
                 }
             }
-            .evaluateNumber{
-                width:100%;
+            .evaluateNumber {
+                width: 100%;
                 position: absolute;
                 top: 120rpx;
                 font-size: 24rpx;
                 color: #999999;
                 text-indent: 15rpx;
-                text-overflow:ellipsis;
-                overflow:hidden;
-                white-space:nowrap;
-                .number{
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                .number {
                     margin-right: 5rpx;
                 }
             }

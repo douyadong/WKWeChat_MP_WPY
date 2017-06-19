@@ -5,6 +5,7 @@
 4. 备注：添加经纪人微信页面脚本逻辑
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
 import request from "../../utils/request";
+let app = getApp();
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 定义页面初始化参数
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -40,7 +41,12 @@ let params = {
                 });
             },
             fail: function() {
-                wx.showModal({ "title": "错误提示", "content": res.message, "showCancel": false, "confirmText": "我知道了" });
+                wx.showModal({
+                    "title": "错误提示",
+                    "content": res.message,
+                    "showCancel": false,
+                    "confirmText": "我知道了"
+                });
             }
         });
     },
@@ -49,7 +55,9 @@ let params = {
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     onLoad: function(options) {
         //把页面参数保存到页面数据中
-        this.setData({ "pageParams": options });
+        this.setData({
+            "pageParams": options
+        });
         this.render();
     },
     onShareAppMessage: function() {
@@ -64,9 +72,7 @@ let params = {
         wx.setClipboardData({
             data: this.data.agentWChatId,
             success: function() {
-              wx.showToast({
-                "title":"经纪人微信号已复制!"
-              })
+                app.showTips('经纪人微信号已复制到剪切板!')
             }
         });
     },
@@ -84,22 +90,24 @@ let params = {
                             wx.authorize({
                                 scope: 'scope.writePhotosAlbum',
                                 success() {
-                                    //console.log("用户已经同意保存到相册");
                                     wx.downloadFile({
-                                        url: event.currentTarget.dataset.url, //仅为示例，并非真实的资源
+                                        url: event.currentTarget.dataset.url,
                                         success: function(res) {
                                             wx.saveImageToPhotosAlbum({
                                                 filePath: res.tempFilePath,
                                                 success(res) {
-                                                    wx.showToast({
-                                                        "title": "已保存到手机相册！"
-                                                    })
+                                                    app.showTips('已保存到手机相册!')
                                                 },
                                                 fail(res) {
                                                     wx.showToast({
                                                         "title": "保存到相册失败，请搜索经纪人微信号码添加微信！"
                                                     })
                                                 }
+                                            })
+                                        },
+                                        fail: function() {
+                                            wx.showToast({
+                                                "title": "保存到相册失败，请搜索经纪人微信号码添加微信！"
                                             })
                                         }
                                     })

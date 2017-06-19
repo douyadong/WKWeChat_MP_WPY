@@ -75,7 +75,8 @@ const url = {
     "poster-preview" : "/wxmpNewHouseDetail/getMagazineDetail.rest"
   },
   "common":{
-    "getAccessToken":"/wxmpCommon/getAccessToken.rest"
+    "getAccessToken":"/wxmpCommon/getAccessToken.rest",
+    "getQR":"/wxmpCommon/getQR.rest"
   }
 }
 

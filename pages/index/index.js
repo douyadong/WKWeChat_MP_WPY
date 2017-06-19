@@ -310,6 +310,7 @@ let main = {
   getAgentList:getAgentList,
   onLoad(options){
     let _this = this;
+    console.log(options.scene);
     //获取用户信息
     _this.getUserInfo(function(){
             //判断是否选择了城市

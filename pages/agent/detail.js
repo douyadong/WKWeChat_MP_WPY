@@ -125,30 +125,26 @@ let params = $.extend(true, {}, detailFoot, {
                             wx.authorize({
                                 scope: 'scope.writePhotosAlbum',
                                 success() {
-                                    //console.log("用户已经同意保存到相册");
                                     wx.downloadFile({
-                                        url: 'https://imgwater-test.oss.aliyuncs.com/e2cd807335354522af7f69e56456eb3c?x-oss-process=image/resize,w_120', //仅为示例，并非真实的资源
+                                        url: "https://imgwater-test.oss.aliyuncs.com/e2cd807335354522af7f69e56456eb3c?x-oss-process=image/resize,w_120",
                                         success: function(res) {
                                             wx.saveImageToPhotosAlbum({
                                                 filePath: res.tempFilePath,
                                                 success(res) {
-                                                    wx.showToast({
-                                                        "title": "已保存到手机相册！"
-                                                    })
+                                                    app.showTips('已保存到手机相册!')
                                                 },
                                                 fail(res) {
-                                                    wx.showToast({
-                                                        "title": "保存到相册失败，请搜索经纪人微信号码添加微信!"
-                                                    })
+                                                    app.showTips('保存到相册失败!')
                                                 }
                                             })
+                                        },
+                                        fail: function() {
+                                           app.showTips('保存到相册失败!')
                                         }
                                     })
                                 },
                                 fail(res) {
-                                    wx.showToast({
-                                        "title": "保存到相册失败，请搜索经纪人微信号码添加微信!"
-                                    })
+                                    app.showTips('保存到相册失败!')
                                 }
                             })
                         }
@@ -317,7 +313,7 @@ let params = $.extend(true, {}, detailFoot, {
         this.setData({ "pageParams": options });
         //获取当前页面的小程序二维码
         app.getwxacode(function(res) {
-            let url = apiUrl.get("common", "getAccessToken")
+            let url = apiUrl.get("common", "getQR")
             _this.setData({
                 "QRUrl": url + "?token=" + res.data + "&path=pages/agent/detail?agentId=" + options.agentId + "&width=120"
             })

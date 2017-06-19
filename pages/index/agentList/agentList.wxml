@@ -2,13 +2,14 @@
     <navigator open-type="navigate" url="/pages/agent/detail?agentId={{list.agentId}}" class="agentList">
         <view class="portrait">
             <image mode="aspectFill" src="{{list.agentHeadImgUrl}}?x-oss-process=image/resize,w_120"/>
-            <block wx:if="{{list.isWellAgent == 1}}">
-                <view class="tag"></view>
-            </block>
         </view>
         <view class="content">
             <view class="left">
-                <view class="title">{{list.agentName == null? '': list.agentName}}</view>
+                <view class="info"><text  class="title">{{list.agentName == null? '': list.agentName}}</text>
+                <block wx:if="{{list.isWellAgent == 1}}">
+                    <text class="good-agent">好</text>
+                </block>
+            </view>
                 <view class="company">{{list.agentBelongToCompanyName == null ? '' : list.agentBelongToCompanyName}}</view>
                 <block wx:if="{{list.isWellAgent == 1}}">
                    <view class="bubbles">
