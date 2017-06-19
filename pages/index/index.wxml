@@ -14,13 +14,14 @@
     </view>
   </view>
   <view class="buySell">
-      <view class="list"  bindtap="goBuy" data-event-name="1026100">
+      <view class="list buy"  bindtap="goBuy" data-event-name="1026100">
         <view class="circular buyCircular"></view>
-        <view class="text">我要买房</view>
+        <view class="text buy">我要买房</view>
       </view>
-      <navigator open-type="navigate" class="list" url="/pages/sell/index" data-event-name="1026005" bindtap="bigData">
+      <view style="float:left;width:30rpx;height:100%;background-color:white"></view>
+      <navigator open-type="navigate" class="list sell" url="/pages/sell/index" data-event-name="1026005" bindtap="bigData">
         <view class="circular sellCircular"></view>
-        <view class="text">我要卖房</view>
+        <view class="text sell">我要卖房</view>
       </navigator>
   </view>
   <!-- 筛选-->
