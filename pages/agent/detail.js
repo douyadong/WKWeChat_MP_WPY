@@ -113,6 +113,60 @@ let params = $.extend(true , {} , detailFoot , {
         this.setData({ "agentBizTownListExtendable": false }) ;
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    点经纪人电话，拨打电话
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    callAgent: function(event) {
+        wx.makePhoneCall({
+            phoneNumber: event.target.dataset.phone
+        })
+    },
+    /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    保存经纪人小程序二维码
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    saveAgentQRCode: function(event) {
+        wx.showModal({
+            "title": "提示",
+            "content": "需要保存到相册吗？",
+            "success": function(res) {
+                wx.getSetting({
+                    success(res) {
+                        if (!res['scope.writePhotosAlbum']) {
+                            wx.authorize({
+                                scope: 'scope.writePhotosAlbum',
+                                success() {
+                                    //console.log("用户已经同意保存到相册");
+                                    wx.downloadFile({
+                                        url: 'https://imgwater-test.oss.aliyuncs.com/e2cd807335354522af7f69e56456eb3c?x-oss-process=image/resize,w_120', //仅为示例，并非真实的资源
+                                        success: function(res) {
+                                            wx.saveImageToPhotosAlbum({
+                                                filePath: res.tempFilePath,
+                                                success(res) {
+                                                    wx.showToast({
+                                                        "title": "已保存到手机相册！"
+                                                    })
+                                                },
+                                                fail(res) {
+                                                    wx.showToast({
+                                                        "title": "保存到相册失败，请搜索经纪人微信号码添加微信!"
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
+                                },
+                                fail(res) {
+                                    wx.showToast({
+                                        "title": "保存到相册失败，请搜索经纪人微信号码添加微信!"
+                                    })
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    },
+    /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     展开自我介绍的方法
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     extendAgentIntroduction : function() {
@@ -168,8 +222,7 @@ let params = $.extend(true , {} , detailFoot , {
                 let result = _.data.esfSources ;
                 if(res.data && res.data.length) {                    
                      _.setData({ "esfSources" : result.concat(_.mapSource(res.data)) }) ;     
-                }
-                else _.setData({ "esfIsNoData" : true }) ;                     
+                } else _.setData({ "esfIsNoData": true });
             } ,
             fail : function(res) {
                 _.setData({ "esfLoadError" : true }) ;    
@@ -224,8 +277,7 @@ let params = $.extend(true , {} , detailFoot , {
                 if(res.data && res.data.length) {
                     result = result.concat(_.mapSource(res.data)) ;  
                      _.setData({ "xfSources" : result }) ;     
-                }
-                else _.setData({ "xfIsNoData" : true }) ;
+                } else _.setData({ "xfIsNoData": true });
                 console.log(_.data.xfSources.length) ;               
             } ,
             fail : function(res) {
@@ -269,9 +321,18 @@ let params = $.extend(true , {} , detailFoot , {
     页面加载完触发
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     onLoad : function(options) {        
+        var _this = this;
         //把页面参数保存到页面数据中
         this.setData({ "pageParams" : options }) ;        
+        //获取当前页面的小程序二维码
+        app.getwxacode(function(res) {
+            let url = apiUrl.get("common", "getAccessToken")
+            _this.setData({
+                "QRUrl": url + "?token=" + res.data + "&path=pages/agent/detail?agentId=" + options.agentId + "&width=120"
+            })
+        })
     } ,
+
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     页面显示完触发
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -296,4 +357,4 @@ let params = $.extend(true , {} , detailFoot , {
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 实例化页面
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-Page(params) ;
+Page(params);

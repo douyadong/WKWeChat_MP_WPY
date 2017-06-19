@@ -2,7 +2,7 @@ var request = require('../../utils/request.js');
 let main = {
   data: {
       showCityIndex:0,
-      locationCity:{"cityId":43, "cityName":"上海市", "districtId":45, "townId":null,"cityPinyin":"shanghaishi"},//定位的国内城市
+      locationCity:{"cityId":43, "cityName":"上海", "districtId":45, "townId":null,"cityPinyin":"shanghaishi"},//定位的国内城市
       domesticCitys:[],
       //InternationalCity:{"cityId":43, "cityName":"上海市", "districtId":45, "townId":null,"cityPinyin":"shanghaishi"},//定位的国际城市
       InternationalCitys:[]

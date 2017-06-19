@@ -18,7 +18,7 @@ var getGeography = function(fu) {
     if(geography == ''){
         let defineGeography = {
             "cityId": 43,
-            "cityName": "上海市",
+            "cityName": "上海",
             "districtId": 45,
             "townId": null,
             "cityPinyin":"shanghaishi"
@@ -242,7 +242,7 @@ let main = {
     //地理位置信息
     geography:{
         "cityId": 43,
-        "cityName": "上海市",
+        "cityName": "上海",
         "districtId": 45,
         "townId": null,
         "cityPinyin":"shanghaishi"

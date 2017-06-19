@@ -74,6 +74,9 @@ const url = {
     "promotions" : "/wxmpNewHouseDetail/getNewHouseActivityInfo.rest" ,
     "poster-preview" : "/wxmpNewHouseDetail/getMagazineDetail.rest"
   },
+  "common":{
+    "getAccessToken":"/wxmpCommon/getAccessToken.rest"
+  },
   "bigData":{
     "bigData":"/buriedPoint/sendData.rest"
   }
