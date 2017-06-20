@@ -21,12 +21,12 @@
     </view>
     <view class="row tel">
       <view class="row-hd">电话：</view>
-      <view class="row-bd"><text class="phone" bindtap="callAgent" data-phone="{{simpleAgentDetail.agentMobileDisplay}}">{{simpleAgentDetail.agentMobileDisplay}}</text></view>
+      <view class="row-bd"><text class="phone" bindtap="callAgent" data-phone="{{simpleAgentDetail.agentMobileDisplay}}" data-event-Name="1002021" data-agent_id="{{simpleAgentDetail.agentId}}">{{simpleAgentDetail.agentMobileDisplay}}</text></view>
     </view>  
     <view class="row" wx:if="{{simpleAgentDetail.agentBelongToCompanyName}}">
       <view class="row-hd">公司：</view>
       <view class="row-bd pr110">{{simpleAgentDetail.agentBelongToCompanyName}}</view>
     </view>
-    <image bindtap="saveAgentQRCode" class="agentQRCode" src="{{QRUrl}}" data-src="{{QRUrl}}"></image>
+    <image bindtap="saveAgentQRCode" class="agentQRCode" src="{{QRUrl}}" data-src="{{QRUrl}}" data-event-name="1002020" data-agent_id="{{simpleAgentDetail.agentId}}"></image>
   </view>
 </view>
