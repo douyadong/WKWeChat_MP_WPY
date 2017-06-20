@@ -136,7 +136,7 @@ let params = $.extend(true , {} , detailFoot , {
                                 scope: 'scope.writePhotosAlbum',
                                 success() {
                                     wx.downloadFile({
-                                        url: "https://imgwater-test.oss.aliyuncs.com/e2cd807335354522af7f69e56456eb3c?x-oss-process=image/resize,w_120",
+                                        url:event.target.dataset.src,
                                         success: function(res) {
                                             wx.saveImageToPhotosAlbum({
                                                 filePath: res.tempFilePath,
@@ -325,7 +325,7 @@ let params = $.extend(true , {} , detailFoot , {
         app.getwxacode(function(res) {
             let url = apiUrl.get("common", "getQR")
             _this.setData({
-                "QRUrl": url + "?token=" + res.data + "&path=pages/agent/detail?agentId=" + options.agentId + "&width=120"
+                "QRUrl": url + "?token=" + res.data + "&scene=agentId_" + options.agentId + "&width=120"
             })
         })
     } ,

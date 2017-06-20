@@ -27,6 +27,6 @@
       <view class="row-hd">公司：</view>
       <view class="row-bd pr110">{{simpleAgentDetail.agentBelongToCompanyName}}</view>
     </view>
-    <image bindtap="saveAgentQRCode" class="agentQRCode" src="{{QRUrl}}"></image>
+    <image bindtap="saveAgentQRCode" class="agentQRCode" src="{{QRUrl}}" data-src="{{QRUrl}}"></image>
   </view>
 </view>
