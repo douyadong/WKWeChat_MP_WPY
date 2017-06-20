@@ -117,6 +117,7 @@ let params = $.extend(true , {} , detailFoot , {
     点经纪人电话，拨打电话
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     callAgent: function(event) {
+        this.bigData(event);
         wx.makePhoneCall({
             phoneNumber: event.target.dataset.phone
         })
@@ -125,6 +126,7 @@ let params = $.extend(true , {} , detailFoot , {
     保存经纪人小程序二维码
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     saveAgentQRCode: function(event) {
+        this.bigData(event);
         wx.showModal({
             "title": "提示",
             "content": "需要保存到相册吗？",
