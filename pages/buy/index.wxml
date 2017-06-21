@@ -37,7 +37,7 @@
             </view>
         </view>
     </view>
-    <button type="primary" class="button blue" bindtap="submit">完成</button>
+    <button type="primary" class="button blue" bindtap="submit" data-event-name="1040010">完成</button>
 </view>
 
 <template is="tips" data="{{tips}}" />
