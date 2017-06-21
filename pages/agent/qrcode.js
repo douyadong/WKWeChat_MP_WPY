@@ -81,55 +81,62 @@ let params = {
     保存经纪人小程序二维码
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     saveAgentQRCode: function(event) {
-      this.bigData(event);
+        this.bigData(event);
         wx.showModal({
             "title": "提示",
             "content": "需要保存到相册吗？",
             "success": function(res) {
-                wx.getSetting({
-                    success(res) {
-                        if (!res['scope.writePhotosAlbum']) {
-                            wx.authorize({
-                                scope: 'scope.writePhotosAlbum',
-                                success() {
-                                    wx.downloadFile({
-                                        url: event.currentTarget.dataset.url,
-                                        success: function(res) {
-                                            wx.saveImageToPhotosAlbum({
-                                                filePath: res.tempFilePath,
-                                                success(res) {
-                                                    app.showTips('已保存到手机相册!')
-                                                },
-                                                fail(res) {
-                                                    wx.showToast({
-                                                        "title": "保存到相册失败，请搜索经纪人微信号码添加微信！"
-                                                    })
-                                                }
-                                            })
-                                        },
-                                        fail: function() {
-                                            wx.showToast({
-                                                "title": "保存到相册失败，请搜索经纪人微信号码添加微信！"
-                                            })
-                                        }
-                                    })
-                                },
-                                fail(res) {
-                                    wx.showToast({
-                                        "title": "保存到相册失败，请搜索经纪人微信号码添加微信!"
-                                    })
-                                }
-                            })
+                if (res.confirm) {
+                    wx.getSetting({
+                        success(res) {
+                            if (!res['scope.writePhotosAlbum']) {
+                                wx.authorize({
+                                    scope: 'scope.writePhotosAlbum',
+                                    success() {
+                                        wx.downloadFile({
+                                            url: event.currentTarget.dataset.url,
+                                            success: function(res) {
+                                                wx.saveImageToPhotosAlbum({
+                                                    filePath: res.tempFilePath,
+                                                    success(res) {
+                                                        app.showTips('已保存到手机相册!')
+                                                    },
+                                                    fail(res) {
+                                                        wx.showToast({
+                                                            "title": "保存到相册失败，请搜索经纪人微信号码添加微信！"
+                                                        })
+                                                    }
+                                                })
+                                            },
+                                            fail: function() {
+                                                wx.showToast({
+                                                    "title": "保存到相册失败，请搜索经纪人微信号码添加微信！"
+                                                })
+                                            }
+                                        })
+                                    },
+                                    fail(res) {
+                                        wx.showToast({
+                                            "title": "保存到相册失败，请搜索经纪人微信号码添加微信!"
+                                        })
+                                    }
+                                })
+                            }
                         }
-                    }
-                })
+                    })
+                } else if (res.cancel) {
+                    wx.showToast({
+                        "title": "保存到相册失败，请搜索经纪人微信号码添加微信!"
+                    })
+                }
+
             }
         })
     },
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     埋点    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-    bigData: function (e) {
-      bigData.send(e.currentTarget.dataset);
+    bigData: function(e) {
+        bigData.send(e.currentTarget.dataset);
     }
 };
 /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
