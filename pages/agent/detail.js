@@ -178,7 +178,7 @@ let params = $.extend(true, {}, detailFoot, {
                         }
                     })
                 } else if (res.cancel) {
-                    app.showTips('保存到相册失败!')
+                    //app.showTips('保存到相册失败!')
                 }
             }
         })

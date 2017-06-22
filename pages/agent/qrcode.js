@@ -125,9 +125,9 @@ let params = {
                         }
                     })
                 } else if (res.cancel) {
-                    wx.showToast({
-                        "title": "保存到相册失败，请搜索经纪人微信号码添加微信!"
-                    })
+                    // wx.showToast({
+                    //     "title": "保存到相册失败，请搜索经纪人微信号码添加微信!"
+                    // })
                 }
 
             }
