@@ -48,7 +48,7 @@ const collections = {
     eventName: "1002004",
     pageName: "1002",
     pageParams: ['agent_id'],
-    eventParams: ['agent_id','boutique']
+    eventParams: ['house_id','boutique']
   },
   "1002010": {//经纪人详情页-新房楼盘点击
     eventName: "1002010",
