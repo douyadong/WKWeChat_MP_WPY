@@ -180,6 +180,10 @@ Page({
     }
 
     this.data.loaded = true
+
+    bigData.send({
+      "pageName":"1040"
+    });
   },
   onShow: function () {
     let that = this

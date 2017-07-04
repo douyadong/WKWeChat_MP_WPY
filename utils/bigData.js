@@ -202,6 +202,57 @@ const collections = {
     pageParams: ['agent_id'],
     eventParams: ['agent_id']
   },
+
+
+  //------------------pv--------------------------------------
+   "1002":{//经纪人详情页
+    type: 1,
+    pageName:"1002",
+    pageParams: ['agent_id'],
+    eventParams: []
+  },
+   "1026": {//	首页
+    type: 1,
+    pageName: "1026",
+    pageParams: [],
+    eventParams: []
+  },
+   "1040": {//我的购房意向页
+    type: 1,
+    pageName: "1040",
+    pageParams: [],
+    eventParams: []
+  },
+   "1045": {//新房详情页
+    type: 1,
+    pageName: "1045",
+    pageParams: ['new_house_id'],
+    eventParams: []
+  },
+   "1067": {//二手房详情页
+    type: 1,
+    pageName: "1067",
+    pageParams: ['house_id','boutique'],
+    eventParams: []
+  },
+   "1131": {//为您推荐页
+    type: 1,
+    pageName: "1131",
+    pageParams: [],
+    eventParams: []
+  },
+   "1132": {//我要卖房页
+    type: 1,
+    pageName: "1132",
+    pageParams: [],
+    eventParams: []
+  },
+  "1117":{
+    type: 1,
+    pageName: "1117",
+    pageParams: ['agent_id'],
+    eventParams: []
+  }
 }
 
 const deviceId = wx.getStorageSync("device");
@@ -209,9 +260,14 @@ const deviceId = wx.getStorageSync("device");
 module.exports = {
   send:function(params){
     try{
-      let eventName = params.eventName;
+      let eventName = params.eventName || params.pageName;
       let eventConfig = collections[eventName];
-      let copyConfig = $.extend(true,{},eventConfig);
+      let copyConfig = $.extend(true,{},eventConfig);      
+      if(copyConfig.type===1){//pv埋点
+        copyConfig.page_time = Date.now();
+      }else{
+        copyConfig.type = 2;
+      }
       //解析页面参数
       if(copyConfig.pageParams && copyConfig.pageParams.length){
         copyConfig.pageParam = {};
@@ -233,7 +289,7 @@ module.exports = {
       delete copyConfig.eventParams;
 
       copyConfig.deviceId = deviceId;
-
+      console.log(copyConfig);
       //console.log(JSON.stringify(copyConfig));
       //发送请求
       request.fetch({

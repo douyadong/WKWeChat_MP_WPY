@@ -395,6 +395,9 @@ let main = {
             }
         });
 
+        bigData.send({
+          pageName:"1026"
+        });
 
     },
     //滚动到底部异步加载经纪人列表

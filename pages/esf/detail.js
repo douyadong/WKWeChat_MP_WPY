@@ -113,6 +113,12 @@ var params = $.extend(true, {}, {
                     newData.agentInfo.agentId = that.data.agentId;
                     newData.agentInfo.houseId = that.data.houseId;
                     newData.agentInfo.boutique = h.isTopHouse > 1?1:0;
+
+                    bigData.send({//这个本该放在onLoad中的，无奈埋点需要boutique字段
+                      "pageName": "1067",
+                      "house_id": that.data.houseId,
+                      "boutique": newData.agentInfo.boutique
+                    });
                 }
 
                 that.setData(newData);
@@ -132,6 +138,7 @@ var params = $.extend(true, {}, {
 
         this.setData(options);
         //this.getDetail();
+        
     },
     onShow:function(){
       this.getDetail();

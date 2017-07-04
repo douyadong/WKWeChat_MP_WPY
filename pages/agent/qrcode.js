@@ -60,6 +60,11 @@ let params = {
             "pageParams": options
         });
         this.render();
+
+        bigData.send({
+          "pageName":"1117",
+          "agent_id": options.agentId
+        });
     },
     onShareAppMessage: function() {
         return {

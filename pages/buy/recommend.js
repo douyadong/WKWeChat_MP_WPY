@@ -147,6 +147,10 @@ Page({
       //显示Footer
       that.setData({'showFooter': true})
     })
+
+    bigData.send({
+      "pageName":"1131"
+    });
   },
   onShow: function () {
     wx.hideNavigationBarLoading()
