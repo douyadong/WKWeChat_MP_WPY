@@ -16,7 +16,9 @@ Page({
         }
     },
     onLoad: function() {
-
+      bigData.send({
+        "pageName":"1132"
+      });
     },
     bigData:function(event){
       bigData.send(event.currentTarget.dataset);

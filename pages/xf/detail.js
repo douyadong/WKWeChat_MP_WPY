@@ -138,7 +138,12 @@ let params = $.extend(true, {}, {
         let userInfo = wx.getStorageSync('userInfo');
         let guestPhoneNum = userInfo && userInfo.mobile || '';
         //把页面参数保存到页面数据中
-        this.setData({ "pageParams": options, "guestPhoneNum": guestPhoneNum });       
+        this.setData({ "pageParams": options, "guestPhoneNum": guestPhoneNum });
+
+        bigData.send({
+          "pageName":"1045",
+          "new_house_id": options.subEstateId
+        });       
     } ,
     /*++----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     页面显示完触发
