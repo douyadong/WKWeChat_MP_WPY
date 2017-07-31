@@ -2,20 +2,24 @@
 
 <view class="wrapper">
     <view class="main-info">
-        <view class="title">购房意向</view>
-        <view class="info">
-            <view class="row">
-                <view class="content">
-                    <text>{{currentPrice.text}}</text>
-                    <text>{{currentHouseType.text}}</text>
-                </view>
+        <view class="info-container">
+            <view class="title">
+                购房意向 
                 <view class="link" data-url="/pages/buy/index" bindtap="handleRedirect" data-event-name="1131001">
-                    <text>修改</text>
-                    <view class="iconfont icon-arrow-r"></view>
+                        <text>修改</text>
+                        <view class="iconfont icon-arrow-r"></view>
                 </view>
             </view>
-            <view class="location">
-                {{currentLocationStr}}
+            <view class="info">
+                <view class="row">
+                    <view class="content">
+                        <text>{{currentPrice.text}}</text>
+                        <text>{{currentHouseType.text}}</text>
+                    </view>                    
+                </view>
+                <view class="location">
+                    {{currentLocationStr}}
+                </view>
             </view>
         </view>
         <view class="title">以下经纪人会主动与您联系</view>

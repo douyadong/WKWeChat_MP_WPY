@@ -8,7 +8,7 @@
         </block>
         <image data-phone="{{simpleAgentDetail.headRoundImgUrl}}" mode="aspectFill" src="{{simpleAgentDetail.headRoundImgUrl}}?x-oss-process=image/resize,w_120" class="head-portrait"></image>
       </view>
-      <view class="row-bd {{simpleAgentDetail.wellAgentBizMessageList.length ? '':'pt30'}}">
+      <view class="row-bd name {{simpleAgentDetail.wellAgentBizMessageList.length ? '':'pt30'}}">
         <text class="agent-name" >{{simpleAgentDetail.agentName}}</text>    <text class="good-agent" wx:if="{{simpleAgentDetail.isWellAgent}}">好</text>
         <block wx:if="{{simpleAgentDetail.agentVolume}}">
           <text class="iconfont icon-volume"></text>

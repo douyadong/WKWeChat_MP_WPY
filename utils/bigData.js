@@ -289,7 +289,7 @@ module.exports = {
       delete copyConfig.eventParams;
 
       copyConfig.deviceId = deviceId;
-      console.log(copyConfig);
+      //console.log(copyConfig);
       //console.log(JSON.stringify(copyConfig));
       //发送请求
       request.fetch({
