@@ -62,6 +62,7 @@ module.exports = {
       fail: function (error) {
         showBarLoading && wx.hideNavigationBarLoading()
         showLoading && wx.hideToast()
+        typeof fail == 'function' && fail(error)
         console.error(error)
       },
       complete: function () {
