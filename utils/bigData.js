@@ -257,6 +257,49 @@ const collections = {
 
 const deviceId = wx.getStorageSync("device");
 
+function getBigData(){
+  var bigData = wx.getStorageSync("bigData");
+  return bigData || [];
+}
+function setBigData(data){
+  wx.setStorageSync("bigData",data);
+}
+function insertBigData(item){
+  var items = getBigData()||[];
+  items.push(item);
+  setBigData(items);
+}
+function traverse(){
+  var items = getBigData();
+  if (items && items.length > 0) {
+    var item = items.splice(0, 1)[0];
+    setBigData(items);
+    sendBigData(item);
+  }
+}
+
+//发送请求
+function sendBigData(item){
+  try{
+    //发送请求
+    request.fetch({
+      module: "bigData",
+      action: "bigData",
+      data: item,
+      method: "POST",
+      success: function () {
+        traverse();
+      },
+      fail: function (res) {
+        console.log('发送失败，插入缓存中！！');
+        insertBigData(item);
+      }
+    });
+  }catch(ex){
+
+  }
+}
+
 module.exports = {
   send:function(params){
     try{
@@ -289,22 +332,9 @@ module.exports = {
       delete copyConfig.eventParams;
 
       copyConfig.deviceId = deviceId;
-      //console.log(copyConfig);
-      //console.log(JSON.stringify(copyConfig));
-      //发送请求
-      request.fetch({
-        module:"bigData",
-        action:"bigData",
-        data:copyConfig,
-        method:"POST",
-        success:function(){
 
-        },
-        fail:function(res){
-          //console.log('调用埋点接口失败');
-          //console.log(res);
-        }
-      });
+      sendBigData(copyConfig);
+      
     }catch(ex){
 
     }
