@@ -264,6 +264,20 @@ function getBigData(){
 function setBigData(data){
   wx.setStorageSync("bigData",data);
 }
+
+function getTotal(){
+  var total = wx.getStorageSync('bigDataTotal');
+  if(total){
+    return parseInt(total);
+  }else{
+    return 1;
+  }
+}
+
+function setTotal(total){
+  wx.setStorageSync('bigDataTotal',total);
+}
+
 function insertBigData(item){
   var items = getBigData()||[];
   items.push(item);
@@ -282,6 +296,7 @@ function traverse(){
 function sendBigData(item){
   try{
     //发送请求
+    item.pCount = getTotal() - 1;
     request.fetch({
       module: "bigData",
       action: "bigData",
@@ -332,7 +347,9 @@ module.exports = {
       delete copyConfig.eventParams;
 
       copyConfig.deviceId = deviceId;
-
+      let total = getTotal();
+      copyConfig.pNum = total;
+      setTotal(total + 1);
       sendBigData(copyConfig);
       
     }catch(ex){
