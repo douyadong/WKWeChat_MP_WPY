@@ -296,7 +296,7 @@ function traverse(){
 function sendBigData(item){
   try{
     //发送请求
-    item.pCount = getTotal() - 1;
+    //item.pCount = getTotal() - 1;
     request.fetch({
       module: "bigData",
       action: "bigData",
