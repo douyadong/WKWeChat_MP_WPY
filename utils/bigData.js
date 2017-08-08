@@ -348,7 +348,7 @@ module.exports = {
 
       copyConfig.deviceId = deviceId;
       let total = getTotal();
-      copyConfig.pNum = total;
+      copyConfig.pnum = total;
       setTotal(total + 1);
       sendBigData(copyConfig);
       
