@@ -293,7 +293,7 @@ function traverse(){
 }
 
 //发送请求
-function sendBigData(item){
+function sendBigData(item){  
   try{
     //发送请求
     //item.pCount = getTotal() - 1;
@@ -311,7 +311,7 @@ function sendBigData(item){
       }
     });
   }catch(ex){
-
+    console.log('sendbigdata error');
   }
 }
 
@@ -345,6 +345,11 @@ module.exports = {
       //删除参数设置
       delete copyConfig.pageParams;
       delete copyConfig.eventParams;
+
+      //拿到当前城市
+      let geography = wx.getStorageSync('geography');
+      copyConfig.city = geography && geography.cityId || "43";
+      console.log(geography);
 
       copyConfig.deviceId = deviceId;
       let total = getTotal();
