@@ -25,6 +25,14 @@ module.exports = {
   fetch: function ({module, action, showBarLoading=true, showLoading=true, showTitle='加载中...', showMask=false, method='GET', contenType='application/json', data, dataType='json', success, fail, complete, mock=false }) {
     let url = apiUrl.get(module, action)
 
+    let frequencyFail = function(message){
+      message = message || "接口错误"
+      wx.showToast({
+        icon:"success",
+        title:message,
+        duration:3000
+      });
+    }
     showBarLoading && wx.showNavigationBarLoading()
 
     if (showLoading) {
@@ -56,7 +64,11 @@ module.exports = {
         if (res.statusCode == '200' && res.data.status == '1') {
           typeof success == 'function' && success(res.data)
         }else {
-          typeof fail == 'function' && fail(res.data)
+          if (res.data.message == '访问频率过高 ！'){//频率太高
+            frequencyFail('访问频率过高');
+          }else{
+            typeof fail == 'function' && fail(res.data)
+          }          
         }
       },
       fail: function (error) {
