@@ -31,7 +31,8 @@
     "pages/comment/list",
     "pages/comment/write",
     "pages/report/write",
-    "pages/common/video"
+    "pages/common/video" ,
+    "pages/store/index"
   ],
   "window": {
     "backgroundColor": "#f0f0f0",
