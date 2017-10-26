@@ -1,2 +1,2 @@
 <!--pages/store/index.wxml-->
-<text>pages/store/index.wxml</text>
+<text>/pages/store/index?agentId={{agentId}}</text>
