@@ -1,0 +1,50 @@
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：modal.less (modal框)
+ 3. 作者：zhaohuagang@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.wk-modal {
+    background-color : @modal-bg-color ;
+    box-shadow: 0 8rpx 46rpx 10rpx rgba(0, 0, 0, 0.2), 0 4rpx 12rpx rgba(0, 0, 0, 0.15) ;
+    .border-radius(6rpx) ;
+    display : none ;
+    min-width : 340rpx ;
+    position : absolute ;    
+    max-width : 60% ;
+    z-index : 9998 ;
+    .modal-header {
+        font-size : @large-font-size ;
+        line-height : 60rpx ;
+        padding : 30rpx 0 15rpx ;
+        text-align : center ;
+    }
+    .modal-body {
+        color : @light-font-color ;
+        font-size : @default-font-size ;
+        line-height : 150% ;
+        padding : 0 15rpx ;
+        text-align : center ;
+    }
+    .modal-footer {
+        border-top : 1rpx solid @light-line-gray-color ;        
+        margin-top : @common-margin ; 
+        text-align : center ;
+        .wk-btn {
+            border-left : 1rpx solid @light-line-gray-color ; 
+            &:nth-child(1) {
+                border-left : none ;
+            }
+        }
+    }
+}
+
+.wk-modal-mask {
+    background-color : @modal-mask-bg-color ;
+    display : none ;
+    height : 100% ;
+    left : 0 ;
+    position : fixed ;
+    top : 0 ;
+    width : 100% ;
+    z-index : 9997 ;
+}
