@@ -4,6 +4,7 @@
  3. 作者：zhaohuagang@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 @import "./mixins.less" ;
+@import "./variables.less" ;
 .clearfix {
     .clearfix() ;
 }
@@ -14,4 +15,10 @@
     background-color : transparent ;
     border : 1px solid transparent ;
     outline : none ;
+}
+.top-gap {
+    margin-top : @gap-dimension ;
+}
+.bottom-gap {
+    margin-bottom : @gap-dimension ;
 }

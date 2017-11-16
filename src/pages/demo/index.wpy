@@ -1,19 +1,30 @@
 <!--
-    @页面名称：二手房列表页面
+    @页面名称：组件demo页面
     @作者：赵华刚 (zhaohuagang@lifang.com)
     @业务逻辑说明：
         1.
         2.        
 -->
 <template lang="wxml">
-    <view>
-       二手房列表页面
+    <!--下面试tabs的demo-->
+    <view class="wk-tabs">
+        <view class="tabs-handle">
+            <view class="on"><text>新房</text></view>
+            <view><text>二手房</text></view>
+        </view>
+    </view>
+    <!--下面是panel的demo-->
+    <view class="wk-panel top-gap">
+        <view class="panel-header">基本信息</view>
+        <view class="panel-more">
+            <navigator url="/pages/agent/index">查看更多</navigator>
+        </view>
     </view>
 </template>
 
 <script>
     import wepy from "wepy" ;    
-    export default class List extends wepy.page {
+    export default class Index extends wepy.page {
         config = {
             
         } ;

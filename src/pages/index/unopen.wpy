@@ -13,7 +13,7 @@
 
 <script>
     import wepy from "wepy" ;    
-    export default class Page extends wepy.page {
+    export default class Unopen extends wepy.page {
         config = {
             
         } ;

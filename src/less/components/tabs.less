@@ -9,21 +9,18 @@
     .tabs-handle {
         background-color : #fff ;
         border-bottom : 1rpx solid @light-line-gray-color ;
-         .clearfix() ;
-        &>li {
-            border-bottom : 3rpx solid transparent ;
-            float : left ;
-            a {
-                color : @default-font-color ;
-                display : block ;
-                font-size : 1.6rem ;
-                line-height : 3.5rem ;
-                text-align : center ;
+         .flex() ;
+        &>view {
+            .flex(1) ;
+            text-align : center ;
+            text {
+                border-bottom : 4rpx solid transparent ;
+                display : inline-block ;
+                line-height : 88rpx ;
             }
             &.on {
-                border-bottom-color : @blue-color ;
-                a {
-                    color : @blue-color ;
+                text {
+                    border-bottom-color : @blue-color ;
                 }
             }
         }

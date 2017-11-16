@@ -13,7 +13,7 @@
 
 <script>
     import wepy from "wepy" ;    
-    export default class Page extends wepy.page {
+    export default class Detail extends wepy.page {
         config = {
             
         } ;
