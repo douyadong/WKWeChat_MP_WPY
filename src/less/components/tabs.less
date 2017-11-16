@@ -3,6 +3,8 @@
  2. 文件名称：tab.less (标签页)
  3. 作者：zhaohuagang@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+@import "../variables.less" ;
+@import "../mixins.less" ;
 .wk-tabs {   
     .tabs-handle {
         background-color : #fff ;
@@ -19,9 +21,9 @@
                 text-align : center ;
             }
             &.on {
-                border-bottom-color : @success-color ;
+                border-bottom-color : @blue-color ;
                 a {
-                    color : @success-color ;
+                    color : @blue-color ;
                 }
             }
         }

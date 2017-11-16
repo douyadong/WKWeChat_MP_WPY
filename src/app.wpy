@@ -27,5 +27,5 @@ export default class extends wepy.app {
 </script>
 
 <style lang="less">
-    @import "less/app.less" ;
+    @import "./less/app.less" ;
 </style>
