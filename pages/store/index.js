@@ -1,10 +1,10 @@
 Page({
     data: {
-      agentId : ""  
+      storeId : ""  
     } ,
     onLoad: function (options) {     
       this.setData({
-        agentId: options.agentId
+        storeId: options.storeId
       });
     } ,
     onReady: function () {
@@ -15,7 +15,7 @@ Page({
         wx.redirectTo({
           url: "/pages/index/index"
         });
-      }, 2000);
+      }, 3000);
     } ,
     onHide: function () {
     
