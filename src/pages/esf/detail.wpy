@@ -1,0 +1,43 @@
+<!--
+    @页面名称：二手房详情页面
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2.        
+-->
+<template lang="wxml">
+    <view>
+       二手房详情页面
+    </view>
+</template>
+
+<script>
+    import wepy from "wepy" ;    
+    export default class Page extends wepy.page {
+        config = {
+            
+        } ;
+        components = {            
+            
+        } ; 
+        data = {
+            
+        } ;
+        computed = {
+            
+        } ;
+        methods = {
+           
+        } ;
+        events = {
+
+        } ;
+        onLoad() {
+           
+        }
+    }
+</script>
+
+<style lang="less">
+    
+</style>

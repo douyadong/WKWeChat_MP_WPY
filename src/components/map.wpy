@@ -1,0 +1,32 @@
+<!--
+    @组件名称：地图图片组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+<template lang="wxml">
+    <view>地图图片组件</view>
+</template>
+
+<script>
+import wepy from "wepy" ;
+export default class Com extends wepy.component {
+    components = {
+
+    } ;
+    data = {
+
+    } ;
+    methods = {
+
+    } ;
+    events = {
+
+    } ;    
+}
+</script>
+
+<style lang="less">
+
+</style>

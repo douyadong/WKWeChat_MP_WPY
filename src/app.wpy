@@ -1,0 +1,31 @@
+<script>
+import wepy from "wepy" ;
+export default class extends wepy.app {
+    config = {
+        "pages": [
+            "pages/index"
+        ] ,
+        "window": {
+            "backgroundTextStyle" : "light" ,
+            "navigationBarBackgroundColor" : "#fff" ,
+            "navigationBarTitleText" : "WeChat" ,
+            "navigationBarTextStyle" : "black"
+        }
+    } ;
+    constructor () {
+        super() ;        
+    } ;
+    globalData = {
+        QQMapKey : "FJ6BZ-QZG3P-LASD7-VHLJJ-AG5FT-4KB2U"  //腾讯地图开发者key
+    } ;
+    onLaunch() {
+        
+    }
+
+    
+}
+</script>
+
+<style lang="less">
+    @import "less/app.less" ;
+</style>

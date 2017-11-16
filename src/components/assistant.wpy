@@ -1,0 +1,32 @@
+<!--
+    @组件名称：页面吸底的助手条组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+<template lang="wxml">
+    <view>页面吸底的助手条组件，包括头像、电话咨询、添加微信三部分，而且每一部分都是可配的，可以没有</view>
+</template>
+
+<script>
+import wepy from "wepy" ;
+export default class Com extends wepy.component {
+    components = {
+
+    } ;
+    data = {
+
+    } ;
+    methods = {
+
+    } ;
+    events = {
+
+    } ;    
+}
+</script>
+
+<style lang="less">
+
+</style>
