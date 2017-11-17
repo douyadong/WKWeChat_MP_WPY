@@ -38,25 +38,27 @@
     </view>
     <!--modal的演示-->
     <view class="wk-panel top-gap">
-        <view class="panel-header">Modal框以及tips框的演示</view>
-        <view class="hr"></view>
-        <view class="wk-btn top-gap">弹出modal框</view>
-        <view class="hr top-gap"></view>
-        <view class="wk-btn top-gap">弹出tips框</view>
+        <view class="panel-header">组件的使用方法</view>
+        <agent :data="agent"></agent>
     </view>
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy" ;
+    import Agent from "../../components/agent" ;
     export default class Index extends wepy.page {
         config = {
             
         } ;
         components = {            
-            
+            agent : Agent
         } ; 
         data = {
-            
+            agent : {
+                "headPortraitUrl" : "https://img.wkzf.com/2fdc317e6a94414990ae51d248a3de57" ,
+                "agentName" : "赵华刚" ,
+                "seniority" : 2
+            }
         } ;
         computed = {
             
