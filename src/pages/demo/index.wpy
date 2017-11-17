@@ -9,8 +9,8 @@
     <!--下面试tabs的demo-->
     <view class="wk-tabs">
         <view class="tabs-handle">
-            <view class="on"><text>新房</text></view>
-            <view><text>二手房</text></view>
+            <view class="on"><text>悟空找房</text></view>
+            <view><text>有房有客</text></view>
         </view>
     </view>
     <!--下面是panel的demo-->

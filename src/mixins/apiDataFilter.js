@@ -9,53 +9,73 @@
 加载相关资源
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
 import apiConf from "../confs/api" ;
-import axios from "axios" ;
 /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 apiDataFilter的定义
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
 let apiDataFilter =  {    
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     请求数据 , successCallback的唯一参数为：response，返回的json数据应该这样取得：response.body
+    @apiPath : 接口路径
+    @data : 同步发送的参数
     @method : get | post | jsonp
+    @showCustomLoading : 是否开启自定义的加载动画
+    @showNavigationBarLoading : 是否开启小程序导航头loading
+    @tips : 当请求结果异常时 是否开启message的提示
+    @successCallback : 请求成功的回调处理
+    @errorCallback : 请求异常的回调处理
+    @completeCallback : 清酒完成就执行的回调
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-    request : ({ apiPath , data = {} , method = "get" , contentType , successCallback , errorCallback , tips = true }) => {
+    request : ({ apiPath , data = {} , method = "get" , dataType = "json" , contentType , showNavigationBarLoading = false , showCustomLoading = true , tips = true , successCallback , errorCallback , completeCallback }) => {
         let requestMethod = method.toLowerCase() ;
         let errorProcesser = ( errorCallback !==undefined && typeof errorCallback ==="function" ) ? errorCallback : this.errorCallback ;
-        let opts = {
-            "url" : this.pathToUrl(apiPath) ,  //请求的接口地址
-            "method" : requestMethod ,  //请求类型
-            "baseURL" : apiConf.prefix[apiConf.dataStageEnv] ,  //接口地址前缀
-            "transformResponse" : [] ,  //对请求结果的转换处理            
-            "timeout" : apiConf.timeout ,
-            "responseType" : "json" ,
-            "maxContentLength" : "1000000"            
-        } ;
-        if( method === "get" ) opts.params = data ;
-        else if( method === "post" ) {
-            opts.data = data ;
-            opts.headers["content-type"] = contentType ;
-        }
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        首先根据参数决定是否需要开启加载提示
+        首先根据showNavigationBarLoading参数决定是否需要开启小程序导航栏的加载提示
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
-        if(tips) {
+        showNavigationBarLoading && wx.showNavigationBarLoading() ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        首先根据showCustomLoading参数决定是否需要开启自定义的加载提示
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+        if(showCustomLoading) {
 
         }
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        发起请求
-        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/        
-        axios.request(opts)
-        .then((res) => {
-            let result = res.data ;
-            if( parseInt(result.status , 10) !== apiConf.successStatusCode ) errorProcesser(result.message) ;
-            else if( successCallback !== undefined && typeof successCallback === "function" ) successCallback(result) ;
-        })
-        .catch(errorProcesser)
-        .then(() =>{
-            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-            最后根据参数决定是否需要关闭加载提示
-            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        }) ;
+        请求参数拼装
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+        let params = {
+            url : this.pathToUrl(apiPath) ,
+            method : requestMethod ,
+            data ,
+            dataType ,
+            success : function (res) {
+                showNavigationBarLoading && wx.hideNavigationBarLoading() ;
+                if(showCustomLoading) {
+
+                }
+                if ( res.statusCode.toString() === "200" && res.data.status.toString() == apiConf.successStatusCode ) {
+                    typeof successCallback == "function" && successCallback(res.data) ;
+                }
+                else {
+                    if(tips) {
+
+                    }
+                    errorProcesser(res.data.message) ;
+                }
+            } ,
+            fail : function (error) {
+                showNavigationBarLoading && wx.hideNavigationBarLoading() ;                
+                typeof fail == "function" && errorProcesser(error) ;                
+            } ,
+            complete : function () {
+                typeof complete == "function" && completeCallback() ;
+            }
+        }
+
+        if (requestMethod == "post") {
+            params.header = {
+                "Content-Type" : contenType
+            }
+        }
+        wx.request(params) ;       
     } ,
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     请求错误处理方法

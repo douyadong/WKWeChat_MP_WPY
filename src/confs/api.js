@@ -7,7 +7,7 @@
 export default {
     "dataStageEnv" : "test" ,  //调用哪个阶段环境的数据接口，有 test | sim | prod 3种值
     "timeout" : 60 * 1000 ,  //超时请求时间，单位：毫秒
-    "successStatusCode" : 1 ,
+    "successStatusCode" : "1" ,
     "prefix" : {        
         "test" : "https://minapp-test.yfyk365.com" ,
         "sim" : "https://minapp-sim.yfyk365.com" ,
