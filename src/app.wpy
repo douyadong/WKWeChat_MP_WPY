@@ -27,8 +27,8 @@ export default class extends wepy.app {
     constructor () {
         super() ;        
     } ;
-    globalData = {
-        QQMapKey : "FJ6BZ-QZG3P-LASD7-VHLJJ-AG5FT-4KB2U"  //腾讯地图开发者key
+    globalData = {        
+        "QQMapKey" : "FJ6BZ-QZG3P-LASD7-VHLJJ-AG5FT-4KB2U"  //腾讯地图开发者key
     } ;
     onLaunch() {
         

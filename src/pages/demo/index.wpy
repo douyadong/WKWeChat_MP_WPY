@@ -15,10 +15,31 @@
     </view>
     <!--下面是panel的demo-->
     <view class="wk-panel top-gap">
-        <view class="panel-header">基本信息</view>
+        <view class="panel-header">面板、按钮以及图标字体的用法</view>
+        <view class="panel-body">            
+            <view class="wk-btn wk-btn-lg">这是一个很大的button</view>            
+            <view class="wk-btn wk-btn-primary top-gap">这是一个蓝色的button</view>
+            <view class="wk-btn wk-btn-sm top-gap">这是一个小规格的button</view>
+            <view class="wk-btn wk-btn-transparent top-gap">这是一个透明的button</view>
+            <view class="top-gap">
+               <text> 下面演示一下图标字体怎么玩：</text>
+               <text class="iconfont icon-wechat"></text>
+               <text class="iconfont icon-tel"></text>
+               <text class="iconfont icon-search"></text>
+               <text class="iconfont icon-prev"></text>
+            </view>
+        </view>
         <view class="panel-more">
             <navigator url="/pages/agent/index">查看更多</navigator>
         </view>
+    </view>
+    <!--modal的演示-->
+    <view class="wk-panel top-gap">
+        <view class="panel-header">Modal框以及tips框的演示</view>
+        <view class="hr"></view>
+        <view class="wk-btn top-gap">弹出modal框</view>
+        <view class="hr top-gap"></view>
+        <view class="wk-btn top-gap">弹出tips框</view>
     </view>
 </template>
 
