@@ -1,0 +1,75 @@
+<!--
+    @组件名称：相册组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+  <template>
+    <swiper interval="2000">
+        <swiper-item wx:for="{{ items }}" wx:key="*this">    
+            <navigator url="/pages/common/player?agentId={{ item.agentId }}&videoUrl={{ item.videoUrl }}" wx:if="{{ item.type === 'video' }}">  
+                <view class="play"><text></text></view>
+            </navigator>
+            <image bindtap="{{ item.type === 'video' ? '' : 'previewImage' }}" src="{{ item.url }}" mode="widthFix"></image>
+            <view class="index">{{ index + 1 }}/{{ items.length }}</view>
+        </swiper-item>
+    </swiper>
+</template>
+
+<script>
+import wepy from "wepy" ;
+export default class Com extends wepy.component {
+    props = {
+        items : Array
+    } ;
+    data = {
+
+    } ;
+    methods = {
+
+    } ;
+    events = {
+
+    } ;    
+}
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+     swiper {
+        width : 100% ;
+        height : 56.3vw ;
+        swiper-item {
+            position : relative ;
+            image {
+                width : 100% ;
+            }
+            .play {
+                background-color : rgba(0, 0, 0, .4) ;
+                border-radius : 50% ;
+                width : 104rpx ;
+                height : 104rpx ;
+                text-align : center ;
+                text {
+                    .triangle-next(24rpx , #fff) ;
+                }     
+            }
+            .index {                
+                bottom : 30rpx ;
+                border-radius : 30rpx ;
+                background-color : #000 ;
+                color : #fff ;
+                font-size : @smaller-font-size ;
+                height : 47rpx ;
+                line-height : 47rpx ;
+                opacity : 0.7 ;
+                position : absolute ;
+                right : 30rpx ;
+                text-align : center ;              
+                width : 94rpx ;                
+            }
+        }
+    }
+</style>

@@ -6,7 +6,21 @@
         2. 
 -->
 <template lang="wxml">
-    <view>单条二手房房源组件</view>
+    <view class="item">
+        <view class="img-estate">
+            <image class="img" src="{{item.imageUrl}}"></image>
+            <view class="estate-name">
+                {{item.estateName}}
+            </view>
+        </view>
+        <view class="type-area">
+            {{item.type}} | {{item.area}} ㎡
+        </view>
+        <view class="total-unit-price">
+            <text class="total">{{item.total}}万</text>
+            <text class="unit">{{item.unit}}元/㎡</text>
+        </view>
+    </view>    
 </template>
 
 <script>
@@ -18,6 +32,15 @@ export default class Com extends wepy.component {
     data = {
 
     } ;
+    props = {
+        item: Object
+        /*imageUrl: String,
+        estateName: String,
+        type: String,
+        area: String,
+        total: String,
+        unit: String*/
+    };
     methods = {
 
     } ;
@@ -28,5 +51,50 @@ export default class Com extends wepy.component {
 </script>
 
 <style lang="less">
-
+    .item {       
+        background-color: #fff; 
+        box-sizing: border-box;
+        float: left;
+        width: 50%;
+        margin-top: 30rpx;
+        padding:0 15rpx 0 15rpx;        
+        .img-estate {
+            position: relative;
+            height: 220rpx;
+            .img {
+                width: 330rpx;
+                height: 220rpx;
+            }
+            .estate-name {
+                position: absolute;
+                left: 20rpx;
+                bottom: 12rpx;
+                font-size: 24rpx;
+                color: #fff;
+                line-height: 1;
+            }
+        }
+        
+        .type-area {
+            margin-top: 20rpx;
+            font-size: 22rpx;
+            color: #7c7c7c;
+            line-height: 24rpx;
+        }
+        .total-unit-price {
+            margin-top: 10rpx;
+            vertical-align: baseline;
+            .total {
+                color: #fc4c5a;
+                font-size: 32rpx;
+                line-height: 1;
+            }
+            .unit {
+                margin-left: 20rpx;
+                font-size: 22rpx;
+                color: #7c7c7c;
+                line-height: 1;
+            }
+        }
+    }
 </style>

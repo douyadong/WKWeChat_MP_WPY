@@ -83,15 +83,15 @@
             
         } ;
         methods = {
-           closeTab() {
-               this.setData({ visibility : false }) ;
+           closeTab(){
+               this.visibility = false ;
            }
         } ;
         events = {
 
         } ;
         onLoad() {
-           
+           setTimeout(()=>{ this.setData({ "visibility" : false }) ; } , 2000) ;
         } ;
         onShow() {
 
