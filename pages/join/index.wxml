@@ -1,0 +1,73 @@
+<!--index.wxml-->
+<view class="container">
+  <image mode="widthFix" src="https://p1.pstatp.com/origin/13ef0005ad28ca5c34a5"></image>
+  <image mode="widthFix" src="https://p1.pstatp.com/origin/29d8001337298f16c3d5"></image>
+  <view style="padding: 10px 15px 10px 15px;">
+    <view style="font-weight: bold; text-decoration: underline;margin-bottom:40rpx">
+      为什么要加入悟空找房区域代理商？
+    </view> 
+    <view style="font-weight: bold; font-size: 32rpx; margin-bottom: 20rpx;">
+      >> 4大移动APP作业系统
+    </view> 
+    <view style="font-size: 32rpx">
+      随时随地作业，提高效率，管理更便捷，开单更容易
+    </view>
+    <image mode="widthFix" src="https://p1.pstatp.com/origin/28840013f87195fca961"></image>
+
+    <view style="font-weight: bold; font-size: 32rpx; margin-bottom: 20rpx;">
+      >> 线上线下千万级品牌曝光
+    </view> 
+    <view style="font-size: 32rpx">
+      品牌强势曝光，带来流量，助力加盟商赢得领先的市场地位和商业机会
+    </view>
+    <image mode="widthFix" src="https://p1.pstatp.com/origin/1948000bd0f858e5fb34"></image>
+
+    <view style="font-weight: bold; font-size: 32rpx; margin-bottom: 20rpx;">
+      >> 360°卓越培训体系
+    </view> 
+    <view style="font-size: 32rpx">
+      20年房产经验培训师+悟空云APP培训系统助您打造专业团队
+    </view>
+    <image mode="widthFix" src="https://p1.pstatp.com/origin/1191000e3816d72ff8ea"></image>
+
+    <view style="font-weight: bold; font-size: 32rpx; margin-bottom: 20rpx;">
+      >> 总部出人出力，协助拓展渠道
+    </view> 
+    <view style="font-size: 32rpx">
+      经验丰富的专业BD团队全程指导攻克渠道，让您上手容易事半功倍
+    </view>
+    <image mode="widthFix" src="https://p1.pstatp.com/origin/1191000e382d96baaeab"></image>
+  </view>
+  <image mode="widthFix" src="https://p1.pstatp.com/origin/29e5000e72dacd0d98cd"></image>
+  <view style="text-decoration: underline; color: #008000; padding: 10px 15px 10px 15px; font-weight: bold">
+    仅招募区域代理，单店加盟未开放!
+  </view>
+  <view style="color: #808080; font-size: 32rpx; padding: 0 15px 10px 15px;">
+    <view style="margin:20rpx 0">姓名<text style="color:red;">*</text></view>
+    <view>
+      <input bindinput="bindInput" data-name="name" value="{{name}}"/>
+    </view>   
+    <view style="margin:20rpx 0">手机<text style="color:red">*</text></view>
+    <view>
+      <input bindinput="bindInput" data-name="mobile" value="{{mobile}}"/>
+    </view>
+     <view style="margin:20rpx 0">城市<text style="color:red">*</text></view>
+    <view>
+      <input bindinput="bindInput" data-name="city" value="{{city}}"/>
+    </view>
+    <view style="margin:20rpx 0">备注</view>
+    <view>
+      <textarea bindinput="bindInput" data-name="remark" value="{{remark}}"/>
+    </view>
+
+    <button style="margin-top:20rpx; font-size: 32rpx; vertical-align:middle; border-radius:10rpx;height:80rpx;background-color:rgb(248, 89, 89) !important;color:#fff" bindtap="commit">申请区域代理</button>
+
+    <view style="margin-top: 30rpx; font-size: 28rpx;">* 投资有风险 加盟需谨慎 </view>
+  </view>
+</view>
+
+<view wx:if="{{showError}}" style="z-index: 999; position: fixed; left: 0; right: 0; top: 0; bottom: 0; display: flex; justify-content: center; align-items: center;">
+    <view style="padding: 30rpx 20rpx; border-radius: 8rpx; max-width: 80%; color: #fff; background-color: rgba(0,0,0,.3)">  
+      {{msg}}
+    </view>
+</view>
