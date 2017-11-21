@@ -79,7 +79,7 @@ Page({
         city: this.data.city,
         memo: this.data.remark,        
         pageSource: 4,
-        utm_source: "加盟房产中介小程序"
+        utm_source: "悟空找房城市发展合作申请"
       },
 
       success: function(data){
@@ -130,7 +130,7 @@ Page({
   },
   onShareAppMessage(){
     return {
-      title: "加盟房产中介小程序"      
+      title: "悟空找房城市发展合作申请"      
     };
   }
 })
