@@ -6,8 +6,11 @@
         2.        
 -->
 <template lang="wxml">
-    <view>
-       店铺首页
+    <view class="store">
+        <view class="store-top">
+          <text>虹桥店</text>
+           <view class="price">周边房源均价 <text class="price-show">105501元/m²</text></view>
+        </view>
     </view>
 </template>
 
@@ -39,5 +42,37 @@
 </script>
 
 <style lang="less">
-    
+    @import "../../less/app.less" ;
+    .store {
+        .store-top {
+         width: 100%;
+            height:240rpx;
+            background: url("http://img.wkzf.com/b262848128334e3daab102eb97e1b747") no-repeat;
+            background-size: 100% 240rpx;
+            >text{
+                font-size: 48rpx;
+                color: @white-font-color;
+                letter-spacing: 1.71rpx;
+                line-height: 42rpx;
+                display: inline-block;
+                margin-top: 53rpx;
+                margin-left: 60rpx;
+            }
+            >.price{
+                font-size: 28rpx;
+                color: @white-font-color;
+                letter-spacing: 1rpx;
+                line-height: 28rpx;
+                margin-left: 60rpx;
+                margin-top: 50rpx;
+                .price-show{
+                    font-size: 48rpx;
+                    color: @white-font-color;
+                    letter-spacing: 1.71rpx;
+                    line-height: 42rpx;
+                    margin-left: 25rpx;
+                }
+            }
+        }
+    }
 </style>
