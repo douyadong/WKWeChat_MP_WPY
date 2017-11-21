@@ -27,6 +27,7 @@
         </view>
         <view class="panel-more">
             <navigator url="/pages/agent/index">查看更多</navigator>
+            <navigator url="/pages/store/index">店铺首页进入</navigator>
         </view>
     </view>
     <!--modal的演示-->
