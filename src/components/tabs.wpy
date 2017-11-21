@@ -2,10 +2,10 @@
     <view class="tables" style="height:{{styles.lineHeight || 88}}rpx">
       <view class="flex-wrp" >
          <repeat for="{{titles}}" key="index" index="index" item="item" >
-              <view class="flex-item "  style=" color:{{ positionIndex == index ? styles.changeColor:(styles.color || '#000')}} ; font-size: {{styles.fontSize || 32}}rpx ;  line-height: {{styles.lineHeight || 88}}rpx; " ><text bindtap="getIndex({{index}},{{item}})">{{item}}</text></view>
+              <view class="flex-item "  style=" color:{{ positionIndex == index ? (styles.changeColor || '#4081D6'):(styles.color || '#000')}} ; font-size: {{styles.fontSize || 32}}rpx ;  line-height: {{styles.lineHeight || 88}}rpx; " ><text bindtap="getIndex({{index}},{{item}})">{{item}}</text></view>
          </repeat>
       </view>
-     <text class="underline" style=" margin-left:{{positionLeft}}px ; width:{{(styles.fontSize || 32 ) * titleLength}}rpx"></text>
+     <text class="underline" style=" margin-left:{{positionLeft}}px ; width:{{(styles.fontSize || 32 ) * titleLength}}rpx ; border-top: 3rpx solid {{styles.changeColor || '#4081D6'}}"></text>
     </view>
 </template>
 
@@ -13,11 +13,11 @@
     import wepy from "wepy" ;
     export default class Tables extends wepy.component {
         props = {
-            titles : Array,
-            styles : Object,
+            titles : Array,     // ['推荐好房','推荐经纪人']
+            styles : Object,   // styles : { color ?:'#000000', changeColor?:'#4081D6', fontSize?: 32, lineHeight?:88, positionLeft:62 }  有问号代表可以不传值
         } ;
         data = {
-            positionIndex:0,
+            positionIndex: 0,
             positionLeft: 0,
             titleLength : 0
         } ;
@@ -25,7 +25,8 @@
             getIndex(index,item,event){
                 this.positionIndex =  index;
                 this.titleLength = item.length;
-                this.positionLeft = event.currentTarget.offsetLeft
+                this.positionLeft = event.currentTarget.offsetLeft;
+                this.$emit('childFn', this.positionIndex)
             },
         } ;
         onLoad() {
@@ -55,8 +56,8 @@
             display: inline-block;
             position: absolute;
             bottom:0;
-            border-top: 2rpx solid @blue-color;
             transition: .5s cubic-bezier(.35,0,.25,1);
+            -webkit-transition: .5s cubic-bezier(.35,0,.25,1);
         }
     }
 

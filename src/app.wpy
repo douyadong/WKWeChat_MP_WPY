@@ -3,6 +3,7 @@ import wepy from "wepy" ;
 export default class extends wepy.app {
     config = {
         "pages": [
+            "pages/store/index",
             "pages/market/index" ,
             "pages/index/index" ,
             "pages/demo/index" ,
@@ -15,7 +16,7 @@ export default class extends wepy.app {
             "pages/estate/detail" ,
             "pages/estate/comment" ,
             // "pages/market/index" ,
-            "pages/store/index"
+            //"pages/store/index"
         ] ,
         "window": {
             "backgroundTextStyle" : "light" ,
