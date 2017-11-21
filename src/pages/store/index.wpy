@@ -11,20 +11,28 @@
           <text>虹桥店</text>
            <view class="price">周边房源均价 <text class="price-show">105501元/m²</text></view>
         </view>
+        <tables :titles="titles" :styles="styles"></tables>
     </view>
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy" ;
+    import Tables from "../../components/tables" ;
     export default class Index extends wepy.page {
         config = {
             
         } ;
-        components = {            
-            
+        components = {
+            tables:Tables
         } ; 
         data = {
-            
+            titles:['推荐好房','推荐经纪人'],
+            styles:{
+                color:'#000000',
+                changeColor:'#4081D6',
+                fontSize: 32,
+                lineHeight:88
+            }
         } ;
         computed = {
             

@@ -1,0 +1,72 @@
+<template lang="wxml">
+    <view class="tables" style="height:{{styles.lineHeight || 88}}rpx">
+      <view class="flex-wrp" >
+         <repeat for="{{titles}}" key="index" index="index" item="item" >
+              <view class="flex-item "  style=" color:{{ positionIndex == index ? styles.changeColor:(styles.color || '#000')}} ; font-size: {{styles.fontSize || 32}}rpx ;  line-height: {{styles.lineHeight || 88}}rpx; " ><text bindtap="getIndex({{index}})">{{item}}</text></view>
+         </repeat>
+      </view>
+    <text class="underline" style=" margin-left:{{positionLeft}}px"></text>
+    </view>
+</template>
+
+<script>
+    import wepy from "wepy" ;
+    export default class Tables extends wepy.component {
+        props = {
+            titles : Array,
+            styles : Object,
+        } ;
+        data = {
+            positionIndex:null,
+            positionLeft:null
+        } ;
+        methods = {
+            getIndex(index,event){
+                this.positionIndex =  index;
+                this.positionLeft = event.currentTarget.offsetLeft
+            },
+            getPositionLeft(){
+
+               console.log(document.querySelector('.flex-item text')[0])
+            },
+            phoning() {
+                console.log("打我电话干嘛？") ;
+            } ,
+            addWechat() {
+                console.log("想撩我吗？") ;
+            }
+        } ;
+        onLoad() {
+            console.log("123211");
+            console.log(document.querySelector('.flex-item text')[0])
+        }
+    }
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+
+    .tables {
+        width: 100%;
+        background-color: @white-font-color;
+        position: relative;
+        .flex-wrp{
+            flex-direction:row;
+            display: -webkit-flex;
+            >.flex-item{
+                flex: 1;
+                text-align: center;
+            }
+        }
+        .underline{
+            display: inline-block;
+            position: absolute;
+            width: 150rpx;
+            bottom:0;
+            border-top:1px solid @blue-color;
+            transition: .5s cubic-bezier(.35,0,.25,1);
+        }
+    }
+
+</style>
