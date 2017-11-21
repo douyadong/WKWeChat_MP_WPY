@@ -6,27 +6,92 @@
         2. 
 -->
 <template lang="wxml">
-    <view>页面吸底的助手条组件，包括头像、电话咨询、添加微信三部分，而且每一部分都是可配的，可以没有</view>
+    <view class="assistant">        
+        <navigator  url="/pages/agent/index">
+            <image class="img-circle" src="{{ agent.headPortraitUrl }}?x-oss-process=image/resize,w_70" mode="aspectFill" lazy-load="true"></image>
+            <text class="name">{{ agent.agentName }}</text>
+            <text class="company">{{ agent.belongToCompany }}</text>
+        </navigator>
+        <text class="wechat" @tap="addWechat">添加微信</text> 
+        <text class="tel" @tap="phoning">电话咨询</text>
+    </view>
 </template>
 
 <script>
 import wepy from "wepy" ;
 export default class Com extends wepy.component {
-    components = {
-
-    } ;
+    props = {
+        agent : Object
+    } ;    
     data = {
 
     } ;
     methods = {
-
+        phoning() {
+            console.log("打我电话干嘛？") ;
+        } ,
+        addWechat() {
+            console.log("想撩我？") ;
+        }
     } ;
-    events = {
+    onload() {
 
-    } ;    
+    }
 }
 </script>
 
 <style lang="less">
-
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .assistant {
+        background-color : #fff ;
+        box-shadow : 0 -2px 6px 0 rgba( 0 , 0 , 0 , .1 ) ;
+        bottom : 0 ;
+        .flex() ;
+        height : 100rpx ;
+        left : 0 ; 
+        position : fixed ;
+        width : 100% ;
+        z-index : 9900 ;
+        &>navigator {
+            .flex(1) ;
+            .clearfix() ;
+            image {                
+                display : block ;
+                float : left ;
+                height : 70rpx ;
+                margin : 15rpx ;
+                width : 70rpx ;
+            }
+            text {
+                display : block ;                
+                margin-left : 90rpx ;
+                line-height : 35rpx ;
+                &.name {
+                    font-size : @default-font-size ;
+                    line-height : 40rpx ;
+                    margin-top : 15rpx ;
+                }
+                &.company {
+                    color : @light-font-color ;
+                    font-size : @small-font-size ;
+                    line-height : 30rpx ;
+                }
+            }
+        }
+        &>text {
+            color : #fff ;
+            display : block ;
+            .flex(1) ;
+            font-size : @default-font-size ;
+            line-height : 100rpx ;
+            text-align : center ;
+            &.wechat {
+                background-color : @danger-color ;
+            }
+            &.tel {
+                background-color : @primary-color ;
+            }
+        }
+    }
 </style>
