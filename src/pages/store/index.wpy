@@ -17,7 +17,7 @@
 
 <script>
     import wepy from "wepy" ;
-    import Tables from "../../components/tables" ;
+    import Tables from "../../components/tabs" ;
     export default class Index extends wepy.page {
         config = {
             
@@ -31,7 +31,8 @@
                 color:'#000000',
                 changeColor:'#4081D6',
                 fontSize: 32,
-                lineHeight:88
+                lineHeight:88,
+                positionLeft:62
             }
         } ;
         computed = {
