@@ -6,28 +6,275 @@
         2.        
 -->
 <template lang="wxml">
-    <view>
-       整个小程序首页
+    <view class="city-search">
+        <view class="city">{{city.name}}</view>
+        <view class="search-box">
+            <text class="iconfont icon-search"></text><view class="estate-address">小区或地址</view>
+        </view>
+    </view>
+    <view class="current-price">
+        <view class="title">今日上海房价</view>
+        <view class="price">105501元/㎡</view>
+        <view class="detail">查看 <text class="iconfont icon-next"></text></view>
+    </view>
+    <view class="filter">
+        <view class="district-total-type-sort">
+            <view class="district-section" @tap="clickFilterSection">
+                <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">区域</view>                
+            </view>            
+            <view class="total-section" @tap="clickFilterSection">
+                <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}" @tap="switchFilter" data-name="total">总价</view>                
+            </view>
+            <view class="type-section" @tap="clickFilterSection">
+                <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}" @tap="switchFilter" data-name="type">户型</view>                
+            </view>
+            <view class="sort-section" @tap="clickFilterSection">
+                <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" @tap="switchFilter" data-name="sort">排序</view>
+                
+            </view>
+
+            <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
+                <view class="items {{filter.selectedFilterSection == 'district'? '' : 'invisible'}}">
+
+                </view>
+                <view class="items {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
+                    <view wx:for="{{filter.totalSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
+                </view>
+                <view class="items {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
+                    <view wx:for="{{filter.typeSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
+                </view>
+                <view class="items {{filter.selectedFilterSection == 'sort'? '' : 'invisible'}}">
+                    <view wx:for="{{filter.sortSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
+                </view>
+            </view>
+        </view>        
+    </view>
+
+    <view class="esf-items"> 
+       <view class="house-count">已为您展示附近 453 套房源</view>     
+       <view class="items"> 
+        <esf :item="data"></esf>
+        <esf :item="data"></esf>
+        <esf :item="data"></esf>
+        <view style="clear:both"></view>
+       </view>
     </view>
 </template>
 
 <script>
     import wepy from "wepy" ;    
+    import Esf from "../../components/esf";
     export default class Index extends wepy.page {
         config = {
             
         } ;
         components = {            
-            
+            esf: Esf
         } ; 
-        data = {
-            
+        data = {  
+                city: {
+                    id: 43,
+                    name: "上海"
+                },
+                filter : {
+                    selectedFilterSection: "",
+                    districtSection: {
+                        items: [{
+                            id: 1,
+                            name: "宝山区",
+                            items: [{
+                                id: 1,
+                                name: "宝山区01"
+                            },{
+                                id: 2,
+                                name: "宝山区02"
+                            },{
+                                id: 3,
+                                name: "宝山区03"
+                            }]
+                        },{
+                            id: 2,
+                            name: "崇明区",
+                            items: [{
+                                id: 1,
+                                name: "崇明区01"
+                            },{
+                                id: 2,
+                                name: "崇明区02"
+                            },{
+                                id: 3,
+                                name: "崇明区03"
+                            }]
+                        },{
+                            id: 3,
+                            name: "奉贤区",
+                            items: [{
+                                id: 1,
+                                name: "奉贤区01"
+                            },{
+                                id: 2,
+                                name: "奉贤区02"
+                            },{
+                                id: 3,
+                                name: "奉贤区03"
+                            }]
+                        },{
+                            id: 4,
+                            name: "长宁区",
+                            items: [{
+                                id: 1,
+                                name: "长宁区01"
+                            },{
+                                id: 2,
+                                name: "长宁区02"
+                            },{
+                                id: 3,
+                                name: "长宁区03"
+                            }]
+                        },{
+                            id: 5,
+                            name: "普陀区",
+                            items: [{
+                                id: 1,
+                                name: "普陀区01"
+                            },{
+                                id: 2,
+                                name: "普陀区02"
+                            },{
+                                id: 3,
+                                name: "普陀区03"
+                            }]
+                        },{
+                            id: 6,
+                            name: "黄埔区",
+                            items: [{
+                                id: 1,
+                                name: "黄埔区01"
+                            },{
+                                id: 2,
+                                name: "黄埔区02"
+                            },{
+                                id: 3,
+                                name: "黄埔区03"
+                            }]
+                        },{
+                            id: 6,
+                            name: "虹口区",
+                            items: [{
+                                id: 1,
+                                name: "虹口区01"
+                            },{
+                                id: 2,
+                                name: "虹口区02"
+                            },{
+                                id: 3,
+                                name: "虹口区03"
+                            }]
+                        },{
+                            id: 7,
+                            name: "浦东新区",
+                            items: [{
+                                id: 1,
+                                name: "浦东新区01"
+                            },{
+                                id: 2,
+                                name: "浦东新区02"
+                            },{
+                                id: 3,
+                                name: "浦东新区03"
+                            }]
+                        }],
+                        selectedDistrictId: '',
+                        selectedTownId: ''
+                    },
+                    totalSection: {
+                        items: [{
+                            id: 0,
+                            text: "不限"
+                        },{
+                            id: 1,
+                            text: "100 万以下"
+                        },{
+                            id: 2,
+                            text: "100 - 150 万"
+                        },{
+                            id: 3,
+                            text: "150 - 200 万"
+                        },{
+                            id: 4,
+                            text: "200 - 250 万"
+                        },{
+                            id: 5,
+                            text: "250 - 300 万"
+                        }],
+                        selectedTotalId: '',
+                        customStartPrice: "",//自定义最低价
+                        customEndPrice: "",//自定义最高价
+                    },
+                    typeSection: {
+                        items: [{
+                            id: 0,
+                            text: "不限"
+                        },{
+                            id: 1,
+                            text: "一室"
+                        },{
+                            id: 2,
+                            text: "二室"
+                        },{
+                            id: 3,
+                            text: "三室"
+                        },{
+                            id: 4,
+                            text: "四室"
+                        },{
+                            id: 5,
+                            text: "五室及以上"
+                        }],
+                        selectedTypeId: ''
+                    },
+                    sortSection: {
+                        items: [{
+                            id: 0,
+                            text: "默认排序"
+                        },{
+                            id: 1,
+                            text: "单价从低到高"
+                        },{
+                            id: 2,
+                            text: "单价从高到低"
+                        },{
+                            id: 3,
+                            text: "总价从低到高"
+                        },{
+                            id: 4,
+                            text: "总价从高到低"
+                        }],
+                        selectedSortId: ''
+                    }
+                },
+                imageUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
+                estateName: "淞虹小区",
+                type: "2室2厅1卫",
+                area: "66.36",
+                total: "525",
+                unit: "36251"            
         } ;
         computed = {
             
         } ;
         methods = {
-           
+           switchFilter(e){
+               let name = e.currentTarget.dataset.name;
+               console.log('name', name);
+               console.log('selectedFilterSection', this);
+               if(this.filter.selectedFilterSection == name){
+                   name = '';
+               }
+               this.setData({
+                   'filter.selectedFilterSection': name
+               })
+           }
         } ;
         events = {
 
@@ -39,5 +286,137 @@
 </script>
 
 <style lang="less">
-    
+@import '../../less/mixins';
+    .city-search {
+        padding: 0 30rpx 30rpx 30rpx;
+        background-color: #fff;
+        .flex();
+        .city {
+            font-size: 28rpx;
+            color: #000;            
+            .flex-shrink(0);
+            padding:10rpx 0;
+            &::after {
+                content: '';
+                vertical-align: middle !important;
+                .triangle-down(8rpx,#7c7c7c);
+            }            
+        }
+        .search-box {
+            .flex();
+            .flex(1);
+            margin-left: 28rpx;            
+            background-color: #F0F0F0;
+            border-radius: 6rpx;
+            font-size: 26rpx;
+            color: #7C7C7C;
+            padding: 10rpx 0rpx 2rpx 30rpx;
+            .estate-address {
+                margin-left: 9rpx;
+                &::before {
+
+                }
+            }
+        }
+    }
+
+    .current-price {
+        color: #fff;
+        padding: 63rpx 30rpx;
+        background-image: linear-gradient(90deg, #64BCF0 6%, rgba(0,125,255,0.82) 91%);
+        position: relative;
+        .title {
+            font-size: 50rpx;
+            line-height: 1;
+        }
+
+        .price {
+            font-size: 64rpx;
+            line-height: 1;
+            margin-top: 30rpx;
+        }
+
+        .detail {
+            font-size: 32rpx;
+            line-height: 28rpx;
+            position: absolute;
+            top: 171rpx;
+            right: 24rpx;
+        }        
+    }
+
+    .filter {
+        .district-total-type-sort {
+            background-color: #fff;
+            color: #000;
+            font-size: 32rpx;
+            padding: 30rpx 0;
+            position: relative;
+            .flex();
+
+            .active {
+                color:  #4081D6;
+            }
+
+            .district-section, .total-section, .type-section, .sort-section {
+                text-align: center;
+                .flex(1);
+                position: relative;
+                .closed::after {
+                    content: '';
+                    .triangle-down(9rpx, #7C7C7C);
+                    vertical-align: middle !important;
+                }
+
+                .open {
+                    color:  #4081D6;
+                    &::after {
+                        color:  #4081D6;
+                        content: '';
+                        .triangle-up(9rpx, #7C7C7C);
+                        vertical-align: middle !important;
+                    }
+                }
+            }
+
+            .content {
+                background-color: #f0f0f0;
+                margin-top: 20rpx;
+                position: absolute;
+                width: 100%;
+                top: 92rpx;
+                text-align: center;
+                font-size: 30rpx;                     
+                z-index: 3;  
+
+                .items {
+                    background-color: #fff;
+                }              
+            }
+
+            .invisible {
+                display: none
+            }
+        }
+    }    
+
+    .esf-items {
+        background-color: #fff;
+        margin-top: 4rpx;        
+        .house-count {
+            padding: 16rpx 0;
+            font-size: 28rpx;
+            line-height: 1;
+            color: #4081D6;
+            text-align: center;
+            border: 1px solid #E4E4E4;
+            border-left: none;
+            border-right: none;
+        }
+
+        .items {
+            padding:0 15rpx;
+            background-color: #fff; 
+        }
+    }
 </style>
