@@ -2,31 +2,99 @@
     @组件名称：单个经纪人条目组件
     @作者：赵华刚 (zhaohuagang@lifang.com)
     @业务逻辑说明：
-        1.
+        1. 头像的lazy-load这个属性在微信基础库1.5.0以上兼容
         2. 
 -->
 <template lang="wxml">
-    <view>单个经纪人条目组件</view>
+    <view class="agent">
+        <image src="{{ agent.headPortraitUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
+        <view class="tel" @tap="phoning">
+            <text class="iconfont icon-tel"></text>
+            <text class="memo">电话咨询</text>
+        </view>
+        <view class="wechat" @tap="addWechat">
+            <text class="iconfont icon-wechat"></text>
+            <text class="memo">添加微信</text>
+        </view>        
+        <view class="summary">
+            <text class="name">{{ agent.agentName }}</text>
+            <text class="seniority">加入悟空：{{ agent.seniority }}年</text>
+        </view>        
+    </view>
 </template>
 
 <script>
     import wepy from "wepy" ;
     export default class Com extends wepy.component {
-        components = {
-
+        props = {
+            agent : Object
         } ;
         data = {
 
         } ;
         methods = {
-
+            phoning() {
+                console.log("打我电话干嘛？") ;
+            } ,
+            addWechat() {
+                console.log("想撩我吗？") ;
+            }
         } ;
-        events = {
+        onload() {
 
-        } ;    
+        }
     }
 </script>
 
 <style lang="less">
-
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .agent {
+        border-bottom : 1rpx solid @light-line-gray-color ;
+        .clearfix() ;
+        padding : @common-margin 0 @common-margin 0 ;
+        &>image {
+            display : block ;
+            float : left ;
+            height : 120rpx ;
+            width : 120rpx ;
+        }
+        .tel , .wechat {
+            float : right ;
+            margin-top : @gap-dimension ;
+            text-align : center ;
+            width : 120rpx ;
+            text {
+                display : block ;
+                &.iconfont {
+                    font-size : @great-font-size ;
+                }
+            }
+            &>.memo {
+                font-size : @smaller-font-size ;
+                line-height : 40rpx ;
+            }
+        }
+        .tel {
+            border-left : 1rpx solid @primary-color ;
+            color : @primary-color ;
+        }
+        .wechat {
+            color : @success-color ;
+        }
+        .summary {
+            margin : 0 240rpx 0 150rpx ;
+            text {
+                display : block ;
+            }
+            .name {
+                font-size : @large-font-size ;
+                line-height : 70rpx ;
+            }
+            .seniority {
+                color : @light-font-color ;
+                font-size : @default-font-size ;
+            }
+        }
+    }
 </style>

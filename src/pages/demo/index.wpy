@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <!--下面试tabs的demo-->
-    <view class="wk-tabs">
+    <view class="wk-tabs" wx:if="{{ visibility }}">
         <view class="tabs-handle">
             <view class="on"><text>悟空找房</text></view>
             <view><text>有房有客</text></view>
@@ -20,7 +20,7 @@
     <view class="wk-panel top-gap">
         <view class="panel-header">面板、按钮以及图标字体的用法</view>
         <view class="panel-body">            
-            <view class="wk-btn wk-btn-lg">这是一个很大的button</view>            
+            <view class="wk-btn wk-btn-lg" @tap="closeTab">这是一个很大的button</view>            
             <view class="wk-btn wk-btn-primary top-gap">这是一个蓝色的button</view>
             <view class="wk-btn wk-btn-sm top-gap">这是一个小规格的button</view>
             <view class="wk-btn wk-btn-transparent top-gap">这是一个透明的button</view>
@@ -34,42 +34,68 @@
         </view>
         <view class="panel-more">
             <navigator url="/pages/agent/index">查看更多</navigator>
+            <navigator url="/pages/store/index">店铺首页进入</navigator>
         </view>
     </view>
     <!--modal的演示-->
     <view class="wk-panel top-gap">
-        <view class="panel-header">Modal框以及tips框的演示</view>
-        <view class="hr"></view>
-        <view class="wk-btn top-gap">弹出modal框</view>
-        <view class="hr top-gap"></view>
-        <view class="wk-btn top-gap">弹出tips框</view>
+        <view class="panel-header">组件的使用方法</view>
+        <agent :agent="agentDetail"></agent>
     </view>
+    <assistant :agent="agentDetail"></assistant>
+    <!--<tips></tips>-->
+    <modal title="添加微信">
+        <view class="modal-header" slot="header">添加微信</view>
+        <text slot="body">font-class是unicode使用方式的一种变种，主要是解决unicode书写不直观，语意不明确的问题</text>
+        <view slot="footer" class="modal-footer">
+            <view class="wk-btn wk-btn-transparent">保存到相册</view>
+            <view class="wk-btn wk-btn-transparent">复制微信号</view>
+        </view>
+    </modal>
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy" ;
+    import Agent from "../../components/agent" ;
+    import Assistant from "../../components/assistant" ;
+    import Tips from "../../components/tips" ;
+    import Modal from "../../components/modal" ;
     export default class Index extends wepy.page {
         config = {
             
         } ;
         components = {            
-            
+            agent : Agent ,
+            assistant : Assistant ,
+            tips : Tips ,
+            modal : Modal
         } ; 
         data = {
-            
+            agentDetail : {
+                "headPortraitUrl" : "https://img.wkzf.com/2fdc317e6a94414990ae51d248a3de57" ,
+                "agentName" : "赵华刚" ,
+                "seniority" : 2 ,
+                "belongToCompany" : "志远地产"
+            } ,
+            visibility : true
         } ;
         computed = {
             
         } ;
         methods = {
-           
+           closeTab() {
+               this.setData({ visibility : false }) ;
+           }
         } ;
         events = {
 
         } ;
         onLoad() {
            
-        }
+        } ;
+        onShow() {
+
+        } ;
     }
 </script>
 
