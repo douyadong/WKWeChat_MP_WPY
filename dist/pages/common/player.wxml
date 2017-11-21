@@ -1,0 +1,4 @@
+
+    <view class="video _477b80e">
+           <video src="{{src}}" controls autoplay class="_477b80e"/>
+    </view>

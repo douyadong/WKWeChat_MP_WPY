@@ -1,0 +1,1 @@
+.wk-tips{background-color:rgba(0,0,0,0.8);-webkit-border-radius:200rpx;border-radius:200rpx;color:#fff;display:none;font-size:24rpx;line-height:150%;padding:10rpx 20rpx;position:fixed}

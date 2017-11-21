@@ -1,0 +1,52 @@
+
+    <!--下面试tabs的demo-->
+    <view class="wk-tabs">
+        <view class="tabs-handle">
+            <view class="on"><text>悟空找房</text></view>
+            <view><text>有房有客</text></view>
+            <view><text>数据门户</text></view>
+        </view>
+        <view class="tabs-frame">
+        </view>
+    </view>
+    <!--下面是panel的demo-->
+    <view class="wk-panel top-gap">
+        <view class="panel-header">面板、按钮以及图标字体的用法</view>
+        <view class="panel-body">            
+            <view class="wk-btn wk-btn-lg">这是一个很大的button</view>            
+            <view class="wk-btn wk-btn-primary top-gap">这是一个蓝色的button</view>
+            <view class="wk-btn wk-btn-sm top-gap">这是一个小规格的button</view>
+            <view class="wk-btn wk-btn-transparent top-gap">这是一个透明的button</view>
+            <view class="top-gap">
+               <text> 下面演示一下图标字体怎么玩：</text>
+               <text class="iconfont icon-wechat"/>
+               <text class="iconfont icon-tel"/>
+               <text class="iconfont icon-search"/>
+               <text class="iconfont icon-prev"/>
+            </view>
+        </view>
+        <view class="panel-more">
+            <navigator url="/pages/agent/index">查看更多</navigator>
+        </view>
+    </view>
+    <!--modal的演示-->
+    <view class="wk-panel top-gap">
+        <view class="panel-header">组件的使用方法</view>
+        
+    <view class="agent">
+        <image src="{{ $agent$data.headPortraitUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"/>
+        <view class="tel" bindtap="$agent$call">
+            <text class="iconfont icon-tel"/>
+            <text class="memo">电话咨询</text>
+        </view>
+        <view class="wechat" bindtap="$agent$addWechat">
+            <text class="iconfont icon-wechat"/>
+            <text class="memo">添加微信</text>
+        </view>        
+        <view class="summary">
+            <text class="name">{{ $agent$data.agentName }}</text>
+            <text class="seniority">加入悟空：{{ $agent$data.seniority }}年</text>
+        </view>        
+    </view>
+
+    </view>

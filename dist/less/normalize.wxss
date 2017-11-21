@@ -1,0 +1,1 @@
+.clearfix:after{clear:both;content:" ";display:block;font-size:0;height:0;visibility:hidden}.fit-height{overflow:auto;zoom:1}.transparent{background-color:transparent;border:1px solid transparent;outline:none}.top-gap{margin-top:20rpx}.bottom-gap{margin-bottom:20rpx}.hr{border-top:1rpx solid #f2f2f2}
