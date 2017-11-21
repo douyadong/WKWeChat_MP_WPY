@@ -6,7 +6,9 @@
         2. 
 -->
 <template lang="wxml">
-    <view>地图图片组件</view>
+    <view class="qqmap">
+        <image src="" mode="aspectFill" lazy-load="true"></image>
+    </view>
 </template>
 
 <script>
@@ -28,5 +30,7 @@ export default class Com extends wepy.component {
 </script>
 
 <style lang="less">
-
+    .qqmap {
+        position : relative ;
+    }
 </style>

@@ -7,8 +7,8 @@
 -->
 <template lang="wxml">
     <view class="agent">
-        <image src="{{ data.headPortraitUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
-        <view class="tel" @tap="call">
+        <image src="{{ agent.headPortraitUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
+        <view class="tel" @tap="phoning">
             <text class="iconfont icon-tel"></text>
             <text class="memo">电话咨询</text>
         </view>
@@ -17,8 +17,8 @@
             <text class="memo">添加微信</text>
         </view>        
         <view class="summary">
-            <text class="name">{{ data.agentName }}</text>
-            <text class="seniority">加入悟空：{{ data.seniority }}年</text>
+            <text class="name">{{ agent.agentName }}</text>
+            <text class="seniority">加入悟空：{{ agent.seniority }}年</text>
         </view>        
     </view>
 </template>
@@ -27,19 +27,22 @@
     import wepy from "wepy" ;
     export default class Com extends wepy.component {
         props = {
-            data : Object
+            agent : Object
         } ;
         data = {
 
         } ;
         methods = {
-            call : ()=> {
-                alert("打我电话干嘛？") ;
+            phoning() {
+                console.log("打我电话干嘛？") ;
             } ,
-            addWechat : ()=> {
-                alert("想撩我吗？") ;
+            addWechat() {
+                console.log("想撩我吗？") ;
             }
         } ;
+        onload() {
+
+        }
     }
 </script>
 
