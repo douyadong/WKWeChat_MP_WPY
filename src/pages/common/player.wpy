@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view  class="video">
-           <video src="{{src}}" controls="controls" autoplay="autoplay"></video>
+        <video src="{{src}}" controls="controls" autoplay="autoplay"></video>
     </view>
 </template>
 
@@ -21,7 +21,7 @@
             
         } ; 
         data = {
-            src:'http://7xkvzb.com5.z0.glb.qiniucdn.com/5085474bacab4d5087e9d371a3ea5709WV.mp4'
+            src:''
         } ;
         computed = {
             
@@ -33,21 +33,14 @@
 
         } ;
         onLoad(options) {
-            // console.log(JSON.parse("{c:1}"))
-            // let video = JSON.parse(decodeURIComponent(options.video));
-            // console.log(22)
-            // this.setData({
-            //     'src': video.videoUrl,
-            // })
+            this.src="http://7xkvzb.com5.z0.glb.qiniucdn.com/5085474bacab4d5087e9d371a3ea5709WV.mp4"
+            let video = JSON.parse(decodeURIComponent(options));
+            this.src=video.videoUrl;
         }
     }
 </script>
 
 <style lang="less" scoped>
-    page{
-        height: 100%;
-        position: relative;
-    }
     .video{
         position: absolute;
         top:50%;

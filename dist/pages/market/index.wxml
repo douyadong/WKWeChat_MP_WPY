@@ -1,4 +1,18 @@
 
-    <view>
-       房价行情页面
-    </view>
+        <view class="today-price _d8c3ba2">
+            <view class="address _d8c3ba2">今日上海房价</view>
+            <text class="city-price _d8c3ba2">105501元/m²</text><text class="compare _d8c3ba2">环比上月↓-7.66%</text>
+        </view>
+        <view class="specific-area _d8c3ba2">
+            <view class="now-area _d8c3ba2">当前各区参考均价</view>
+            <view class="small-title _d8c3ba2">
+                <text class="area _d8c3ba2">区域</text><text class="average _d8c3ba2">参考均价</text><text class="increase _d8c3ba2">涨幅</text>
+            </view>
+        </view>
+        <view class="details _d8c3ba2">
+             <block class="_d8c3ba2" wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+                 <view class="single-detail _d8c3ba2">
+                        <text class="location _d8c3ba2">{{item.area}}</text><text class="mean _d8c3ba2">{{item.price}}   元/m²</text><text class="rise _d8c3ba2">{{item.rise}}</text>
+                </view>
+             </block>
+        </view>
