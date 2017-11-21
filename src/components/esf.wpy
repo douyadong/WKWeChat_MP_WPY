@@ -6,7 +6,7 @@
         2. 
 -->
 <template lang="wxml">
-    <view class="item">
+    <view class="esf-item">
         <view class="img-estate">
             <image class="img" src="{{item.imageUrl}}"></image>
             <view class="estate-name">
@@ -50,8 +50,8 @@ export default class Com extends wepy.component {
 }
 </script>
 
-<style lang="less">
-    .item {       
+<style lang="less">    
+    .esf-item {       
         background-color: #fff; 
         box-sizing: border-box;
         float: left;

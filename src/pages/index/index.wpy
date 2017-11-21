@@ -31,23 +31,49 @@
             <view class="sort-section" @tap="clickFilterSection">
                 <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" @tap="switchFilter" data-name="sort">排序</view>
                 
-            </view>
-
-            <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
+            </view>            
+        </view>    
+        <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
                 <view class="items {{filter.selectedFilterSection == 'district'? '' : 'invisible'}}">
-
+                    <view class="wk-tabs">
+                        <view class="tabs-handle">
+                            <view class="{{filter.districtSection.selectedSection == 'district' ? 'on':''}}" data-name="district" @tap="selectDistrictMetro"><text>区域</text></view>
+                            <view class="{{filter.districtSection.selectedSection == 'metro' ? 'on':''}}" @tap="selectDistrictMetro" data-name="metro"><text>地铁</text></view>                            
+                        </view>
+                        <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='district'?'visible':''}}">
+                           <view class="left">
+                            <view @tap="selectDistrict" class="item {{item.id == filter.districtSection.selectedDistrictId? 'active':''}}" wx:for="{{filter.districtSection.districts}}" data-id="{{item.id}}">{{item.name}}</view>
+                           </view>
+                           <view class="right" wx:for="{{filter.districtSection.districts}}" wx:if="{{filter.districtSection.selectedDistrictId == item.id}}">
+                            <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{item.items}}" wx:for-item="town" data-id="{{town.id}}">{{town.name}}</view>
+                           </view>
+                        </view>
+                        <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='metro'?'visible':''}}">
+                           <view class="left">
+                            <view @tap="selectMetro" class="item {{item.id == filter.districtSection.selectedMetroId? 'active':''}}" wx:for="{{filter.districtSection.metros}}" data-id="{{item.id}}">{{item.name}}</view>
+                           </view>
+                           <view class="right" wx:for="{{filter.districtSection.metros}}" wx:if="{{filter.districtSection.selectedMetroId == item.id}}">
+                            <view @tap="selectStation" class="item {{station.id==filter.districtSection.selectedStationId?'active':''}}" wx:for="{{item.items}}" wx:for-item="station" data-id="{{station.id}}">{{station.name}}</view>
+                           </view>
+                        </view>
+                    </view>
                 </view>
-                <view class="items {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
-                    <view wx:for="{{filter.totalSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
+                <view class="items totals {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
+                    <view @tap="selectTotal" class="{{filter.totalSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
+                    <view class="custom">
+                        <view class="input"><input /></view>-<view class="input"><input/></view><view class="button">确定</view>
+                    </view>
                 </view>
-                <view class="items {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
-                    <view wx:for="{{filter.typeSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
+                <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
+                    <view @tap="selectType" class="item {{filter.typeSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.typeSection.items}}" data-id="{{item.id}}">{{item.text}}</view> 
+                    <view class="confirm">
+                        <button class="button">确定</button>
+                    </view>
                 </view>
-                <view class="items {{filter.selectedFilterSection == 'sort'? '' : 'invisible'}}">
-                    <view wx:for="{{filter.sortSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
+                <view class="items sorts {{filter.selectedFilterSection == 'sort'? '' : 'invisible'}}">
+                    <view @tap="selectSort" class="{{filter.sortSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.sortSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
                 </view>
-            </view>
-        </view>        
+            </view>    
     </view>
 
     <view class="esf-items"> 
@@ -57,6 +83,8 @@
         <esf :item="data"></esf>
         <esf :item="data"></esf>
         <view style="clear:both"></view>
+       </view>       
+       <view class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
        </view>
     </view>
 </template>
@@ -79,10 +107,20 @@
                 filter : {
                     selectedFilterSection: "",
                     districtSection: {
-                        items: [{
+                        districts: [{
+                            id: "",
+                            name: "不限",
+                            items: [{
+                                id: "",
+                                name: "不限"
+                            }]
+                        },{
                             id: 1,
                             name: "宝山区",
                             items: [{
+                                id: "",
+                                name: "不限"
+                            },{
                                 id: 1,
                                 name: "宝山区01"
                             },{
@@ -96,6 +134,9 @@
                             id: 2,
                             name: "崇明区",
                             items: [{
+                                id: "",
+                                name: "不限"
+                            },{
                                 id: 1,
                                 name: "崇明区01"
                             },{
@@ -109,6 +150,9 @@
                             id: 3,
                             name: "奉贤区",
                             items: [{
+                                id: "",
+                                name: "不限"
+                            },{
                                 id: 1,
                                 name: "奉贤区01"
                             },{
@@ -122,6 +166,9 @@
                             id: 4,
                             name: "长宁区",
                             items: [{
+                                id: "",
+                                name: "不限"
+                            },{
                                 id: 1,
                                 name: "长宁区01"
                             },{
@@ -135,6 +182,9 @@
                             id: 5,
                             name: "普陀区",
                             items: [{
+                                id: "",
+                                name: "不限"
+                            },{
                                 id: 1,
                                 name: "普陀区01"
                             },{
@@ -148,6 +198,9 @@
                             id: 6,
                             name: "黄埔区",
                             items: [{
+                                id: "",
+                                name: "不限"
+                            },{
                                 id: 1,
                                 name: "黄埔区01"
                             },{
@@ -158,9 +211,12 @@
                                 name: "黄埔区03"
                             }]
                         },{
-                            id: 6,
+                            id: 7,
                             name: "虹口区",
                             items: [{
+                                id: "",
+                                name: "不限"
+                            },{
                                 id: 1,
                                 name: "虹口区01"
                             },{
@@ -171,7 +227,7 @@
                                 name: "虹口区03"
                             }]
                         },{
-                            id: 7,
+                            id: 8,
                             name: "浦东新区",
                             items: [{
                                 id: 1,
@@ -184,8 +240,32 @@
                                 name: "浦东新区03"
                             }]
                         }],
+                        metros:[{
+                                id: "",
+                                name: "不限",
+                                items: [{
+                                id: "",
+                                name: "不限"
+                            }]
+                            },{
+                            id: 1,
+                            name: "一号线",
+                            items: [{
+                                id: "",
+                                name: "不限"
+                            },{
+                                id: 1,
+                                name: "站点1"
+                            },{
+                                id: 2,
+                                name: "站点2"
+                            }]
+                        }],
                         selectedDistrictId: '',
-                        selectedTownId: ''
+                        selectedTownId: '',
+                        selectedMotroId: "",
+                        selectedStationId: "",
+                        selectedSection: 'district' //默认区域选中
                     },
                     totalSection: {
                         items: [{
@@ -207,7 +287,7 @@
                             id: 5,
                             text: "250 - 300 万"
                         }],
-                        selectedTotalId: '',
+                        selectedId: '',
                         customStartPrice: "",//自定义最低价
                         customEndPrice: "",//自定义最高价
                     },
@@ -231,7 +311,7 @@
                             id: 5,
                             text: "五室及以上"
                         }],
-                        selectedTypeId: ''
+                        selectedId: ''
                     },
                     sortSection: {
                         items: [{
@@ -250,7 +330,7 @@
                             id: 4,
                             text: "总价从高到低"
                         }],
-                        selectedSortId: ''
+                        selectedId: ''
                     }
                 },
                 imageUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
@@ -264,17 +344,60 @@
             
         } ;
         methods = {
-           switchFilter(e){
+           switchFilter(e){ //切换筛选条件事件处理函数
                let name = e.currentTarget.dataset.name;
-               console.log('name', name);
-               console.log('selectedFilterSection', this);
                if(this.filter.selectedFilterSection == name){
                    name = '';
                }
-               this.setData({
-                   'filter.selectedFilterSection': name
-               })
-           }
+               this.filter.selectedFilterSection = name;
+               //this.setData('filter.selectedFilterSection',name)
+           },
+           selectSort(e){//切换排序规则
+                let sortId = e.currentTarget.dataset.id;
+                this.filter.sortSection.selectedId = sortId;
+           },
+
+           selectType(e){//切换房型
+                let typeId = e.currentTarget.dataset.id;
+                this.filter.typeSection.selectedId = typeId;
+            },
+            selectTotal(e){//切换总价
+                let typeId = e.currentTarget.dataset.id;
+                this.filter.totalSection.selectedId = typeId;
+            },
+            selectDistrictMetro(e){//切换区域或地铁
+                let name = e.currentTarget.dataset.name;
+                if(this.filter.districtSection.selectedSecion == name) return;
+                this.filter.districtSection.selectedSection = name;
+                this.filter.districtSection.selectedDistrictId = '';
+                this.filter.districtSection.selectedTownId = '';
+                this.filter.districtSection.selectedMetroId = '';
+                this.filter.districtSection.selectedStationId = '';
+            },
+            selectDistrict(e){//选择具体区
+                let districtId = e.currentTarget.dataset.id;
+                if(this.filter.districtSection.selectedDistrictId == districtId) return;
+                this.filter.districtSection.selectedDistrictId = districtId;
+                this.filter.districtSection.selectedTownId = '';
+            },
+            selectTown(e){//选择具体板块
+                let townId = e.currentTarget.dataset.id;
+                this.filter.districtSection.selectedTownId = townId;
+            },
+            selectMetro(e){//选择具体地铁线路
+                let metroId = e.currentTarget.dataset.id;
+                if(this.filter.districtSection.selectedMetroId == metroId) return;
+                this.filter.districtSection.selectedMetroId = metroId;
+                this.filter.districtSection.selectedStationId = '';
+            },
+            selectStation(e){//选择具体地铁站点
+                let stationId = e.currentTarget.dataset.id;
+                this.filter.districtSection.selectedStationId = stationId;
+            },
+           refresh(){// 刷新列表
+
+           },
+
         } ;
         events = {
 
@@ -346,17 +469,13 @@
     }
 
     .filter {
+         position: relative;
         .district-total-type-sort {
             background-color: #fff;
             color: #000;
             font-size: 32rpx;
-            padding: 30rpx 0;
-            position: relative;
-            .flex();
-
-            .active {
-                color:  #4081D6;
-            }
+            padding: 30rpx 0;           
+            .flex();            
 
             .district-section, .total-section, .type-section, .sort-section {
                 text-align: center;
@@ -365,7 +484,7 @@
                 .closed::after {
                     content: '';
                     .triangle-down(9rpx, #7C7C7C);
-                    vertical-align: middle !important;
+                    vertical-align: middle !important;                    
                 }
 
                 .open {
@@ -377,32 +496,186 @@
                         vertical-align: middle !important;
                     }
                 }
-            }
+            }                                              
+        }
 
-            .content {
+        .active {
+            color:  #4081D6;
+        }
+
+        .invisible {
+            display: none
+        }
+        .content {
+                transition: all 2s;
                 background-color: #f0f0f0;
-                margin-top: 20rpx;
+                margin-top: 12rpx;
                 position: absolute;
                 width: 100%;
-                top: 92rpx;
-                text-align: center;
+                top: 92rpx;                           
                 font-size: 30rpx;                     
                 z-index: 3;  
 
                 .items {
                     background-color: #fff;
-                }              
-            }
+                }          
 
-            .invisible {
-                display: none
+                .sorts {
+                    view {
+                        padding-top: 29rpx;
+                        padding-bottom: 29rpx;
+                        font-size: 30rpx;
+                        line-height: 1;
+                        vertical-align: middle;
+                        text-align: center;
+                        & + view {
+                            border-top: 1rpx solid #E4E4E4;
+                        }
+                    }
+                }    
+
+                .types {
+                    padding: 30rpx 30rpx 50rpx 30rpx;
+                    background-color: #fff;
+                    .item {
+                        background-color: #F5F5F5;
+                        font-size: 24rpx;
+                        color: #000;
+                        border-radius: 8rpx;
+                        text-align: center;
+                        padding: 20rpx;
+                        border: 2rpx solid #F5F5F5;
+                        width: 208rpx;
+                        display: inline-block;
+                        margin: 11rpx;
+                        box-sizing: border-box;
+                        text-align: center;
+
+                        &.active {
+                            color:  #4081D6;
+                            border: 2rpx solid  #4081D6;
+                            background-color: #fff;
+                        }                                                
+                    }
+
+                    .confirm {
+                        display: block;
+                        margin-top: 40rpx;
+                        border-top: 1px solid #D7D7D7;
+                        padding-top: 50rpx;
+                        text-align: center;
+                        .button {
+                            width: 310rpx;
+                            border-radius: 8rpx;
+                            color: #fff;
+                            background-color: #4081D6;
+                            font-size: 26rpx;
+                            text-align: center;
+                            padding:18rpx 0;
+                            box-sizing: border-box;
+                            line-height: 37rpx;
+                        }
+                    }
+                }
+
+                .totals {
+                    padding-left: 40rpx;
+                    padding-right: 40rpx;
+                    view {
+                        padding-top: 29rpx;
+                        padding-bottom: 29rpx;
+                        font-size: 30rpx;
+                        line-height: 1;
+                        vertical-align: middle;
+                        text-align: center;
+                    }
+
+                    .custom {
+                        border-top: 1rpx solid #D7D7D7;
+                        padding: 40rpx 0;
+                        color: #999;
+
+                        view {
+                            display: inline-block;
+                            padding: 0;
+                            &.input {                                
+                                border-radius: 8rpx;
+                                background-color: #F6F6F6;
+                                text-align: center;                                
+                                color: #4081D6;
+                                width: 200rpx;
+                                margin: 0 9rpx;
+                                
+                                font-size: 30rpx;
+                                display: inline-block;
+                                box-sizing: border-box;
+                                input {
+                                    height: 66rpx;
+                                    line-height: 1;
+                                }
+                            }  
+
+                            &.button {  
+                                padding: 21rpx 0;
+                                display: inline-block;  
+                                width: 208rpx;
+                                margin-left: 11rpx;
+                                border-radius: 8rpx;                                
+                                background-color: #4081D6;
+                                text-align: center;                                
+                                line-height: 1;    
+                                color: #fff;                                
+                                font-size: 30rpx;                                                                               
+                            }                           
+                        }                           
+                    }
+                }
             }
-        }
     }    
 
+    .district-metro {
+        &.visible {
+            .flex();
+        }  
+
+        .flex();
+        .left {
+            .flex(1);
+            background-color: #F0F0F0;
+            font-size: 30rpx;     
+
+            .item {
+                line-height: 1;
+                padding: 29rpx 0 29rpx 40rpx;
+                color: #000;
+                &.active {
+                    background-color: #fff;
+                    color: #4081D6;
+                }  
+            }                 
+        }
+        .right{
+            .flex(1);
+            font-size: 30rpx;
+            background-color: #fff;
+            
+
+            .item {
+                line-height: 1;
+                color: #000;
+                padding: 29rpx 0 29rpx 40rpx;
+                &.active {                    
+                    color: #4081D6;
+                } 
+            }
+        }
+    }
+
     .esf-items {
+        position: relative;
         background-color: #fff;
-        margin-top: 4rpx;        
+        margin-top: 4rpx; 
+        height: 100%;       
         .house-count {
             padding: 16rpx 0;
             font-size: 28rpx;
@@ -417,6 +690,17 @@
         .items {
             padding:0 15rpx;
             background-color: #fff; 
+        }
+        .cover {
+            background-color: rgba(0,0,0,.2);
+            height: 100%;
+            position:absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            &.invisible {
+                display: none;
+            }
         }
     }
 </style>

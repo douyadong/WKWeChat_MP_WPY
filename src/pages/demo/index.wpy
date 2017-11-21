@@ -20,7 +20,7 @@
     <view class="wk-panel top-gap">
         <view class="panel-header">面板、按钮以及图标字体的用法</view>
         <view class="panel-body">            
-            <view class="wk-btn wk-btn-lg" @tap="closeTab">这是一个很大的button</view>            
+            <view class="wk-btn wk-btn-lg" bindtap="closeTab">这是一个很大的button</view>            
             <view class="wk-btn wk-btn-primary top-gap">这是一个蓝色的button</view>
             <view class="wk-btn wk-btn-sm top-gap">这是一个小规格的button</view>
             <view class="wk-btn wk-btn-transparent top-gap">这是一个透明的button</view>
@@ -84,7 +84,7 @@
         } ;
         methods = {
            closeTab() {
-               this.setData({ visibility : false }) ;
+               this.visibility = false;
            }
         } ;
         events = {
