@@ -1,5 +1,6 @@
 {
-  "pages": [     
+  "pages": [   
+    "pages/join/index",    
     "pages/index/index",
     "pages/city/index",    
     "pages/logon/index",
@@ -32,7 +33,7 @@
     "pages/comment/write",
     "pages/report/write",
     "pages/common/video" ,
-    "pages/store/index"   
+    "pages/store/index"     
   ],
   "window": {
     "backgroundColor": "#f0f0f0",
