@@ -6,8 +6,8 @@
         2.        
 -->
 <template lang="wxml">
-    <view>
-       播放器页面 
+    <view  class="video">
+        <video src="{{src}}" controls="controls" autoplay="autoplay"></video>
     </view>
 </template>
 
@@ -15,13 +15,13 @@
     import wepy from "wepy" ;    
     export default class Player extends wepy.page {
         config = {
-            
+            "navigationBarTitleText" : "房源视频" 
         } ;
         components = {            
             
         } ; 
         data = {
-            
+            src:''
         } ;
         computed = {
             
@@ -32,12 +32,22 @@
         events = {
 
         } ;
-        onLoad() {
-           
+        onLoad(options) {
+            this.src="http://7xkvzb.com5.z0.glb.qiniucdn.com/5085474bacab4d5087e9d371a3ea5709WV.mp4"
+            let video = JSON.parse(decodeURIComponent(options));
+            this.src=video.videoUrl;
         }
     }
 </script>
 
-<style lang="less">
-    
+<style lang="less" scoped>
+    .video{
+        position: absolute;
+        top:50%;
+        width:100%;
+        transform: translateY(-50%)
+    }
+    video{
+        width:100%;
+    }
 </style>

@@ -6,22 +6,107 @@
         2.        
 -->
 <template lang="wxml">
-    <view>
-       房价行情页面
-    </view>
+        <view class="today-price">
+            <view class="address">今日上海房价</view>
+            <text class="city-price">105501元/m²</text><text class="compare">环比上月↓-7.66%</text>
+        </view>
+        <view class="specific-area">
+            <view class="now-area">当前各区参考均价</view>
+            <view class="small-title">
+                <text class="area">区域</text><text class="average">参考均价</text><text class="increase">涨幅</text>
+            </view>
+        </view>
+        <view class="details">
+             <repeat for="{{list}}" key="index" index="index" item="item">
+                 <view class="single-detail">
+                        <text class="location">{{item.area}}</text><text class="mean">{{item.price}}   元/m²</text><text class="rise">{{item.rise}}</text>
+                </view>
+             </repeat>
+        </view>
 </template>
 
 <script>
     import wepy from "wepy" ;    
     export default class Index extends wepy.page {
         config = {
-            
+            "navigationBarTitleText" : "房价行情" 
         } ;
         components = {            
             
         } ; 
         data = {
-            
+           list:[
+               {
+                   area:"宝山区",
+                   price:12,
+                   rise:"+5.55%"
+               },
+               {
+                   area:"崇明区",
+                   price:12123,
+                   rise:"-5.55%"
+               },
+               {
+                   area:"长宁区",
+                   price:233412,
+                   rise:"-5.55%"
+               },
+               {
+                   area:"普陀区",
+                   price:577712,
+                   rise:"+5.55%"
+               },
+               {
+                   area:"奉贤区",
+                   price:1232512,
+                   rise:"+5.55%"
+               },
+               {
+                   area:"虹口区",
+                   price:235212,
+                   rise:"+5.55%"
+               },
+               {
+                   area:"徐汇区",
+                   price:1212,
+                   rise:"-5.55%"
+               },
+               {
+                   area:"松江区",
+                   price:12312,
+                   rise:"+5.55%"
+               },
+               {
+                   area:"闵行区",
+                   price:55612,
+                   rise:"+5.55%"
+               },
+               {
+                   area:"杨浦区",
+                   price:12312,
+                   rise:"-5.55%"
+               },
+               {
+                   area:"宝山区",
+                   price:12,
+                   rise:"+5.55%"
+               },
+               {
+                   area:"崇明区",
+                   price:12123,
+                   rise:"-5.55%"
+               },
+               {
+                   area:"长宁区",
+                   price:233412,
+                   rise:"-5.55%"
+               },
+               {
+                   area:"普陀区",
+                   price:577712,
+                   rise:"+5.55%"
+               }
+           ] 
         } ;
         computed = {
             
@@ -33,11 +118,78 @@
 
         } ;
         onLoad() {
-           
+            let _this
+            wx.getSystemInfo({ 
+                success: function (res) { 
+                    console.log(res.windowHeight)
+    // _this.setData({ 
+    //  screenHeight: res.windowHeight, 
+    //  screenWidth: res.windowWidth, 
+    // }); 
+   } 
+  });
         }
     }
 </script>
 
-<style lang="less">
-    
+<style lang="less" scoped>
+// 今日房价
+    .today-price{
+        height: 270rpx;
+        width:100%;
+        padding:0 30rpx;
+        color:white;
+        background:url(http://img.wkzf.com/b262848128334e3daab102eb97e1b747);
+        .address{
+            font-size: 50rpx;
+            padding-top: 63rpx;
+            margin-bottom: 30rpx;
+        }
+        .city-price{
+            font-size: 64rpx;
+        }
+        .compare{
+            font-size:24rpx;
+            margin-left: 17rpx;
+        }
+    } 
+    // 其它区域房价
+    .specific-area{
+        padding:0 30rpx;
+        border-bottom: 1rpx solid #d8d8d8;
+        .now-area{
+            font-size: 32rpx;
+            color:#000;
+            margin:30rpx 0 48rpx 0;
+        } 
+        .small-title{
+            font-size:28rpx;
+            color:#7c7c7c;
+            text-align: center;
+            padding-bottom: 30rpx;
+            .area{
+                float:left;
+            }
+            .increase{
+                float:right;    
+            }
+        }   
+    }
+    // 具体区域房价行情;
+    .details{
+        text-align: center;
+        .single-detail{
+            padding:0 30rpx;
+            font-size: 30rpx;
+            color:#000;
+            line-height: 88rpx;
+            border-bottom: 1rpx solid #d8d8d8;
+            .location{
+                float:left;
+            }
+            .rise{
+                float:right;
+            }
+        }
+    }
 </style>
