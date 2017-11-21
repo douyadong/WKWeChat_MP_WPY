@@ -1,4 +1,0 @@
-@import "./../../components/modal.wxss";
-@import "./../../components/tips.wxss";
-@import "./../../components/assistant.wxss";
-@import "./../../components/agent.wxss";

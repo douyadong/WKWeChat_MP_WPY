@@ -1,7 +1,0 @@
-
-    <view class="store">
-        <view class="store-top">
-          <text>虹桥店</text>
-           <view class="price">周边房源均价 <text class="price-show">105501元/m²</text></view>
-        </view>
-    </view>

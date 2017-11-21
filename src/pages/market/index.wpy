@@ -118,7 +118,16 @@
 
         } ;
         onLoad() {
-           
+            let _this
+            wx.getSystemInfo({ 
+                success: function (res) { 
+                    console.log(res.windowHeight)
+    // _this.setData({ 
+    //  screenHeight: res.windowHeight, 
+    //  screenWidth: res.windowWidth, 
+    // }); 
+   } 
+  });
         }
     }
 </script>
