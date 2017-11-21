@@ -1,0 +1,97 @@
+<!--
+    @组件名称：modal组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+<template lang="wxml">
+    <view class="wk-modal-mask" wx:if="{{ visibility }}">
+        <view class="wk-modal">
+            <slot name="header"></slot>
+            <view class="modal-body">
+                <slot name="body"></slot>
+            </view>
+            <slot name="footer"></slot>
+        </view>
+        <view class="modal-close">
+            <text class="iconfont icon-close" @tap="closeModal"></text>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from "wepy" ;
+export default class Com extends wepy.component {    
+    props = {
+        
+    } ;
+    data = {
+        visibility : false  //整个modal框的显示隐藏状态
+    } ;
+    methods = {
+        closeModal() {            
+            this.setData({ visibility : false }) ;
+        }
+    } ;
+    events = {
+
+    } ; 
+    onLoad() {
+           
+    } ;
+}
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .wk-modal-mask {
+        background-color : rgba(0, 0, 0, .3)  ;  
+        .flex() ;
+        .justify-content(center) ;
+        .align-items(center) ;
+        .flex-direction(column) ;
+        height : 100% ;
+        left : 0 ;
+        position : fixed ;
+        top : 0 ;
+        width : 100% ;
+        z-index : 10000 ;
+        &>.wk-modal {
+             background-color : rgba( 255 , 255 , 255 , 1 ) ;
+             .border-radius(24rpx) ;             
+             width : 80% ;
+             z-index : 10001 ;
+             .modal-header {
+                 font-size : @large-font-size ;
+                 line-height : 100rpx ;
+                 text-align : center ;
+             }
+             .modal-body {
+                 font-size : @default-font-size ;
+                 padding : 0 @common-margin @common-margin ;
+             }
+             .modal-footer {
+                 border-top : 1rpx solid @lighter-line-gray-color ;
+                 .flex() ;
+                 view {
+                     border-right : 1rpx solid @lighter-line-gray-color ;
+                     .flex(1) ;
+                     &:last-child {
+                         border : none ;
+                     }
+                 }
+             }
+        }
+        &>.modal-close {
+            margin-top : 80rpx ;
+            text-align : center ;
+            .iconfont {
+                color : #fff ;
+                font-size : 56rpx ;
+            }
+        }
+    }
+    
+</style>
