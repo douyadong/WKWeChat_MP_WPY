@@ -4,6 +4,7 @@ export default class extends wepy.app {
     config = {
         "pages": [
             "pages/esf/detail" ,
+            "pages/store/index",
             "pages/market/index" ,
             "pages/index/index" ,
             "pages/demo/index" ,
@@ -13,8 +14,7 @@ export default class extends wepy.app {
             "pages/common/player" ,
             "pages/esf/list" ,            
             "pages/estate/detail" ,
-            "pages/estate/comment" ,            
-            "pages/store/index"
+            "pages/estate/comment"
         ] ,
         "window": {
             "backgroundTextStyle" : "light" ,
