@@ -3,6 +3,7 @@ import wepy from "wepy" ;
 export default class extends wepy.app {
     config = {
         "pages": [
+            "pages/esf/detail" ,
             "pages/store/index",
             "pages/market/index" ,
             "pages/index/index" ,
@@ -11,12 +12,9 @@ export default class extends wepy.app {
             "pages/index/search" ,            
             "pages/agent/index" ,
             "pages/common/player" ,
-            "pages/esf/list" ,
-            "pages/esf/detail" ,
+            "pages/esf/list" ,            
             "pages/estate/detail" ,
-            "pages/estate/comment" ,
-            // "pages/market/index" ,
-            //"pages/store/index"
+            "pages/estate/comment"
         ] ,
         "window": {
             "backgroundTextStyle" : "light" ,
@@ -29,7 +27,7 @@ export default class extends wepy.app {
         super() ;        
     } ;
     globalData = {        
-        "QQMapKey" : "FJ6BZ-QZG3P-LASD7-VHLJJ-AG5FT-4KB2U"  //腾讯地图开发者key
+        
     } ;
     onLaunch() {
         
