@@ -14,11 +14,11 @@
     export default class Tables extends wepy.component {
         props = {
             titles : Array,     // ['推荐好房','推荐经纪人']
-            styles : Object,   // styles : { color ?:'#000000', changeColor?:'#4081D6', fontSize?: 32, lineHeight?:88, positionLeft:62 }  有问号代表可以不传值
+            styles : Object,   // styles : { color ?:'#000000', changeColor?:'#4081D6', fontSize?: 32, lineHeight?:88, positionLeft:'124r' }  有问号代表可以不传值
         } ;
         data = {
             positionIndex: 0,
-            positionLeft: 0,
+            positionLeft: '124r',
             titleLength : 0
         } ;
         methods = {

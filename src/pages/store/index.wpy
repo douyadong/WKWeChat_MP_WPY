@@ -8,10 +8,20 @@
 <template lang="wxml">
     <view class="store">
         <view class="store-top">
-          <text>虹桥店</text>
-           <view class="price">周边房源均价 <text class="price-show">105501元/m²</text></view>
+            <view class="store-pic">
+            <text>虹桥店</text>
+            <view class="price">周边房源均价 <text class="price-show">105501元/m²</text></view>
+            </view>
+            <tables :titles="titles" :styles="styles" @childFn.user = "parentFn"></tables>
         </view>
-        <tables :titles="titles" :styles="styles" @childFn.user = "parentFn"></tables>
+        <view class="content">
+             <view class="store-house" wx:if="{{condition == 0}}">
+               房子
+             </view>
+             <view class="store-house" wx:if="{{condition == 1}}">
+                   经纪人
+             </view>
+        </view>
     </view>
 </template>
 
@@ -23,7 +33,7 @@
             
         } ;
         components = {
-            tables:Tables
+            tables : Tables
         } ; 
         data = {
             titles:['推荐好房','推荐经纪人'],
@@ -32,14 +42,16 @@
                 changeColor:'#4081D6',
                 fontSize: 32,
                 lineHeight:88,*/
-                positionLeft:62
-            }
+                positionLeft : '124r'
+            },
+            condition: 0
         } ;
         computed = {
             
         } ;
         methods = {
             parentFn (index) {
+                this.condition = index;
                 console.log('parent received emit event, number is: ' + index);
             }
         } ;
@@ -55,8 +67,8 @@
 <style lang="less">
     @import "../../less/app.less" ;
     .store {
-        .store-top {
-         width: 100%;
+        .store-pic {
+            width: 100%;
             height:240rpx;
             background: url("http://img.wkzf.com/b262848128334e3daab102eb97e1b747") no-repeat;
             background-size: 100% 240rpx;
@@ -84,6 +96,10 @@
                     margin-left: 25rpx;
                 }
             }
+        }
+        .content{
+            width: 100%;
+            background-color: @white-font-color ;
         }
     }
 </style>
