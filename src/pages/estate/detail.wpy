@@ -6,22 +6,51 @@
         2.        
 -->
 <template lang="wxml">
-    <view>
-       小区详情页面
+    <view class="estate-detail">
+         <swipers :items="items"></swipers>
+         <summary :estateInfo="items"></summary>
+
+    <!--<view class="base-colors"></view>-->
     </view>
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy" ;
+    import Swipers from "../../components/swipers" ;
+    import Summary from "./sections/summary" ;
     export default class Detail extends wepy.page {
         config = {
             
         } ;
-        components = {            
-            
+        components = {
+            swipers: Swipers,
+            summary: Summary
         } ; 
         data = {
-            
+            items:[
+                {
+                    agentId:123213,
+                    videoUrl:'https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML',
+                    type:'pic',
+                    url:'https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML'
+                } ,
+                {
+                    agentId:123213,
+                    videoUrl:'https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML',
+                    type:'pic',
+                    url:'https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML'
+                } , {
+                    agentId:123213,
+                    videoUrl:'https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML',
+                    type:'pic',
+                    url:'https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML'
+                } , {
+                    agentId:123213,
+                    videoUrl:'https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML',
+                    type:'pic',
+                    url:'https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML'
+                } ,
+            ]
         } ;
         computed = {
             
@@ -39,5 +68,16 @@
 </script>
 
 <style lang="less">
-    
+    @import "../../less/variables.less" ;
+    @import "../../less/mixins.less" ;
+    .base-colors{
+        width: 100%;
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom:0;
+        background-color: @white-font-color;
+        z-index: -1;
+    }
 </style>
