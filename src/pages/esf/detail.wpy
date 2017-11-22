@@ -6,19 +6,128 @@
         2.        
 -->
 <template lang="wxml">
-    <view>
-       二手房详情页面
+    <swipers></swipers>
+    <view class="highlight wk-panel">
+        <view class="source-title">精装修，户型南北通透有钥匙可以随时看房，有钥匙，户型南北通透有钥匙，看房随时可搞</view>
+        <view class="hr"></view>
+        <view class="outline">
+            <view class="money">
+                <text class="hd">总价</text>
+                <text class="bd">240万</text>
+            </view>
+            <view class="layout">
+                <text class="hd">户型</text>
+                <text class="bd">2室1厅1卫</text>
+            </view>
+            <view class="area">
+                <text class="hd">建筑面积</text>
+                <text class="bd">50㎡</text>
+            </view>
+        </view>
+        <view class="hr"></view>
+        <view class="tags">
+            <text>满五唯一</text>
+            <text>地铁</text>
+            <text>近学校</text>
+            <text>南北通透</text>
+            <text>新上</text>
+        </view>
+        <view class="cols2-fields">
+            <view><text class="hd">单价</text><text class="bd">45000元 / ㎡</text></view>
+            <view><text class="hd">年代</text><text class="bd">2008 年</text></view>
+            <view><text class="hd">类型</text><text class="bd">公寓</text></view>
+            <view><text class="hd">楼层</text><text class="bd">高区/ 27层</text></view>
+            <view><text class="hd">装修</text><text class="bd">精装修</text></view>
+            <view><text class="hd">朝向</text><text class="bd">南北</text></view>
+        </view>
+        <view class="hr fields-fence"></view>
+        <view class="cols1-fields">
+            <view><text class="hd">预算</text><text class="bd">首付 72 万，月供 8998 元</text></view>
+            <view>
+                <text class="hd">小区</text>
+                <navigator url="/pages/estate/detail?estateId=" class="bd">
+                    <text>阳光新城</text>
+                    <text class="iconfont icon-next"></text>
+                </navigator>
+            </view>
+            <view><text class="hd">地铁</text><text class="bd">2 号线、7 号线</text></view>
+            <view><text class="hd">学校</text><text class="bd">华师大附小、管弄新村小学、管弄新村小学、管弄新村小学</text></view>            
+        </view>
     </view>
+    <view class="summary wk-panel top-gap">
+        <view class="panel-header">基本信息</view>
+        <view class="panel-body">
+            <text class="hd">主要优势</text>
+            <text class="bd">静安寺商圈，南京西路商圈，中山公园商圈。</text>
+            <text class="hd">业主心态</text>
+            <text class="bd">愚一幼儿园，愚一小学，包玉刚实验学校，建青实验学校，江苏路第五小学分校，上海市三女中上海延安中学，上海第54中学。</text>
+            <text class="hd">周边设施</text>
+            <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
+            <text class="hd">户型介绍</text>
+            <text class="bd">静安寺商圈，南京西路商圈，中山公园商圈。</text>
+            <text class="hd">小区介绍</text>
+            <text class="bd">愚一幼儿园，愚一小学，包玉刚实验学校，建青实验学校，江苏路第五小学分校，上海市三女中上海延安中学，上海第54中学。</text>
+            <text class="hd">税费解析</text>
+            <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
+            <text class="hd">其他</text>
+            <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
+        </view>        
+    </view>
+    <view class="estate wk-panel top-gap">
+        <view class="panel-header">小区信息</view>
+        <navigator class="panel-body" url="/pages/estate/detail?estateId=">
+            <image src="https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
+            <text class="name">虹东校区 M11 金座</text>
+            <view class="outline">
+                <text>1993 年竣工 | 150户</text>
+                <text class="iconfont icon-next"></text>
+            </view>
+            <text class="address">虹桥路996弄</text>
+        </navigator>
+        <view class="hr"></view>
+        <navigator class="total-item" url="/pages/esf/list">
+            <text>在售房源</text>
+            <view>
+                <text>4 套</text>
+                <text class="iconfont icon-next"></text>
+            </view>
+        </navigator>
+        <view class="hr"></view>
+        <navigator class="total-item" url="/pages/estate/comment">
+            <text>用户评论</text>
+            <view>
+                <text>9 条</text>
+                <text class="iconfont icon-next"></text>
+            </view>
+        </navigator>
+    </view>
+    <qmap latitude="31.1117401070" longitude="121.3742065430"></qmap>
+    <view class="wk-panel">
+        <view class="panel-header">相似房源推荐</view>
+        <view class="panel-body">
+            <esf></esf>
+        </view>
+        <view class="panel-more">
+            <navigator url="/pages/esf/list">查看更多</navigator>
+        </view>
+    </view>
+    <assistant></assistant>
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy" ;
+    import Assistant from "../../components/assistant" ;
+    import Swipers from "../../components/swipers" ;
+    import Qmap from "../../components/map" ;
+    import Esf from "../../components/esf" ;
     export default class Detail extends wepy.page {
         config = {
             
         } ;
-        components = {            
-            
+        components = {
+            assistant : Assistant ,        
+            swipers : Swipers ,
+            qmap : Qmap
         } ; 
         data = {
             
@@ -39,5 +148,154 @@
 </script>
 
 <style lang="less">
-    
+    @import "../../less/variables.less" ;
+    @import "../../less/mixins.less" ;
+    page {
+        padding-bottom : 120rpx ;
+    }
+    .highlight {
+        .source-title {
+            font-size : @great-font-size ;
+            padding : 15rpx 0 30rpx 0 ;
+        }
+        .outline {
+            .flex() ;
+            padding : 30rpx 0 ;
+            view {
+                text {
+                    display : block ;
+                }
+                .hd {
+                    color : @light-font-color ;
+                    font-size : @small-font-size ;
+                    line-height : 180% ;
+                }
+                .bd {
+                    color : @danger-color ;
+                    font-size : @default-font-size ;
+                    
+                }
+            }
+            .layout , .area {
+                border-left : 1rpx solid @lighter-line-gray-color ;
+                padding-left : 60rpx ;
+            }
+            .money {                
+                .flex(2) ;
+            }
+            .layout {                
+                .flex(3) ;
+            }
+            .area {
+                .flex(2) ;
+            }
+        }
+        .tags {
+            padding : 30rpx 0 15rpx 0 ;
+            text {
+                .border-radius(6rpx) ;
+                background-color : @page-background-color ;
+                display : inline-block ;
+                font-size : @small-font-size ;
+                margin : 0 6rpx 6rpx 0 ;
+                padding : 6rpx 12rpx ;
+            }
+        }
+        .cols2-fields , .cols1-fields {
+            view {
+                padding : 6rpx 0 ;
+                .hd , .bd {
+                    display : block ;
+                    .clearfix() ;
+                    font-size : @default-font-size ;
+                    line-height : 150% ;
+                }
+                .hd {
+                    color : @light-font-color ;
+                    float : left ;
+                    width : 90rpx ;
+                }
+                .bd {
+                    color : @default-font-color ;
+                    margin-left : 90rpx ;
+                }
+            }
+        }
+        .cols2-fields {
+            .clearfix() ;
+            view {
+                float : left ;
+                width : 50% ;
+            }
+        }
+        .cols1-fields {
+            navigator.bd {
+                color : @blue-font-color ;
+                .clearfix() ;
+                .icon-next {
+                    float : right ;
+                }
+            }
+        }
+        .fields-fence {
+            margin : 20rpx 0 ;
+        }
+    }
+    .summary {
+        .panel-body {
+            padding-bottom : 15rpx ;
+        }
+        text {
+            display : block ;
+            font-size : @default-font-size ;
+            &.hd {
+                color : @light-font-color ;
+                line-height : 60rpx ;
+            }
+        }
+    }
+    .estate {
+        navigator {
+            .clearfix() ;
+            &.panel-body {
+                image {
+                    display : block ;
+                    float : left ;
+                    height : 160rpx ;
+                    width : 240rpx ;
+                }
+                .name , .outline , .address {
+                    display : block ;
+                    font-size : @default-font-size ;
+                    line-height : 50rpx ;
+                    margin-left : 260rpx ;
+                }
+                .outline , .address {
+                    color : @light-font-color ;
+                }
+                .outline {
+                    .fit-height() ;
+                    .icon-next {
+                        color : @blue-font-color ;
+                        float : right ;
+                    }
+                }                
+            }
+            &.total-item {
+                &>text , &>view {
+                    font-size : @large-font-size ;
+                }
+                &>text {                    
+                    float : left ;                    
+                }
+                &>view {
+                    color : @blue-font-color ;
+                    float : right ;
+                }
+            }
+        }
+        .hr {
+            margin : @gap-dimension 0 ;
+        }
+    }
 </style>
