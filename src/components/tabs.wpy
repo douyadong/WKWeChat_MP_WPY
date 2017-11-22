@@ -5,7 +5,7 @@
               <view class="flex-item "  style=" color:{{ positionIndex == index ? (styles.changeColor || '#4081D6'):(styles.color || '#000')}} ; font-size: {{styles.fontSize || 32}}rpx ;  line-height: {{styles.lineHeight || 88}}rpx; " ><text bindtap="getIndex({{index}},{{item}})">{{item}}</text></view>
          </repeat>
       </view>
-     <text class="underline" style=" margin-left:{{positionLeft}}px ; width:{{(styles.fontSize || 32 ) * titleLength}}rpx ; border-top: 3rpx solid {{styles.changeColor || '#4081D6'}}"></text>
+     <text class="underline" style=" margin-left:{{positionLeft}}px ; width:{{(styles.fontSize || 32 ) * titleLength}}rpx ; border-top: 4rpx solid {{styles.changeColor || '#4081D6'}}"></text>
     </view>
 </template>
 
@@ -14,11 +14,11 @@
     export default class Tables extends wepy.component {
         props = {
             titles : Array,     // ['推荐好房','推荐经纪人']
-            styles : Object,   // styles : { color ?:'#000000', changeColor?:'#4081D6', fontSize?: 32, lineHeight?:88, positionLeft:62 }  有问号代表可以不传值
+            styles : Object,   // styles : { color ?:'#000000', changeColor?:'#4081D6', fontSize?: 32, lineHeight?:88, positionLeft:'124r' }  有问号代表可以不传值
         } ;
         data = {
             positionIndex: 0,
-            positionLeft: 0,
+            positionLeft: '124r',
             titleLength : 0
         } ;
         methods = {
@@ -58,6 +58,16 @@
             bottom:0;
             transition: .5s cubic-bezier(.35,0,.25,1);
             -webkit-transition: .5s cubic-bezier(.35,0,.25,1);
+        }
+        &:after{
+            content: '';
+            height: 1rpx;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top: 1rpx solid @light-line-gray-color;
+            -webkit-transform: scaleY(0.5);
         }
     }
 
