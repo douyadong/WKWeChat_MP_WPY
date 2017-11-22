@@ -23,14 +23,8 @@
     import appConf from "../confs/app" ;
     export default class Com extends wepy.component {
         props = {
-            latitude : {
-                type : String ,
-                default : ""
-            } ,
-            longitude : {
-                type : String ,
-                default : ""
-            }       
+            latitude : String ,
+            longitude : String      
         } ;
         data = {
             "qqMapKey" : appConf.QQMapKey

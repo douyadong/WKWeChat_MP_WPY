@@ -14,12 +14,13 @@ export default class extends wepy.app {
             "pages/common/player" ,
             "pages/esf/list" ,            
             "pages/estate/detail" ,
-            "pages/estate/comment"
+            "pages/estate/comment" ,
+            "pages/join/index"
         ] ,
         "window": {
             "backgroundTextStyle" : "light" ,
             "navigationBarBackgroundColor" : "#fff" ,
-            "navigationBarTitleText" : "WeChat" ,
+            "navigationBarTitleText" : "买房就找悟空找房" ,
             "navigationBarTextStyle" : "black"
         }
     } ;

@@ -101,7 +101,7 @@
             </view>
         </navigator>
     </view>
-    <qmap latitude="31.1117401070" longitude="121.3742065430"></qmap>
+    <qmap :latitude="latitude" :longitude="longitude"></qmap>
     <view class="wk-panel">
         <view class="panel-header">相似房源推荐</view>
         <view class="panel-body">
@@ -130,7 +130,8 @@
             qmap : Qmap
         } ; 
         data = {
-            
+            latitude : "31.1117401070" ,
+            longitude : "121.3742065430"
         } ;
         computed = {
             
@@ -143,6 +144,9 @@
         } ;
         onLoad() {
            
+        } ;        
+        onShareAppMessage() {
+            return { "title" : "买房就找悟空找房" }
         }
     }
 </script>
