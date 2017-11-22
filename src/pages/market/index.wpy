@@ -26,7 +26,8 @@
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy";   
+    // import data from "../../../mock/aa.json"; 
     export default class Index extends wepy.page {
         config = {
             "navigationBarTitleText" : "房价行情" 
@@ -35,6 +36,7 @@
             
         } ; 
         data = {
+            // list:data
            list:[
                {
                    area:"宝山区",
@@ -117,17 +119,12 @@
         events = {
 
         } ;
-        onLoad() {
-            let _this
+        onLoad(){
             wx.getSystemInfo({ 
                 success: function (res) { 
-                    console.log(res.windowHeight)
-    // _this.setData({ 
-    //  screenHeight: res.windowHeight, 
-    //  screenWidth: res.windowWidth, 
-    // }); 
-   } 
-  });
+                    console.log(res);
+                } 
+            });
         }
     }
 </script>

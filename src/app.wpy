@@ -13,8 +13,7 @@ export default class extends wepy.app {
             "pages/esf/list" ,
             "pages/esf/detail" ,
             "pages/estate/detail" ,
-            "pages/estate/comment" ,
-            // "pages/market/index" ,
+            "pages/estate/comment" ,            
             "pages/store/index"
         ] ,
         "window": {
