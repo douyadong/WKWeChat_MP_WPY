@@ -1,6 +1,6 @@
 <!--
     @页面名称：店铺首页
-    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @作者：李杨 (liyang@lifang.com)
     @业务逻辑说明：
         1.
         2.        
@@ -197,7 +197,8 @@
 </script>
 
 <style lang="less">
-    @import "../../less/app.less" ;
+    @import "../../less/variables.less" ;
+    @import "../../less/mixins.less" ;
     .store {
         .store-top{
             background-color:  @white-font-color;
@@ -211,7 +212,7 @@
                 opacity: 1;
                 box-sizing:border-box;
                 >text{
-                    font-size: 48rpx;
+                    font-size: @greater-font-size;
                     color: @white-font-color;
                     letter-spacing: 1.71rpx;
                     line-height: 42rpx;

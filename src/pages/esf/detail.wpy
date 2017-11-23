@@ -63,14 +63,17 @@
             <text class="bd">愚一幼儿园，愚一小学，包玉刚实验学校，建青实验学校，江苏路第五小学分校，上海市三女中上海延安中学，上海第54中学。</text>
             <text class="hd">周边设施</text>
             <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
-            <text class="hd">户型介绍</text>
-            <text class="bd">静安寺商圈，南京西路商圈，中山公园商圈。</text>
-            <text class="hd">小区介绍</text>
-            <text class="bd">愚一幼儿园，愚一小学，包玉刚实验学校，建青实验学校，江苏路第五小学分校，上海市三女中上海延安中学，上海第54中学。</text>
-            <text class="hd">税费解析</text>
-            <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
-            <text class="hd">其他</text>
-            <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
+            <view class="panel-more" wx:if="{{ ! pageStates.summaryOptional }}" @tap="spreadOptional">查看更多</view>
+            <view class="optional" wx:if="{{ pageStates.summaryOptional }}">
+                <text class="hd">户型介绍</text>
+                <text class="bd">静安寺商圈，南京西路商圈，中山公园商圈。</text>
+                <text class="hd">小区介绍</text>
+                <text class="bd">愚一幼儿园，愚一小学，包玉刚实验学校，建青实验学校，江苏路第五小学分校，上海市三女中上海延安中学，上海第54中学。</text>
+                <text class="hd">税费解析</text>
+                <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
+                <text class="hd">其他</text>
+                <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
+            </view>
         </view>        
     </view>
     <view class="estate wk-panel top-gap">
@@ -101,7 +104,7 @@
             </view>
         </navigator>
     </view>
-    <qmap :latitude="latitude" :longitude="longitude"></qmap>
+    <qmap></qmap>
     <view class="wk-panel">
         <view class="panel-header">相似房源推荐</view>
         <view class="panel-body">
@@ -111,7 +114,7 @@
             <navigator url="/pages/esf/list">查看更多</navigator>
         </view>
     </view>
-    <assistant></assistant>
+    <assistant :agent="agent"></assistant>
 </template>
 
 <script>
@@ -128,38 +131,54 @@
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     import adf from "../../mixins/apiDataFilter" ;
     export default class Detail extends wepy.page {
-        config = {
-            
-        } ;
         components = {
             assistant : Assistant ,        
             swipers : Swipers ,
             qmap : Qmap
         } ; 
         data = {
-            latitude : "31.1117401070" ,
-            longitude : "121.3742065430"
-        } ;
-        computed = {
-            
+            pageParams : {} ,
+            pageStates : {
+                summaryOptional : false //基本信息可选字段现实与否
+            } ,
+            agent : {
+                "agentId" : 100321 ,
+                "agentName" : "赵华刚" ,
+                "agentMobile" : "18811112222" ,
+                "headRoundImgKey" : "53056dcde0ff41cea97b170543e3c087" ,
+                "headRoundImgUrl" : "https://imgwater-test.oss.aliyuncs.com/53056dcde0ff41cea97b170543e3c087" ,
+                "isWellAgent" : 0 ,
+                "vipType" : 0 ,
+                "abbreviation" : "" ,
+                "companyName" : "123" ,
+                "agentWChatId" : "huagang_zhao" ,
+                "weChatQRImgKey" : null ,
+                "agentWChartQRImgUrl" : null
+            }      
         } ;
         methods = {
-           
+           spreadOptional() {
+               this.pageStates.summaryOptional = true ;
+           }
         } ;
-        events = {
-
-        } ;
-        onLoad() {
-            
+        onLoad(options) {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            将所有的页面参数存放到pageParams里面
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            for(key in options) {
+                this.pageParams[key] = options[key] ;
+            }
         } ; 
-        onShow() {            
+        onShow() {
+            /*          
            adf.request({
                 apiPath : "esf.detail" ,
                 data : { "houseId" : 100237 } ,
                 successCallback : (res)=> {
                     console.log(res) ;
                 }
-            }) ;            
+            }) ;
+            */         
         } ; 
         onShareAppMessage() {
             return { "title" : "买房就找悟空找房" }

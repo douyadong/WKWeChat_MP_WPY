@@ -1,5 +1,14 @@
+<!--
+    @页面名称：小区介绍模块
+    @作者：赵华刚 (liyangh@lifang.com)
+    @业务逻辑说明：
+        1.
+        2.
+-->
+
+
 <template lang="wxml">
-<view class="panel summary">
+<view class="wk-panel summary">
     <view class="panel-bd">
         <view class="row">
             <view class="row-hd">所属板块</view>
@@ -41,8 +50,7 @@
             <view class="row-hd">开发商</view>
             <view class="row-bd">{{estateInfo.developers}}</view>
         </view>
-        <view class="underline row"></view>
-        <view class="row">
+        <view class="row underline" >
             <view class="row-hd">地铁</view>
             <view class="row-bd">{{estateInfo.subwayName}}</view>
         </view>
@@ -51,7 +59,7 @@
             <view class="row-bd bd">{{estateInfo.schoolName}}</view>
         </view>
     </view>
-    <block wx:if="{{ estateInfo.sameEstateHouseAmount > 0 }}">
+    <!--<block wx:if="{{ estateInfo.sameEstateHouseAmount > 0 }}">
         <view class="underline"></view>
         <view class="extendable" hidden="{{estateInfo.sameEstateHouseAmount > 0 ? false:true }}" >
             <view class="head">在售房源</view>
@@ -60,128 +68,17 @@
                 <text class="iconfont icon-arrow-r"></text>
             </navigator>
         </view>
-    </block>
+    </block>-->
 </view>
-<view class="gap"></view>
 </template>
 
 <script>
     import wepy from "wepy" ;
     export default class Detail extends wepy.component {
         props = {
-           /* estateInfo : Object*/
+            estateInfo : Object
         } ;
         data = {
-            estateInfo: {
-                "estateId": 21061,
-                "estateName": "金港花园",
-                "town": "泗泾",
-                "district": "松江区",
-                "propertyType": "住宅",
-                "estateAddr": "横港路155弄 横港路633号 古楼公路348弄",
-                "propertyCharges": "0",
-                "completed": "1980",
-                "completedStr": "1980",
-                "totalHouse": "0户",
-                "totalHouseCount": 0,
-                "greenRate": "--",
-                "volumeRate": "--",
-                "totalFloorage": null,
-                "parkingLot": "0个",
-                "estateManger": null,
-                "developers": "--",
-                "propertyRight": "--",
-                "memo": ";售均价:0",
-                "imgList": [
-                    "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW"
-                ],
-                "estateImgUrl": "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
-                "sellhouseCount": 0,
-                "renthouseCount": 0,
-                "sameEstateHouseAmount": 3,
-                "propertyCompany": "1",
-                "subEstateId": "16990",
-                "encryptSubEstateId": "b1b474183ba0a5d6",
-                "historicalTransactionAmount": 250,
-                "estateUrl": "/shanghai/estate/b1b474183ba0a5d6.html",
-                "estateHistoricalPrice": null,
-                "comment": {
-                    "subEstateId": 16990,
-                    "amount": 6,
-                    "commentList": [
-                        {
-                            "pkid": 1079,
-                            "subEstateId": 0,
-                            "upAmount": 0,
-                            "downAmount": 0,
-                            "comment": "丰田天",
-                            "createTimeStr": "2017-03-23 16:04:52",
-                            "orderLevel": null,
-                            "isUp": 0,
-                            "isDown": 0,
-                            "guest": {
-                                "pkid": 31630,
-                                "guestId": 31630,
-                                "guestPhoneNum": "186****0592",
-                                "name": null,
-                                "sex": null,
-                                "openId": null,
-                                "unionId": null,
-                                "systemAvatarId": null,
-                                "avatar": {
-                                    "pkid": 1718,
-                                    "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
-                                    "imgKey": "743fe78a5efa433588f4c3a8613a396e",
-                                    "standard": "",
-                                    "postFix": "",
-                                    "imgType": 1
-                                }
-                            },
-                            "imgList": null,
-                            "landlord": 0
-                        },
-                        {
-                            "pkid": 1038,
-                            "subEstateId": 0,
-                            "upAmount": 0,
-                            "downAmount": 0,
-                            "comment": "WRF",
-                            "createTimeStr": "2017-03-17 16:57:31",
-                            "orderLevel": null,
-                            "isUp": 0,
-                            "isDown": 0,
-                            "guest": {
-                                "pkid": 31836,
-                                "guestId": 31836,
-                                "guestPhoneNum": "158****3110",
-                                "name": null,
-                                "sex": null,
-                                "openId": null,
-                                "unionId": null,
-                                "systemAvatarId": null,
-                                "avatar": {
-                                    "pkid": null,
-                                    "url": "https://test01.fe.wkzf/wkwap_fe/img/source/user/default_head_img.png",
-                                    "imgKey": null,
-                                    "standard": null,
-                                    "postFix": null,
-                                    "imgType": null
-                                }
-                            },
-                            "imgList": null,
-                            "landlord": 0
-                        }
-                    ]
-                },
-                "subwayList": [
-                    "地铁9号线(杨高中路-松江南站)"
-                ],
-                "schoolList": null,
-                "schoolName": '华师大附小、管弄新村小学、管弄新村小学、管弄新村小学',
-                "subwayName": "9号线",
-                "longitude": "121.270919",
-                "latitude": "31.116893"
-            },
         } ;
         methods = {
             phoning() {
@@ -203,30 +100,28 @@
     @import "../../../less/mixins.less" ;
 
     .summary{
-        margin-top: 20rpx;
-        padding-top: 40rpx;
-        padding-bottom: 40rpx;
-        background-color: @white-font-color;
+        padding-top: 30rpx;
+       /* background-color: @white-font-color;*/
         .panel-bd{
             .row{
-                flex-direction: row;
-                display: -webkit-flex;
-                margin-bottom: 40rpx;
+                .flex();
+                .flex-direction(row);
+                &:not(:last-child){
+                    margin-bottom: 30rpx;
+                }
                .row-hd{
-                   flex: 2;
-                   font-size: 32rpx;
-                   color: #999999;
+                   .flex(2);
+                   font-size: @default-font-size;
+                   color: #7C7C7C;
                    letter-spacing: 0;
                    line-height: 32rpx;
-                   padding-left: 30rpx;
                }
                 .row-bd{
-                    flex: 8;
-                    font-size: 32rpx;
+                    .flex(8);
+                    font-size: @default-font-size;
                     color: @default-font-color;
                     line-height: 32rpx;
                     padding-left: 20rpx;
-                    padding-right: 30rpx;
                     display: inline-block;
                 }
                 .bd{
@@ -235,14 +130,14 @@
             }
             >.underline{
                 position: relative;
-                margin-bottom: 40rpx;
+                padding-top: 30rpx;
                 width: 100%;
-                &:after{
+                &:before{
                     content: '';
                     height: 1px;
-                    width: 92%;
+                    width: 100%;
                     position: absolute;
-                    bottom:0;
+                    top:0;
                     left: 0;
                     right: 0;
                     margin: 0 auto;

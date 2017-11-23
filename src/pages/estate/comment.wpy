@@ -1,27 +1,370 @@
 <!--
     @页面名称：小区评论展示页面
-    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @作者：李杨 (liyang@lifang.com)
     @业务逻辑说明：
         1.
         2.        
 -->
 <template lang="wxml">
-    <view>
-       小区评论展示页面
+    <view class="wk-panel comments">
+        <comments :commentList="commentList"></comments>
     </view>
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy" ;
+    import Comments from "./sections/comments";
     export default class Comment extends wepy.page {
         config = {
             
         } ;
-        components = {            
-            
+        components = {
+            comments: Comments
         } ; 
         data = {
-            
+            commentList: [
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1038,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "WRF",
+                    "createTimeStr": "2017-03-17 16:57:31",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31836,
+                        "guestId": 31836,
+                        "guestPhoneNum": "158****3110",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": null,
+                            "url": "https://test01.fe.wkzf/wkwap_fe/img/source/user/default_head_img.png",
+                            "imgKey": null,
+                            "standard": null,
+                            "postFix": null,
+                            "imgType": null
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1038,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "WRF",
+                    "createTimeStr": "2017-03-17 16:57:31",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31836,
+                        "guestId": 31836,
+                        "guestPhoneNum": "158****3110",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": null,
+                            "url": "https://test01.fe.wkzf/wkwap_fe/img/source/user/default_head_img.png",
+                            "imgKey": null,
+                            "standard": null,
+                            "postFix": null,
+                            "imgType": null
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+            ]
         } ;
         computed = {
             

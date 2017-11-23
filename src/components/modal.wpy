@@ -8,7 +8,7 @@
 <template lang="wxml">
     <view class="wk-modal-mask" wx:if="{{ visibility }}">
         <view class="wk-modal">
-            <slot name="header"></slot>
+            <view class="modal-header">{{ title }}</view>
             <view class="modal-body">
                 <slot name="body"></slot>
             </view>
@@ -21,26 +21,24 @@
 </template>
 
 <script>
-import wepy from "wepy" ;
-export default class Com extends wepy.component {    
-    props = {
-        
-    } ;
-    data = {
-        visibility : true  //整个modal框的显示隐藏状态
-    } ;
-    methods = {
-        closeModal() {            
-            this.visibility = false ;
-        }
-    } ;
-    events = {
-
-    } ; 
-    onLoad() {
-           
-    } ;
-}
+    import wepy from "wepy" ;
+    export default class Com extends wepy.component {    
+        props = {
+            title : String ,
+            visibility : {
+                type : Boolean ,
+                twoWay : true
+            }
+        } ;
+        data = {
+            
+        } ;
+        methods = {
+            closeModal : ()=> {                        
+                this.visibility = false ;
+            }
+        } ;
+    }
 </script>
 
 <style lang="less">

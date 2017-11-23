@@ -6,19 +6,20 @@
         2. 
 -->
 <template lang="wxml">
-    <view class="item">
-        <view class="img-estate">
-            <image class="img" src="{{item.imageUrl}}"></image>
-            <view class="estate-name">
-                {{item.estateName}}
+    <view class="esf-item">
+        <image src="{{item.imageUrl}}">
+        <view class="info">
+            <view class="title">{{item.estateName}}</view>
+            <view class="type-area-district-town">
+                <text>{{item.type}} </text><text>{{item.area}}㎡ </text>|<text> {{item.district}}</text> <text> {{item.town}}</text>                
             </view>
-        </view>
-        <view class="type-area">
-            {{item.type}} | {{item.area}} ㎡
-        </view>
-        <view class="total-unit-price">
-            <text class="total">{{item.total}}万</text>
-            <text class="unit">{{item.unit}}元/㎡</text>
+            <view class="tags">            
+                <text class="tag" wx:for-item="tag" wx:for="{{item.tags}}">{{tag}}</text>
+            </view>
+            <view class="total-unit">
+                <text class="total">{{item.total}}万</text>
+                <text class="unit">{{item.unit}}元/㎡</text>
+            </view>
         </view>
     </view>    
 </template>
@@ -39,6 +40,9 @@ export default class Com extends wepy.component {
         type: String,
         area: String,
         total: String,
+        district: String,
+        town: String,
+        tags: Array        
         unit: String*/
     };
     methods = {
@@ -50,51 +54,73 @@ export default class Com extends wepy.component {
 }
 </script>
 
-<style lang="less">
-    .item {       
+<style lang="less">    
+    @import "../less/mixins";
+    .esf-item {         
         background-color: #fff; 
         box-sizing: border-box;
-        float: left;
-        width: 50%;
-        margin-top: 30rpx;
-        padding:0 15rpx 0 15rpx;        
-        .img-estate {
-            position: relative;
-            height: 220rpx;
-            .img {
-                width: 330rpx;
-                height: 220rpx;
-            }
-            .estate-name {
-                position: absolute;
-                left: 20rpx;
-                bottom: 12rpx;
-                font-size: 24rpx;
-                color: #fff;
-                line-height: 1;
-            }
-        }
-        
-        .type-area {
-            margin-top: 20rpx;
-            font-size: 22rpx;
-            color: #7c7c7c;
-            line-height: 24rpx;
-        }
-        .total-unit-price {
-            margin-top: 10rpx;
-            vertical-align: baseline;
-            .total {
-                color: #fc4c5a;
+        margin-top: 30rpx; 
+        padding-bottom: 40rpx;
+        border-bottom: 1rpx solid #E4E4E4;              
+        .flex();
+        image {
+            width: 262rpx;
+            height: 174rpx;
+            .flex-shrink(0);
+        }     
+
+        .info {
+            margin-left: 20rpx;
+            .text-ellipsis();  
+            .flex(1);
+            .title {
                 font-size: 32rpx;
+                color: #000;
                 line-height: 1;
+                .text-ellipsis();
             }
-            .unit {
-                margin-left: 20rpx;
+            .type-area-district-town {
+                margin-top: 20rpx;
                 font-size: 22rpx;
-                color: #7c7c7c;
                 line-height: 1;
+                color: #7C7C7C;
             }
+            .tags {
+                margin-top: 20rpx;
+                font-size: 20rpx;
+                line-height: 28rpx;
+                color: #000;                
+                background-color: #fff;
+
+                .tag {
+                    display:  inline-block;
+                    border-radius: 6rpx;
+                    background-color: #F5F5F5;
+                    padding: 6rpx 15rpx;
+
+                    & + .tag {
+                        margin-left: 10rpx;
+                    }
+                }                
+            }
+
+            .total-unit {
+                margin-top: 20rpx;
+                line-height: 1;
+                vertical-align: baseline;
+                .total {
+                    font-size: 32rpx;
+                    color: #FC4C5A;
+                }
+                .unit {
+                    margin-left: 20rpx;
+                    font-size: 22rpx;
+                    color: #7C7C7C;
+                    line-height: 1;
+                }
+            }
+
+
         }
     }
 </style>
