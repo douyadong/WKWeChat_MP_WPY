@@ -30,7 +30,7 @@ export default {
             "detail" : ""
         } ,
         "estate": {
-            "detail" : "" ,
+            "detail" : "wxmpEstate/estateDetail.rest" ,
             "comment" : ""
         } ,
         "market" : {
