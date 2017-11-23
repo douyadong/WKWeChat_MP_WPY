@@ -44,7 +44,7 @@
     </view>
     <assistant :agent="agentDetail"></assistant>
     <!--<tips></tips>-->
-    <modal title="添加微信">
+    <modal>
         <view class="modal-header" slot="header">添加微信</view>
         <text slot="body">font-class是unicode使用方式的一种变种，主要是解决unicode书写不直观，语意不明确的问题</text>
         <view slot="footer" class="modal-footer">

@@ -18,7 +18,8 @@ export default {
             "businessCity" : "wxmpCommon/getAllCityBusiness.rest" ,  //获取所有业务涵盖城市
             "city" : "wxmpCommon/getCityBusinessById.rest" ,  //通过城市id获取城市信息
             "region" : "houseMap/getCityAreasInfo.rest" ,  //通过城市id获取行政区域信息
-            "cityBylalo" : "wxmpCommon/findCityInfoByLonAndLat.rest"  //通过经纬度获取城市信息
+            "cityBylalo" : "wxmpCommon/findCityInfoByLonAndLat.rest" ,  //通过经纬度获取城市信息
+            "dial" : "wxmpCall/getAgentDial.rest" //通过agentId和houseId获取经纪人短接号
         } ,
         "index" : {
             "index" : "" ,  //请调用esf.list             

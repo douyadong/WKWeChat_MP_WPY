@@ -1,6 +1,6 @@
 <!--
     @页面名称：小区详情页面
-    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @作者：李杨 (liyang@lifang.com)
     @业务逻辑说明：
         1.
         2.        
@@ -8,24 +8,35 @@
 <template lang="wxml">
     <view class="estate-detail">
          <swipers :items="items"></swipers>
-         <summary :estateInfo="items"></summary>
-
+         <summary :estateInfo="estateInfo"></summary>
+         <view class="wk-panel top-gap">
+             <view class="panel-header">小区评论</view>
+             <view class="panel-body">
+                 <comments :commentList="commentList"></comments>
+             </view>
+         </view>
+    <qmap latitude="31.1117401070" longitude="121.3742065430"></qmap>
     <!--<view class="base-colors"></view>-->
     </view>
 </template>
 
 <script>
-    import wepy from "wepy" ;
+    import wepy from "wepy";
     import Swipers from "../../components/swipers" ;
+    import Map from "../../components/map" ;
     import Summary from "./sections/summary" ;
+    import Comments from "./sections/comments";
+    import apiDataFilter from "../../mixins/apiDataFilter";
     export default class Detail extends wepy.page {
         config = {
             
         } ;
         components = {
             swipers: Swipers,
-            summary: Summary
-        } ; 
+            summary: Summary,
+            comments: Comments,
+            qmap: Map
+        } ;
         data = {
             items:[
                 {
@@ -50,13 +61,198 @@
                     type:'pic',
                     url:'https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML'
                 } ,
+            ],
+            estateInfo: {
+                "estateId": 21061,
+                "estateName": "金港花园",
+                "town": "泗泾",
+                "district": "松江区",
+                "propertyType": "住宅",
+                "estateAddr": "横港路155弄 横港路633号 古楼公路348弄",
+                "propertyCharges": "0",
+                "completed": "1980",
+                "completedStr": "1980",
+                "totalHouse": "0户",
+                "totalHouseCount": 0,
+                "greenRate": "--",
+                "volumeRate": "--",
+                "totalFloorage": null,
+                "parkingLot": "0个",
+                "estateManger": null,
+                "developers": "--",
+                "propertyRight": "--",
+                "memo": ";售均价:0",
+                "imgList": [
+                    "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW"
+                ],
+                "estateImgUrl": "https://imgwater-test.oss.aliyuncs.com/6af6e136ce64436598f5e016bc9378f3.DW",
+                "sellhouseCount": 0,
+                "renthouseCount": 0,
+                "sameEstateHouseAmount": 3,
+                "propertyCompany": "1",
+                "subEstateId": "16990",
+                "encryptSubEstateId": "b1b474183ba0a5d6",
+                "historicalTransactionAmount": 250,
+                "estateUrl": "/shanghai/estate/b1b474183ba0a5d6.html",
+                "estateHistoricalPrice": null,
+                "comment": {
+                    "subEstateId": 16990,
+                    "amount": 6,
+                    "commentList": [
+                        {
+                            "pkid": 1079,
+                            "subEstateId": 0,
+                            "upAmount": 0,
+                            "downAmount": 0,
+                            "comment": "丰田天",
+                            "createTimeStr": "2017-03-23 16:04:52",
+                            "orderLevel": null,
+                            "isUp": 0,
+                            "isDown": 0,
+                            "guest": {
+                                "pkid": 31630,
+                                "guestId": 31630,
+                                "guestPhoneNum": "186****0592",
+                                "name": null,
+                                "sex": null,
+                                "openId": null,
+                                "unionId": null,
+                                "systemAvatarId": null,
+                                "avatar": {
+                                    "pkid": 1718,
+                                    "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                                    "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                                    "standard": "",
+                                    "postFix": "",
+                                    "imgType": 1
+                                }
+                            },
+                            "imgList": null,
+                            "landlord": 0
+                        },
+                        {
+                            "pkid": 1038,
+                            "subEstateId": 0,
+                            "upAmount": 0,
+                            "downAmount": 0,
+                            "comment": "WRF",
+                            "createTimeStr": "2017-03-17 16:57:31",
+                            "orderLevel": null,
+                            "isUp": 0,
+                            "isDown": 0,
+                            "guest": {
+                                "pkid": 31836,
+                                "guestId": 31836,
+                                "guestPhoneNum": "158****3110",
+                                "name": null,
+                                "sex": null,
+                                "openId": null,
+                                "unionId": null,
+                                "systemAvatarId": null,
+                                "avatar": {
+                                    "pkid": null,
+                                    "url": "https://test01.fe.wkzf/wkwap_fe/img/source/user/default_head_img.png",
+                                    "imgKey": null,
+                                    "standard": null,
+                                    "postFix": null,
+                                    "imgType": null
+                                }
+                            },
+                            "imgList": null,
+                            "landlord": 0
+                        }
+                    ]
+                },
+                "subwayList": [
+                    "地铁9号线(杨高中路-松江南站)"
+                ],
+                "schoolList": null,
+                "schoolName": '华师大附小、管弄新村小学、管弄新村小学、管弄新村小学',
+                "subwayName": "9号线",
+                "longitude": "121.270919",
+                "latitude": "31.116893"
+            },
+            commentList: [
+                {
+                    "pkid": 1079,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "丰田天",
+                    "createTimeStr": "2017-03-23 16:04:52",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31630,
+                        "guestId": 31630,
+                        "guestPhoneNum": "186****0592",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": 1718,
+                            "url": "https://imgwater-test.oss.aliyuncs.com/743fe78a5efa433588f4c3a8613a396e",
+                            "imgKey": "743fe78a5efa433588f4c3a8613a396e",
+                            "standard": "",
+                            "postFix": "",
+                            "imgType": 1
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                },
+                {
+                    "pkid": 1038,
+                    "subEstateId": 0,
+                    "upAmount": 0,
+                    "downAmount": 0,
+                    "comment": "WRF",
+                    "createTimeStr": "2017-03-17 16:57:31",
+                    "orderLevel": null,
+                    "isUp": 0,
+                    "isDown": 0,
+                    "guest": {
+                        "pkid": 31836,
+                        "guestId": 31836,
+                        "guestPhoneNum": "158****3110",
+                        "name": null,
+                        "sex": null,
+                        "openId": null,
+                        "unionId": null,
+                        "systemAvatarId": null,
+                        "avatar": {
+                            "pkid": null,
+                            "url": "https://test01.fe.wkzf/wkwap_fe/img/source/user/default_head_img.png",
+                            "imgKey": null,
+                            "standard": null,
+                            "postFix": null,
+                            "imgType": null
+                        }
+                    },
+                    "imgList": null,
+                    "landlord": 0
+                }
             ]
         } ;
         computed = {
             
         } ;
         methods = {
-           
+           getDetail(){
+               apiDataFilter.request({
+                   apiPath : "estate.detail",
+                   data : { "agentId" : agentId } ,
+                   successCallback : res => {
+                       let agent = res.body.data.agentDetail ;
+                       //this.$data.apiData.agentDetail = agent ;
+                       //页面标题和分享内容设置
+                       //页面微信分享设置
+                   }
+               }) ;
+           }
         } ;
         events = {
 

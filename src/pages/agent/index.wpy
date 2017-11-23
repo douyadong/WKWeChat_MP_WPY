@@ -11,7 +11,8 @@
             <image src="https://imgwater-test.oss.aliyuncs.com/9a3190d77a844b1a8d83648dc7113973.I640_360"></image>
             <view class="agent-info">
                 <view class="some-info">
-                    <text class="name">程茂胜</text><text class="address">| 志远地产 虹桥店</text>
+                    <text class="name">程茂胜</text>
+                    <text class="address">| 志远地产 虹桥店</text>
                 </view>
                 <view class="time">入住悟空：1 年</view>
             </view>      
@@ -23,7 +24,7 @@
             </repeat>
         </view>
     </view>
-    <!--<assistant :agent="agentInfo"></assistant>-->
+    <assistant :agent="agentInfo"></assistant>
 </template>
 
 <script>
