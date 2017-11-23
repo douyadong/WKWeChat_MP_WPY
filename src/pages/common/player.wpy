@@ -41,6 +41,8 @@
 </script>
 
 <style lang="less" scoped>
+    @import "../../less/variables.less" ;
+    @import "../../less/mixins.less" ;
     .video{
         position: absolute;
         top:50%;

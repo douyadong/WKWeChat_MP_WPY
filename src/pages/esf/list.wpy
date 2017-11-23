@@ -7,33 +7,59 @@
 -->
 <template lang="wxml">
     <view>
-       二手房列表页面
+       <repeat for="{{ houseList }}" key="index" index="index" item="item">
+            <esf :item="item"></esf>
+        </repeat>
     </view>
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy" ;
+    import Esf from "../../components/esf" ;
     export default class List extends wepy.page {
         config = {
             
         } ;
         components = {            
-            
+            esf : Esf
         } ; 
         data = {
-            
+            houseList : []
         } ;
-        computed = {
-            
+        onLoad(options) {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            将页面query参数值存放到data下的params下
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            this.params = options ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            根据页面参数type来决定页面navigatorTitle写什么
+            1. type=onsale : 小区在售房源
+            2. type=similar : 相似房源
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            let pageTitle ;
+            switch(this.params.type) {
+
+                case "onsale" : 
+                pageTitle = "小区在售房源" ;
+                break ;
+
+                case "similar" : 
+                pageTitle = "相似房源" ;
+                break ;
+
+                default :
+                pageTitle = "房源列表" ;
+                break ;
+            }
+            wx.setNavigationBarTitle({
+                "title" : pageTitle
+            }) ;
         } ;
-        methods = {
-           
-        } ;
-        events = {
+        onShow() {
 
         } ;
-        onLoad() {
-           
+        onShareAppMessage() {
+            return { "title" : "买房就找悟空找房" }
         }
     }
 </script>

@@ -1,12 +1,12 @@
 <!--
     @组件名称：单条二手房房源组件
-    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @作者：唐旭阳 (tangxuyang@lifang.com)
     @业务逻辑说明：
         1.
         2. 
 -->
 <template lang="wxml">
-    <view class="item">
+    <view class="esf-item">
         <view class="img-estate">
             <image class="img" src="{{item.imageUrl}}"></image>
             <view class="estate-name">
@@ -50,8 +50,8 @@ export default class Com extends wepy.component {
 }
 </script>
 
-<style lang="less">
-    .item {       
+<style lang="less">    
+    .esf-item {       
         background-color: #fff; 
         box-sizing: border-box;
         float: left;
