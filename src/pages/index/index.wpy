@@ -492,7 +492,7 @@
                     &::after {
                         color:  #4081D6;
                         content: '';
-                        .triangle-up(9rpx, #7C7C7C);
+                        .triangle-up(9rpx, #7C7C7C);                        
                         vertical-align: middle !important;
                     }
                 }
