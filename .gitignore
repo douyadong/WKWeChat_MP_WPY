@@ -4,3 +4,5 @@ fonts/*
 src/app.wpy
 .gitignore
 .vscode/*
+jsconfig.json
+src/mock/*
