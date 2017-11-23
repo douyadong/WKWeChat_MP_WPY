@@ -6,8 +6,28 @@
         2.        
 -->
 <template lang="wxml">
-    <view>
-       搜索过程页面
+    <view class="city-search">
+        <view class="city">{{city.name}}</view>
+        <view class="search-box">
+            <text class="iconfont icon-search"></text><input value="{{keyword}}" @input="keywordChange" class="estate-address" placeholder="小区或地址" confirm-type="search"></input><text class="iconfont icon-close {{keyword == ''? 'invisible':''}}" @tap="clearKeyword"></text>
+        </view>
+    </view>
+    <view class="result">       
+       <block wx:if="{{items && items.length > 0}}">
+       <view @tap="selectEstate" data-id="{{item.id}}" data-name="{{item.name}}" class="item" wx:for="{{items}}">
+        <view class="estate-name">
+            <text wx:for="{{item.names}}" wx:for-item="t" class="{{t.highlight?'highlight':''}}">{{t.text}}</text>
+        </view>
+        <view class="address">
+            <text wx:for="{{item.address}}" wx:for-item="t" class="{{t.highlight?'highlight':''}}">{{t.text}}</text>
+        </view>
+       </view>
+       </block>
+
+       <view class="item" wx:if="{{!items || items.length == 0}}">
+            <view class="estate-name">未找到该地址，请重新搜索</view>
+            <view class="address">您可以更换其他关键字再试一次</view>
+       </view>
     </view>
 </template>
 
@@ -21,23 +41,145 @@
             
         } ; 
         data = {
-            
+            keyword: "",
+            city: {
+                id: 43,
+                name: "上海"
+            },
+            items: [{
+                id: 1,
+                name: "宝林四村",                
+                address: "浦东 张江 宝林路东林路9990 号"
+            },{
+                id: 3,
+                name: "宝林四村",
+                address: "浦东 张江 宝林路东林路9990 号"
+            }]
         } ;
         computed = {
             
         } ;
         methods = {
-           
+           keywordChange(e) {
+               this.keyword = e.detail.value || '';
+           },
+           clearKeyword() {
+               this.keyword = '';
+           },
+           selectEstate(e) {
+               wx.setStorageSync("estate",{id:e.currentTarget.dataset.id,name:e.currentTarget.dataset.name});
+               wx.navigateBack();
+           }
         } ;
         events = {
 
         } ;
         onLoad() {
            
+        };
+        generateHighlight(str, subStr) {//拆分成用于高亮显示的数据结构
+               let strs = str.split(subStr);
+               let result = [];
+               for(var i = 0; i < strs.length; i++){
+                   if(i != 0){
+                       result.push({text:subStr,highlight: true});
+                   }
+                   result.push({text:strs[i],highlight: false});
+               }
+               
+               return result;
+           };
+        onShow() {
+            if(this.items && this.items.length > 0){
+                for(let i = 0; i < this.items.length; i++){
+                    this.items[i].address = this.generateHighlight(this.items[i].address,"宝");
+                    this.items[i].names = this.generateHighlight(this.items[i].name,"宝");
+                }           
+            }
         }
     }
 </script>
 
 <style lang="less">
+@import '../../less/mixins';
+    .city-search {
+        padding: 0 30rpx 30rpx 30rpx;
+        background-color: #fff;
+        .flex();
+        .city {
+            font-size: 28rpx;
+            color: #000;            
+            .flex-shrink(0);
+            padding:10rpx 0;
+            &::after {
+                content: '';
+                vertical-align: middle !important;
+                .triangle-down(8rpx,#7c7c7c);
+            }            
+        }
+        .search-box {
+            .flex();
+            .flex(1);
+            margin-left: 28rpx;            
+            background-color: #F0F0F0;
+            border-radius: 6rpx;
+            font-size: 26rpx;
+            color: #7C7C7C;
+            padding: 2rpx 0rpx 4rpx 30rpx;
+            .estate-address {
+                line-height: 1;                
+                margin-left: 10rpx;   
+                font-size: 26rpx;             
+                &::before {
+
+                }
+            }
+            position: relative;
+
+            .icon-search {
+                margin-top: 10rpx;
+                font-size: 26rpx;
+            }
+
+            .icon-close {
+                margin-top: 10rpx;
+                font-size: 26rpx;
+                position: absolute;
+                right: 19rpx;
+                &.invisible {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .result {
+        background-color: #fff;
+        margin-top: 6rpx;
+        .item {
+            margin-left: 30rpx;
+            padding: 20rpx 0;
+            .estate-name {
+                font-size: 32rpx;
+                line-height: 45rpx;
+                color: #000;
+            }
+            .address {
+                margin-top: 5rpx;
+                font-size: 28rpx;
+                line-height: 40rpx;
+                color: #7C7C7C;
+            }       
+
+            .highlight {
+                color:  #4081D6;
+            }
+
+            & + .item {
+                border-top: 1rpx solid #E4E4E4;
+            }
+        }
+    }
+
     
 </style>
