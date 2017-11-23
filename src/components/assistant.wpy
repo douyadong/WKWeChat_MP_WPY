@@ -7,37 +7,64 @@
 -->
 <template lang="wxml">
     <view class="assistant">        
-        <navigator  url="/pages/agent/index">
-            <image class="img-circle" src="{{ agent.headPortraitUrl }}?x-oss-process=image/resize,w_70" mode="aspectFill" lazy-load="true"></image>
+        <navigator  url="/pages/agent/index?agentId={{ agent.agentId }}">
+            <image class="img-circle" src="{{ agent.headRoundImgUrl }}?x-oss-process=image/resize,w_70" mode="aspectFill" lazy-load="true"></image>
             <text class="name">{{ agent.agentName }}</text>
-            <text class="company">{{ agent.belongToCompany }}</text>
+            <text class="company">{{ agent.companyName }}</text>
         </navigator>
-        <text class="wechat" @tap="addWechat">添加微信</text> 
+        <text class="wechat" @tap="addWechat" wx:if="{{ agent.agentWChatId }}">添加微信</text> 
         <text class="tel" @tap="phoning">电话咨询</text>
     </view>
+    <!--添加微信的modal框-->
+    <modal wx:if="{{ componentStates.addWechatModal }}">
+        <view class="modal-header" slot="header">添加微信</view>
+        <text slot="body">font-class是unicode使用方式的一种变种，主要是解决unicode书写不直观，语意不明确的问题</text>
+        <view slot="footer" class="modal-footer">
+            <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum">保存到相册</view>
+            <view class="wk-btn wk-btn-transparent" @tap="copyWechat">复制微信号</view>
+        </view>
+    </modal>
 </template>
 
 <script>
-import wepy from "wepy" ;
-export default class Com extends wepy.component {
-    props = {
-        agent : Object
-    } ;    
-    data = {
+    import wepy from "wepy" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载组件资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+    import Modal from "./modal" ;
+    import Tips from "./tips" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+    import adf from "../mixins/apiDataFilter" ;
+    
+    export default class Com extends wepy.component {
+        props = {
+            agent : Object        
+        } ;
+        components = {
+            modal : Modal ,
+            tips : Tips
+        } ;
+        data = {
+            componentStates : {
+                addWechatModal : false
+            }
+        } ;
+        methods = {
+            phoning : ()=> {
+                console.log("打我电话干嘛？") ;
+            } ,
+            addWechat : ()=> {                
+                this.componentStates.addWechatModal = true ;               
+            } ,
+            saveToAlbum : ()=> {} ,
+            copyWechat : ()=> {}
+        } ;
+        onload() {
 
-    } ;
-    methods = {
-        phoning() {
-            console.log("打我电话干嘛？") ;
-        } ,
-        addWechat() {
-            console.log("想撩我？") ;
         }
-    } ;
-    onload() {
-
     }
-}
 </script>
 
 <style lang="less">

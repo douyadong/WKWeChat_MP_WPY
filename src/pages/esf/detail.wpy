@@ -114,7 +114,7 @@
             <navigator url="/pages/esf/list">查看更多</navigator>
         </view>
     </view>
-    <assistant></assistant>
+    <assistant :agent="agent"></assistant>
 </template>
 
 <script>
@@ -131,38 +131,54 @@
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     import adf from "../../mixins/apiDataFilter" ;
     export default class Detail extends wepy.page {
-        config = {
-            
-        } ;
         components = {
             assistant : Assistant ,        
             swipers : Swipers ,
             qmap : Qmap
         } ; 
         data = {
+            pageParams : {} ,
             pageStates : {
                 summaryOptional : false //基本信息可选字段现实与否
-            }            
-        } ;
-        computed = {
-            
+            } ,
+            agent : {
+                "agentId" : 100321 ,
+                "agentName" : "赵华刚" ,
+                "agentMobile" : "18811112222" ,
+                "headRoundImgKey" : "53056dcde0ff41cea97b170543e3c087" ,
+                "headRoundImgUrl" : "https://imgwater-test.oss.aliyuncs.com/53056dcde0ff41cea97b170543e3c087" ,
+                "isWellAgent" : 0 ,
+                "vipType" : 0 ,
+                "abbreviation" : "" ,
+                "companyName" : "123" ,
+                "agentWChatId" : "huagang_zhao" ,
+                "weChatQRImgKey" : null ,
+                "agentWChartQRImgUrl" : null
+            }      
         } ;
         methods = {
            spreadOptional() {
                this.pageStates.summaryOptional = true ;
            }
         } ;
-        onLoad() {
-            
+        onLoad(options) {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            将所有的页面参数存放到pageParams里面
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            for(key in options) {
+                this.pageParams[key] = options[key] ;
+            }
         } ; 
-        onShow() {            
+        onShow() {
+            /*          
            adf.request({
                 apiPath : "esf.detail" ,
                 data : { "houseId" : 100237 } ,
                 successCallback : (res)=> {
                     console.log(res) ;
                 }
-            }) ;            
+            }) ;
+            */         
         } ; 
         onShareAppMessage() {
             return { "title" : "买房就找悟空找房" }
