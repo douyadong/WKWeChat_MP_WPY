@@ -15,29 +15,34 @@ export default {
     } ,
     "suffix" : { //后缀代表接口去掉prefix的部分，这里可以是无限级的树状结构，根据自己的需要
         "common" : {
-            
+            "businessCity" : "wxmpCommon/getAllCityBusiness.rest" ,  //获取所有业务涵盖城市
+            "city" : "wxmpCommon/getCityBusinessById.rest" ,  //通过城市id获取城市信息
+            "region" : "houseMap/getCityAreasInfo.rest" ,  //通过城市id获取行政区域信息
+            "cityBylalo" : "wxmpCommon/findCityInfoByLonAndLat.rest"  //通过经纬度获取城市信息
         } ,
         "index" : {
-            "index" : "" ,
-            "city" : "" ,
-            "search" : ""
+            "index" : "" ,  //请调用esf.list             
+            "search" : ""  //请调用esf.list
         } ,
         "agent" : {
-            "index" : ""
+            "index" : "wxmpAgent/getAgentInfo.rest" ,
+            "house" : "wxmpAgent/getAgentHouseList.rest"
         } ,
         "esf" : {
-            "list" : "" ,
-            "detail" : ""
+            "list" : "wxmpIndex/secondHouseList.rest" ,
+            "detail" : "wxmpOldHouseDetail/getOldHouseDetail.rest"
         } ,
         "estate": {
-            "detail" : "" ,
-            "comment" : ""
+            "detail" : "wxmpEstate/estateDetail.rest" ,
+            "comment" : "estate/queryEstateCommentList.rest"
         } ,
         "market" : {
-           "index" : ""
+           "index" : "housePrice/getAreaPriceList.rest"
         } ,
         "store": {
-            "index" : ""
+            "index" : "housePrice/getAreaPriceInfo.rest" ,
+            "house" : "wxmpStore/getHouseList.rest" ,
+            "agent" : "wxmpStore/getAgentList.rest"
         }
     }
 } ;

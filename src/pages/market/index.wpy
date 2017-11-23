@@ -6,22 +6,41 @@
         2.        
 -->
 <template lang="wxml">
-    <view>
-       房价行情页面
-    </view>
+        <view class="today-price {{pageStates.title==true?'hide':''}}">
+            <view class="address">今日上海房价</view>
+            <text class="city-price">105501元/m²</text><text class="compare">环比上月↓-7.66%</text>
+        </view>
+        <view class="specific-area {{pageStates.fixed==true?'fixed':''}}">
+            <view class="now-area">当前各区参考均价</view>
+            <view class="small-title">
+                <text class="area">区域</text><text class="average">参考均价</text><text class="increase">涨幅</text>
+            </view>
+        </view>
+        <view class="details">
+             <repeat for="{{list}}" key="index" index="index" item="item">
+                 <view class="single-detail">
+                    <text class="location">{{item.area}}</text><text class="mean">{{item.price}}   元/m²</text><text class="rise">{{item.rise}}</text>
+                 </view>
+             </repeat>
+        </view>
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import data from "./../../mock/house-price.js";
+    import wepy from "wepy";   
     export default class Index extends wepy.page {
         config = {
-            
+            "navigationBarTitleText" : "房价行情" 
         } ;
         components = {            
             
         } ; 
         data = {
-            
+            list:data,
+            pageStates:{
+                title:false,
+                fixed:false
+            }  
         } ;
         computed = {
             
@@ -32,12 +51,102 @@
         events = {
 
         } ;
-        onLoad() {
-           
-        }
+        onLoad(){
+            wx.getSystemInfo({ 
+                success: function (res) { 
+                    console.log(res);
+                } 
+            });
+        };
+        onPageScroll(e){
+            // 当页面滚动超过一定距离时，地区房价标题消失;区域参考价固定
+            if(e.scrollTop>270){
+                this.setData({
+                    'pageStates.title':true,
+                    'pageStates.fixed':true
+                })
+            }
+            // 页面上滚到顶部时，区域参考价固定;
+            if(e.scrollTop==0){
+                this.setData({
+                    'pageStates.title':false,
+                    'pageStates.fixed':false
+                })
+            }
+        };
     }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+    @import "../../less/variables.less" ;
+    @import "../../less/mixins.less" ;
+    // 今日房价
+    .today-price{
+        height: 270rpx;
+        width:100%;
+        padding:0 30rpx;
+        color:white;
+        background:url(http://img.wkzf.com/b262848128334e3daab102eb97e1b747);
+        .address{
+            font-size: 50rpx;
+            padding-top: 63rpx;
+            margin-bottom: 30rpx;
+        }
+        .city-price{
+            font-size: 64rpx;
+        }
+        .compare{
+            font-size:24rpx;
+            margin-left: 17rpx;
+        }
+        &.hide{
+            display: none;
+        }
+    }
     
+    // 其它区域房价
+    .specific-area{
+        padding:0 30rpx;
+        border-bottom: 1rpx solid #d8d8d8;
+        .now-area{
+            font-size: 32rpx;
+            color:#000;
+            margin:30rpx 0 48rpx 0;
+        } 
+        .small-title{
+            font-size:28rpx;
+            color:@lighter-font-color;
+            text-align: center;
+            padding-bottom: 30rpx;
+            .area{
+                float:left;
+            }
+            .increase{
+                float:right;    
+            }
+        }
+        &.fixed{
+            position: fixed;
+            top:0;
+            background-color: #fff;
+            width:690rpx;
+        }   
+    }
+    // 具体区域房价行情;
+    .details{
+        text-align: center;
+        .single-detail{
+            padding:0 30rpx;
+            font-size: 30rpx;
+            color:#000;
+            line-height: 88rpx;
+            border-bottom: 1rpx solid #d8d8d8;
+            .location{
+                float:left;
+            }
+            .rise{
+                float:right;
+            }
+        }
+    }
 </style>

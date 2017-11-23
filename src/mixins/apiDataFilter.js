@@ -12,7 +12,10 @@ import apiConf from "../confs/api" ;
 /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 apiDataFilter的定义
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-let apiDataFilter =  {    
+class ApiDataFilter {
+    constructor() {
+
+    }
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     请求数据 , successCallback的唯一参数为：response，返回的json数据应该这样取得：response.body
     @apiPath : 接口路径
@@ -25,9 +28,9 @@ let apiDataFilter =  {
     @errorCallback : 请求异常的回调处理
     @completeCallback : 清酒完成就执行的回调
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-    request : ({ apiPath , data = {} , method = "get" , dataType = "json" , contentType , showNavigationBarLoading = false , showCustomLoading = true , tips = true , successCallback , errorCallback , completeCallback }) => {
+    request({ apiPath , data = {} , method = "get" , dataType = "json" , contentType , showNavigationBarLoading = false , showCustomLoading = true , tips = true , successCallback , errorCallback , completeCallback }) {
         let requestMethod = method.toLowerCase() ;
-        let errorProcesser = ( errorCallback !==undefined && typeof errorCallback ==="function" ) ? errorCallback : this.errorCallback ;
+        let errorProcesser = ( errorCallback && typeof errorCallback ==="function" ) ? errorCallback : this.errorCallback ;         
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         首先根据showNavigationBarLoading参数决定是否需要开启小程序导航栏的加载提示
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
@@ -63,7 +66,7 @@ let apiDataFilter =  {
             } ,
             fail : function (error) {
                 showNavigationBarLoading && wx.hideNavigationBarLoading() ;                
-                typeof fail == "function" && errorProcesser(error) ;                
+                errorProcesser(error) ;                
             } ,
             complete : function () {
                 typeof complete == "function" && completeCallback() ;
@@ -76,13 +79,13 @@ let apiDataFilter =  {
             }
         }
         wx.request(params) ;       
-    } ,
+    }
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     请求错误处理方法
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-    errorCallback : (error) => {        
+    errorCallback(error) {        
         console.log(error) ;
-    } ,
+    }
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     根据apiPath返回apiUrl
     @apiPath：从api配置中suffix往下层写如："example.rent.detail"
@@ -94,11 +97,11 @@ let apiDataFilter =  {
             suffix = suffix[pathArray[n]] ;
         }
         if(suffix === undefined) suffix = "" ;
-        return apiConf.prefix + "/" + suffix ;
+        return apiConf.prefix[apiConf.dataStageEnv] + "/" + suffix ;
     }   
      /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     整个工具定义结束
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
 }
 
-export default apiDataFilter ;
+export default new ApiDataFilter ;

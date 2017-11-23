@@ -27,11 +27,11 @@ export default class Com extends wepy.component {
         
     } ;
     data = {
-        visibility : false  //整个modal框的显示隐藏状态
+        visibility : true  //整个modal框的显示隐藏状态
     } ;
     methods = {
         closeModal() {            
-            this.setData({ visibility : false }) ;
+            this.visibility = false ;
         }
     } ;
     events = {

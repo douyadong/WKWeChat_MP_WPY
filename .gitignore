@@ -1,4 +1,7 @@
-/dist
-
-/node_modules
+node_modules/*
+dist/*
+fonts/*
+src/app.wpy
+.gitignore
+.vscode/*
 .wepycache
