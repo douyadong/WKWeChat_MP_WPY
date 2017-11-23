@@ -63,14 +63,17 @@
             <text class="bd">愚一幼儿园，愚一小学，包玉刚实验学校，建青实验学校，江苏路第五小学分校，上海市三女中上海延安中学，上海第54中学。</text>
             <text class="hd">周边设施</text>
             <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
-            <text class="hd">户型介绍</text>
-            <text class="bd">静安寺商圈，南京西路商圈，中山公园商圈。</text>
-            <text class="hd">小区介绍</text>
-            <text class="bd">愚一幼儿园，愚一小学，包玉刚实验学校，建青实验学校，江苏路第五小学分校，上海市三女中上海延安中学，上海第54中学。</text>
-            <text class="hd">税费解析</text>
-            <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
-            <text class="hd">其他</text>
-            <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
+            <view class="panel-more" wx:if="{{ ! pageStates.summaryOptional }}" @tap="spreadOptional">查看更多</view>
+            <view class="optional" wx:if="{{ pageStates.summaryOptional }}">
+                <text class="hd">户型介绍</text>
+                <text class="bd">静安寺商圈，南京西路商圈，中山公园商圈。</text>
+                <text class="hd">小区介绍</text>
+                <text class="bd">愚一幼儿园，愚一小学，包玉刚实验学校，建青实验学校，江苏路第五小学分校，上海市三女中上海延安中学，上海第54中学。</text>
+                <text class="hd">税费解析</text>
+                <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
+                <text class="hd">其他</text>
+                <text class="bd">华东医院，华山医院，同仁医院，电力医院，上海交通大学附属儿童医院。</text>
+            </view>
         </view>        
     </view>
     <view class="estate wk-panel top-gap">
@@ -101,7 +104,7 @@
             </view>
         </navigator>
     </view>
-    <qmap :latitude="latitude" :longitude="longitude"></qmap>
+    <qmap></qmap>
     <view class="wk-panel">
         <view class="panel-header">相似房源推荐</view>
         <view class="panel-body">
@@ -137,17 +140,17 @@
             qmap : Qmap
         } ; 
         data = {
-            latitude : "31.1117401070" ,
-            longitude : "121.3742065430"
+            pageStates : {
+                summaryOptional : false //基本信息可选字段现实与否
+            }            
         } ;
         computed = {
             
         } ;
         methods = {
-           
-        } ;
-        events = {
-
+           spreadOptional() {
+               this.pageStates.summaryOptional = true ;
+           }
         } ;
         onLoad() {
             
