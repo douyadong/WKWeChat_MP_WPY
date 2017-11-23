@@ -22,7 +22,7 @@ export default {
             "dial" : "wxmpCall/getAgentDial.rest" //通过agentId和houseId获取经纪人短接号
         } ,
         "index" : {
-            "index" : "" ,  //请调用esf.list             
+            "index" : "" ,  //请调用esf.list
             "search" : ""  //请调用esf.list
         } ,
         "agent" : {
