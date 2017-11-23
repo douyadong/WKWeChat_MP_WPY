@@ -6,10 +6,11 @@
         2.        
 -->
 <template lang="wxml">
+    <block wx:if="{{isOpenCity}}">
     <view class="city-search">
-        <view class="city">{{city.name}}</view>
+        <view class="city" @tap="switchCity">{{city.cityName}}</view>
         <view class="search-box">
-            <text class="iconfont icon-search"></text><view class="estate-address">小区或地址</view>
+            <text class="iconfont icon-search"></text><view class="estate-address" @tap="searchEstate">{{estate && estate.name || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.name ? '':'invisible'}}" @tap="clearEstate"></text>
         </view>
     </view>
     <view class="current-price">
@@ -76,33 +77,67 @@
             </view>    
     </view>
 
-    <view class="esf-items"> 
-       <view class="house-count">已为您展示附近 453 套房源</view>     
-       <view class="items"> 
-        <esf :item="data"></esf>
-        <esf :item="data"></esf>
-        <esf :item="data"></esf>
-        <view style="clear:both"></view>
-       </view>       
-       <view class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
+    <view class="esf-items">
+       <block wx:if="{{items && items.length>0}}">       
+        <view class="house-count">已为您展示附近 453 套房源</view>     
+        <view class="items"> 
+            <repeat for="{{items}}" item="item">
+                <esf :item="item"></esf>
+            </repeat>
+        </view>
+       </block> 
+
+       <view class="error" wx:if="{{isLoadError}}">
+        <image src="http://img.wkzf.com/04f36182e2754599889eae69fc206270" @tap="refresh"></image>
+        <view>加载失败，点击刷新</view>
        </view>
+
+       <view class="no-data" wx:if="{{!items || items.length == 0}}">
+        <view class="desc">
+            暂时没有符合条件的房源
+        </view>
+        <view class="recommend">
+            您可以扩大搜索范围，找到更多的房源
+        </view>
+        <button class="clear">
+            清楚条件
+        </button>
+       </view>
+
+       <view class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
+       </view>       
+    </view>
+    </block>
+    <view class="no-open" wx:if="{{!isOpenCity}}">
+        <view>
+        <view>很抱歉</view>
+        <view>{{cityName}}暂未开通二手房业务</view>
+        <button class="switch-city">
+            去看看其他城市的二手房
+        </button>
+        </view>
     </view>
 </template>
 
 <script>
     import wepy from "wepy" ;    
     import Esf from "../../components/esf";
+    import apiDataFilter from "../../mixins/apiDataFilter";
     export default class Index extends wepy.page {
-        config = {
-            
+        config = {            
+            navigationBarTitleText: "悟空找房"            
         } ;
         components = {            
             esf: Esf
         } ; 
         data = {  
                 city: {
-                    id: 43,
-                    name: "上海"
+                    cityId: 43,
+                    cityName: "上海"
+                },
+                estate: {
+                    id: "",
+                    name: ""
                 },
                 filter : {
                     selectedFilterSection: "",
@@ -332,19 +367,46 @@
                         }],
                         selectedId: ''
                     }
-                },
-                imageUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
-                estateName: "淞虹小区",
-                type: "2室2厅1卫",
-                area: "66.36",
-                total: "525",
-                unit: "36251"            
+                },                   
+                isLoadError: false,
+                isOpenCity: true,                         
+                items: [{
+                    imageUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
+                    estateName: "淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路",
+                    type: "2室2厅1卫",
+                    area: "66.36",
+                    total: "525",
+                    unit: "36251",
+                    district: "浦东新区",
+                    town: "花木西路",
+                    tags: ["满五唯一", "地铁"],
+                },{
+                    imageUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
+                    estateName: "淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路",
+                    type: "2室2厅1卫",
+                    area: "66.36",
+                    total: "525",
+                    unit: "36251",
+                    district: "浦东新区",
+                    town: "花木西路",
+                    tags: ["满五唯一", "地铁"],
+                }  ,{
+                    imageUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
+                    estateName: "淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路",
+                    type: "2室2厅1卫",
+                    area: "66.36",
+                    total: "525",
+                    unit: "36251",
+                    district: "浦东新区",
+                    town: "花木西路",
+                    tags: ["满五唯一", "地铁"],
+                }  ]          
         } ;
         computed = {
             
         } ;
         methods = {
-           switchFilter(e){ //切换筛选条件事件处理函数
+           switchFilter(e) { //切换筛选条件事件处理函数
                let name = e.currentTarget.dataset.name;
                if(this.filter.selectedFilterSection == name){
                    name = '';
@@ -352,20 +414,20 @@
                this.filter.selectedFilterSection = name;
                //this.setData('filter.selectedFilterSection',name)
            },
-           selectSort(e){//切换排序规则
+           selectSort(e) {//切换排序规则
                 let sortId = e.currentTarget.dataset.id;
                 this.filter.sortSection.selectedId = sortId;
            },
 
-           selectType(e){//切换房型
+           selectType(e) {//切换房型
                 let typeId = e.currentTarget.dataset.id;
                 this.filter.typeSection.selectedId = typeId;
             },
-            selectTotal(e){//切换总价
+            selectTotal(e) {//切换总价
                 let typeId = e.currentTarget.dataset.id;
                 this.filter.totalSection.selectedId = typeId;
             },
-            selectDistrictMetro(e){//切换区域或地铁
+            selectDistrictMetro(e) {//切换区域或地铁
                 let name = e.currentTarget.dataset.name;
                 if(this.filter.districtSection.selectedSecion == name) return;
                 this.filter.districtSection.selectedSection = name;
@@ -374,36 +436,70 @@
                 this.filter.districtSection.selectedMetroId = '';
                 this.filter.districtSection.selectedStationId = '';
             },
-            selectDistrict(e){//选择具体区
+            selectDistrict(e) {//选择具体区
                 let districtId = e.currentTarget.dataset.id;
                 if(this.filter.districtSection.selectedDistrictId == districtId) return;
                 this.filter.districtSection.selectedDistrictId = districtId;
                 this.filter.districtSection.selectedTownId = '';
             },
-            selectTown(e){//选择具体板块
+            selectTown(e) {//选择具体板块
                 let townId = e.currentTarget.dataset.id;
                 this.filter.districtSection.selectedTownId = townId;
             },
-            selectMetro(e){//选择具体地铁线路
+            selectMetro(e) {//选择具体地铁线路
                 let metroId = e.currentTarget.dataset.id;
                 if(this.filter.districtSection.selectedMetroId == metroId) return;
                 this.filter.districtSection.selectedMetroId = metroId;
                 this.filter.districtSection.selectedStationId = '';
             },
-            selectStation(e){//选择具体地铁站点
+            selectStation(e) {//选择具体地铁站点
                 let stationId = e.currentTarget.dataset.id;
                 this.filter.districtSection.selectedStationId = stationId;
             },
-           refresh(){// 刷新列表
+           refresh() {// 刷新列表
 
            },
-
+           switchCity() {
+               wx.navigateTo({url:'/pages/index/city'});
+           },
+           searchEstate() {
+               wx.navigateTo({
+                   url: "/pages/index/search"
+               });
+           },
+           clearEstate() {
+               wx.setStorageSync("estate",{id: "", name: ""});
+               this.estate = {id: "", name: ""};
+           }
         } ;
         events = {
 
         } ;
         onLoad() {
-           
+           //定位
+           wx.getLocation({
+               success: (res)=>{
+                   //根据经纬度获取城市信息
+                    apiDataFilter.request({
+                        apiPath: "index.findCityInfoByLonAndLat",
+                        successCallback: (data)=>{
+                            wx.setStorageSync("city",data.data);
+                            wx.setStorageSync("locationCity",data.data);
+                            this.city = data.data;
+
+                            //todo:获取区域和地铁信息
+
+                        }
+                    });
+               },
+               fail: ()=>{
+                   //todo:弹出定位失败
+               }
+           });
+        };
+        onShow() {
+            this.estate = wx.getStorageSync("estate") || {id: "", name: ""};
+            this.city = wx.getStorageSync("city") || {cityId: 43, cityName: "上海"};
         }
     }
 </script>
@@ -438,6 +534,17 @@
                 margin-left: 9rpx;
                 &::before {
 
+                }
+            }
+
+            position: relative;
+            .icon-close {
+                margin-top: 2rpx;
+                font-size: 26rpx;
+                position: absolute;
+                right: 19rpx;
+                &.invisible {
+                    display: none;
                 }
             }
         }
@@ -701,6 +808,67 @@
             &.invisible {
                 display: none;
             }
+        }
+    }
+
+    page {
+        height: 100%;
+    }
+    .error {
+        text-align: center;
+        padding-top: 180rpx;
+        image {
+            width: 313rpx;
+            height: 288rpx;
+        }
+        view {
+            font-size: 36rpx;
+        }
+    }
+
+    .no-data {
+        padding-top: 260rpx;
+        text-align: center;        
+            font-size: 32rpx;
+        .desc {
+            color: #000;
+            line-height: 45rpx;
+        }
+        .recommend {
+            color: #7C7C7C;
+            line-height: 45rpx;
+        }
+
+        .clear {
+            margin-top: 50rpx;
+            width: 690rpx;
+            color: #92A7C3;
+            background-color: #F0F0F0;
+            font-size: 28rpx;
+            line-height: 1;
+            padding-top: 31rpx;
+            padding-bottom: 31rpx;
+        }
+    }
+
+    .no-open {
+        height: 100%;
+        font-size: 32rpx;
+        line-height: 45rpx;
+        text-align: center;        
+        background-color: #fff;
+        .flex();
+        .align-items(center);
+        .justify-content(center);
+        .switch-city {
+            margin-top: 50rpx;
+            width: 690rpx;
+            color: #92A7C3;
+            background-color: #F0F0F0;
+            font-size: 28rpx;
+            line-height: 1;
+            padding-top: 31rpx;
+            padding-bottom: 31rpx;
         }
     }
 </style>

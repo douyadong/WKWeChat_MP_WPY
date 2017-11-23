@@ -3,13 +3,15 @@ import wepy from "wepy" ;
 export default class extends wepy.app {
     config = {
         "pages": [
+            "pages/index/index" ,
+            "pages/index/city" ,   
+            
+            "pages/index/search" ,             
             "pages/agent/index" ,
             "pages/market/index" ,
-            "pages/common/player" ,
-            "pages/index/index" ,
+            "pages/common/player" ,            
             "pages/demo/index" ,
-            "pages/index/city" ,
-            "pages/index/search" ,            
+                                
             "pages/esf/list" ,
             "pages/esf/detail" ,
             "pages/estate/detail" ,
@@ -31,9 +33,7 @@ export default class extends wepy.app {
     } ;
     onLaunch() {
         
-    }
-
-    
+    }    
 }
 </script>
 

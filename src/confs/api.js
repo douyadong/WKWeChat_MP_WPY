@@ -22,7 +22,10 @@ export default {
         } ,
         "index" : {
             "index" : "" ,  //请调用esf.list             
-            "search" : ""  //请调用esf.list
+            "search" : "",  //请调用esf.list
+            "getAllCityBusiness" : "wxmpCommon/getAllCityBusiness.rest",
+            "findCityInfoByLonAndLat": "wxmpCommon/findCityInfoByLonAndLat.rest"
+
         } ,
         "agent" : {
             "index" : "wxmpAgent/getAgentInfo.rest" ,
