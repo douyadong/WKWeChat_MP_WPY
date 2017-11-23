@@ -6,14 +6,15 @@
         2.        
 -->
 <template lang="wxml">
-    <view class="agent-house">
-        <view class="agent">
-            <image src="https://imgwater-test.oss.aliyuncs.com/9a3190d77a844b1a8d83648dc7113973.I640_360"></image>
+    <view class="agent">
+        <view class="card">
+            <image src="{{agentInfo.agentHeadImgUrl}}?x-oss-process=image/resize,w_120"  mode="aspectFill" lazy-load="true"></image>
             <view class="agent-info">
-                <view class="some-info">
-                    <text class="name">程茂胜</text><text class="address">| 志远地产 虹桥店</text>
+                <view class="id-info">
+                    <text class="name">{{agentInfo.agentName}}</text>
+                    <text class="company">| {{agentInfo.abbreviation}} {{agentInfo.storeName}}</text>
                 </view>
-                <view class="time">入住悟空：1 年</view>
+                <view class="join-long">入住悟空：{{agentInfo.serviceYears}}</view>
             </view>      
         </view>
         <view class="house-number">TA的房源<text class="number">[11套]</text></view>
@@ -23,92 +24,105 @@
             </repeat>
         </view>
     </view>
-    <!--<assistant :agent="agentInfo"></assistant>-->
+    <assistant :agent="agentInfo"></assistant>
 </template>
 
 <script>
-    import wepy from "wepy"; 
+    import wepy from "wepy";
     import Esf from "../../components/esf";
-    import assistant from "../../components/assistant"
+    import Assistant from "../../components/assistant";
+    import apiDataFilter from "../../mixins/apiDataFilter";
     import data from "../../mock/agent-house.js";
-    import agentInfo from "../../mock/assistant.js"   
+    // import agentInfo from "../../mock/assistant.js";
     export default class Index extends wepy.page {
         config = {
-            "navigationBarTitleText" : "李梅的名片"
-        } ;
-        components = {            
-            esf:Esf,
-            assistant:assistant
-        } ; 
-        data = {
-            list:data,
-            agentInfo:agentInfo
-        } ;
-        computed = {
             
-        } ;
+        };
+        components = {
+            esf: Esf,
+            assistant: Assistant
+        };
+        data = {
+            list: data,
+            agentInfo: '',
+        };
+        computed = {
+
+        };
         methods = {
-           
-        } ;
+
+        };
         events = {
 
-        } ;
-        onLoad() {
-           
         };
-        onReachBottom(){
+        onLoad(options) {
+            let self=this;
+            apiDataFilter.request({
+                apiPath : "agent.index" ,
+                data : { "agentId":100832 } ,
+                successCallback:function(res){
+                    console.log(res);
+                    self.agentInfo=res.data;
+                    self.$apply();
+                     //动态改变页面title;
+                    wx.setNavigationBarTitle({title:self.agentInfo.agentName+'的名片'});
+                }
+            })
+        };
+        onReachBottom() {
             // 页面上拉触发该函数用于滚动加载数据
-            console.log(1)
+            console.log(1);
         }
     }
 </script>
 
 <style lang="less" scoped>
-    @import "../../less/variables.less" ;
-    @import "../../less/mixins.less" ;
+    @import "../../less/variables.less";
+    @import "../../less/mixins.less"; 
     // 经纪人信息;
-    .agent-house{
+    .agent {
         background-color: #fff;
-    }
-    .agent{
-        .clearfix();
-        padding: 30rpx;
-        border-bottom: 1rpx solid #d8d8d8;
-        image{
-            width:120rpx;
-            height:120rpx;
-            float: left;
-        };
-        .agent-info{
-            margin-left: 150rpx;
-            .some-info{
-                margin-bottom: 22rpx;
-                font-size: 32rpx;
-                .name{
-                    margin-right: 20rpx;
-                };
-                .address{
-                    color:@lighter-font-color;
+        padding-bottom: 130rpx;
+        .card {
+            border-bottom: 1rpx solid #d8d8d8;
+            .clearfix();
+            padding: 30rpx;
+            image {
+                float: left;
+                height: 120rpx;
+                width: 120rpx;
+            }
+            .agent-info {
+                margin-left: 150rpx;
+                .id-info {
+                    font-size: 32rpx;
+                    margin-bottom: 22rpx;
+                    .name {
+                        margin-right: 20rpx;
+                    }
+                    .company {
+                        color: @lighter-font-color;
+                    }
+                }
+                .join-long {
+                    color: @lighter-font-color;
+                    font-size: 28rpx;
                 }
             }
-            .time{
-                font-size: 28rpx;
-                color:@lighter-font-color;
+        } 
+        // 经纪人有多少房源
+        .house-number {
+            font-size: 32rpx;
+            margin-top: 30rpx;
+            padding: 0 30rpx;
+            .number {
+                color: @lighter-font-color;
             }
+        } 
+        // 房源列表;
+        .house-list {
+            .clearfix();
+            padding: 0 15rpx;
         }
-    }
-    // 经纪人有多少房源
-    .house-number{
-        margin-top: 30rpx;
-        padding:0 30rpx;
-        font-size: 32rpx;
-        .number{
-            color:@lighter-font-color;
-        }
-    }
-    // 房源列表;
-    .house-list{
-        padding:0 15rpx;
-        .clearfix();
     }
 </style>
