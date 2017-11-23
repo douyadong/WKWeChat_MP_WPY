@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view class="assistant">        
-        <navigator  url="/pages/agent/index?agentId={{ agent.agentId }}">
+        <navigator url="/pages/agent/index?agentId={{ agent.agentId }}">
             <image class="img-circle" src="{{ agent.headRoundImgUrl }}?x-oss-process=image/resize,w_70" mode="aspectFill" lazy-load="true"></image>
             <text class="name">{{ agent.agentName }}</text>
             <text class="company">{{ agent.companyName }}</text>
@@ -15,8 +15,8 @@
         <text class="wechat" @tap="addWechat" wx:if="{{ agent.agentWChatId }}">添加微信</text> 
         <text class="tel" @tap="phoning">电话咨询</text>
     </view>
-    <!--添加微信的modal框-->
-    <modal :visible.sync="visible">
+    <!--添加微信的modal框-->    
+    <modal :visible.sync="$componentStates$addWechatModal">
         <view class="modal-header" slot="header">添加微信</view>
         <text slot="body">font-class是unicode使用方式的一种变种，主要是解决unicode书写不直观，语意不明确的问题</text>
         <view slot="footer" class="modal-footer">
@@ -48,6 +48,7 @@
         } ;
         data = {
             visible: false,
+            "componentStates.addWechatModal": false,
             componentStates : {
                 addWechatModal : false
             }
@@ -57,9 +58,11 @@
                 console.log("打我电话干嘛？") ;
             } ,
             addWechat : ()=> {                
-                //this.componentStates.addWechatModal = true ;
-                this.visible = true;  
-                console.log(this.visible);             
+                this.componentStates.addWechatModal = true ;
+                //this['componentStates.addWechatModal'] = true;
+                console.log(this);
+                //this.visible = true;  
+                //console.log(this.visible);             
             } ,
             saveToAlbum : ()=> {} ,
             copyWechat : ()=> {}

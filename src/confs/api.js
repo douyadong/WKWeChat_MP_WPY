@@ -24,9 +24,10 @@ export default {
         "index" : {
             "index" : "" ,  //请调用esf.list             
             "search" : "",  //请调用esf.list
-            "getAllCityBusiness" : "wxmpCommon/getAllCityBusiness.rest",
-            "findCityInfoByLonAndLat": "wxmpCommon/findCityInfoByLonAndLat.rest"
-
+            "getAllCityBusiness" : "wxmpCommon/getAllCityBusiness.rest",//获取开通业务的城市
+            "findCityInfoByLonAndLat": "wxmpCommon/findCityInfoByLonAndLat.rest",//根据经纬度获取城市信息
+            "getCitySubwayLines": "houseMap/getCitySubwayLines.rest",//获取地铁数据
+            "getCityAreasInfo": "houseMap/getCityAreasInfo.rest",//获取区域板块信息
         } ,
         "agent" : {
             "index" : "wxmpAgent/getAgentInfo.rest" ,

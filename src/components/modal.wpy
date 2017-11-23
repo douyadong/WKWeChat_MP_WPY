@@ -6,6 +6,7 @@
         2. 
 -->
 <template lang="wxml">
+    <view>internal - {{visible}}</view>
     <view class="wk-modal-mask" wx:if="{{visible}}">
         <view class="wk-modal">
             <slot name="header"></slot>

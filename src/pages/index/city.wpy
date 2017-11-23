@@ -8,15 +8,15 @@
 <template lang="wxml">
     <view>
        <view class="header">定位城市</view>
-       <view class="item">上海</view>
+       <view class="item">{{city.cityName}}</view>
        <view class="header">全部城市</view>
        <view>
-        <view @tap="selectCity" class="item" wx:for="{{cities}}" data-city="{{item}}">{{item.cityName}}</view>
+        <view @tap="selectCity" wx:key="{{item.cityId}}" class="item" wx:for="{{cities}}" data-city="{{item}}">{{item.cityName}}</view>
        </view>
     </view>
 </template>
 
-<script>
+<script>    
     import wepy from "wepy" ;  
     import apiDataFilter from "../../mixins/apiDataFilter";
     export default class City extends wepy.page {
@@ -27,6 +27,9 @@
             
         } ; 
         data = {
+            city: {
+
+            },
             cities: []
         } ;
         computed = {
@@ -45,14 +48,16 @@
         onLoad() {
            
         };
-        onShow() {
+        onShow() {    
+            this.city = wx.getStorageSync('city');
+
             apiDataFilter.request({
                 apiPath: "index.getAllCityBusiness",
-                successCallback: (data)=>{
-                    console.log(data);
+                successCallback: (data)=>{                                       
                     this.cities = data.data || [];
+                    this.$apply();                    
                 }
-            });
+            });            
         }
     }
 </script>
