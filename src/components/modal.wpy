@@ -6,9 +6,9 @@
         2. 
 -->
 <template lang="wxml">
-    <view class="wk-modal-mask" wx:if="{{visible}}">
+    <view class="wk-modal-mask" wx:if="{{ visibility }}">
         <view class="wk-modal">
-            <slot name="header"></slot>
+            <view class="modal-header">{{ title }}</view>
             <view class="modal-body">
                 <slot name="body"></slot>
             </view>
@@ -24,20 +24,18 @@
     import wepy from "wepy" ;
     export default class Com extends wepy.component {    
         props = {
-            visible: {
-                type: Boolean,
-                twoWay: true
+            title : String ,
+            visibility : {
+                type : Boolean ,
+                twoWay : true
             }
         } ;
         data = {
-            componentStates : {
-                visibility : true  //整个modal框的显示隐藏状态
-            }  
+            
         } ;
         methods = {
-            closeModal : ()=> {            
-                //this.componentStates.visibility = false ;            
-                this.visible = false;
+            closeModal : ()=> {                        
+                this.visibility = false ;
             }
         } ;
     }
