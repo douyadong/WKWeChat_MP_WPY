@@ -153,7 +153,7 @@
                 "companyName" : "123" ,
                 "agentWChatId" : "huagang_zhao" ,
                 "weChatQRImgKey" : null ,
-                "agentWChartQRImgUrl" : null
+                "agentWChartQRImgUrl" : "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1511444814056&di=81b4c5ba76ce0ad9a7ef8f57f4da9ac7&imgtype=0&src=http%3A%2F%2Fwww.nhnews.com.cn%2Fpic%2F0%2F10%2F73%2F43%2F10734304_964968.gif"
             }      
         } ;
         methods = {
