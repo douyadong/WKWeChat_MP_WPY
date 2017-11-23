@@ -6,7 +6,7 @@
         2. 
 -->
 <template lang="wxml">
-    <view class="wk-modal-mask" wx:if="{{ componentStates.visibility }}">
+    <view class="wk-modal-mask" wx:if="{{visible}}">
         <view class="wk-modal">
             <slot name="header"></slot>
             <view class="modal-body">
@@ -24,7 +24,10 @@
     import wepy from "wepy" ;
     export default class Com extends wepy.component {    
         props = {
-            
+            visible: {
+                type: Boolean,
+                twoWay: true
+            }
         } ;
         data = {
             componentStates : {
@@ -33,7 +36,8 @@
         } ;
         methods = {
             closeModal : ()=> {            
-                this.componentStates.visibility = false ;            
+                //this.componentStates.visibility = false ;            
+                this.visible = false;
             }
         } ;
     }
