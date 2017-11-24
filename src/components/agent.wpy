@@ -7,37 +7,133 @@
 -->
 <template lang="wxml">
     <view class="agent">
-        <image src="{{ agent.headPortraitUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
+        <image src="{{ agent.agentHeadImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
         <view class="tel" @tap="phoning">
             <text class="iconfont icon-tel"></text>
             <text class="memo">电话咨询</text>
         </view>
-        <view class="wechat" @tap="addWechat">
+        <view class="wechat" @tap="addWechat" wx:if="{{ agent.agentWChatId }}">
             <text class="iconfont icon-wechat"></text>
             <text class="memo">添加微信</text>
         </view>        
         <view class="summary">
             <text class="name">{{ agent.agentName }}</text>
-            <text class="seniority">加入悟空：{{ agent.seniority }}年</text>
+            <text class="seniority">加入悟空：{{ agent.serviceYears }}</text>
         </view>        
     </view>
+    <!--添加微信的modal框-->
+    <modal :visibility.sync="addWechatModalVisibility" title="添加微信">        
+        <view slot="body">
+            <text>方法一：</text>
+            <text>将{{ agent.agentName }}的二维码保存到相册</text>
+            <image src="{{ agent.agentWChartQRImgUrl }}" mode="aspectFill" lazy-load="true" class="qrcode"></image>
+            <text>方法二：</text>
+            <text>复制微信号添加微信号：{{ agent.agentWChatId }}</text>            
+        </view>
+        <view slot="footer" class="modal-footer">
+            <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum" data-src="{{ agent.agentWChartQRImgUrl }}">保存到相册</view>
+            <view class="wk-btn wk-btn-transparent" @tap="copyWechat" data-wechatid="{{ agent.agentWChatId }}">复制微信号</view>
+        </view>
+    </modal>
+    <!--tips框-->
+    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
 </template>
 
 <script>
     import wepy from "wepy" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载组件资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+    import Modal from "./modal" ;
+    import Tips from "./tips" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+    import adf from "../mixins/apiDataFilter" ;
+
     export default class Com extends wepy.component {
         props = {
             agent : Object
         } ;
-        data = {
-
+        components = {
+            modal : Modal ,
+            tips : Tips
         } ;
+        data = {
+            addWechatModalVisibility : false ,  //添加微信modal框的显示状态
+            tipsVisibility : false ,  //tips框的显示状态
+            tipsMsg : ""
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        提示信息
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        tips = (msg) => {
+            this.tipsVisibility = true ;
+            this.tipsMsg = msg ;
+            this.$apply() ;
+        }
         methods = {
-            phoning() {
-                console.log("打我电话干嘛？") ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            点击电话咨询调用的方法
+            先通过调用短接号的接口拿到经纪人的短接号码，然后再拨打出去
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            phoning : ()=> {
+                adf.request({
+                    apiPath : "common.dial" ,
+                    data : { "agentId" : this.agent.agentId } ,
+                    successCallback : (res)=> {                        
+                        wx.makePhoneCall({ phoneNumber : res.data.dial + "," + res.data.digits }) ;
+                    }
+                }) ;
             } ,
-            addWechat() {
-                console.log("想撩我吗？") ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            点击添加微信调用的方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            addWechat : ()=> {                
+                this.addWechatModalVisibility = true ;                      
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            保存到相册调用方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            saveToAlbum : function(event) {
+                let self = this ;                
+                wx.getSetting({
+                    success(res) {
+                        if (!res["scope.writePhotosAlbum"]) {
+                            wx.authorize({
+                                scope : "scope.writePhotosAlbum" ,
+                                success() {
+                                    wx.downloadFile({
+                                        url : event.target.dataset.src ,
+                                        success : function(res) {
+                                            wx.saveImageToPhotosAlbum({
+                                                filePath : res.tempFilePath ,
+                                                success(res) { self.tips("已保存到手机相册！") ; } ,
+                                                fail(res) { self.tips("保存到相册失败，请复制经纪人微信号添加") ; }
+                                            }) ;
+                                        } ,
+                                        fail : function() { self.tips("保存到相册失败，请复制经纪人微信号添加") ; }
+                                    }) ;
+                                } ,
+                                fail(res) { self.tips("保存到相册失败，请复制经纪人微信号添加") ; }
+                            }) ;
+                        }
+                    }
+                }) ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            复制微信号调用方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            copyWechat : (event)=> {
+                wx.setClipboardData({
+                    data : event.target.dataset.wechatid ,
+                    success : (res)=> {                                                   
+                        this.tips("经纪人微信号已复制，请前往微信添加") ;
+                    } ,
+                    fail : (res)=> {
+                        this.tips("经纪人微信号复制失败！") ;
+                    }
+                }) ;
             }
         } ;
         onload() {
@@ -96,5 +192,18 @@
                 font-size : @default-font-size ;
             }
         }
+    }
+    .wk-modal {
+        .modal-body {
+            text {
+                display : block ;
+                text-align : center ;
+            }            
+            .qrcode {
+                .center-block() ;
+                height : 300rpx ;
+                width : 300rpx ;
+            }
+        }       
     }
 </style>

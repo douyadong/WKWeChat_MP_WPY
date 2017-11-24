@@ -21,12 +21,14 @@ export default class Com extends wepy.component {
             twoWay : true
         }
     } ;
-    onShow() {
-        setTimeout(()=>{ this.visibility = false ; } , 3000) ;
-    } ;
-    events = {
-
-    } ;    
+    watch = {        
+        visibility : (newValue , oldValue )=> {            
+            if(newValue) setTimeout(()=>{                
+                this.visibility = false ; 
+                this.$apply() ;
+            } , 3000) ;
+        }
+    } ; 
 }
 </script>
 
