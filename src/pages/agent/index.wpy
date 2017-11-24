@@ -24,7 +24,7 @@
             </repeat>
         </view>
     </view>
-    <assistant :agent="agentInfo"></assistant>
+    <assistant :agent.sync="agentInfo"></assistant>
 </template>
 
 <script>
@@ -65,9 +65,9 @@
                 apiPath : "agent.index" ,
                 data : { "agentId":100832 } ,
                 successCallback:function(res){
-                    console.log(res);
                     self.agentInfo=res.data;
                     self.$apply();
+                    console.log(self.agentInfo);
                      //动态改变页面title;
                     wx.setNavigationBarTitle({title:self.agentInfo.agentName+'的名片'});
                 }
