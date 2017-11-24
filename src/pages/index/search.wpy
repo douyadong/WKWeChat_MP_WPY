@@ -33,6 +33,7 @@
 
 <script>
     import wepy from "wepy" ;    
+    import apiDataFilter from "../../mixins/apiDataFilter";
     export default class Search extends wepy.page {
         config = {
             
@@ -43,8 +44,8 @@
         data = {
             keyword: "",
             city: {
-                id: 43,
-                name: "上海"
+                cityId: 43,
+                cityName: "上海"
             },
             items: [{
                 id: 1,
@@ -62,6 +63,18 @@
         methods = {
            keywordChange(e) {
                this.keyword = e.detail.value || '';
+               if(this.keyword){//发请求
+                    apiDataFilter.request({
+                        apiPath: "index.acWord",
+                        data: {
+                            cityId: this.city.cityId,
+                            associationalWord: this.keyword
+                        },
+                        successCallback: ()=>{
+
+                        }
+                    });
+               }
            },
            clearKeyword() {
                this.keyword = '';
@@ -75,7 +88,7 @@
 
         } ;
         onLoad() {
-           
+           this.city = wx.getStorageSync("city");
         };
         generateHighlight(str, subStr) {//拆分成用于高亮显示的数据结构
                let strs = str.split(subStr);
@@ -90,12 +103,12 @@
                return result;
            };
         onShow() {
-            if(this.items && this.items.length > 0){
+            /*if(this.items && this.items.length > 0){
                 for(let i = 0; i < this.items.length; i++){
                     this.items[i].address = this.generateHighlight(this.items[i].address,"宝");
                     this.items[i].names = this.generateHighlight(this.items[i].name,"宝");
                 }           
-            }
+            }*/
         }
     }
 </script>
