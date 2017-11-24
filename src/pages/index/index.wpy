@@ -215,7 +215,7 @@
                             id: 4,
                             text: "总价从高到低"
                         }],
-                        selectedId: ''
+                        selectedId: 0
                     }
                 },                   
                 isLoadError: false,
@@ -241,12 +241,12 @@
                     town: "花木西路",
                     tags: ["满五唯一", "地铁"],
                 }  ,{
-                    imageUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
-                    estateName: "淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路",
-                    type: "2室2厅1卫",
-                    area: "66.36",
-                    total: "525",
-                    unit: "36251",
+                    firstImgUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
+                    houseTitle: "淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路",
+                    houseTypeStr: "2室2厅1卫",
+                    houseAreaStr: "66.36",
+                    totalPriceStr: "525",
+                    unitPriceStr: "36251",
                     district: "浦东新区",
                     town: "花木西路",
                     tags: ["满五唯一", "地铁"],
@@ -352,9 +352,9 @@
                }
            });
         };
-        onShow() {
+        onShow(options) {
             this.estate = wx.getStorageSync("estate") || {id: "", name: ""};
-            this.city = wx.getStorageSync("city") || {cityId: 1, cityName: "北京"};
+            this.city = wx.getStorageSync("city") || {cityId: 1, cityName: "北京"};            
 
             //todo:获取区域和地铁信息
         };

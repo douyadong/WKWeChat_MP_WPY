@@ -28,6 +28,7 @@ export default {
             "findCityInfoByLonAndLat": "wxmpCommon/findCityInfoByLonAndLat.rest",//根据经纬度获取城市信息
             "getCitySubwayLines": "houseMap/getCitySubwayLines.rest",//获取地铁数据
             "getCityAreasInfo": "houseMap/getCityAreasInfo.rest",//获取区域板块信息
+            "acWord": "wxmpIndex/acWord.rest",//模糊查询小区
         } ,
         "agent" : {
             "index" : "wxmpAgent/getAgentInfo.rest" ,
