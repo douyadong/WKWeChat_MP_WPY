@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view class="esf-item">
-        <image src="{{ item.imageUrl }}"></image>
+        <image src="{{ item.firstImgUrl }}"></image>
         <view class="info">
             <view class="title">{{item.houseTitle}}</view>
             <view class="type-area-district-town">
