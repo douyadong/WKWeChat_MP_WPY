@@ -19,7 +19,8 @@ export default {
             "city" : "wxmpCommon/getCityBusinessById.rest" ,  //通过城市id获取城市信息
             "region" : "houseMap/getCityAreasInfo.rest" ,  //通过城市id获取行政区域信息
             "cityBylalo" : "wxmpCommon/findCityInfoByLonAndLat.rest" ,  //通过经纬度获取城市信息
-            "dial" : "wxmpCall/getAgentDial.rest" //通过agentId和houseId获取经纪人短接号
+            "dial" : "wxmpCall/getAgentDial.rest" , //通过agentId和houseId获取经纪人短接号
+            "eventTrace" : "buriedPoint/sendData.rest"
         } ,
         "index" : {
             "index" : "" ,  //请调用esf.list             
@@ -29,6 +30,7 @@ export default {
             "getCitySubwayLines": "houseMap/getCitySubwayLines.rest",//获取地铁数据
             "getCityAreasInfo": "houseMap/getCityAreasInfo.rest",//获取区域板块信息
             "acWord": "wxmpIndex/acWord.rest",//模糊查询小区
+            "secondHouseList": "wxmpIndex/secondHouseList.rest"
         } ,
         "agent" : {
             "index" : "wxmpAgent/getAgentInfo.rest" ,

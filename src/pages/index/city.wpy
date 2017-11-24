@@ -36,8 +36,7 @@
             
         } ;
         methods = {
-           selectCity(e) {
-               console.log(e.currentTarget.dataset.city);
+           selectCity(e) {               
                wx.setStorageSync("city",e.currentTarget.dataset.city);
                wx.navigateBack();
            }

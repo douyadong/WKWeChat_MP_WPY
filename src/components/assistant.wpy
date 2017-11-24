@@ -16,7 +16,7 @@
         <text class="tel" @tap="phoning">电话咨询</text>
     </view>
     <!--添加微信的modal框-->
-    <modal :visibility.sync="addWechatModalVisibility" title="添加微信">        
+    <modal :visibility.sync="addWechatModalVisibility" title="添加微信">
         <view slot="body">
             <text>方法一：</text>
             <text>将{{ agent.agentName }}的二维码保存到相册</text>
