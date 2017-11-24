@@ -1,2 +1,9 @@
 <!--pages/store/index.wxml-->
-<text>/pages/store/index?storeId={{storeId}}</text>
+<view class='logo'>
+
+ <view> <image bindtap="clearF" src='https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/w%3D268%3Bg%3D0/sign=2a03468992504fc2a25fb703dde6802c/b151f8198618367adf99b55c27738bd4b31ce51b.jpg'></image>
+ </view>
+ <view>
+     <text wx:if="{{showStoreId}}">店面的Id：{{storeId}}</text>
+ </view>
+</view>

@@ -1,1 +1,25 @@
 /* pages/store/index.wxss */
+.logo{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color:#fff;
+}
+.logo view{
+  display: block;
+  text-align: center;
+}
+.logo image{
+  width: 200rpx;
+  height: 200rpx;
+  display: block;
+  text-align: center;
+  margin: 300rpx auto 0 auto;
+}
+.logo text{
+  display: block;
+  margin: 0 auto
+}
