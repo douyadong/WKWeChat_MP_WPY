@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import info from "./../../mock/house-price.js";
+    // import info from "./../../mock/house-price.js";
     import wepy from "wepy";
     import apiDataFilter from "../../mixins/apiDataFilter";
     export default class Index extends wepy.page {
@@ -122,6 +122,7 @@
             margin: 30rpx 0 48rpx 0;
         }
         .title {
+            .clearfix();
             color: @lighter-font-color;
             font-size: 28rpx;
             padding-bottom: 30rpx;
