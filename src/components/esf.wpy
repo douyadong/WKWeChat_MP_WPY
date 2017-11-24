@@ -7,18 +7,18 @@
 -->
 <template lang="wxml">
     <view class="esf-item">
-        <image src="{{item.imageUrl}}"></image>
+        <image src="{{ item.imageUrl }}"></image>
         <view class="info">
-            <view class="title">{{item.estateName}}</view>
+            <view class="title">{{item.houseTitle}}</view>
             <view class="type-area-district-town">
-                <text>{{item.type}} </text><text>{{item.area}}㎡ </text>|<text> {{item.district}}</text> <text> {{item.town}}</text>                
+                <text>{{item.houseTypeStr}} </text><text>{{item.spaceAreaStr}}㎡ </text>|<text> {{item.district}}</text> <text> {{item.town}}</text>                
             </view>
             <view class="tags">            
                 <text class="tag" wx:for-item="tag" wx:for="{{item.tags}}">{{tag}}</text>
             </view>
             <view class="total-unit">
-                <text class="total">{{item.total}}万</text>
-                <text class="unit">{{item.unit}}元/㎡</text>
+                <text class="total">{{item.totalPriceStr}}万</text>
+                <text class="unit">{{item.unitPriceStr}}元/㎡</text>
             </view>
         </view>
     </view>    
@@ -34,16 +34,7 @@ export default class Com extends wepy.component {
 
     } ;
     props = {
-        item: Object
-        /*imageUrl: String,
-        estateName: String,
-        type: String,
-        area: String,
-        total: String,
-        district: String,
-        town: String,
-        tags: Array        
-        unit: String*/
+        item: Object        
     };
     methods = {
 

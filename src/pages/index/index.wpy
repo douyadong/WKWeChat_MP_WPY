@@ -46,7 +46,9 @@
                             <view @tap="selectDistrict" class="item {{item.id == filter.districtSection.selectedDistrictId? 'active':''}}" wx:for="{{filter.districtSection.districts}}" data-id="{{item.id}}">{{item.name}}</view>
                            </view>
                            <view class="right" wx:for="{{filter.districtSection.districts}}" wx:if="{{filter.districtSection.selectedDistrictId == item.id}}">
-                            <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{item.items}}" wx:for-item="town" data-id="{{town.id}}">{{town.name}}</view>
+                            <block wx:for="{{item.subList}}" wx:for-item="sl">
+                                <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{sl.towns}}" wx:for-item="town" data-id="{{town.id}}">{{town.name}}</view>
+                            </block>                            
                            </view>
                         </view>
                         <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='metro'?'visible':''}}">
@@ -54,7 +56,7 @@
                             <view @tap="selectMetro" class="item {{item.id == filter.districtSection.selectedMetroId? 'active':''}}" wx:for="{{filter.districtSection.metros}}" data-id="{{item.id}}">{{item.name}}</view>
                            </view>
                            <view class="right" wx:for="{{filter.districtSection.metros}}" wx:if="{{filter.districtSection.selectedMetroId == item.id}}">
-                            <view @tap="selectStation" class="item {{station.id==filter.districtSection.selectedStationId?'active':''}}" wx:for="{{item.items}}" wx:for-item="station" data-id="{{station.id}}">{{station.name}}</view>
+                            <view @tap="selectStation" class="item {{station.id==filter.districtSection.selectedStationId?'active':''}}" wx:for="{{item.subList}}" wx:for-item="station" data-id="{{station.id}}">{{station.name}}</view>
                            </view>
                         </view>
                     </view>
@@ -132,8 +134,8 @@
         } ; 
         data = {  
                 city: {
-                    cityId: 43,
-                    cityName: "上海"
+                    cityId: 1,
+                    cityName: "北京"
                 },
                 estate: {
                     id: "",
@@ -142,160 +144,8 @@
                 filter : {
                     selectedFilterSection: "",
                     districtSection: {
-                        districts: [{
-                            id: "",
-                            name: "不限",
-                            items: [{
-                                id: "",
-                                name: "不限"
-                            }]
-                        },{
-                            id: 1,
-                            name: "宝山区",
-                            items: [{
-                                id: "",
-                                name: "不限"
-                            },{
-                                id: 1,
-                                name: "宝山区01"
-                            },{
-                                id: 2,
-                                name: "宝山区02"
-                            },{
-                                id: 3,
-                                name: "宝山区03"
-                            }]
-                        },{
-                            id: 2,
-                            name: "崇明区",
-                            items: [{
-                                id: "",
-                                name: "不限"
-                            },{
-                                id: 1,
-                                name: "崇明区01"
-                            },{
-                                id: 2,
-                                name: "崇明区02"
-                            },{
-                                id: 3,
-                                name: "崇明区03"
-                            }]
-                        },{
-                            id: 3,
-                            name: "奉贤区",
-                            items: [{
-                                id: "",
-                                name: "不限"
-                            },{
-                                id: 1,
-                                name: "奉贤区01"
-                            },{
-                                id: 2,
-                                name: "奉贤区02"
-                            },{
-                                id: 3,
-                                name: "奉贤区03"
-                            }]
-                        },{
-                            id: 4,
-                            name: "长宁区",
-                            items: [{
-                                id: "",
-                                name: "不限"
-                            },{
-                                id: 1,
-                                name: "长宁区01"
-                            },{
-                                id: 2,
-                                name: "长宁区02"
-                            },{
-                                id: 3,
-                                name: "长宁区03"
-                            }]
-                        },{
-                            id: 5,
-                            name: "普陀区",
-                            items: [{
-                                id: "",
-                                name: "不限"
-                            },{
-                                id: 1,
-                                name: "普陀区01"
-                            },{
-                                id: 2,
-                                name: "普陀区02"
-                            },{
-                                id: 3,
-                                name: "普陀区03"
-                            }]
-                        },{
-                            id: 6,
-                            name: "黄埔区",
-                            items: [{
-                                id: "",
-                                name: "不限"
-                            },{
-                                id: 1,
-                                name: "黄埔区01"
-                            },{
-                                id: 2,
-                                name: "黄埔区02"
-                            },{
-                                id: 3,
-                                name: "黄埔区03"
-                            }]
-                        },{
-                            id: 7,
-                            name: "虹口区",
-                            items: [{
-                                id: "",
-                                name: "不限"
-                            },{
-                                id: 1,
-                                name: "虹口区01"
-                            },{
-                                id: 2,
-                                name: "虹口区02"
-                            },{
-                                id: 3,
-                                name: "虹口区03"
-                            }]
-                        },{
-                            id: 8,
-                            name: "浦东新区",
-                            items: [{
-                                id: 1,
-                                name: "浦东新区01"
-                            },{
-                                id: 2,
-                                name: "浦东新区02"
-                            },{
-                                id: 3,
-                                name: "浦东新区03"
-                            }]
-                        }],
-                        metros:[{
-                                id: "",
-                                name: "不限",
-                                items: [{
-                                id: "",
-                                name: "不限"
-                            }]
-                            },{
-                            id: 1,
-                            name: "一号线",
-                            items: [{
-                                id: "",
-                                name: "不限"
-                            },{
-                                id: 1,
-                                name: "站点1"
-                            },{
-                                id: 2,
-                                name: "站点2"
-                            }]
-                        }],
+                        districts: [],
+                        metros:[],
                         selectedDistrictId: '',
                         selectedTownId: '',
                         selectedMotroId: "",
@@ -470,7 +320,7 @@
            clearEstate() {
                wx.setStorageSync("estate",{id: "", name: ""});
                this.estate = {id: "", name: ""};
-           }
+           },           
         } ;
         events = {
 
@@ -482,13 +332,18 @@
                    //根据经纬度获取城市信息
                     apiDataFilter.request({
                         apiPath: "index.findCityInfoByLonAndLat",
+                        data: {
+                            lon: res.longitude,
+                            lat: res.latitude
+                        },
                         successCallback: (data)=>{
                             wx.setStorageSync("city",data.data);
                             wx.setStorageSync("locationCity",data.data);
                             this.city = data.data;
+                            this.$apply();
 
                             //todo:获取区域和地铁信息
-
+                            this.getDistrictsAndMetro();                            
                         }
                     });
                },
@@ -499,8 +354,33 @@
         };
         onShow() {
             this.estate = wx.getStorageSync("estate") || {id: "", name: ""};
-            this.city = wx.getStorageSync("city") || {cityId: 43, cityName: "上海"};
-        }
+            this.city = wx.getStorageSync("city") || {cityId: 1, cityName: "北京"};
+
+            //todo:获取区域和地铁信息
+        };
+        getDistrictsAndMetro() {
+                apiDataFilter.request({
+                    apiPath: "index.getCitySubwayLines",
+                    data: {
+                        cityId: this.city.cityId
+                    },
+                    successCallback: (data)=>{
+                        this.filter.districtSection.metros = data.data;
+                        this.$apply();
+                    }
+                });
+
+                apiDataFilter.request({
+                    apiPath: "index.getCityAreasInfo",
+                    data: {
+                        cityId: this.city.cityId
+                    },
+                    successCallback: (data)=>{
+                        this.filter.districtSection.districts = data.data;
+                        this.$apply();
+                    }
+                });
+           };
     }
 </script>
 
