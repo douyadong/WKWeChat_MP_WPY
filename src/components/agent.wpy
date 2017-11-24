@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view class="agent">
-        <image src="{{ agent.headPortraitUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
+        <image src="{{ agent.agentHeadImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
         <view class="tel" @tap="phoning">
             <text class="iconfont icon-tel"></text>
             <text class="memo">电话咨询</text>
@@ -18,7 +18,7 @@
         </view>        
         <view class="summary">
             <text class="name">{{ agent.agentName }}</text>
-            <text class="seniority">加入悟空：{{ agent.seniority }}年</text>
+            <text class="seniority">加入悟空：{{ agent.serviceYears }}</text>
         </view>        
     </view>
 </template>
