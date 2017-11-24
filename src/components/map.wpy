@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view class="qqmap">
-        <image src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{ latitude }},{{ longitude }}&key={{ qqMapKey }}&size=375*250&center={{ latitude }},{{ longitude }}&zoom=12&scale=2" mode="aspectFill" lazy-load="true"></image>
+        <image src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{ estate.latitude }},{{ estate.longitude }}&key={{ qqMapKey }}&size=375*250&center={{ estate.latitude }},{{ estate.longitude }}&zoom=12&scale=2" mode="aspectFill" lazy-load="true"></image>
         <view class="pop">
             <view class="popover">
                 <text class="arrow"></text>
@@ -23,18 +23,11 @@
     import appConf from "../confs/app" ;
     export default class Com extends wepy.component {
         props = {
-            latitude : String ,
-            longitude : String      
+            estate : Object  
         } ;
         data = {
             "qqMapKey" : appConf.QQMapKey
-        } ;
-        methods = {
-
-        } ;
-        events = {
-
-        } ;        
+        } ;            
     }
 </script>
 
