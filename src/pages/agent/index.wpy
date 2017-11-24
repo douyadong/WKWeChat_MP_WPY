@@ -19,7 +19,7 @@
         </view>
         <view class="house-number">TA的房源<text class="number">[{{houseInfo.total}}套]</text></view>
         <view class="house-list">
-            <repeat for="{{list}}" key="index" index="index" item="item">
+            <repeat for="{{houseInfo.secondHouseListModels}}" key="index" index="index" item="item">
                 <esf :item="item"></esf>
             </repeat>
         </view>
@@ -32,8 +32,6 @@
     import Esf from "../../components/esf";
     import Assistant from "../../components/assistant";
     import apiDataFilter from "../../mixins/apiDataFilter";
-    import data from "../../mock/agent-house.js";
-    // import agentInfo from "../../mock/assistant.js";
     export default class Index extends wepy.page {
         config = {
             
@@ -43,7 +41,6 @@
             assistant: Assistant
         };
         data = {
-            list: data,
             agentInfo: '',//经纪人身份信息;
             houseInfo:'',//房源列表信息;
             pageInfo:{
@@ -98,13 +95,12 @@
             apiDataFilter.request({
                 apiPath : "agent.house",
                 data : { 
-                    "agentId":100632,
+                    "agentId":100832,
                     "pageIndex":self.pageInfo.pageIndex,
                     "pageSize":self.pageInfo.pageSize, 
                     } ,
                 successCallback:function(res){
-                    console.log(res);
-                    self.houseInfo=res.data;
+                    self.houseInfo.secondHouseListModels= self.houseInfo.secondHouseListModels.concat(res.data.secondHouseListModels);
                     self.pageInfo.pageIndex += (res.secondHouseListModels&& res.secondHouseListModels.length || 0);
                     self.$apply();
                 }
