@@ -103,13 +103,13 @@
                                             wx.saveImageToPhotosAlbum({
                                                 filePath : res.tempFilePath ,
                                                 success(res) { self.tips("已保存到手机相册！") ; } ,
-                                                fail(res) { self.tips("保存到相册失败！") ; }
+                                                fail(res) { self.tips("保存到相册失败，请复制经纪人微信号添加") ; }
                                             }) ;
                                         } ,
-                                        fail : function() { self.tips("保存到相册失败！") ; }
+                                        fail : function() { self.tips("保存到相册失败，请复制经纪人微信号添加") ; }
                                     }) ;
                                 } ,
-                                fail(res) { self.tips("保存到相册失败！") ; }
+                                fail(res) { self.tips("保存到相册失败，请复制经纪人微信号添加") ; }
                             }) ;
                         }
                     }
@@ -122,10 +122,10 @@
                 wx.setClipboardData({
                     data : event.target.dataset.wechatid ,
                     success : (res)=> {                                                   
-                        this.tips("复制微信号成功！") ;
+                        this.tips("经纪人微信号已复制，请前往微信添加") ;
                     } ,
                     fail : (res)=> {
-                        this.tips("复制微信号失败！") ;
+                        this.tips("经纪人微信号复制失败！") ;
                     }
                 }) ;
             }
@@ -201,13 +201,6 @@
                 height : 300rpx ;
                 width : 300rpx ;
             }
-        }
-        .modal-footer {
-            .wk-btn {
-                color : @blue-font-color ;
-                font-size : @large-font-size ;
-                line-height : 90rpx ;
-            }
-        }
+        }       
     }
 </style>

@@ -80,6 +80,11 @@
                          border : none ;
                      }
                  }
+                 .wk-btn {
+                    color : @blue-font-color ;
+                    font-size : @large-font-size ;
+                    line-height : 90rpx ;
+                }
              }
         }
         &>.modal-close {

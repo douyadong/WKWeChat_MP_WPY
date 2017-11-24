@@ -2,13 +2,12 @@
     import wepy from "wepy" ;
     export default class extends wepy.app {
         config = {
-            "pages": [
-                "pages/index/index" ,
-                "pages/esf/detail" ,               
-                "pages/agent/index" ,
+            "pages" : [
+                "pages/esf/detail" , 
+                "pages/agent/index" ,                 
+                "pages/index/index" ,             
                 "pages/market/index" ,
-                "pages/common/player" ,
-                
+                "pages/common/player" ,                
                 "pages/demo/index" ,
                 "pages/index/city" ,
                 "pages/index/search" ,            
