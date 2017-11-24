@@ -6,19 +6,23 @@
         2. 
 -->
 <template lang="wxml">
-    <view class="wk-tips-mask">
-        <view class="wk-tips">大哥你鸡笼门开了，关上吧，小心跑出来了！</view>
+    <view class="wk-tips-mask" wx:if="{{ visibility }}">
+        <view class="wk-tips">{{ msg }}</view>
     </view>
 </template>
 
 <script>
 import wepy from "wepy" ;
 export default class Com extends wepy.component {    
-    data = {
-
+    props = {
+        msg : String ,
+        visibility : {
+            type : Boolean ,
+            twoWay : true
+        }
     } ;
-    methods = {
-
+    onShow() {
+        setTimeout(()=>{ this.visibility = false ; } , 3000) ;
     } ;
     events = {
 
