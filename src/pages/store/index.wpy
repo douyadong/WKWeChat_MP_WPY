@@ -221,7 +221,8 @@
             background-color: @white-font-color ;
             .store-house{
                 background-color: @white-font-color;
-                clear: both;
+                padding-left: 30rpx;
+                padding-right: 30rpx;
             }
             .store-agent{
                 padding-left: 30rpx;
