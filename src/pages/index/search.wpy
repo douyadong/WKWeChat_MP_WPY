@@ -14,17 +14,17 @@
     </view>
     <view class="result">       
        <block wx:if="{{items && items.length > 0}}">
-       <view @tap="selectEstate" data-id="{{item.id}}" data-name="{{item.name}}" class="item" wx:for="{{items}}">
+       <view @tap="selectEstate" data-id="{{item.id}}" wx:key="{{*this}}" data-name="{{item.displayStr}}" class="item" wx:for="{{items}}" data-item="{{item}}">
         <view class="estate-name">
-            <text wx:for="{{item.names}}" wx:for-item="t" class="{{t.highlight?'highlight':''}}">{{t.text}}</text>
+            <text wx:for="{{item.names}}" wx:for-item="t" wx:key="{{item.id}}" class="{{t.highlight?'highlight':''}}">{{t.text}}</text>
         </view>
         <view class="address">
-            <text wx:for="{{item.address}}" wx:for-item="t" class="{{t.highlight?'highlight':''}}">{{t.text}}</text>
+            <text wx:for="{{item.address}}" wx:for-item="t" wx:key="{{item.id}}" class="{{t.highlight?'highlight':''}}">{{t.text}}</text>
         </view>
        </view>
        </block>
 
-       <view class="item" wx:if="{{!items || items.length == 0}}">
+       <view class="item" wx:if="{{noData}}">
             <view class="estate-name">未找到该地址，请重新搜索</view>
             <view class="address">您可以更换其他关键字再试一次</view>
        </view>
@@ -43,19 +43,10 @@
         } ; 
         data = {
             keyword: "",
-            city: {
-                cityId: 43,
-                cityName: "上海"
+            city: {                
             },
-            items: [{
-                id: 1,
-                name: "宝林四村",                
-                address: "浦东 张江 宝林路东林路9990 号"
-            },{
-                id: 3,
-                name: "宝林四村",
-                address: "浦东 张江 宝林路东林路9990 号"
-            }]
+            items: [],
+            noData: false
         } ;
         computed = {
             
@@ -63,15 +54,41 @@
         methods = {
            keywordChange(e) {
                this.keyword = e.detail.value || '';
-               if(this.keyword){//发请求
+               if(this.keyword.trim()){//发请求
+                    let keyword = this.keyword;
                     apiDataFilter.request({
                         apiPath: "index.acWord",
                         data: {
                             cityId: this.city.cityId,
-                            associationalWord: this.keyword
+                            associationalWord: keyword
                         },
-                        successCallback: ()=>{
-
+                        successCallback: (data)=>{                                                    
+                            this.items = data.data && data.data.map((item)=>{
+                                item.address = this.generateHighlight(item.address,keyword);
+                                item.names = this.generateHighlight(item.displayStr,keyword);
+                                switch(item.associationOrder){//1:行政区 2:板块 5.小区
+                                    case "1":
+                                        item.realIdObj = {
+                                            districtId: item.value
+                                        }
+                                    break;
+                                    case "2":
+                                        item.realIdObj = {
+                                            townId: item.value
+                                        }
+                                    break;
+                                    case "5":
+                                        item.realIdObj = {
+                                            estateId: item.value
+                                        }
+                                    break;
+                                }
+                                return item;
+                            }) || [];
+                            if(this.items.length == 0){
+                                this.noData = true;
+                            }                            
+                            this.$apply();
                         }
                     });
                }
@@ -80,7 +97,7 @@
                this.keyword = '';
            },
            selectEstate(e) {
-               wx.setStorageSync("estate",{id:e.currentTarget.dataset.id,name:e.currentTarget.dataset.name});
+               wx.setStorageSync("estate", e.currentTarget.dataset.item);
                wx.navigateBack();
            }
         } ;
@@ -95,20 +112,15 @@
                let result = [];
                for(var i = 0; i < strs.length; i++){
                    if(i != 0){
-                       result.push({text:subStr,highlight: true});
+                       result.push({text:subStr,highlight: true, id: i});
                    }
-                   result.push({text:strs[i],highlight: false});
+                   result.push({text:strs[i],highlight: false, id: i});
                }
                
                return result;
            };
         onShow() {
-            /*if(this.items && this.items.length > 0){
-                for(let i = 0; i < this.items.length; i++){
-                    this.items[i].address = this.generateHighlight(this.items[i].address,"宝");
-                    this.items[i].names = this.generateHighlight(this.items[i].name,"宝");
-                }           
-            }*/
+
         }
     }
 </script>

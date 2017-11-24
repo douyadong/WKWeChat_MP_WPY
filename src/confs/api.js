@@ -30,6 +30,7 @@ export default {
             "getCitySubwayLines": "houseMap/getCitySubwayLines.rest",//获取地铁数据
             "getCityAreasInfo": "houseMap/getCityAreasInfo.rest",//获取区域板块信息
             "acWord": "wxmpIndex/acWord.rest",//模糊查询小区
+            "secondHouseList": "wxmpIndex/secondHouseList.rest"
         } ,
         "agent" : {
             "index" : "wxmpAgent/getAgentInfo.rest" ,

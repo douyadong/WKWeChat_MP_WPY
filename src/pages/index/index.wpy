@@ -20,16 +20,16 @@
     </view>
     <view class="filter">
         <view class="district-total-type-sort">
-            <view class="district-section" @tap="clickFilterSection">
+            <view class="district-section">
                 <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">区域</view>                
             </view>            
-            <view class="total-section" @tap="clickFilterSection">
+            <view class="total-section">
                 <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}" @tap="switchFilter" data-name="total">总价</view>                
             </view>
-            <view class="type-section" @tap="clickFilterSection">
+            <view class="type-section">
                 <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}" @tap="switchFilter" data-name="type">户型</view>                
             </view>
-            <view class="sort-section" @tap="clickFilterSection">
+            <view class="sort-section">
                 <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" @tap="switchFilter" data-name="sort">排序</view>
                 
             </view>            
@@ -68,9 +68,9 @@
                     </view>
                 </view>
                 <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
-                    <view @tap="selectType" class="item {{filter.typeSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.typeSection.items}}" data-id="{{item.id}}">{{item.text}}</view> 
+                    <view @tap="selectType" class="item {{item.active?'active':''}}" wx:for="{{filter.typeSection.items}}" data-id="{{item.id}}">{{item.text}}</view> 
                     <view class="confirm">
-                        <button class="button">确定</button>
+                        <button class="button" @tap="reload">确定</button>
                     </view>
                 </view>
                 <view class="items sorts {{filter.selectedFilterSection == 'sort'? '' : 'invisible'}}">
@@ -114,7 +114,7 @@
         <view>
         <view>很抱歉</view>
         <view>{{cityName}}暂未开通二手房业务</view>
-        <button class="switch-city">
+        <button class="switch-city" @tap="switchCity">
             去看看其他城市的二手房
         </button>
         </view>
@@ -125,6 +125,125 @@
     import wepy from "wepy" ;    
     import Esf from "../../components/esf";
     import apiDataFilter from "../../mixins/apiDataFilter";
+
+    const DEFAULT = {
+        selectedDistrictId: "",
+        selectedTownId: "",
+        selectedMetroId: "",
+        selectedStationId: "",
+        selectedSection: "district",
+        selectedTotalId: 0,
+        selectedTypeIds: [],
+        selectedSortId: 0,
+        offset: 0,
+        city: {
+            cityId: 43,
+            cityName: "上海"
+        },
+        highCities: [43,221,741,771,1873],/*43  上海市
+221  廊坊市
+741  南京市
+771  苏州市
+1873  广州市*/
+        totalOptionsHigh:[{
+                            id: 0,
+                            text: "不限",
+                            start: "",
+                            end: ""
+                        },{
+                            id: 1,
+                            text: "100 万以下",
+                            start: "",
+                            end: 100
+                        },{
+                            id: 2,
+                            text: "100 - 150 万",
+                            start: 100,
+                            end: 150
+                        },{
+                            id: 3,
+                            text: "150 - 200 万",
+                            start: 150,
+                            end: 200
+                        },{
+                            id: 4,
+                            text: "200 - 250 万",
+                            start: 200,
+                            end: 250
+                        },{
+                            id: 5,
+                            text: "250 - 300 万",
+                            start: 250,
+                            end: 300
+                        },{
+                            id: 6,
+                            text: "300 - 500 万",
+                            start: 300,
+                            end: 500
+                        },{
+                            id: 7,
+                            text: "500 - 1000 万",
+                            start: 500,
+                            end: 1000
+                        },{
+                            id: 8,
+                            text: "1000 - 2000 万",
+                            start: 1000,
+                            end: 2000
+                        },{
+                            id: 9,
+                            text: "2000万及以上",
+                            start: 2000,
+                            end: ""
+                        }],// 上海、广州、杭州、苏州、廊坊、南京用这个
+        totalOptionsLow: [{
+                            id: 0,
+                            text: "不限",
+                            start: "",
+                            end: ""
+                        },{
+                            id: 1,
+                            text: "50 万以下",
+                            start: "",
+                            end: 50
+                        },{
+                            id: 2,
+                            text: "50 - 80 万",
+                            start: 50,
+                            end: 80
+                        },{
+                            id: 3,
+                            text: "80 - 100 万",
+                            start: 80,
+                            end: 100
+                        },{
+                            id: 4,
+                            text: "100 - 150 万",
+                            start: 100,
+                            end: 150
+                        },{
+                            id: 5,
+                            text: "150 - 200 万",
+                            start: 150,
+                            end: 200
+                        },{
+                            id: 6,
+                            text: "200 - 300 万",
+                            start: 200,
+                            end: 300
+                        },{
+                            id: 7,
+                            text: "300 - 500 万",
+                            start: 300,
+                            end: 500
+                        },{
+                            id: 8,
+                            text: "500万以上",
+                            start: 500,
+                            end: ""
+                        }],//其他城市用这个
+    }
+
     export default class Index extends wepy.page {
         config = {            
             navigationBarTitleText: "悟空找房"            
@@ -133,10 +252,10 @@
             esf: Esf
         } ; 
         data = {  
-                city: {
+                city: null/*{
                     cityId: 1,
                     cityName: "北京"
-                },
+                }*/,
                 estate: {
                     id: "",
                     name: ""
@@ -146,32 +265,14 @@
                     districtSection: {
                         districts: [],
                         metros:[],
-                        selectedDistrictId: '',
-                        selectedTownId: '',
-                        selectedMotroId: "",
-                        selectedStationId: "",
-                        selectedSection: 'district' //默认区域选中
+                        selectedDistrictId: DEFAULT.selectedDistrictId,
+                        selectedTownId: DEFAULT.selectedTownId,
+                        selectedMotroId: DEFAULT.selectedMotroId,
+                        selectedStationId: DEFAULT.selectedStationId,
+                        selectedSection: DEFAULT.selectedSecion //默认区域选中
                     },
                     totalSection: {
-                        items: [{
-                            id: 0,
-                            text: "不限"
-                        },{
-                            id: 1,
-                            text: "100 万以下"
-                        },{
-                            id: 2,
-                            text: "100 - 150 万"
-                        },{
-                            id: 3,
-                            text: "150 - 200 万"
-                        },{
-                            id: 4,
-                            text: "200 - 250 万"
-                        },{
-                            id: 5,
-                            text: "250 - 300 万"
-                        }],
+                        items: DEFAULT.totalOptionsHigh,
                         selectedId: '',
                         customStartPrice: "",//自定义最低价
                         customEndPrice: "",//自定义最高价
@@ -179,24 +280,30 @@
                     typeSection: {
                         items: [{
                             id: 0,
-                            text: "不限"
+                            text: "不限",
+                            active: false
                         },{
                             id: 1,
-                            text: "一室"
+                            text: "一室",
+                            active: false
                         },{
                             id: 2,
-                            text: "二室"
+                            text: "二室",
+                            active: false
                         },{
                             id: 3,
-                            text: "三室"
+                            text: "三室",
+                            active: false
                         },{
                             id: 4,
-                            text: "四室"
+                            text: "四室",
+                            active: false
                         },{
                             id: 5,
-                            text: "五室及以上"
+                            text: "五室及以上",
+                            active: false
                         }],
-                        selectedId: ''
+                        selectedIds: DEFAULT.selectedTypeIds
                     },
                     sortSection: {
                         items: [{
@@ -219,41 +326,15 @@
                     }
                 },                   
                 isLoadError: false,
-                isOpenCity: true,                         
-                items: [{
-                    imageUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
-                    estateName: "淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路",
-                    type: "2室2厅1卫",
-                    area: "66.36",
-                    total: "525",
-                    unit: "36251",
-                    district: "浦东新区",
-                    town: "花木西路",
-                    tags: ["满五唯一", "地铁"],
-                },{
-                    imageUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
-                    estateName: "淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路",
-                    type: "2室2厅1卫",
-                    area: "66.36",
-                    total: "525",
-                    unit: "36251",
-                    district: "浦东新区",
-                    town: "花木西路",
-                    tags: ["满五唯一", "地铁"],
-                }  ,{
-                    firstImgUrl: "https://img.wkzf.com/9e58bb1c5b0c4ccc84d3590af527a98b.ML",
-                    houseTitle: "淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路淞虹小区 杨高南路",
-                    houseTypeStr: "2室2厅1卫",
-                    houseAreaStr: "66.36",
-                    totalPriceStr: "525",
-                    unitPriceStr: "36251",
-                    district: "浦东新区",
-                    town: "花木西路",
-                    tags: ["满五唯一", "地铁"],
-                }  ]          
+                isOpenCity: true,  
+                offset: 0,
+                pageSize: 20,                       
+                items: []          
         } ;
         computed = {
-            
+            typeContained(id) {
+                return this.filter.typeSection.selectedIds.indexOf(id) > -1;
+            }
         } ;
         methods = {
            switchFilter(e) { //切换筛选条件事件处理函数
@@ -269,9 +350,13 @@
                 this.filter.sortSection.selectedId = sortId;
            },
 
-           selectType(e) {//切换房型
+           selectType(e) {//切换房型                
                 let typeId = e.currentTarget.dataset.id;
-                this.filter.typeSection.selectedId = typeId;
+                let type = this.filter.typeSection.items.filter((it)=>{
+                    return it.id == typeId;
+                })[0];
+                type.active = !type.active;
+                //this.$apply();
             },
             selectTotal(e) {//切换总价
                 let typeId = e.currentTarget.dataset.id;
@@ -306,8 +391,9 @@
                 let stationId = e.currentTarget.dataset.id;
                 this.filter.districtSection.selectedStationId = stationId;
             },
-           refresh() {// 刷新列表
-
+           reload() {// 刷新列表
+            this.filter.selectedFilterSection = "";
+            this.refresh();
            },
            switchCity() {
                wx.navigateTo({url:'/pages/index/city'});
@@ -320,12 +406,29 @@
            clearEstate() {
                wx.setStorageSync("estate",{id: "", name: ""});
                this.estate = {id: "", name: ""};
-           },           
+           },   
+           clearFilter() {//清空筛选条件
+                //清空选中的区域板块和地铁线路
+                this.filter.districtSection.selectedDistrictId = DEFAULT.selectedDistrictId;
+                this.filter.districtSection.selectedTownId = DEFAULT.selectedTownId;
+                this.filter.districtSection.selectedMotroId = DEFAULT.selectedMetroId;
+                this.filter.districtSection.selectedStationId = DEFAULT.selectedStationId;
+                this.filter.totalSection.selectedId = DEFAULT.selectedTotalId;
+                this.filter.typeSection.selectedId = DEFAULT.selectedTypeId;
+                this.filter.sortSection.selectedId = DEFAULT.selectedSortId;                
+
+                this.refresh();
+           }        
         } ;
         events = {
 
         } ;
         onLoad() {
+            //首次读取storage中是否有city，否则就是默认城市
+            this.city = wx.getStorageSync("city") || DEFAULT.city;
+            this.getDistrictsAndMetro();            
+
+           //todo:弹出加载中tips
            //定位
            wx.getLocation({
                success: (res)=>{
@@ -339,48 +442,136 @@
                         successCallback: (data)=>{
                             wx.setStorageSync("city",data.data);
                             wx.setStorageSync("locationCity",data.data);
-                            this.city = data.data;
-                            this.$apply();
-
-                            //todo:获取区域和地铁信息
-                            this.getDistrictsAndMetro();                            
-                        }
+                            
+                            if(this.city){
+                                if(this.city.cityId != data.data.cityId){//定位的城市不是默认城市
+                                    this.city = data.data;
+                                    this.getDistrictsAndMetro(); 
+                                } else {
+                                    this.city = data.data;
+                                }                                                                
+                            } else {
+                                this.city = data.data;
+                                this.getDistrictsAndMetro();     
+                            }
+                            
+                            this.$apply();            
+                        }                        
                     });
                },
-               fail: ()=>{
-                   //todo:弹出定位失败
+               fail: (opts)=>{                                   
+                   console.log(opts.errMsg.indexOf('fail auth deny'));
+                   if(opts && opts.errMsg.indexOf('fail auth deny') > 0){//用户选择了拒绝定位
+
+                   } else {//定位失败
+                        //todo:弹出定位失败
+                   }
+               },
+               complete: ()=>{
+                   //todo:消失加载中tips
                }
            });
         };
         onShow(options) {
-            this.estate = wx.getStorageSync("estate") || {id: "", name: ""};
-            this.city = wx.getStorageSync("city") || {cityId: 1, cityName: "北京"};            
+            this.estate = wx.getStorageSync("estate") || {id: "", name: ""}; 
+            let city = wx.getStorageSync("city");
+            if(city && this.city) {
+                if(city.cityId != this.city.cityId) {//城市发生了变化，重新加载区域地铁和房源
+                    this.city = city;
+                    this.getDistrictsAndMetro();
+                    return;
+                }
+            }
 
-            //todo:获取区域和地铁信息
+            this.refresh();                        
         };
         getDistrictsAndMetro() {
-                apiDataFilter.request({
-                    apiPath: "index.getCitySubwayLines",
-                    data: {
-                        cityId: this.city.cityId
-                    },
-                    successCallback: (data)=>{
-                        this.filter.districtSection.metros = data.data;
-                        this.$apply();
-                    }
-                });
+            //判断当前城市是否开通业务
+            apiDataFilter.request({
+                apiPath: "index.getAllCityBusiness",
+                successCallback: (data)=>{                                       
+                    let cities = data.data || [];
+                    if(cities.filter((item)=>{ return item.cityId == this.city.cityId}).length == 0){
+                        this.isOpenCity = false;
+                        this.$apply();                                            
+                    }else{
+                        //清空选中的区域板块和地铁线路
+                        this.filter.districtSection.selectedDistrictId = DEFAULT.selectedDistrictId;
+                        this.filter.districtSection.selectedTownId = DEFAULT.selectedTownId;
+                        this.filter.districtSection.selectedMotroId = DEFAULT.selectedMetroId;
+                        this.filter.districtSection.selectedStationId = DEFAULT.selectedStationId;
+                        this.filter.totalSection.selectedId = DEFAULT.selectedTotalId;
+                        //this.filter.typeSection.selectedId = DEFAULT.selectedTypeId;
+                        //this.filter.sortSection.selectedId = DEFAULT.selectedSortId;
 
-                apiDataFilter.request({
-                    apiPath: "index.getCityAreasInfo",
-                    data: {
-                        cityId: this.city.cityId
-                    },
-                    successCallback: (data)=>{
-                        this.filter.districtSection.districts = data.data;
+                        //根据城市修改总价筛选
+                        if(DEFAULT.highCities.indexOf(this.city.cityId) > -1){
+                            this.filter.totalSection.items = DEFAULT.totalOptionsHigh;
+                        } else {
+                            this.filter.totalSection.items = DEFAULT.totalOptionsLow;
+                        }
+
                         this.$apply();
+
+                        apiDataFilter.request({
+                            apiPath: "index.getCitySubwayLines",
+                            data: {
+                                cityId: this.city.cityId
+                            },
+                            successCallback: (data)=>{
+                                this.filter.districtSection.metros = data.data;
+                                this.$apply();
+                            }
+                        });
+
+                        apiDataFilter.request({
+                            apiPath: "index.getCityAreasInfo",
+                            data: {
+                                cityId: this.city.cityId
+                            },
+                            successCallback: (data)=>{
+                                this.filter.districtSection.districts = data.data;
+                                this.$apply();
+                            }
+                        });
+
+                        this.refresh();
                     }
-                });
-           };
+                }
+            });            
+        };
+        refresh() {//刷新
+            //收集查询条件
+            console.log('刷新');
+
+
+            apiDataFilter.request({
+                apiPath: "index.secondHouseList",
+                method: "POST",
+                contenType: "application/json",
+                data: {
+                    offset: 0,
+                    pageSize: 20
+                },
+                successCallback: (data)=>{
+                    console.log(data.data);
+                    this.items = data.data.secondHouseListModels || [];
+                    this.$apply();
+                }
+            })
+
+            /*wx.request({
+                url: "https://minapp-test.yfyk365.com/wxmpIndex/secondHouseList.rest",
+                data: {
+                    offset: 0,
+                    pageSize: 20
+                },
+                method: "POST",
+                success: function(data){
+                    console.log(data);
+                }
+            });*/
+        };
     }
 </script>
 
