@@ -62,7 +62,10 @@
                 agentDetail :{},
                 areaPriceInfo :'',
                 houseList:[],
-            }
+            },
+            pageIndex:0,
+            agentPageIndex:0,
+            pageSize: 20,
         } ;
         computed = {
             
@@ -78,15 +81,16 @@
             // agent数据获取
             apiDataFilter.request({
                 apiPath : "store.agent",
-                data : { "storeId" : 10027 } ,
+                data : { "storeId" : 10027,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
                 successCallback : res => {
                     let agent = res.data ;
-                    //this.apiData.agentDetail = agent
-                    this.setData({
-                        "apiData.agentDetail": agent
-                    });
-                    //页面标题和分享内容设置
-                    //页面微信分享设置
+                    if(agent.agentList){
+                        this.agentPageIndex += agent.agentList.length;
+                        //this.apiData.agentDetail = agent
+                        this.setData({
+                            "apiData.agentDetail": agent
+                        });
+                    }
                 }
             }) ;
             // 周边房价接口调取
@@ -99,26 +103,21 @@
                     this.setData({
                         "apiData.areaPriceInfo": areaPriceInfo
                     });
-                    //console.log(this.apiData.areaPriceInfo)
-                    //this.$data.apiData.agentDetail = agent ;
-                    //页面标题和分享内容设置
-                    //页面微信分享设置
                 }
             }) ;
             // 房源接口调取
             apiDataFilter.request({
                 apiPath : "store.house",
-                data : { "storeId" : 10027 }  ,
+                data : { "storeId" : 10027 ,"pageSize":20 ,"pageIndex":this.pageIndex}  ,
                 successCallback : res => {
                     let houseList = res.data ;
-                    //this.apiData.areaPriceInfo = areaPriceInfo;
-                    this.setData({
-                        "apiData.houseList": houseList.secondHouseListModels
-                    });
-                    //console.log(this.apiData.areaPriceInfo)
-                    //this.$data.apiData.agentDetail = agent ;
-                    //页面标题和分享内容设置
-                    //页面微信分享设置
+                    if(houseList.secondHouseListModels){
+                        //this.apiData.houseList = houseList.secondHouseListModels;
+                        this.pageIndex += houseList.secondHouseListModels.length;
+                        this.setData({
+                            "apiData.houseList": houseList.secondHouseListModels
+                        });
+                    }
                 }
             }) ;
         };
@@ -128,12 +127,6 @@
         onLoad() {
             this.getData()
         };
-        onShow () {
-
-        };
-        onReady(){
-
-        }
         onPageScroll(Object) {
             // Do something when page scroll
            if (Object.scrollTop >4){
@@ -143,8 +136,40 @@
            }
         };
         onReachBottom() {
+            if(this.condition == 0){
+                // 房源接口调取
+                apiDataFilter.request({
+                    apiPath : "store.house",
+                    data : { "storeId" : 10027 ,"pageSize":20 ,"pageIndex": this.pageIndex}  ,
+                    successCallback : res => {
+                        let houseList = res.data;
+                        // this.apiData.houseList = this.apiData.houseList.concat(houseList.secondHouseListModels);
+                        if (houseList.secondHouseListModels){
+                            this.pageIndex += houseList.secondHouseListModels.length;
+                            this.setData({
+                                "apiData.houseList":this.apiData.houseList.concat(houseList.secondHouseListModels)
+                            });
+                        }
+                    }
+                }) ;
+            }else {
+                // agent数据获取
+                apiDataFilter.request({
+                    apiPath : "store.agent",
+                    data : { "storeId" : 10027 ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize } ,
+                    successCallback : res => {
+                        let agent = res.data ;
+                        //this.apiData.agentDetail = agent
+                        if(agent.agentList){
+                            this.agentPageIndex += agent.agentList.length;
+                            this.setData({
+                                "apiData.agentDetail":this.apiData.agentDetail.concat(agent)
+                            });
+                        }
+                    }
+                }) ;
+            }
 
-            // Do something when page reach bottom.
         };
     }
 </script>
