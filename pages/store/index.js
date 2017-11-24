@@ -21,7 +21,7 @@ Page({
         wx.redirectTo({
           url: "/pages/index/index"
         });
-      }, 2000),
+      }, 500),
     onShow: function () { 
       this.setTF
     } ,
