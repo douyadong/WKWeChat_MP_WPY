@@ -11,14 +11,14 @@
         <view class="info">
             <view class="title">{{item.houseTitle}}</view>
             <view class="type-area-district-town">
-                <text>{{item.houseTypeStr}} </text><text>{{item.spaceAreaStr}}㎡ </text>|<text> {{item.district}}</text> <text> {{item.town}}</text>                
+                <text>{{item.houseTypeStr}} </text><text>{{item.spaceAreaStr}} </text>|<text> {{item.district}}</text> <text> {{item.town}}</text>                
             </view>
             <view class="tags">            
                 <text class="tag" wx:for-item="tag" wx:for="{{item.tags}}">{{tag}}</text>
             </view>
             <view class="total-unit">
-                <text class="total">{{item.totalPriceStr}}万</text>
-                <text class="unit">{{item.unitPriceStr}}元/㎡</text>
+                <text class="total">{{item.totalPriceStr}}</text>
+                <text class="unit">{{item.unitPriceStr}}</text>
             </view>
         </view>
     </view>    

@@ -74,9 +74,11 @@ class ApiDataFilter {
         }
 
         if (requestMethod == "post") {
-            params.header = {
-                "Content-Type" : contenType
-            }
+            if(contentType) {
+                params.header = {
+                    "Content-Type" : contentType
+                }
+            }            
         }
         wx.request(params) ;       
     }
