@@ -36,10 +36,10 @@
         events = {
 
         } ;
-        getDetail(){
+        getDetail(subEstateId){
             apiDataFilter.request({
                 apiPath : "estate.comment",
-                data : { "subEstateId" : 12465,"offset":this.offset,"pageSize":this.pageSize } ,
+                data : { "subEstateId" : subEstateId,"offset":this.offset,"pageSize":this.pageSize } ,
                 successCallback : res => {
                     let commentDetail = res.data ;
                     if (commentDetail){
@@ -51,11 +51,12 @@
                 }
             }) ;
         };
-        onLoad() {
-           this.getDetail()
+        onLoad(option) {
+            console.log("option.subEstateId"+option.subEstateId);
+           this.getDetail(12465)
         };
         onReachBottom() {
-            this.getDetail()
+            this.getDetail(12465)
         }
     }
 </script>
