@@ -15,7 +15,7 @@
                  <comments :commentList.sync="commentList"></comments>
              </view>
          </view>
-    <qmap :latitude.sync= "latitude" :longitude.sync="longitude" :estateAddr.sync= "estateInfo.estateAddr"></qmap>
+    <qmap :estate="estate"></qmap>
     </view>
 </template>
 
@@ -36,9 +36,11 @@
         data = {
             estateInfo:{},
             commentList:[],
-            latitude:'',
-            longitude:'',
-            estateAddr:''
+            estate:{
+                latitude:'',
+                longitude:'',
+                estateAddr:''
+            }
         } ;
         methods = {
 
@@ -48,16 +50,16 @@
                 apiPath : "estate.detail",
                 data : { "subEstateId" : 16990 } ,
                 successCallback : res => {
-                    let agentDetail = res.data ;
-                    if (agentDetail){
-                        this.estateInfo = agentDetail.estateInfo;
+                    let estateDetail = res.data ;
+                    if (estateDetail){
+                        this.estateInfo = estateDetail.estateInfo;
                         this.commentList = this.estateInfo.comment.commentList;
-                        this.latitude = this.estateInfo.latitude;
-                        this.longitude = this.estateInfo.longitude;
-                        this.estateAddr = this.estateInfo.estateAddr;
+                        this.estate.latitude = this.estateInfo.latitude;
+                        this.estate.longitude = this.estateInfo.longitude;
+                        this.estate.estateAddr = this.estateInfo.estateAddr;
                         this.$apply();
                     }
-                    console.log(this.latitude)
+                    console.log(this.estate)
                 }
             }) ;
         };

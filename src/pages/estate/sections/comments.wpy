@@ -42,8 +42,6 @@
             }
         } ;
         onLoad() {
-            this.$parent.$apply();
-            console.log(this.commentList);
 
         }
 

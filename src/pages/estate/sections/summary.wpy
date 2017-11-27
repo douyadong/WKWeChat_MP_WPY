@@ -84,7 +84,6 @@
         data = {
         } ;
         onLoad() {
-             this.$apply();
         }
     }
 
