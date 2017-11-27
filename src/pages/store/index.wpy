@@ -75,6 +75,9 @@
             },
 
         } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+         获取接口数据
+         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         getData(){
             // agent数据获取
             apiDataFilter.request({
@@ -85,10 +88,6 @@
                     if(agent.agentList){
                         this.agentPageIndex += agent.agentList.length;
                         this.agentList = agent.agentList;
-//                        this.setData({
-//                             "apiData.agentList": agent.agentList
-//                         });
-                       // console.log(this.agentList);
                         this.$apply();
                     }
                 }
@@ -100,9 +99,6 @@
                 successCallback : res => {
                     let areaPriceInfo = res.data ;
                     this.apiData.areaPriceInfo = areaPriceInfo;
-//                    this.setData({
-//                        "apiData.areaPriceInfo": areaPriceInfo
-//                    });
                     this.$apply();
                 }
             }) ;
@@ -115,9 +111,6 @@
                     if(houseList.secondHouseListModels){
                         this.apiData.houseList = houseList.secondHouseListModels;
                         this.pageIndex += houseList.secondHouseListModels.length;
-//                        this.setData({
-//                            "apiData.houseList": houseList.secondHouseListModels
-//                        });
                         this.$apply();
                     }
                 }
@@ -130,7 +123,6 @@
             this.getData()
         };
         onPageScroll(Object) {
-            // Do something when page scroll
            if (Object.scrollTop >4){
               this.lessenShow = true;
            }else if(Object.scrollTop < 4){
@@ -149,9 +141,6 @@
                         if (houseList.secondHouseListModels){
                             this.pageIndex += houseList.secondHouseListModels.length;
                             this.apiData.houseList = this.apiData.houseList.concat(houseList.secondHouseListModels);
-//                            this.setData({
-//                                "apiData.houseList":this.apiData.houseList.concat(houseList.secondHouseListModels)
-//                            });
                             this.$apply();
                         }
                     }
@@ -166,9 +155,6 @@
                         if(agent.agentList){
                             this.agentPageIndex += agent.agentList.length;
                             this.agentList = this.agentList.concat(agent.agentList);
-//                            this.setData({
-//                                "apiData.agentDetail":this.apiData.agentDetail.concat(agent)
-//                            });
                             this.$apply();
                         }
                     }
