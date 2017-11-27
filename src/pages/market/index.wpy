@@ -1,151 +1,181 @@
 <!--
     @页面名称：房价行情页面
-    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @作者：豆亚东 (douyadong@lifang.com)
     @业务逻辑说明：
         1.
         2.        
 -->
 <template lang="wxml">
-        <view class="today-price {{pageStates.title==true?'hide':''}}">
-            <view class="address">今日上海房价</view>
-            <text class="city-price">105501元/m²</text><text class="compare">环比上月↓-7.66%</text>
+    <view class="hd">
+        <view class="city">今日{{info.name}}房价</view>
+        <text class="city-price">{{info.avgPrice}}</text>
+        <text class="ratio">
+            <text class="compare">环比上月</text>
+            <text class="iconfont icon-desc" wx:if="{{info.flag=='-1'}}"></text>
+            <text class="iconfont icon-asc" wx:if="{{info.flag=='1'}}"></text>
+            <text>{{info.increase}}</text>
+        </text>
+    </view>
+    <view class="nav {{fixed==true?'fixed':''}}">
+        <view class="now-area">当前各区参考均价</view>
+        <view class="title">
+            <text class="area">区域</text>
+            <text class="average">参考均价</text>
+            <text class="rate">涨幅</text>
         </view>
-        <view class="specific-area {{pageStates.fixed==true?'fixed':''}}">
-            <view class="now-area">当前各区参考均价</view>
-            <view class="small-title">
-                <text class="area">区域</text><text class="average">参考均价</text><text class="increase">涨幅</text>
+    </view>
+    <view class="bd">
+        <repeat for="{{info.subList}}" key="index" index="index" item="item">
+            <view class="price-info">
+                <text class="location">{{item.name}}</text>
+                <text class="cost">{{item.avgPrice}}</text>
+                <text class="scale {{item.flag=='1'?'rise':'lower'}}">{{item.increase}}</text>
             </view>
-        </view>
-        <view class="details">
-             <repeat for="{{list}}" key="index" index="index" item="item">
-                 <view class="single-detail">
-                    <text class="location">{{item.area}}</text><text class="mean">{{item.price}}   元/m²</text><text class="rise">{{item.rise}}</text>
-                 </view>
-             </repeat>
-        </view>
+        </repeat>
+    </view>
 </template>
 
 <script>
-    import data from "./../../mock/house-price.js";
-    import wepy from "wepy";   
+    // import info from "./../../mock/house-price.js";
+    import wepy from "wepy";
+    import apiDataFilter from "../../mixins/apiDataFilter";
     export default class Index extends wepy.page {
         config = {
-            "navigationBarTitleText" : "房价行情" 
-        } ;
-        components = {            
-            
-        } ; 
+            "navigationBarTitleText": "房价行情"
+        };
+        components = {
+
+        };
         data = {
-            list:data,
-            pageStates:{
-                title:false,
-                fixed:false
-            }  
-        } ;
+            info: '',
+            fixed: false  
+        };
         computed = {
-            
-        } ;
+
+        };
         methods = {
-           
-        } ;
+
+        };
         events = {
 
-        } ;
-        onLoad(){
-            wx.getSystemInfo({ 
-                success: function (res) { 
-                    console.log(res);
-                } 
-            });
         };
-        onPageScroll(e){
-            // 当页面滚动超过一定距离时，地区房价标题消失;区域参考价固定
-            if(e.scrollTop>270){
-                this.setData({
-                    'pageStates.title':true,
-                    'pageStates.fixed':true
-                })
+        onLoad(options) {
+            let params=options;
+            let dicId=params.dicId;
+            let dicType=params.dicType;
+            let that=this;
+            apiDataFilter.request({
+                apiPath : "market.index" ,
+                data : { "dicId":43, "dicType":3 } ,
+                successCallback:res => {
+                    console.log(res);
+                    this.info=res.data;//在真机上测试两种方法必须同时使用，页面才能达到要求;
+                    this.$apply();
+                }
+            })
+        };
+        onPageScroll(e) {
+            // 当页面滚动超过一定距离时,区域参考价固定
+            if (e.scrollTop > 135) {
+                this.fixed = true;
             }
             // 页面上滚到顶部时，区域参考价固定;
-            if(e.scrollTop==0){
-                this.setData({
-                    'pageStates.title':false,
-                    'pageStates.fixed':false
-                })
+            if (e.scrollTop < 135) {
+                this.fixed = false;
             }
         };
     }
 </script>
 
 <style lang="less" scoped>
-    @import "../../less/variables.less" ;
-    @import "../../less/mixins.less" ;
+    @import "../../less/variables.less";
+    @import "../../less/mixins.less";
     // 今日房价
-    .today-price{
+    .hd {
+        background: url(http://img.wkzf.com/b262848128334e3daab102eb97e1b747);
+        color: white;
         height: 270rpx;
-        width:100%;
-        padding:0 30rpx;
-        color:white;
-        background:url(http://img.wkzf.com/b262848128334e3daab102eb97e1b747);
-        .address{
+        padding: 0 30rpx;
+        .city {
             font-size: 50rpx;
-            padding-top: 63rpx;
             margin-bottom: 30rpx;
+            padding-top: 63rpx;
         }
-        .city-price{
+        .city-price {
             font-size: 64rpx;
         }
-        .compare{
-            font-size:24rpx;
+        .ratio{
+            font-size: 24rpx;
             margin-left: 17rpx;
-        }
-        &.hide{
-            display: none;
+            .iconfont{
+                font-size: 24rpx;
+                padding: 0 10rpx;
+            }
         }
     }
-    
+
     // 其它区域房价
-    .specific-area{
-        padding:0 30rpx;
+    .nav {
         border-bottom: 1rpx solid #d8d8d8;
-        .now-area{
+        padding: 0 30rpx;
+        .now-area {
+            color: #000;
             font-size: 32rpx;
-            color:#000;
-            margin:30rpx 0 48rpx 0;
-        } 
-        .small-title{
-            font-size:28rpx;
-            color:@lighter-font-color;
-            text-align: center;
+            margin: 30rpx 0 48rpx 0;
+        }
+        .title {
+            .clearfix();
+            color: @lighter-font-color;
+            font-size: 28rpx;
             padding-bottom: 30rpx;
-            .area{
-                float:left;
+            position: relative;
+            .average{
+                position: absolute;
+                left:50%;
+                transform: translateX(-50%);
             }
-            .increase{
-                float:right;    
+            .area {
+                float: left;
+            }
+            .rate {
+                float: right;
             }
         }
-        &.fixed{
-            position: fixed;
-            top:0;
+        &.fixed {
             background-color: #fff;
-            width:690rpx;
-        }   
+            position: fixed;
+            top: 0;
+            width: 690rpx;
+        }
     }
+
     // 具体区域房价行情;
-    .details{
+    .bd {
+        padding: 0 30rpx;
         text-align: center;
-        .single-detail{
-            padding:0 30rpx;
-            font-size: 30rpx;
-            color:#000;
-            line-height: 88rpx;
+        .price-info {
             border-bottom: 1rpx solid #d8d8d8;
-            .location{
-                float:left;
+            .clearfix();
+            color: #000;
+            font-size: 30rpx;
+            line-height: 88rpx;
+            position: relative;
+            .location {
+                float: left;
             }
-            .rise{
-                float:right;
+            .cost{
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .scale {
+                float: right;
+                &.rise{
+                    color: @red-font-color;
+                }
+                &.lower{
+                    color:@success-color;
+                }
             }
         }
     }
