@@ -9,7 +9,7 @@
     <view class="store">
         <view class="store-top" style="position:{{ lessenShow == true? 'fixed':'static'}};top:0;left:0; right:0; z-index:10">
             <view class="store-pic" style="height:{{ lessenShow == true? 140:240 }}rpx; background-size:100% {{ lessenShow == true? 140:240}}rpx;  padding-top: {{ lessenShow == true? 50:0}}rpx;">
-                <text wx:if="{{lessenShow == false}}">{{apiData.areaPriceInfo.name}}</text>
+                <text wx:if="{{lessenShow == false}}">{{apiData.areaPriceInfo.name || "--"}}</text>
                 <view class="price" style="font-size:{{ lessenShow == true? 36:28 }}rpx ; margin-top: {{ lessenShow == true? 0:50}}rpx;">周边房源均价 <text class="price-show" style="font-size:{{ lessenShow == true? 36:48 }}rpx ;">{{apiData.areaPriceInfo.avgPrice}}</text></view>
             </view>
             <tables :titles="titles" :styles="styles" @childFn.user = "parentFn"></tables>
@@ -71,6 +71,7 @@
             parentFn (index) {
                 this.condition = index;
                 console.log('parent received emit event, number is: ' + index);
+               
             },
 
         } ;
@@ -93,7 +94,7 @@
             // 周边房价接口调取
             apiDataFilter.request({
                 apiPath : "store.index",
-                data : { "dicId" : 43,"dicType":3 } ,
+                data : { "dicId" : 43,"dicType":5 } ,
                 successCallback : res => {
                     let areaPriceInfo = res.data ;
                     //this.apiData.areaPriceInfo = areaPriceInfo;

@@ -11,7 +11,7 @@
         <view class="pop">
             <view class="popover">
                 <text class="arrow"></text>
-                <text class="content">上海市浦东新区临港新城环湖西一路449号悟空找房</text>
+                <text class="content">{{estate.estateAddr}}</text>
             </view>
         </view>
         <text class="thumbtack"></text>

@@ -1,6 +1,6 @@
 <!--
     @页面名称：小区介绍模块
-    @作者：赵华刚 (liyangh@lifang.com)
+    @作者：李杨 (liyangh@lifang.com)
     @业务逻辑说明：
         1.
         2.
@@ -76,20 +76,14 @@
     import wepy from "wepy" ;
     export default class Detail extends wepy.component {
         props = {
-            estateInfo : Object
+            estateInfo: {
+                type: Object,
+                default: 'null'
+            },
         } ;
         data = {
         } ;
-        methods = {
-            phoning() {
-                console.log("打我电话干嘛？") ;
-            } ,
-            addWechat() {
-                console.log("想撩我吗？") ;
-            }
-        } ;
-        onload() {
-
+        onLoad() {
         }
     }
 
