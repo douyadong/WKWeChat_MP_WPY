@@ -36,9 +36,6 @@
     import Agent from "../../components/agent" ;
     import apiDataFilter from "../../mixins/apiDataFilter";
     export default class Index extends wepy.page {
-        config = {
-            
-        } ;
         components = {
             tables : Tables,
             house: Esf,
@@ -47,10 +44,6 @@
         data = {
             titles:['推荐好房','推荐经纪人'],
             styles:{
-              /*  color:'#000000',
-                changeColor:'#4081D6',
-                fontSize: 32,
-                lineHeight:88,*/
                 positionLeft : '124r'
             },
             condition: 0,
@@ -64,14 +57,10 @@
             agentPageIndex:0,
             pageSize: 20,
         } ;
-        computed = {
-            
-        } ;
         methods = {
+            // tabs获取相应的区块
             parentFn (index) {
                 this.condition = index;
-                console.log('parent received emit event, number is: ' + index);
-               
             },
 
         } ;
@@ -122,6 +111,9 @@
         onLoad() {
             this.getData()
         };
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+         滚动条滚动函数
+         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         onPageScroll(Object) {
            if (Object.scrollTop >4){
               this.lessenShow = true;
@@ -129,6 +121,9 @@
                this.lessenShow = false;
            }
         };
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+         滚动加载
+         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         onReachBottom() {
             if(this.condition == 0){
                 // 房源接口调取
