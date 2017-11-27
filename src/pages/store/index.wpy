@@ -20,11 +20,8 @@
                       <house :item="item"></house>
                  </repeat>
              </view>
-             <view class="store-agent" wx:if="{{condition == 1}}">
-                <repeat for="{{apiData.agentDetail.agentList}}" key="index" index="index" item="item">
-                       <agent :agent="item"></agent>
-                </repeat>
-
+             <view class="store-agent" wx:if="{{condition == 1}}">                
+                <agent :items="apiData.agentDetail.agentList"></agent>
              </view>
         </view>
     <view class="base-colors"></view>
