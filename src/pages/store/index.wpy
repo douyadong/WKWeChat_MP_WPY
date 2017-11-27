@@ -17,11 +17,11 @@
         <view class="content" style="margin-top: {{ lessenShow == true? 260:0}}rpx;">
              <view class="store-house" wx:if="{{condition == 0}}">
                  <repeat for="{{apiData.houseList}}" key="index" index="index" item="item">
-                      <house :item="item"></house>
+                      <house :item ="item"></house>
                  </repeat>
              </view>
              <view class="store-agent" wx:if="{{condition == 1}}">                
-                <agent :items="apiData.agentDetail.agentList"></agent>
+                <agent :items.sync = "agentList"></agent>
              </view>
         </view>
     <view class="base-colors"></view>
@@ -56,10 +56,10 @@
             condition: 0,
             lessenShow:false,
             apiData:{
-                agentDetail :{},
                 areaPriceInfo :'',
                 houseList:[],
             },
+            agentList:[],
             pageIndex:0,
             agentPageIndex:0,
             pageSize: 20,
@@ -84,10 +84,12 @@
                     let agent = res.data ;
                     if(agent.agentList){
                         this.agentPageIndex += agent.agentList.length;
-                        //this.apiData.agentDetail = agent
-                        this.setData({
-                            "apiData.agentDetail": agent
-                        });
+                        this.agentList = agent.agentList;
+//                        this.setData({
+//                             "apiData.agentList": agent.agentList
+//                         });
+                       // console.log(this.agentList);
+                        this.$apply();
                     }
                 }
             }) ;
@@ -97,24 +99,26 @@
                 data : { "dicId" : 43,"dicType":5 } ,
                 successCallback : res => {
                     let areaPriceInfo = res.data ;
-                    //this.apiData.areaPriceInfo = areaPriceInfo;
-                    this.setData({
-                        "apiData.areaPriceInfo": areaPriceInfo
-                    });
+                    this.apiData.areaPriceInfo = areaPriceInfo;
+//                    this.setData({
+//                        "apiData.areaPriceInfo": areaPriceInfo
+//                    });
+                    this.$apply();
                 }
             }) ;
             // 房源接口调取
             apiDataFilter.request({
                 apiPath : "store.house",
-                data : { "storeId" : 10027 ,"pageSize":20 ,"pageIndex":this.pageIndex}  ,
+                data : { "storeId" : 10027 ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
                 successCallback : res => {
                     let houseList = res.data ;
                     if(houseList.secondHouseListModels){
-                        //this.apiData.houseList = houseList.secondHouseListModels;
+                        this.apiData.houseList = houseList.secondHouseListModels;
                         this.pageIndex += houseList.secondHouseListModels.length;
-                        this.setData({
-                            "apiData.houseList": houseList.secondHouseListModels
-                        });
+//                        this.setData({
+//                            "apiData.houseList": houseList.secondHouseListModels
+//                        });
+                        this.$apply();
                     }
                 }
             }) ;
@@ -138,15 +142,17 @@
                 // 房源接口调取
                 apiDataFilter.request({
                     apiPath : "store.house",
-                    data : { "storeId" : 10027 ,"pageSize":20 ,"pageIndex": this.pageIndex}  ,
+                    data : { "storeId" : 10027 ,"pageSize":this.pageSize ,"pageIndex": this.pageIndex}  ,
                     successCallback : res => {
                         let houseList = res.data;
-                        // this.apiData.houseList = this.apiData.houseList.concat(houseList.secondHouseListModels);
+
                         if (houseList.secondHouseListModels){
                             this.pageIndex += houseList.secondHouseListModels.length;
-                            this.setData({
-                                "apiData.houseList":this.apiData.houseList.concat(houseList.secondHouseListModels)
-                            });
+                            this.apiData.houseList = this.apiData.houseList.concat(houseList.secondHouseListModels);
+//                            this.setData({
+//                                "apiData.houseList":this.apiData.houseList.concat(houseList.secondHouseListModels)
+//                            });
+                            this.$apply();
                         }
                     }
                 }) ;
@@ -157,12 +163,13 @@
                     data : { "storeId" : 10027 ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize } ,
                     successCallback : res => {
                         let agent = res.data ;
-                        //this.apiData.agentDetail = agent
                         if(agent.agentList){
                             this.agentPageIndex += agent.agentList.length;
-                            this.setData({
-                                "apiData.agentDetail":this.apiData.agentDetail.concat(agent)
-                            });
+                            this.agentList = this.agentList.concat(agent.agentList);
+//                            this.setData({
+//                                "apiData.agentDetail":this.apiData.agentDetail.concat(agent)
+//                            });
+                            this.$apply();
                         }
                     }
                 }) ;

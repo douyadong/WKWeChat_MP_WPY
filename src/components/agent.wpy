@@ -29,7 +29,10 @@
     import wepy from "wepy" ;
     export default class Com extends wepy.component {
         props = {
-            items : Array ,
+            items : {
+                type: Array,
+                default: 'null'
+            } ,
         } ;
         data = {
 
@@ -42,8 +45,8 @@
                 console.log("想撩我吗？") ;
             }
         } ;
-        onload() {
-
+        onLoad() {
+               console.log("items"+this.items);
         }
     }
 </script>
