@@ -69,7 +69,7 @@ class ApiDataFilter {
                 errorProcesser(error) ;                
             } ,
             complete : function () {
-                typeof complete == "function" && completeCallback() ;
+                typeof completeCallback == "function" && completeCallback() ;
             }
         }
 
