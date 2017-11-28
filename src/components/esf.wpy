@@ -6,7 +6,7 @@
         2. 
 -->
 <template lang="wxml">
-    <view class="esf-item">
+    <view class="esf-item" @tap="click" data-title="{{item.houseTitle}}">
         <image src="{{ item.firstImgUrl }}"></image>
         <view class="info">
             <view class="title">{{item.houseTitle}}</view>
@@ -26,6 +26,7 @@
 
 <script>
 import wepy from "wepy" ;
+import apiDataFilter from "../mixins/apiDataFilter";
 export default class Com extends wepy.component {
     components = {
 
@@ -37,7 +38,15 @@ export default class Com extends wepy.component {
         item: Object        
     };
     methods = {
-
+        click:function(e){
+            //console.log(e.currentTarget.dataset.title);
+            apiDataFilter.request({
+                apiPath: "index.getAllCityBusiness",
+                successCallback: (data)=>{ 
+                    console.log(data);
+                }
+            });
+        }
     } ;
     events = {
 
@@ -50,7 +59,7 @@ export default class Com extends wepy.component {
     .esf-item {         
         background-color: #fff; 
         box-sizing: border-box;
-        margin-top: 30rpx; 
+        padding-top: 30rpx; 
         padding-bottom: 40rpx;
         border-bottom: 1rpx solid #E4E4E4;              
         .flex();

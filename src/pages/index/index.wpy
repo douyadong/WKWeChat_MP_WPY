@@ -5,9 +5,11 @@
         1.
         2.        
 -->
-<template lang="wxml">
+<template lang="wxml">    
+    <view @tap="clickCover" class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
+    </view> 
     <block wx:if="{{isOpenCity}}">
-    <view>
+    <view style="position: relative; z-index: 5">
     <view class="city-search" >
         <view class="city" @tap="switchCity">{{city.cityName}}</view>
         <view class="search-box">
@@ -81,13 +83,16 @@
     </view>
     </view>
 
-    <view class="esf-items">
+    <view class="esf-items">        
        <block wx:if="{{items && items.length>0}}">       
         <view class="house-count {{expand?'expand':''}}">已为您展示附近 {{total}} 套房源</view>     
         <view class="items"> 
             <repeat for="{{items}}" item="item">
                 <esf :item="item"></esf>
             </repeat>
+            <view style="text-align: center; {{reachBottom?'display: none':''}}">
+                我是有底线的^_^
+            </view>
         </view>
        </block> 
 
@@ -118,8 +123,7 @@
         </button>
         </view>
     </view>
-    <view class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
-    </view>       
+          
 
     <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
 </template>
@@ -372,7 +376,8 @@
                 items: [],
                 tipsVisibility: false,
                 tipsMsg: "",
-                expand: false          
+                expand: false,
+                showTotal: false          
         } ;
         computed = {
             
@@ -517,9 +522,16 @@
                 this.filter.districtSection.selectedStationId = DEFAULT.selectedStationId;
                 this.filter.districtSection.isNear = false;
                 this.filter.districtSection.meter = "";
+                this.filter.totalSection.priceStart = "";
+                this.filter.totalSection.priceEnd = "";
                 this.filter.totalSection.selectedId = DEFAULT.selectedTotalId;
-                this.filter.typeSection.selectedId = DEFAULT.selectedTypeId;
+                this.filter.totalSection.customStartPrice = "";
+                this.filter.totalSection.customEndPrice = "";
+                this.filter.typeSection.selectedIds = [];
                 this.filter.sortSection.selectedId = DEFAULT.selectedSortId;
+                this.filter.typeSection.items.forEach((it)=>{
+                    it.active = false;
+                })
                                 
                 this.refresh();
            },
@@ -530,15 +542,18 @@
            },
            gotoPriceList() {
                wx.navigateTo('/pages/market/index?cityId='+this.city.cityId);
-           }        
+           },
+           clickCover() {
+               this.filter.selectedFilterSection = "";
+           }     
         } ;
         events = {
 
         } ;
-        onLoad() {
+        onLoad() {            
             //首次读取storage中是否有city，否则就是默认城市
             this.city = wx.getStorageSync("city") || DEFAULT.city;
-            this.getDistrictsAndMetro();            
+            //this.getDistrictsAndMetro();            
 
            //todo:弹出loading
            //定位
@@ -557,29 +572,26 @@
                             data.data.isLocated = true;//定位成功标志位
                             wx.setStorageSync("city",data.data);
                             wx.setStorageSync("locationCity",data.data);
-                            
+                            this.showTotal = true;
                             if(this.city){
                                 if(this.city.cityId != data.data.cityId){//定位的城市不是默认城市
-                                    this.city = data.data;
-                                    this.getDistrictsAndMetro(); 
+                                    this.city = data.data;                                    
                                 } else {
                                     this.city = data.data;
                                 }                                                                
                             } else {
-                                this.city = data.data;
-                                this.getDistrictsAndMetro();     
+                                this.city = data.data;                                
                             }
-                            
+                            this.getDistrictsAndMetro(); 
                             this.$apply();            
                         }                        
                     });
                },
-               fail: (opts)=>{    
-                   //this.tipsMsg = JSON.stringify(opts||{});                                                  
+               fail: (opts)=>{                       
                    if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位
-
+                        this.getDistrictsAndMetro(); 
                    } else {//定位失败                        
-                        //this.getDistrictsAndMetro();
+                        this.getDistrictsAndMetro();
                         this.tipsMsg = "定位失败";
                         this.tipsVisibility = true;
                         this.$apply();
@@ -599,6 +611,7 @@
             if(city && this.city) {
                 if(city.cityId != this.city.cityId) {//城市发生了变化，重新加载区域地铁和房源
                     this.city = city;
+                    this.showTotal = true;
                     this.getDistrictsAndMetro();
                     return;
                 }
@@ -694,6 +707,8 @@
                                             towns: this.filter.districtSection.meters
                                         }]
                                     });
+                                    this.filter.districtSection.selectedDistrictId = "-2";
+                                    this.filter.districtSection.selectedTownId = "0";
                                 }else{
                                     d.splice(0,0,{
                                         id: "-2",
@@ -764,11 +779,20 @@
         };
         refresh() {//刷新
             this.offset = 0;
-            this.reachBottom = false;
+            this.reachBottom = false;            
             this.getEsfList(this.offset,(data)=>{
                 this.items = data.data.secondHouseListModels || [];
+                if(this.showTotal){
+                    this.expand = true;
+                    setTimeout(()=>{
+                        this.expand = false;
+                        this.$apply();
+                    },4000);
+                }
+                this.showTotal = false;
                 this.$apply();
             });
+            this.$apply();
         };
         onReachBottom() {//触底加载
             if(this.total <= this.offset) {//已到底
@@ -860,7 +884,10 @@
             background-color: #fff;
             color: #000;
             font-size: 32rpx;
-            padding: 30rpx 0;           
+            padding: 30rpx 0;
+            box-shadow: 0 2rpx 2rpx #E4E4E4;
+            margin-bottom: 4rpx;
+                     
             .flex();            
 
             .district-section, .total-section, .type-section, .sort-section {
@@ -892,18 +919,28 @@
         .invisible {
             display: none
         }
-        .content {
-                transition: all 2s;
-                background-color: #f0f0f0;
+        .content {                
+                /*background-color: #f0f0f0;*/
                 margin-top: 12rpx;
                 position: absolute;
                 width: 100%;
                 top: 92rpx;                           
-                font-size: 30rpx;                     
-                z-index: 3;  
+                font-size: 30rpx;                               
+                /*max-height: 0rpx;
+                overflow: auto;
+                &.show {
+                    max-height: 500rpx;
+                }*/
 
                 .items {
+                    transition: all 2s;
                     background-color: #fff;
+                    /*max-height: 0rpx;
+                    overflow: auto;
+
+                    &.show {
+                        max-height: 500rpx;
+                    }*/
                 }          
 
                 .sorts {
@@ -921,7 +958,9 @@
                 }    
 
                 .types {
-                    padding: 30rpx 30rpx 50rpx 30rpx;
+                    /*&.show{*/
+                        padding: 30rpx 30rpx 50rpx 30rpx;
+                    /*}*/
                     background-color: #fff;
                     .item {
                         background-color: #F5F5F5;
@@ -1059,8 +1098,7 @@
 
     .esf-items {
         position: relative;
-        background-color: #fff;
-        margin-top: 4rpx; 
+        background-color: #fff;        
         height: 100%;       
         .house-count {
             padding: 16rpx 0;
@@ -1068,19 +1106,19 @@
             line-height: 1;
             color: #4081D6;
             text-align: center;
-            border: 1px solid #E4E4E4;
-            border-left: none;
-            border-right: none;
-            overflow: hidden;
-            transition: height 4s;
-            -webkit-transition: height 4s;    
-            height: 0rpx;      
-            box-sizing: border-box;  
-             
+            /*border: 1px solid #E4E4E4;*/            
+            transition: all 4s;
+            -webkit-transition: all 4s;                      
+            box-sizing: border-box; 
+            vertical-align: middle;
+            position: absolute;
+            width: 100%;
+            background-color: #fff;
+            border-bottom: 1px solid #E4E4E4;
+            top: -60rpx;
             &.expand {
-                display: block;
-                height: 60rpx;
-            }            
+               top: 0;
+            }         
         }
 
         .items {
@@ -1152,13 +1190,19 @@
 
     .cover {
             background-color: rgba(0,0,0,.2);            
-            position:fixed;
+            position: fixed;            
             bottom: 0;
             right: 0;
             left: 0;
             top: 0;
+            z-index: 4;
             &.invisible {
                 display: none;
-            }
+            }            
         }
+
+    .noscroll {
+        height: 100%;
+        overflow: hidden;
+    }
 </style>
