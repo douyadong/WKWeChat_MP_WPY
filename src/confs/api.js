@@ -39,11 +39,13 @@ export default {
         } ,
         "esf" : {
             "list" : "wxmpIndex/secondHouseList.rest" ,
-            "detail" : "wxmpOldHouseDetail/getOldHouseDetail.rest"
+            "detail" : "wxmpOldHouseDetail/getOldHouseDetail.rest" ,
+            "similar" : "wxmpOldHouseDetail/getSimilarList.rest"
         } ,
         "estate": {
             "detail" : "wxmpEstate/estateDetail.rest" ,
-            "comment" : "estate/queryEstateCommentList.rest"
+            "comment" : "estate/queryEstateCommentList.rest" ,
+            "onSale" : "wxmpEstate/estateSellingHouseList.rest"
         } ,
         "market" : {
            "index" : "housePrice/getAreaPriceList.rest"

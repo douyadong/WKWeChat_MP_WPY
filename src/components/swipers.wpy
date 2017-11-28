@@ -7,11 +7,8 @@
 -->
   <template>
     <swiper interval="2000">
-        <swiper-item wx:for="{{ items }}" wx:key="*this">    
-            <navigator url="/pages/common/player?agentId={{ item.agentId }}&videoUrl={{ item.videoUrl }}" wx:if="{{ item.type === 'video' }}">  
-                <view class="play"><text></text></view>
-            </navigator>
-            <image bindtap="{{ item.type === 'video' ? '' : 'previewImage' }}" src="{{ item.url }}" mode="widthFix"></image>
+        <swiper-item wx:for="{{ items }}" wx:key="*this">           
+            <image src="{{ item }}" mode="widthFix"></image>
             <view class="index">{{ index + 1 }}/{{ items.length }}</view>
         </swiper-item>
     </swiper>
@@ -45,17 +42,7 @@ export default class Com extends wepy.component {
             position : relative ;
             image {
                 width : 100% ;
-            }
-            .play {
-                background-color : rgba(0, 0, 0, .4) ;
-                border-radius : 50% ;
-                width : 104rpx ;
-                height : 104rpx ;
-                text-align : center ;
-                text {
-                    .triangle-next(24rpx , #fff) ;
-                }     
-            }
+            }            
             .index {                
                 bottom : 30rpx ;
                 border-radius : 30rpx ;

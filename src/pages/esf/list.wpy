@@ -31,6 +31,7 @@
             esf : Esf
         } ; 
         data = {
+            apiPath : "" ,
             houseList : [] ,
             pageParams : {} ,
             trace : new Trace
@@ -54,15 +55,18 @@
                 pageTitle = "小区在售房源" ;
                 pageName = "1216" ;
                 pageParam = { "estate_id" : this.pageParams.estateId } ;
+                this.apiPath = "estate.onSale" ;
                 break ;
 
                 case "similar" : 
                 pageTitle = "相似房源" ;
-                pageName = "1217" ;                
+                pageName = "1217" ;
+                this.apiPath = "esf.similar" ; 
                 break ;
 
                 default :
-                pageTitle = "房源列表" ;                
+                pageTitle = "房源列表" ;
+                this.apiPath = "esf.list" ;             
                 break ;
             }
             wx.setNavigationBarTitle({
