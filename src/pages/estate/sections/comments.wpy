@@ -15,7 +15,7 @@
               <view class="comment-content">
                   <view class="phoneNum">{{item.guest.guestPhoneNum}}</view>
                    <view class="time">{{item.createTimeStr}}</view>
-                    <view class="content">南北通透，黄金楼层，满五唯一，精装修。南北通透，黄金楼层，满五唯一，精装修。</view>
+                    <view class="content">{{item.comment}}</view>
               </view>
          </view>
        </repeat>
@@ -27,7 +27,10 @@
     import wepy from "wepy" ;
     export default class Comments extends wepy.component {
         props = {
-            commentList : Array
+            commentList : {
+                type: Array,
+                default: 'null'
+            }
         };
         data = {};
         methods = {
@@ -38,7 +41,7 @@
                 console.log("想撩我吗？") ;
             }
         } ;
-        onload() {
+        onLoad() {
 
         }
 

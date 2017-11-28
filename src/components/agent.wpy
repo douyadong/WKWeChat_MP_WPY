@@ -6,33 +6,35 @@
         2. 
 -->
 <template lang="wxml">
-    <view class="agent">
-        <image src="{{ agent.agentHeadImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
-        <view class="tel" @tap="phoning">
-            <text class="iconfont icon-tel"></text>
-            <text class="memo">电话咨询</text>
+     <repeat for="{{ items }}" key="index" index="index" item="agent">
+        <view class="agent">
+            <image src="{{ agent.agentHeadImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
+            <view class="tel" @tap="phoning">
+                <text class="iconfont icon-tel"></text>
+                <text class="memo">电话咨询</text>
+            </view>
+            <view class="wechat" @tap="addWechat({{agent}})" wx:if="{{ agent.agentWChatId }}">
+                <text class="iconfont icon-wechat"></text>
+                <text class="memo">添加微信</text>
+            </view>        
+            <view class="summary">
+                <text class="name">{{ agent.agentName }}</text>
+                <text class="seniority">加入悟空：{{ agent.serviceYears }}</text>
+            </view>        
         </view>
-        <view class="wechat" @tap="addWechat" wx:if="{{ agent.agentWChatId }}">
-            <text class="iconfont icon-wechat"></text>
-            <text class="memo">添加微信</text>
-        </view>        
-        <view class="summary">
-            <text class="name">{{ agent.agentName }}</text>
-            <text class="seniority">加入悟空：{{ agent.serviceYears }}</text>
-        </view>        
-    </view>
+    </repeat>
     <!--添加微信的modal框-->
-    <modal :visibility.sync="addWechatModalVisibility" title="添加微信">        
-        <view slot="body">
-            <text>方法一：</text>
+    <modal :visibility.sync="addWechatModalVisibility" title="添加微信">
+       <view slot="body">
+           <text>方法一：</text>
             <text>将{{ agent.agentName }}的二维码保存到相册</text>
-            <image src="{{ agent.agentWChartQRImgUrl }}" mode="aspectFill" lazy-load="true" class="qrcode"></image>
-            <text>方法二：</text>
-            <text>复制微信号添加微信号：{{ agent.agentWChatId }}</text>            
+           <image src="{{ agent.agentWChartQRImgUrl }}" mode="aspectFill" lazy-load="true" class="qrcode"></image>
+           <text>方法二：</text>
+           <text>复制微信号添加微信号：{{ agent.agentWChatId }}</text>
         </view>
         <view slot="footer" class="modal-footer">
-            <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum" data-src="{{ agent.agentWChartQRImgUrl }}">保存到相册</view>
-            <view class="wk-btn wk-btn-transparent" @tap="copyWechat" data-wechatid="{{ agent.agentWChatId }}">复制微信号</view>
+               <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum" data-src="{{ agent.agentWChartQRImgUrl }}">保存到相册</view>
+               <view class="wk-btn wk-btn-transparent" @tap="copyWechat" data-wechatid="{{ agent.agentWChatId }}">复制微信号</view>
         </view>
     </modal>
     <!--tips框-->
@@ -41,19 +43,15 @@
 
 <script>
     import wepy from "wepy" ;
-    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    加载组件资源
-    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
     import Modal from "./modal" ;
     import Tips from "./tips" ;
-    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    加载工具资源
-    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
     import adf from "../mixins/apiDataFilter" ;
-
     export default class Com extends wepy.component {
         props = {
-            agent : Object
+            items : {
+                type: Array,
+                default: 'null'
+            } ,
         } ;
         components = {
             modal : Modal ,
@@ -62,16 +60,17 @@
         data = {
             addWechatModalVisibility : false ,  //添加微信modal框的显示状态
             tipsVisibility : false ,  //tips框的显示状态
-            tipsMsg : ""
+            tipsMsg : "",
+            agent:""
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        提示信息
-        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+         提示信息
+         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         tips = (msg) => {
             this.tipsVisibility = true ;
             this.tipsMsg = msg ;
             this.$apply() ;
-        }
+        };
         methods = {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             点击电话咨询调用的方法
@@ -81,7 +80,7 @@
                 adf.request({
                     apiPath : "common.dial" ,
                     data : { "agentId" : this.agent.agentId } ,
-                    successCallback : (res)=> {                        
+                    successCallback : (res)=> {
                         wx.makePhoneCall({ phoneNumber : res.data.dial + "," + res.data.digits }) ;
                     }
                 }) ;
@@ -89,14 +88,16 @@
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             点击添加微信调用的方法
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-            addWechat : ()=> {                
-                this.addWechatModalVisibility = true ;                      
+            addWechat : (agent)=> {
+                this.addWechatModalVisibility = true ;
+                this.agent = agent;
+                this.$apply();
             } ,
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             保存到相册调用方法
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             saveToAlbum : function(event) {
-                let self = this ;                
+                let self = this ;
                 wx.getSetting({
                     success(res) {
                         if (!res["scope.writePhotosAlbum"]) {
@@ -127,7 +128,7 @@
             copyWechat : (event)=> {
                 wx.setClipboardData({
                     data : event.target.dataset.wechatid ,
-                    success : (res)=> {                                                   
+                    success : (res)=> {
                         this.tips("经纪人微信号已复制，请前往微信添加") ;
                     } ,
                     fail : (res)=> {
@@ -136,8 +137,8 @@
                 }) ;
             }
         } ;
-        onload() {
-
+        onLoad() {
+               console.log("items"+this.items);
         }
     }
 </script>
@@ -171,11 +172,11 @@
                 line-height : 40rpx ;
             }
         }
-        .tel {
-            border-left : 1rpx solid @primary-color ;
+        .tel {            
             color : @primary-color ;
         }
         .wechat {
+            border-right : 1rpx solid @primary-color ;
             color : @success-color ;
         }
         .summary {
@@ -198,12 +199,12 @@
             text {
                 display : block ;
                 text-align : center ;
-            }            
+            }
             .qrcode {
                 .center-block() ;
                 height : 300rpx ;
                 width : 300rpx ;
             }
-        }       
+        }
     }
 </style>
