@@ -1,36 +1,37 @@
 <!--
     @页面名称：整个小程序首页
-    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @作者：赵华刚 (tangxuyang@lifang.com)
     @业务逻辑说明：
         1.
         2.        
 -->
 <template lang="wxml">
     <block wx:if="{{isOpenCity}}">
-    <view class="city-search">
+    <view>
+    <view class="city-search" >
         <view class="city" @tap="switchCity">{{city.cityName}}</view>
         <view class="search-box">
-            <text class="iconfont icon-search"></text><view class="estate-address" @tap="searchEstate">{{estate && estate.name || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.name ? '':'invisible'}}" @tap="clearEstate"></text>
+            <text class="iconfont icon-search"></text><view class="estate-address" @tap="searchEstate">{{estate && estate.displayStr || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.displayStr ? '':'invisible'}}" @tap="clearEstate"></text>
         </view>
     </view>
     <view class="current-price">
-        <view class="title">今日上海房价</view>
-        <view class="price">105501元/㎡</view>
-        <view class="detail">查看 <text class="iconfont icon-next"></text></view>
+        <view class="title">今日{{city && city.cityName}}房价</view>
+        <view class="price">{{unitPrice}}</view>
+        <view class="detail" @tap="gotoPriceList">查看 <text class="iconfont icon-next"></text></view>
     </view>
     <view class="filter">
         <view class="district-total-type-sort">
             <view class="district-section">
-                <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">区域</view>                
+                <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{filter.districtSection.selectedDistrictId != '' && filter.districtSection.selectedDistrictId != '-1' && filter.districtSection.selectedMetroId != '-1' && filter.districtSection.selectedMetroId != '' ? 'active' : ''}}" @tap="switchFilter" data-name="district">区域</view>                
             </view>            
             <view class="total-section">
-                <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}" @tap="switchFilter" data-name="total">总价</view>                
+                <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId!=''?'active':''}}" @tap="switchFilter" data-name="total">总价</view>                
             </view>
             <view class="type-section">
-                <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}" @tap="switchFilter" data-name="type">户型</view>                
+                <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length>0?'active':''}}" @tap="switchFilter" data-name="type">户型</view>                
             </view>
             <view class="sort-section">
-                <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" @tap="switchFilter" data-name="sort">排序</view>
+                <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId !== '' ? 'active': ''}}" @tap="switchFilter" data-name="sort">排序</view>
                 
             </view>            
         </view>    
@@ -47,7 +48,7 @@
                            </view>
                            <view class="right" wx:for="{{filter.districtSection.districts}}" wx:if="{{filter.districtSection.selectedDistrictId == item.id}}">
                             <block wx:for="{{item.subList}}" wx:for-item="sl">
-                                <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{sl.towns}}" wx:for-item="town" data-id="{{town.id}}">{{town.name}}</view>
+                                <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{sl.towns}}" wx:for-item="town" data-type="{{town.type}}" data-id="{{town.id}}">{{town.name}}</view>
                             </block>                            
                            </view>
                         </view>
@@ -62,9 +63,9 @@
                     </view>
                 </view>
                 <view class="items totals {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
-                    <view @tap="selectTotal" class="{{filter.totalSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
+                    <view @tap="selectTotal" class="{{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:for-key="{{item.id}}">{{item.text}}</view>
                     <view class="custom">
-                        <view class="input"><input /></view>-<view class="input"><input/></view><view class="button">确定</view>
+                        <view class="input"><input data-name="start" @input="typeTotal" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="input"><input @input="typeTotal" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="button" @tap="clickCustomPrice">确定</view>
                     </view>
                 </view>
                 <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
@@ -78,10 +79,11 @@
                 </view>
             </view>    
     </view>
+    </view>
 
     <view class="esf-items">
        <block wx:if="{{items && items.length>0}}">       
-        <view class="house-count">已为您展示附近 453 套房源</view>     
+        <view class="house-count {{expand?'expand':''}}">已为您展示附近 {{total}} 套房源</view>     
         <view class="items"> 
             <repeat for="{{items}}" item="item">
                 <esf :item="item"></esf>
@@ -101,12 +103,9 @@
         <view class="recommend">
             您可以扩大搜索范围，找到更多的房源
         </view>
-        <button class="clear">
+        <button class="clear" @tap="clearFilter">
             清楚条件
         </button>
-       </view>
-
-       <view class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
        </view>       
     </view>
     </block>
@@ -119,12 +118,17 @@
         </button>
         </view>
     </view>
+    <view class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
+    </view>       
+
+    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
 </template>
 
 <script>
     import wepy from "wepy" ;    
     import Esf from "../../components/esf";
     import apiDataFilter from "../../mixins/apiDataFilter";
+    import Tips from "../../components/tips" ;
 
     const DEFAULT = {
         selectedDistrictId: "",
@@ -134,11 +138,14 @@
         selectedSection: "district",
         selectedTotalId: 0,
         selectedTypeIds: [],
-        selectedSortId: 0,
+        selectedSortId: "",
         offset: 0,
         city: {
             cityId: 43,
-            cityName: "上海"
+            cityName: "上海",
+            lon: "",
+            lat: "",
+            cityPinyin: "shanghai"
         },
         highCities: [43,221,741,771,1873],/*43  上海市
 221  廊坊市
@@ -146,14 +153,14 @@
 771  苏州市
 1873  广州市*/
         totalOptionsHigh:[{
-                            id: 0,
+                            id: -1,
                             text: "不限",
                             start: "",
                             end: ""
                         },{
                             id: 1,
                             text: "100 万以下",
-                            start: "",
+                            start: 0,
                             end: 100
                         },{
                             id: 2,
@@ -194,17 +201,17 @@
                             id: 9,
                             text: "2000万及以上",
                             start: 2000,
-                            end: ""
+                            //end: null
                         }],// 上海、广州、杭州、苏州、廊坊、南京用这个
         totalOptionsLow: [{
-                            id: 0,
+                            id: -1,
                             text: "不限",
                             start: "",
                             end: ""
                         },{
                             id: 1,
                             text: "50 万以下",
-                            start: "",
+                            start: 0,
                             end: 50
                         },{
                             id: 2,
@@ -240,16 +247,18 @@
                             id: 8,
                             text: "500万以上",
                             start: 500,
-                            end: ""
+                            //end: undefined
                         }],//其他城市用这个
     }
 
     export default class Index extends wepy.page {
         config = {            
-            navigationBarTitleText: "悟空找房"            
+            navigationBarTitleText: "悟空找房",
+            onReachBottomDistance: 50            
         } ;
         components = {            
-            esf: Esf
+            esf: Esf,
+            tips: Tips
         } ; 
         data = {  
                 city: null/*{
@@ -269,13 +278,41 @@
                         selectedTownId: DEFAULT.selectedTownId,
                         selectedMotroId: DEFAULT.selectedMotroId,
                         selectedStationId: DEFAULT.selectedStationId,
-                        selectedSection: DEFAULT.selectedSecion //默认区域选中
+                        selectedSection: DEFAULT.selectedSection, //默认区域选中
+                        meter: 0,//附近多少米
+                        isNear: false,
+                        meters: [{
+                            id: 0,
+                            name: "不限（智能范围）", 
+                            type: "near"                                                       
+                        },{
+                            id: 1,
+                            name: "500米以内",
+                            meter: 500,
+                            type: "near"                                                       
+                        },{
+                            id: 2,
+                            name: "1000米以内",
+                            meter: 1000,
+                            type: "near"                                                       
+                        },{
+                            id: 3,
+                            name: "2000米以内",
+                            meter: 2000,
+                            type: "near"                                                       
+                        },{
+                            id: 4,
+                            name: "5000米以内",
+                            meter: 5000
+                        }]
                     },
                     totalSection: {
                         items: DEFAULT.totalOptionsHigh,
                         selectedId: '',
-                        customStartPrice: "",//自定义最低价
-                        customEndPrice: "",//自定义最高价
+                        priceStart: "",//最低价
+                        priceEnd: "",//最高价
+                        customStartPrice: "",//自定义最低价,用来显示的
+                        customEndPrice: "",//自定义最高价,用来显示的
                     },
                     typeSection: {
                         items: [{
@@ -322,19 +359,23 @@
                             id: 4,
                             text: "总价从高到低"
                         }],
-                        selectedId: 0
+                        selectedId: DEFAULT.selectedSortId
                     }
                 },                   
                 isLoadError: false,
                 isOpenCity: true,  
-                offset: 0,
-                pageSize: 20,                       
-                items: []          
+                offset: DEFAULT.offset,
+                pageSize: 20,  
+                total: 0,  
+                unitPrice: 0,//城市单价     
+                reachBottom: false,              
+                items: [],
+                tipsVisibility: false,
+                tipsMsg: "",
+                expand: false          
         } ;
         computed = {
-            typeContained(id) {
-                return this.filter.typeSection.selectedIds.indexOf(id) > -1;
-            }
+            
         } ;
         methods = {
            switchFilter(e) { //切换筛选条件事件处理函数
@@ -347,20 +388,57 @@
            },
            selectSort(e) {//切换排序规则
                 let sortId = e.currentTarget.dataset.id;
+                if(this.filter.sortSection.selectedId == sortId) return;
                 this.filter.sortSection.selectedId = sortId;
+                this.filter.selectedFilterSection = "";
+                this.refresh();
            },
 
            selectType(e) {//切换房型                
-                let typeId = e.currentTarget.dataset.id;
+                let typeId = e.currentTarget.dataset.id;                
                 let type = this.filter.typeSection.items.filter((it)=>{
                     return it.id == typeId;
                 })[0];
                 type.active = !type.active;
-                //this.$apply();
+                if(type.id == 0){//不限与别的互斥
+                    if(type.active){
+                        this.filter.typeSection.items.forEach((it)=>{
+                            if(it.id != typeId) {
+                                it.active = false;
+                            }
+                        });
+                    }                    
+                }else{
+                    this.filter.typeSection.items[0].active = false;
+                }
+
+                let arr = [];
+                for(let i = 0; i < this.filter.typeSection.items.length; i++){
+                    if(this.filter.typeSection.items[i].active){
+                        arr.push(this.filter.typeSection.items[i].id);
+                    }
+                }
+                this.filter.typeSection.selectedIds = arr;                
             },
             selectTotal(e) {//切换总价
-                let typeId = e.currentTarget.dataset.id;
-                this.filter.totalSection.selectedId = typeId;
+                let totalItem = e.currentTarget.dataset.item;
+                if(this.filter.totalSection.selectedId == totalItem.id) return;
+                this.filter.totalSection.selectedId = totalItem.id;
+
+                this.filter.totalSection.priceStart = totalItem.start;
+                this.filter.totalSection.priceEnd = totalItem.end;
+                this.filter.totalSection.customEndPrice = "";
+                this.filter.totalSection.customStartPrice = "";
+                this.filter.selectedFilterSection = "";
+                this.$apply();
+                this.refresh();
+            },
+            clickCustomPrice() {//点击自定义价钱确定
+                this.filter.totalSection.selectedId = "";
+                this.filter.totalSection.priceStart = this.filter.totalSection.customStartPrice;
+                this.filter.totalSection.priceEnd = this.filter.totalSection.customEndPrice;
+                this.filter.selectedFilterSection = "";
+                this.refresh();
             },
             selectDistrictMetro(e) {//切换区域或地铁
                 let name = e.currentTarget.dataset.name;
@@ -377,9 +455,26 @@
                 this.filter.districtSection.selectedDistrictId = districtId;
                 this.filter.districtSection.selectedTownId = '';
             },
-            selectTown(e) {//选择具体板块
+            selectTown(e) {//选择具体板块     
+                this.estate = null;
+                wx.setStorageSync('estate',null);
+
                 let townId = e.currentTarget.dataset.id;
+                if(this.filter.districtSection.selectedTownId == townId) return;
+                let type = e.currentTarget.dataset.type;
+                if(type == "near"){//附近
+                    this.filter.districtSection.meter = this.filter.districtSection.meters.filter((it)=>{
+                        return it.id == townId;
+                    })[0].meter;
+                    this.filter.districtSection.isNear = true;                    
+                }else{
+                    this.filter.districtSection.meter = "";
+                    this.filter.districtSection.isNear = false;
+                }
+                
                 this.filter.districtSection.selectedTownId = townId;
+                this.filter.selectedFilterSection = "";
+                this.refresh();
             },
             selectMetro(e) {//选择具体地铁线路
                 let metroId = e.currentTarget.dataset.id;
@@ -389,10 +484,16 @@
             },
             selectStation(e) {//选择具体地铁站点
                 let stationId = e.currentTarget.dataset.id;
+                if(this.filter.districtSection.selectedStationId == stationId) return;
                 this.filter.districtSection.selectedStationId = stationId;
+                this.filter.districtSection.selectedDistrictId = "";
+                this.filter.districtSection.selectedTownId = "";
+                this.filter.districtSection.isNear = false;                
+
+                this.refresh();
             },
            reload() {// 刷新列表
-            this.filter.selectedFilterSection = "";
+            this.filter.selectedFilterSection = "";            
             this.refresh();
            },
            switchCity() {
@@ -404,8 +505,9 @@
                });
            },
            clearEstate() {
-               wx.setStorageSync("estate",{id: "", name: ""});
-               this.estate = {id: "", name: ""};
+               wx.setStorageSync("estate",null);
+               this.estate = null;               
+               this.refresh();
            },   
            clearFilter() {//清空筛选条件
                 //清空选中的区域板块和地铁线路
@@ -413,11 +515,21 @@
                 this.filter.districtSection.selectedTownId = DEFAULT.selectedTownId;
                 this.filter.districtSection.selectedMotroId = DEFAULT.selectedMetroId;
                 this.filter.districtSection.selectedStationId = DEFAULT.selectedStationId;
+                this.filter.districtSection.isNear = false;
+                this.filter.districtSection.meter = "";
                 this.filter.totalSection.selectedId = DEFAULT.selectedTotalId;
                 this.filter.typeSection.selectedId = DEFAULT.selectedTypeId;
-                this.filter.sortSection.selectedId = DEFAULT.selectedSortId;                
-
+                this.filter.sortSection.selectedId = DEFAULT.selectedSortId;
+                                
                 this.refresh();
+           },
+           typeTotal(e) {
+               let name = e.currentTarget.dataset.name;
+               let value = e.detail.value;
+               this.filter.totalSection[name=="start"?"customStartPrice":"customEndPrice"] = value;
+           },
+           gotoPriceList() {
+               wx.navigateTo('/pages/market/index?cityId='+this.city.cityId);
            }        
         } ;
         events = {
@@ -428,7 +540,7 @@
             this.city = wx.getStorageSync("city") || DEFAULT.city;
             this.getDistrictsAndMetro();            
 
-           //todo:弹出加载中tips
+           //todo:弹出loading
            //定位
            wx.getLocation({
                success: (res)=>{
@@ -440,6 +552,9 @@
                             lat: res.latitude
                         },
                         successCallback: (data)=>{
+                            data.data.lon = res.longitude;
+                            data.data.lat = res.latitude;
+                            data.data.isLocated = true;//定位成功标志位
                             wx.setStorageSync("city",data.data);
                             wx.setStorageSync("locationCity",data.data);
                             
@@ -459,21 +574,27 @@
                         }                        
                     });
                },
-               fail: (opts)=>{                                   
-                   console.log(opts.errMsg.indexOf('fail auth deny'));
-                   if(opts && opts.errMsg.indexOf('fail auth deny') > 0){//用户选择了拒绝定位
+               fail: (opts)=>{    
+                   //this.tipsMsg = JSON.stringify(opts||{});                                                  
+                   if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位
 
-                   } else {//定位失败
-                        //todo:弹出定位失败
+                   } else {//定位失败                        
+                        //this.getDistrictsAndMetro();
+                        this.tipsMsg = "定位失败";
+                        this.tipsVisibility = true;
+                        this.$apply();
+                   }
+                   if(!wx.getStorageSync('city')){
+                       wx.setStorageSync('city', this.city);
                    }
                },
                complete: ()=>{
-                   //todo:消失加载中tips
+                   //todo:消失loading
                }
            });
         };
         onShow(options) {
-            this.estate = wx.getStorageSync("estate") || {id: "", name: ""}; 
+            this.estate = wx.getStorageSync("estate"); 
             let city = wx.getStorageSync("city");
             if(city && this.city) {
                 if(city.cityId != this.city.cityId) {//城市发生了变化，重新加载区域地铁和房源
@@ -481,6 +602,10 @@
                     this.getDistrictsAndMetro();
                     return;
                 }
+            }
+
+            if(this.estate){//从
+
             }
 
             this.refresh();                        
@@ -513,64 +638,147 @@
 
                         this.$apply();
 
+                        //地铁数据
                         apiDataFilter.request({
                             apiPath: "index.getCitySubwayLines",
                             data: {
                                 cityId: this.city.cityId
                             },
                             successCallback: (data)=>{
-                                this.filter.districtSection.metros = data.data;
+                                //加工数据，添加"不限"
+                                let d = data.data || [];
+                                d.splice(0,0,{
+                                    id: "-1",
+                                    name: "不限"
+                                });
+                                for(let i = 0; i < d.length; i++){
+                                    d[i].subList = d[i].subList || [];
+                                    d[i].subList.splice(0,0,{
+                                        id: "-1",
+                                        name: "不限"
+                                    });
+                                }
+                                
+
+                                this.filter.districtSection.metros = d;
                                 this.$apply();
                             }
                         });
 
+                        //区域板块数据
                         apiDataFilter.request({
                             apiPath: "index.getCityAreasInfo",
                             data: {
                                 cityId: this.city.cityId
                             },
                             successCallback: (data)=>{
-                                this.filter.districtSection.districts = data.data;
+                                let d = data.data;
+                                d.splice(0,0,{
+                                    id: "-1",
+                                    name: "不限"
+                                });                                
+                                for(let i = 0; i < d.length; i++){
+                                    d[i].subList = d[i].subList || [];
+                                    d[i].subList.splice(0,0,{
+                                        towns: [{
+                                            id: "-1",
+                                            name: "不限"
+                                        }]
+                                    });
+                                }
+                                if(this.city.isLocated){
+                                    d.splice(0,0,{
+                                        id: "-2",
+                                        name: "附近",
+                                        subList: [{
+                                            towns: this.filter.districtSection.meters
+                                        }]
+                                    });
+                                }else{
+                                    d.splice(0,0,{
+                                        id: "-2",
+                                        name: "附近/定位失败"                                        
+                                    });
+                                }
+                                this.filter.districtSection.districts = d;
                                 this.$apply();
                             }
                         });
 
+
+                        apiDataFilter.request({
+                            apiPath: "index.getAreaPriceInfo",
+                            data: {
+                                dicId: this.city.cityId,
+                                dicType: 3
+                            },
+                            successCallback: (data)=>{
+                                this.unitPrice = data.data.avgPrice;
+                                this.$apply();
+                            }
+
+                        });
                         this.refresh();
                     }
                 }
             });            
         };
-        refresh() {//刷新
-            //收集查询条件
-            console.log('刷新');
-
+        getEsfList(offset,cb) {
+            //收集查询条件    
+            let districtId = !this.filter.districtSection.isNear &&this.filter.districtSection.selectedDistrictId || "";
+            let townId = !this.filter.districtSection.isNear && this.filter.districtSection.selectedTownId || "";
+            let subEstateId = this.estate && this.estate.realIdObj.subEstateId;
+            if(this.estate){
+                districtId = this.estate.realIdObj.districtId;
+                townId = this.estate.realIdObj.townId;
+            }
+            let params = {
+                cityId: this.city.cityId,
+                districtId: districtId,
+                townId: townId,
+                subEstateId: subEstateId,
+                priceStart: this.filter.totalSection.priceStart,
+                priceEnd: this.filter.totalSection.priceEnd,
+                houseType: this.filter.typeSection.selectedIds.filter((ht)=>{return ht!=0}),
+                offset: offset,
+                pageSize: 20,
+                orderType: this.filter.sortSection.selectedId,
+                subwayLine: this.filter.districtSection.selectedMetroId,
+                subwayStation: this.filter.districtSection.selectedStationId,
+                endMetres: this.filter.districtSection.isNear && this.filter.districtSection.meter || "",
+                localLon: this.filter.districtSection.isNear && this.city.lon || "",
+                localLat: this.filter.districtSection.isNear && this.city.lat || ""
+            };
 
             apiDataFilter.request({
                 apiPath: "index.secondHouseList",
                 method: "POST",
-                contenType: "application/json",
-                data: {
-                    offset: 0,
-                    pageSize: 20
-                },
-                successCallback: (data)=>{
-                    console.log(data.data);
-                    this.items = data.data.secondHouseListModels || [];
-                    this.$apply();
+                //contenType: "application/json",
+                data: params,
+                successCallback: (data)=>{     
+                    this.total = data.data && data.data.total || 0;
+                    this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0);                    
+                    cb && cb(data);                                  
                 }
-            })
+            });     
+        };
+        refresh() {//刷新
+            this.offset = 0;
+            this.reachBottom = false;
+            this.getEsfList(this.offset,(data)=>{
+                this.items = data.data.secondHouseListModels || [];
+                this.$apply();
+            });
+        };
+        onReachBottom() {//触底加载
+            if(this.total <= this.offset) {//已到底
+                return;
+            }
 
-            /*wx.request({
-                url: "https://minapp-test.yfyk365.com/wxmpIndex/secondHouseList.rest",
-                data: {
-                    offset: 0,
-                    pageSize: 20
-                },
-                method: "POST",
-                success: function(data){
-                    console.log(data);
-                }
-            });*/
+            this.getEsfList(this.offset,(data)=>{
+                this.items = this.items.concat(data.data.secondHouseListModels);
+                this.$apply();
+            });
         };
     }
 </script>
@@ -600,7 +808,7 @@
             border-radius: 6rpx;
             font-size: 26rpx;
             color: #7C7C7C;
-            padding: 10rpx 0rpx 2rpx 30rpx;
+            padding: 12rpx 0rpx 2rpx 30rpx;
             .estate-address {
                 margin-left: 9rpx;
                 &::before {
@@ -610,7 +818,7 @@
 
             position: relative;
             .icon-close {
-                margin-top: 2rpx;
+                margin-top: 4rpx;
                 font-size: 26rpx;
                 position: absolute;
                 right: 19rpx;
@@ -863,23 +1071,22 @@
             border: 1px solid #E4E4E4;
             border-left: none;
             border-right: none;
+            overflow: hidden;
+            transition: height 4s;
+            -webkit-transition: height 4s;    
+            height: 0rpx;      
+            box-sizing: border-box;  
+             
+            &.expand {
+                display: block;
+                height: 60rpx;
+            }            
         }
 
         .items {
             padding:0 15rpx;
             background-color: #fff; 
-        }
-        .cover {
-            background-color: rgba(0,0,0,.2);
-            height: 100%;
-            position:absolute;
-            width: 100%;
-            left: 0;
-            top: 0;
-            &.invisible {
-                display: none;
-            }
-        }
+        }        
     }
 
     page {
@@ -942,4 +1149,16 @@
             padding-bottom: 31rpx;
         }
     }
+
+    .cover {
+            background-color: rgba(0,0,0,.2);            
+            position:fixed;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            top: 0;
+            &.invisible {
+                display: none;
+            }
+        }
 </style>
