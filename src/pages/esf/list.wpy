@@ -31,9 +31,14 @@
             esf : Esf
         } ; 
         data = {
-            apiPath : "" ,
+            apiPath : "" , //到底调用哪个接口的数据来渲染页面
             houseList : [] ,
             pageParams : {} ,
+            pageStates : {
+                "offset" : 0 ,  //数据偏移量
+                "pageSize" : 20 , //每页显示多少条
+                "requestable" : true //是否可以继续请求，如果结果加载完了就不能请求了
+            } ,
             trace : new Trace
         } ;
         onLoad(options) {
@@ -49,8 +54,8 @@
             let pageTitle ;
             let pageName = "" ; 
             let pageParam = {} ;
-            switch(this.pageParams.type) {
 
+            switch(this.pageParams.type) {
                 case "onsale" : 
                 pageTitle = "小区在售房源" ;
                 pageName = "1216" ;
@@ -78,7 +83,30 @@
             this.trace.pv({ "pageName" : pageName , "pageParam" : pageParam }) ;
         } ;
         onShow() {
-
+            if(this.pageStates.requestable) this.loadData() ;
+        } ;
+        onReachBottom() {
+            if(this.pageStates.requestable) this.loadData() ;
+        }
+        loadData() {
+            let reqData = { "offset" : this.pageStates.offset , "pageSize" : this.pageStates.pageSize } ;
+            if( this.pageParams.type === "onsale" ) reqData.subEstateId = this.pageParams.estateId ;
+            else if( this.pageParams.type === "similar" ) reqData.houseId = this.pageParams.houseId ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            从api接口读取数据
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                  
+           adf.request({
+                apiPath : this.apiPath ,
+                data : reqData ,
+                successCallback : (res)=> {
+                    if(res.data.length) {
+                        this.houseList = this.houseList.concat(res.data) ;
+                        this.pageStates.offset += res.data.length ;
+                    }                    
+                    if( this.houseList.length === res.count ) this.pageStates.requestable = false ;  //如果加载完了要改变标识
+                    this.$apply() ;           
+                }
+            }) ;
         } ;
         onShareAppMessage() {
             return { "title" : "买房就找悟空找房" }

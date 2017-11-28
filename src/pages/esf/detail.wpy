@@ -111,7 +111,7 @@
         </navigator>
     </view>
     <qmap :estate.sync="estate" wx:if="{{ estate.latitude && estate.longitude }}"></qmap>
-    <view class="wk-panel top-gap">
+    <view class="similar wk-panel top-gap">
         <view class="panel-header">相似房源推荐</view>
         <view class="panel-body">
             <repeat for="{{ sameTownHouseList }}" key="index" index="index" item="item">
@@ -355,6 +355,11 @@
         }
         .hr {
             margin : @gap-dimension 0 ;
+        }
+    }
+    .similar {
+        .esf-item:last-child {
+            border : none ;
         }
     }
 </style>
