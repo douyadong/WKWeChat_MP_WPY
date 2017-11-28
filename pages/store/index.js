@@ -22,7 +22,7 @@ Page({
         wx.redirectTo({
           url: "/pages/index/index"
         });
-      }, 500);
+      }, 1000);
     } ,
     onHide: function () {
     
