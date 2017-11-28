@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view class="qqmap">
-        <image src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{ estate.latitude }},{{ estate.longitude }}&key={{ qqMapKey }}&size=375*250&center={{ estate.latitude }},{{ estate.longitude }}&zoom=12&scale=2" mode="aspectFill" lazy-load="true"></image>
+        <image src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{ estate.latitude }},{{ estate.longitude }}&key={{ qqMapKey }}&size=375*250&center={{ estate.latitude }},{{ estate.longitude }}&zoom=12&scale=2" mode="aspectFill" lazy-load="true" @tap="openLocation"></image>
         <view class="pop">
             <view class="popover">
                 <text class="arrow"></text>
@@ -27,7 +27,17 @@
         } ;
         data = {
             "qqMapKey" : appConf.QQMapKey
-        } ;            
+        } ;
+        methods = {
+            openLocation() {
+                wx.openLocation({
+                    longitude : parseFloat(this.estate.longitude) ,
+                    latitude : parseFloat(this.estate.latitude) ,
+                    name : this.estate.estateName ,
+                    address : this.estate.estateAddr
+                }) ;
+            }
+        } ;     
     }
 </script>
 

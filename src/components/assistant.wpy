@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view class="assistant">        
-        <navigator  url="/pages/agent/index?agentId={{ agent.agentId }}">
+        <navigator  url="/pages/agent/index?agentId={{ agent.agentId }}" wx:if="{{ portrait ==='on' }}">
             <image class="img-circle" src="{{ agent.headRoundImgUrl }}?x-oss-process=image/resize,w_70" mode="aspectFill" lazy-load="true"></image>
             <text class="name">{{ agent.agentName }}</text>
             <text class="company">{{ agent.companyName }}</text>
@@ -47,7 +47,11 @@
     
     export default class Com extends wepy.component {
         props = {
-            agent : Object        
+            agent : Object ,
+            portrait : {
+                type : String ,
+                default : "on"
+            }
         } ;
         components = {
             modal : Modal ,
@@ -172,6 +176,7 @@
                     color : @light-font-color ;
                     font-size : @small-font-size ;
                     line-height : 30rpx ;
+                    .text-ellipsis() ;
                 }
             }
         }
