@@ -1,3 +1,6 @@
+
+
+
 Page({
     data: {
       storeId : "",
@@ -12,18 +15,17 @@ Page({
     
     } ,
     clearF:function(){
-      clearTimeout(this.setTF);
+      clearTimeout(this.data.setTF);
       this.setData({
         showStoreId: true
       })
     },
-    setTF:setTimeout(function () {
+    onShow: function () { 
+      this.data.setTF = setTimeout(function () {
         wx.redirectTo({
           url: "/pages/index/index"
         });
-      }, 2000),
-    onShow: function () { 
-      this.setTF
+      }, 1000);
     } ,
     onHide: function () {
     
