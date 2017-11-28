@@ -10,7 +10,7 @@
          <swipers :items="estateInfo.imgList"></swipers>
           <summary :estateInfo.sync = "estateInfo"></summary>
          <view class="wk-panel top-gap">
-             <view class="panel-header">小区评论 <view class="amount">{{estateInfo.comment.amount}}<text class="iconfont icon-next"></text></view></view>
+             <view class="panel-header">小区评论  <navigator class="amount" url="/pages/estate/comment?subEstateId={{subEstateId}} "><view >{{estateInfo.comment.amount}}<text class="iconfont icon-next"></text></view></navigator></view>
              <view class="panel-body">
                  <comments :commentList.sync="commentList"></comments>
              </view>
@@ -40,15 +40,16 @@
                 latitude:'',
                 longitude:'',
                 estateAddr:''
-            }
+            },
+            subEstateId:16990
         } ;
         methods = {
 
         } ;
-        getDetail(){
+        getDetail(subEstateId){
             apiDataFilter.request({
                 apiPath : "estate.detail",
-                data : { "subEstateId" : 16990 } ,
+                data : { "subEstateId" : subEstateId } ,
                 successCallback : res => {
                     let estateDetail = res.data ;
                     if (estateDetail){
@@ -63,8 +64,9 @@
                 }
             }) ;
         };
-        onLoad() {
-            this.getDetail();
+        onLoad(option) {
+            console.log("option.subEstateId"+option.subEstateId);
+            this.getDetail(this.subEstateId);
         };
         onShow(){
 

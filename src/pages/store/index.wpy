@@ -17,11 +17,11 @@
         <view class="content" style="margin-top: {{ lessenShow == true? 260:0}}rpx;">
              <view class="store-house" wx:if="{{condition == 0}}">
                  <repeat for="{{apiData.houseList}}" key="index" index="index" item="item">
-                      <house :item="item"></house>
+                      <house :item ="item"></house>
                  </repeat>
              </view>
              <view class="store-agent" wx:if="{{condition == 1}}">                
-                <agent :items="apiData.agentDetail.agentList"></agent>
+                <agent :items.sync = "agentList"></agent>
              </view>
         </view>
     <view class="base-colors"></view>
@@ -36,9 +36,6 @@
     import Agent from "../../components/agent" ;
     import apiDataFilter from "../../mixins/apiDataFilter";
     export default class Index extends wepy.page {
-        config = {
-            
-        } ;
         components = {
             tables : Tables,
             house: Esf,
@@ -47,34 +44,29 @@
         data = {
             titles:['推荐好房','推荐经纪人'],
             styles:{
-              /*  color:'#000000',
-                changeColor:'#4081D6',
-                fontSize: 32,
-                lineHeight:88,*/
                 positionLeft : '124r'
             },
             condition: 0,
             lessenShow:false,
             apiData:{
-                agentDetail :{},
                 areaPriceInfo :'',
                 houseList:[],
             },
+            agentList:[],
             pageIndex:0,
             agentPageIndex:0,
             pageSize: 20,
         } ;
-        computed = {
-            
-        } ;
         methods = {
+            // tabs获取相应的区块
             parentFn (index) {
                 this.condition = index;
-                console.log('parent received emit event, number is: ' + index);
-               
             },
 
         } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+         获取接口数据
+         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         getData(){
             // agent数据获取
             apiDataFilter.request({
@@ -84,10 +76,8 @@
                     let agent = res.data ;
                     if(agent.agentList){
                         this.agentPageIndex += agent.agentList.length;
-                        //this.apiData.agentDetail = agent
-                        this.setData({
-                            "apiData.agentDetail": agent
-                        });
+                        this.agentList = agent.agentList;
+                        this.$apply();
                     }
                 }
             }) ;
@@ -97,24 +87,20 @@
                 data : { "dicId" : 43,"dicType":5 } ,
                 successCallback : res => {
                     let areaPriceInfo = res.data ;
-                    //this.apiData.areaPriceInfo = areaPriceInfo;
-                    this.setData({
-                        "apiData.areaPriceInfo": areaPriceInfo
-                    });
+                    this.apiData.areaPriceInfo = areaPriceInfo;
+                    this.$apply();
                 }
             }) ;
             // 房源接口调取
             apiDataFilter.request({
                 apiPath : "store.house",
-                data : { "storeId" : 10027 ,"pageSize":20 ,"pageIndex":this.pageIndex}  ,
+                data : { "storeId" : 10027 ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
                 successCallback : res => {
                     let houseList = res.data ;
                     if(houseList.secondHouseListModels){
-                        //this.apiData.houseList = houseList.secondHouseListModels;
+                        this.apiData.houseList = houseList.secondHouseListModels;
                         this.pageIndex += houseList.secondHouseListModels.length;
-                        this.setData({
-                            "apiData.houseList": houseList.secondHouseListModels
-                        });
+                        this.$apply();
                     }
                 }
             }) ;
@@ -125,28 +111,32 @@
         onLoad() {
             this.getData()
         };
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+         滚动条滚动函数
+         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         onPageScroll(Object) {
-            // Do something when page scroll
            if (Object.scrollTop >4){
               this.lessenShow = true;
            }else if(Object.scrollTop < 4){
                this.lessenShow = false;
            }
         };
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+         滚动加载
+         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         onReachBottom() {
             if(this.condition == 0){
                 // 房源接口调取
                 apiDataFilter.request({
                     apiPath : "store.house",
-                    data : { "storeId" : 10027 ,"pageSize":20 ,"pageIndex": this.pageIndex}  ,
+                    data : { "storeId" : 10027 ,"pageSize":this.pageSize ,"pageIndex": this.pageIndex}  ,
                     successCallback : res => {
                         let houseList = res.data;
-                        // this.apiData.houseList = this.apiData.houseList.concat(houseList.secondHouseListModels);
+
                         if (houseList.secondHouseListModels){
                             this.pageIndex += houseList.secondHouseListModels.length;
-                            this.setData({
-                                "apiData.houseList":this.apiData.houseList.concat(houseList.secondHouseListModels)
-                            });
+                            this.apiData.houseList = this.apiData.houseList.concat(houseList.secondHouseListModels);
+                            this.$apply();
                         }
                     }
                 }) ;
@@ -157,12 +147,10 @@
                     data : { "storeId" : 10027 ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize } ,
                     successCallback : res => {
                         let agent = res.data ;
-                        //this.apiData.agentDetail = agent
                         if(agent.agentList){
                             this.agentPageIndex += agent.agentList.length;
-                            this.setData({
-                                "apiData.agentDetail":this.apiData.agentDetail.concat(agent)
-                            });
+                            this.agentList = this.agentList.concat(agent.agentList);
+                            this.$apply();
                         }
                     }
                 }) ;

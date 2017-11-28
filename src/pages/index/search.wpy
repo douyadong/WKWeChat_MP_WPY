@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view class="city-search">
-        <view class="city">{{city.name}}</view>
+        <view class="city">{{city.cityName}}</view>
         <view class="search-box">
             <text class="iconfont icon-search"></text><input value="{{keyword}}" @input="keywordChange" class="estate-address" placeholder="小区或地址" confirm-type="search"></input><text class="iconfont icon-close {{keyword == ''? 'invisible':''}}" @tap="clearKeyword"></text>
         </view>
@@ -43,6 +43,7 @@
         } ; 
         data = {
             keyword: "",
+            lastKeyword: "",
             city: {                
             },
             items: [],
@@ -53,9 +54,10 @@
         } ;
         methods = {
            keywordChange(e) {
-               this.keyword = e.detail.value || '';
-               if(this.keyword.trim()){//发请求
+               this.keyword = (e.detail.value || '').trim();
+               if(this.keyword && this.keyword != this.lastKeyword){//发请求
                     let keyword = this.keyword;
+                    this.lastKeyword = keyword;
                     apiDataFilter.request({
                         apiPath: "index.acWord",
                         data: {
@@ -79,7 +81,7 @@
                                     break;
                                     case "5":
                                         item.realIdObj = {
-                                            estateId: item.value
+                                            subEstateId: item.value
                                         }
                                     break;
                                 }
@@ -94,7 +96,7 @@
                }
            },
            clearKeyword() {
-               this.keyword = '';
+               this.keyword = '';               
            },
            selectEstate(e) {
                wx.setStorageSync("estate", e.currentTarget.dataset.item);
@@ -106,6 +108,7 @@
         } ;
         onLoad() {
            this.city = wx.getStorageSync("city");
+           //wx.setStorageSync('estate',null);
         };
         generateHighlight(str, subStr) {//拆分成用于高亮显示的数据结构
                let strs = str.split(subStr);
@@ -150,7 +153,7 @@
             border-radius: 6rpx;
             font-size: 26rpx;
             color: #7C7C7C;
-            padding: 2rpx 0rpx 4rpx 30rpx;
+            padding: 8rpx 0rpx 0rpx 30rpx;
             .estate-address {
                 line-height: 1;                
                 margin-left: 10rpx;   
@@ -162,12 +165,12 @@
             position: relative;
 
             .icon-search {
-                margin-top: 10rpx;
+                margin-top: 12rpx;
                 font-size: 26rpx;
             }
 
             .icon-close {
-                margin-top: 10rpx;
+                margin-top: 12rpx;
                 font-size: 26rpx;
                 position: absolute;
                 right: 19rpx;
