@@ -20,7 +20,7 @@ export default {
             "region" : "houseMap/getCityAreasInfo.rest" ,  //通过城市id获取行政区域信息
             "cityBylalo" : "wxmpCommon/findCityInfoByLonAndLat.rest" ,  //通过经纬度获取城市信息
             "dial" : "wxmpCall/getAgentDial.rest" , //通过agentId和houseId获取经纪人短接号
-            "eventTrace" : "buriedPoint/sendData.rest"
+            "trace" : "buriedPoint/sendData.rest"  //大数据埋点接口
         } ,
         "index" : {
             "index" : "" ,  //请调用esf.list             
