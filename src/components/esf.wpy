@@ -6,7 +6,7 @@
         2. 
 -->
 <template lang="wxml">
-    <view class="esf-item" @tap="click" data-title="{{item.houseTitle}}">
+    <view class="esf-item" @tap="click" data-id="{{item.houseId}}">
         <image src="{{ item.firstImgUrl }}"></image>
         <view class="info">
             <view class="title">{{item.houseTitle}}</view>
@@ -39,13 +39,7 @@ export default class Com extends wepy.component {
     };
     methods = {
         click:function(e){
-            //console.log(e.currentTarget.dataset.title);
-            apiDataFilter.request({
-                apiPath: "index.getAllCityBusiness",
-                successCallback: (data)=>{ 
-                    console.log(data);
-                }
-            });
+            wx.navigateTo({url:"/pages/esf/detail?houseId=" + e.currentTarget.dataset.id});
         }
     } ;
     events = {

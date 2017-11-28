@@ -8,8 +8,7 @@
 <template lang="wxml">    
     <view @tap="clickCover" class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
     </view> 
-    <block wx:if="{{isOpenCity}}">
-    <view style="position: relative; z-index: 5">
+    <block wx:if="{{isOpenCity}}"><view class="header {{fixed?'fixed':''}}">
     <view class="city-search" >
         <view class="city" @tap="switchCity">{{city.cityName}}</view>
         <view class="search-box">
@@ -90,7 +89,7 @@
             <repeat for="{{items}}" item="item">
                 <esf :item="item"></esf>
             </repeat>
-            <view style="text-align: center; {{reachBottom?'display: none':''}}">
+            <view style="text-align: center; font-size: 28rpx; color: #4E4E4E ;{{reachBottom?'':'display:none'}}">
                 我是有底线的^_^
             </view>
         </view>
@@ -377,7 +376,8 @@
                 tipsVisibility: false,
                 tipsMsg: "",
                 expand: false,
-                showTotal: false          
+                showTotal: false,
+                fixed: false          
         } ;
         computed = {
             
@@ -804,6 +804,21 @@
                 this.$apply();
             });
         };
+        onPageScroll(opt) {
+            if(opt.scrollTop > 200) {
+                if(!this.fixed){
+                    this.fixed = true;
+                    this.$apply();
+                }
+            } else {
+                if(this.fixed){
+                    this.fixed = false;
+                    this.$apply();
+                }
+            }
+
+            
+        };
     }
 </script>
 
@@ -858,6 +873,9 @@
         padding: 63rpx 30rpx;
         background-image: linear-gradient(90deg, #64BCF0 6%, rgba(0,125,255,0.82) 91%);
         position: relative;
+        transition: height 2s;
+        -webkit-transition: height 2s;
+        height: 144rpx;
         .title {
             font-size: 50rpx;
             line-height: 1;
@@ -1205,4 +1223,21 @@
         height: 100%;
         overflow: hidden;
     }
+
+    .header{
+        position: relative; 
+        z-index: 5;
+        &.fixed{
+            width: 100%;
+            position: fixed;
+            .current-price {
+                height: 0rpx;
+                padding: 0rpx;
+                .title,.price,.detail{
+                    font-size: 0rpx;
+                }
+            }
+        }
+    }
+
 </style>
