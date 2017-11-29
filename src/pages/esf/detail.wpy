@@ -115,7 +115,7 @@
         </block>
     </view>
     <qmap :estate.sync="estate" eventName="1213007" wx:if="{{ estate.latitude && estate.longitude }}"></qmap>    
-    <view class="similar wk-panel {{ (! estate.latitude || ! estate.longitude) ? 'top-gap' : '' }}">
+    <view class="similar wk-panel {{ (! estate.latitude || ! estate.longitude) ? 'top-gap' : '' }}" wx:if="{{ sameTownTotalCount }}">
         <view class="panel-header">相似房源推荐</view>
         <view class="panel-body">
             <repeat for="{{ sameTownHouseList }}" key="index" index="index" item="item">
@@ -161,6 +161,7 @@
             house : {} ,  //房源信息
             estate : {} ,  //小区信息
             sameTownHouseList : [] ,  //相似房源推荐数据
+            sameTownTotalCount : 0 ,
             agent : {} ,  //经纪人数据
             albums : [] ,  //相册数据
             trace : new Trace  //埋点api
@@ -210,6 +211,7 @@
                     this.house = apiData.house ;
                     this.estate = apiData.estate ;
                     this.sameTownHouseList = apiData.sameTownHouseList || [] ;
+                    this.sameTownTotalCount = apiData.sameTownTotalCount ;
                     this.agent = apiData.agent ;
                     this.albums = apiData.house.imgList ;
                     this.$apply() ;                     

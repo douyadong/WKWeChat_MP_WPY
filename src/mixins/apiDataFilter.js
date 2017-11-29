@@ -21,14 +21,14 @@ class ApiDataFilter {
     @apiPath : 接口路径
     @data : 同步发送的参数
     @method : get | post | jsonp
-    @showCustomLoading : 是否开启自定义的加载动画
+    @showLoading : 是否开启自定义的加载动画
     @showNavigationBarLoading : 是否开启小程序导航头loading
     @tips : 当请求结果异常时 是否开启message的提示
     @successCallback : 请求成功的回调处理
     @errorCallback : 请求异常的回调处理
     @completeCallback : 清酒完成就执行的回调
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-    request({ apiPath , data = {} , method = "get" , dataType = "json" , contentType , showNavigationBarLoading = false , showCustomLoading = true , tips = true , successCallback , errorCallback , completeCallback }) {
+    request({ apiPath , data = {} , method = "get" , dataType = "json" , contentType , showNavigationBarLoading = false , showLoading = true , tips = true , successCallback , errorCallback , completeCallback }) {
         let requestMethod = method.toLowerCase() ;
         let errorProcesser = ( errorCallback && typeof errorCallback ==="function" ) ? errorCallback : this.errorCallback ;         
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -36,11 +36,9 @@ class ApiDataFilter {
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
         showNavigationBarLoading && wx.showNavigationBarLoading() ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        首先根据showCustomLoading参数决定是否需要开启自定义的加载提示
+        首先根据showLoading参数决定是否需要开启自定义的加载提示
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
-        if(showCustomLoading) {
-
-        }
+        if(showLoading) wx.showLoading({ "title" : "加载中" }) ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         请求参数拼装
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
@@ -51,9 +49,7 @@ class ApiDataFilter {
             dataType ,
             success : function (res) {
                 showNavigationBarLoading && wx.hideNavigationBarLoading() ;
-                if(showCustomLoading) {
-
-                }
+                if(showLoading) wx.hideLoading() ;
                 if ( res.statusCode.toString() === "200" && res.data.status.toString() == apiConf.successStatusCode ) {
                     typeof successCallback == "function" && successCallback(res.data) ;
                 }
