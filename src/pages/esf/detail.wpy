@@ -21,7 +21,7 @@
             </view>
             <view class="area">
                 <text class="hd">建筑面积</text>
-                <text class="bd">{{ house.areaStr }}㎡</text>
+                <text class="bd">{{ house.areaStr }}</text>
             </view>
         </view>
         <view class="hr"></view>
@@ -114,9 +114,8 @@
             </navigator>
         </block>
     </view>
-    <qmap :estate.sync="estate" eventName="1213007" wx:if="{{ estate.latitude && estate.longitude }}"></qmap>
-    <view class="top-gap" wx:if="{{ ! estate.latitude || ! estate.longitude }}"></view>
-    <view class="similar wk-panel">
+    <qmap :estate.sync="estate" eventName="1213007" wx:if="{{ estate.latitude && estate.longitude }}"></qmap>    
+    <view class="similar wk-panel {{ (! estate.latitude || ! estate.longitude) ? 'top-gap' : '' }}">
         <view class="panel-header">相似房源推荐</view>
         <view class="panel-body">
             <repeat for="{{ sameTownHouseList }}" key="index" index="index" item="item">
@@ -200,11 +199,12 @@
             从api接口读取数据
             1. 有相册的houseId : 1466775 , 1466769
             2. 有相似房源推荐的houseId : 1000653022
-            3. 详情页无基本信息：1000652615 1000410005             
+            3. 详情页无基本信息：1000652615 1000410005
+            4. 没有经纬度值的houseId :  1466769
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                  
            adf.request({
                 apiPath : "esf.detail" ,
-                data : { "houseId" : this.pageParams.houseId || 1466775 } ,
+                data : { "houseId" : this.pageParams.houseId || 1466769 } ,
                 successCallback : (res)=> {                   
                     let apiData = res.data ;
                     this.house = apiData.house ;
