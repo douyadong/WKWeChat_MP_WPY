@@ -62,18 +62,15 @@
             showError : false ,
             trace : new Trace  //埋点api
         } ;
-        error = (msg)=>{
-            this.msg = msg ;
-            this.showError = true ;
-            setTimeout(()=>{ this.showError = false ; this.msg = "" ; } , 3000 ) ;
-        } ;
         methods = {
             bindInput :(e)=>{
-                let field = e.currentTarget.dataset.name ; 
+                let field = e.currentTarget.dataset.name ;                
+                
                 if(field === "name") this.name= e.detail.value ;
                 if(field === "mobile") this.mobile= e.detail.value ;
                 if(field === "city") this.city= e.detail.value ;
-                if(field === "remark") this.remark= e.detail.value ;               
+                if(field === "remark") this.remark= e.detail.value ;
+                
             } ,
             commit : ()=>{
                 //先埋点
@@ -151,19 +148,26 @@
                             this.msg = data.data.message || "系统错误，请稍后重试！" ;
                             this.showError = true ;                        
                         }
-                        setTimeout(()=>{ this.showError = false ; } , 3000 ) ;
+                        this.$apply();
+                        setTimeout(()=>{ this.showError = false ; this.$apply();} , 3000 ) ;
                     } ,
                     fail : ()=>{
                         this.msg = "系统异常，请稍后重试！" ;
                         this.showError = true ;                        
-                        setTimeout(()=>{ this.showError = false ; } , 3000 ) ;
+                        setTimeout(()=>{ this.showError = false ; this.$apply();} , 3000 ) ;
                     } ,
                     complete : ()=>{
 
                     }
                 }) ;
-            }            
+            }             
         } ;
+        error(msg){
+                this.msg = msg ;
+                this.showError = true ;
+                this.$apply();
+                setTimeout(()=>{ this.showError = false ; this.msg = "" ; this.$apply(); } , 3000 ) ;
+        };
         onLoad() {
            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
            页面埋点
