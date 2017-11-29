@@ -8,7 +8,7 @@
 <template lang="wxml">
     <swipers :items.sync="albums" eventName="1213001"></swipers>
     <view class="highlight wk-panel">
-        <view class="source-title">{{ house.houseTitle }}</view>
+        <view class="source-title">{{ house.houseTitle || estate.estateName }}</view>
         <view class="hr"></view>
         <view class="outline">
             <view class="money">
@@ -26,8 +26,8 @@
         </view>
         <view class="hr"></view>
         <view class="tags">
-            <text wx:if="{{ house.isTopHouse > 1 }}">精选</text>
-            <text wx:elif="{{ house.isStorePush === 1 }}">店长推荐</text>
+            <!--<text wx:if="{{ house.isTopHouse > 1 }}">精选</text>-->
+            <text wx:if="{{ house.isStorePush === 1 }}">店长推荐</text>
             <text wx:elif="{{ house.commAgent > 0 }}">近学校</text>
             <text wx:if="{{ house.fullYears >= 5 && house.onlyOne == 1 }}">满五唯一</text>
             <text  wx:elif="{{ house.fullYears >= 2 }}">满二</text>
