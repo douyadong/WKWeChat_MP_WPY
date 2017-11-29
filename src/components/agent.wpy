@@ -51,7 +51,7 @@
             items : {
                 type: Array,
                 default: 'null'
-            } ,
+            }
         } ;
         components = {
             modal : Modal ,
@@ -82,6 +82,9 @@
                     data : { "agentId" : this.agent.agentId } ,
                     successCallback : (res)=> {
                         wx.makePhoneCall({ phoneNumber : res.data.dial + "," + res.data.digits }) ;
+                    } ,
+                    errorCallback : (res)=> {                        
+                        this.tips(res) ;
                     }
                 }) ;
             } ,

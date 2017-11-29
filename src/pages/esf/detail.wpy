@@ -30,7 +30,7 @@
             <text wx:elif="{{ house.isStorePush === 1 }}">店长推荐</text>
             <text wx:elif="{{ house.commAgent > 0 }}">近学校</text>
             <text wx:if="{{ house.fullYears >= 5 && house.onlyOne == 1 }}">满五唯一</text>
-            <text  wx:elif="{{ house.fullYears >= 2 }}">新上</text>
+            <text  wx:elif="{{ house.fullYears >= 2 }}">满二</text>
             <text wx:if="{{ house.isSubwayHouse === 1 }}">地铁</text>
             <text wx:if="{{ house.isSchoolHouse === 1 }}">近学校</text>
             <text wx:if="{{ house.isNewOnStore === 1 }}">新上</text>
@@ -122,7 +122,7 @@
             <navigator url="/pages/esf/list?type=similar&houseId={{ house.houseId }}">查看更多</navigator>
         </view>
     </view>
-    <assistant :agent.sync="agent"></assistant>
+    <assistant :agent.sync="agent" portraitEventName="1213009" wechatEventName="1213011" telEventName="1213010"></assistant>
 </template>
 
 <script>
@@ -162,10 +162,16 @@
             trace : new Trace  //埋点api
         } ;
         methods = {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            点击基本信息里面的查看更多展开更多选项
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
            spreadOptional : ()=> {
                this.pageStates.summaryOptional = true ;                       
                this.methods.uv( "other" , 1213003 ) ;
            } ,
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           uv埋点方法
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
            uv : (dataType , eventName)=> {
                let params = { eventName : eventName } ;
                if(dataType === "house") params.eventParam = { house_id : this.house.houseId } ;
@@ -191,7 +197,7 @@
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                  
            adf.request({
                 apiPath : "esf.detail" ,
-                data : { "houseId" : 1466775 } ,
+                data : { "houseId" : 1466769 } ,
                 successCallback : (res)=> {                   
                     let apiData = res.data ;
                     this.house = apiData.house ;
@@ -203,6 +209,9 @@
                 }
             }) ;              
         } ; 
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        分享转发设置
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
         onShareAppMessage() {
             return { "title" : "买房就找悟空找房" }
         }
