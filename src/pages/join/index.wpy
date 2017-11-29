@@ -62,16 +62,18 @@
             showError : false ,
             trace : new Trace  //埋点api
         } ;
+        error = (msg)=>{
+            this.msg = msg ;
+            this.showError = true ;
+            setTimeout(()=>{ this.showError = false ; this.msg = "" ; } , 3000 ) ;
+        } ;
         methods = {
             bindInput :(e)=>{
-                let field = e.currentTarget.dataset.name ;
-                console.log(field) ; 
-                /*
+                let field = e.currentTarget.dataset.name ; 
                 if(field === "name") this.name= e.detail.value ;
                 if(field === "mobile") this.mobile= e.detail.value ;
                 if(field === "city") this.city= e.detail.value ;
-                if(field === "remark") this.remark= e.detail.value ;
-                */
+                if(field === "remark") this.remark= e.detail.value ;               
             } ,
             commit : ()=>{
                 //先埋点
@@ -160,12 +162,7 @@
 
                     }
                 }) ;
-            } ,
-            error : (msg)=>{
-                this.msg = msg ;
-                this.showError = true ;
-                setTimeout(()=>{ this.showError = false ; this.msg = "" ; } , 3000 ) ;
-            }
+            }            
         } ;
         onLoad() {
            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
