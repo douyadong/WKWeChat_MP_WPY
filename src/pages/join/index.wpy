@@ -47,7 +47,8 @@
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy" ;
+    import Trace from "../../mixins/trace" ;  //大数据埋点 api
     export default class Index extends wepy.page {
         config = {
             "navigationBarTitleText" : "买房就找悟空找房"
@@ -58,7 +59,8 @@
             mobile : "" ,
             remark : "" ,
             msg : "" ,
-            showError : false
+            showError : false ,
+            trace : new Trace  //埋点api
         } ;
         methods = {
             bindInput :(e)=>{
@@ -72,6 +74,8 @@
                 */
             } ,
             commit : ()=>{
+                //先埋点
+                this.trace.uv({ eventName : 1221001 }) ;
                 //验证必填项
                 if( ! this.name ) {
                     this.error("姓名不能为空！") ;
@@ -164,11 +168,14 @@
             }
         } ;
         onLoad() {
-           
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           页面埋点
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/            
+           this.trace.pv({ "pageName" : "1221" }) ;
         } ;
         onShareAppMessage(){
             return {
-            title : "悟空找房城市发展合作申请"      
+                title : "悟空找房城市发展合作申请"
             } ;
         }
     }
