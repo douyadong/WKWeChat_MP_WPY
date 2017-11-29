@@ -8,28 +8,42 @@
   <template>
     <swiper interval="2000">
         <swiper-item wx:for="{{ items }}" wx:key="*this">           
-            <image src="{{ item }}" mode="widthFix"></image>
+            <image src="{{ item }}" mode="widthFix" data-src="{{ item }}" @tap="previewImage"></image>
             <view class="index">{{ index + 1 }}/{{ items.length }}</view>
         </swiper-item>
     </swiper>
 </template>
 
 <script>
-import wepy from "wepy" ;
-export default class Com extends wepy.component {
-    props = {
-        items : Array
-    } ;
-    data = {
-
-    } ;
-    methods = {
-
-    } ;
-    events = {
-
-    } ;    
-}
+    import wepy from "wepy" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/    
+    import Trace from "../mixins/trace" ;  //大数据埋点 api
+    export default class Com extends wepy.component {
+        props = {
+            items : Array ,
+            eventName : String
+        } ;
+        data = {
+            trace : new Trace  //埋点api
+        } ;
+        methods = {
+            previewImage(event) {
+                /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                加上uv埋点
+                -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/  
+                this.trace.uv({ eventName : this.eventName }) ;
+                /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                调用微信接口
+                -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                wx.previewImage({
+                    current : event.target.dataset.src , 
+                    urls : this.items
+                }) ;
+            }
+        } ;        
+    }
 </script>
 
 <style lang="less">

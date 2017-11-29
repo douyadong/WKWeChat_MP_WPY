@@ -47,6 +47,7 @@ class Trace {
         } ;        
         adf.request({
             apiPath : "common.trace" ,
+            method : "post" ,
             data : traceData ,
             showCustomLoading : false ,
             tips : false ,
@@ -75,6 +76,7 @@ class Trace {
         } ;        
         adf.request({
             apiPath : "common.trace" ,
+            method : "post" ,
             data : traceData ,
             showCustomLoading : false ,
             tips : false ,

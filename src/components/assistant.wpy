@@ -44,6 +44,7 @@
     加载工具资源
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
     import adf from "../mixins/apiDataFilter" ;
+    import Trace from "../mixins/trace" ;  //大数据埋点 api
     
     export default class Com extends wepy.component {
         props = {
@@ -60,7 +61,8 @@
         data = {            
             addWechatModalVisibility : false ,  //添加微信modal框的显示状态
             tipsVisibility : false ,  //tips框的显示状态
-            tipsMsg : ""
+            tipsMsg : "" ,
+            trace : new Trace  //埋点api
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         提示信息

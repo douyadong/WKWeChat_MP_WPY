@@ -6,7 +6,7 @@
         2.        
 -->
 <template lang="wxml">
-    <swipers :items.sync="albums"></swipers>
+    <swipers :items.sync="albums" eventName="1213001"></swipers>
     <view class="highlight wk-panel">
         <view class="source-title">{{ house.houseTitle }}</view>
         <view class="hr"></view>
@@ -49,7 +49,7 @@
             <view><text class="hd">预算</text><text class="bd">首付{{ house.advancePayment }} 万，月供 {{ house.mortgage }} 元</text></view>
             <view>
                 <text class="hd">小区</text>
-                <navigator url="/pages/estate/detail?estateId={{ estate.subEstateId }}" class="bd" @tap="uv({ estate_id : {{ estate.subEstateId }} })">
+                <navigator url="/pages/estate/detail?estateId={{ estate.subEstateId }}" class="bd" @tap="uv( 'estate' , 1213002 )">
                     <text>{{ estate.estateName }}</text>
                     <text class="iconfont icon-next"></text>
                 </navigator>
@@ -84,7 +84,7 @@
     </view>
     <view class="estate wk-panel top-gap">
         <view class="panel-header">小区信息</view>
-        <navigator class="panel-body" url="/pages/estate/detail?estateId={{ estate.subEstateId }}">
+        <navigator class="panel-body" url="/pages/estate/detail?estateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213004 )">
             <image src="{{ estate.estateImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
             <text class="name">{{ estate.estateName }}</text>
             <view class="outline">
@@ -94,7 +94,7 @@
             <text class="address">{{ estate.estateAddr }}</text>
         </navigator>
         <view class="hr"></view>
-        <navigator class="total-item" url="/pages/esf/list">
+        <navigator class="total-item" url="/pages/esf/list?type=onsale&estateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213006 )">
             <text>在售房源</text>
             <view>
                 <text>{{ estate.sameEstateHouseAmount || 0 }} 套</text>
@@ -102,7 +102,7 @@
             </view>
         </navigator>
         <view class="hr"></view>
-        <navigator class="total-item bottom-gap" url="/pages/estate/comment?estateId={{ estate.subEstateId }}">
+        <navigator class="total-item bottom-gap" url="/pages/estate/comment?estateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213005 )">
             <text>用户评论</text>
             <view>
                 <text>{{ estate.comment.amount || 0 }} 条</text>
@@ -110,7 +110,7 @@
             </view>
         </navigator>
     </view>
-    <qmap :estate.sync="estate" wx:if="{{ estate.latitude && estate.longitude }}"></qmap>
+    <qmap :estate.sync="estate" eventName="1213007" wx:if="{{ estate.latitude && estate.longitude }}"></qmap>
     <view class="similar wk-panel top-gap">
         <view class="panel-header">相似房源推荐</view>
         <view class="panel-body">
@@ -162,14 +162,16 @@
             trace : new Trace  //埋点api
         } ;
         methods = {
-           spreadOptional() {
-               this.pageStates.summaryOptional = true ;
+           spreadOptional : ()=> {
+               this.pageStates.summaryOptional = true ;                       
+               this.methods.uv( "other" , 1213003 ) ;
            } ,
-           uv(eventParam) {
-               this.trace.uv({
-                   eventName : 1213 ,
-                   eventParam : eventParam
-               }) ;
+           uv : (dataType , eventName)=> {
+               let params = { eventName : eventName } ;
+               if(dataType === "house") params.eventParam = { house_id : this.house.houseId } ;
+               else if(dataType === "estate") params.eventParam = { estate_id : this.estate.subEstateId } ;
+               else if(dataType === "agent") params.eventParam = { agent_id : this.agent.agentId } ;
+               this.trace.uv(params) ;
            }
         } ;
         onLoad(options) {
@@ -185,10 +187,11 @@
         onShow() {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             从api接口读取数据
+            1. 有相册的houseId : 1466775
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                  
            adf.request({
                 apiPath : "esf.detail" ,
-                data : { "houseId" : 1000653022 } ,
+                data : { "houseId" : 1466775 } ,
                 successCallback : (res)=> {                   
                     let apiData = res.data ;
                     this.house = apiData.house ;
