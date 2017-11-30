@@ -205,12 +205,18 @@
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                  
            adf.request({
                 apiPath : "esf.detail" ,
-                data : { "houseId" : this.pageParams.houseId || 1466769 } ,
+                data : { "houseId" : this.pageParams.houseId || 1000653022 } ,
                 successCallback : (res)=> {                   
                     let apiData = res.data ;
                     this.house = apiData.house ;
                     this.estate = apiData.estate ;
                     this.sameTownHouseList = apiData.sameTownHouseList || [] ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    给二手房源加上埋点参数
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.sameTownHouseList.forEach((item)=>{
+                        item.bigDataParam = { eventName : "1213008" , eventParam : { house_id : item.houseId } } ;
+                    }) ;
                     this.sameTownTotalCount = apiData.sameTownTotalCount ;
                     this.agent = apiData.agent ;
                     this.albums = apiData.house.imgList ;
