@@ -36,12 +36,13 @@ export default class Com extends wepy.component {
         trace: new Trace
     } ;
     props = {
-        bigDataParam: Object,
+        bigDataParam: String,
         item: Object        
     };
     methods = {
         click:function(e){
-            this.trace.uv(this.bigDataParam);
+            console.log(this.item.bigDataParam);            
+            this.trace.uv(this.item.bigDataParam);
             wx.navigateTo({url:"/pages/esf/detail?houseId=" + e.currentTarget.dataset.id});
         }
     } ;

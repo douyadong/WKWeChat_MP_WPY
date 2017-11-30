@@ -87,7 +87,7 @@
         <view class="house-count {{expand?'expand':''}}">已为您展示附近 {{total}} 套房源</view>     
         <view class="items"> 
             <repeat for="{{items}}" item="item">
-                <esf :item="item" eventName="1209013"></esf>
+                <esf :item="item"></esf>
             </repeat>
             <view style="text-align: center; font-size: 28rpx; color: #4E4E4E ;{{reachBottom?'':'display:none'}}">
                 我是有底线的^_^
@@ -268,7 +268,7 @@
                 city: null/*{
                     cityId: 1,
                     cityName: "北京"
-                }*/,
+                }*/,                
                 estate: {
                     id: "",
                     name: ""
@@ -581,7 +581,7 @@
            },
            clickCover() {
                this.filter.selectedFilterSection = "";
-           }     
+           } 
         } ;
         events = {
 
@@ -820,6 +820,9 @@
             this.reachBottom = false;            
             this.getEsfList(this.offset,(data)=>{
                 this.items = data.data.secondHouseListModels || [];
+                this.items.forEach((item)=>{
+                    item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
+                });
                 if(this.showTotal){
                     this.expand = true;
                     setTimeout(()=>{
@@ -857,6 +860,7 @@
 
             
         };
+        
     }
 </script>
 
