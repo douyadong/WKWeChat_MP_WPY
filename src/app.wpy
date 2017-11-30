@@ -15,7 +15,8 @@
                 "pages/esf/list" ,            
                 "pages/estate/detail" ,
                 "pages/estate/comment" ,              
-                "pages/join/index"            
+                "pages/join/index" ,
+                "pages/hinge/index"        
             ] ,
             "window": {
                 "backgroundTextStyle" : "light" ,
