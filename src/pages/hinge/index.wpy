@@ -9,7 +9,8 @@
     <view></view>    
 </template>
 
-<script>    
+<script>
+    import wepy from "wepy" ;
     export default class Index extends wepy.page {
         config = {
             "navigationBarTitleText" : "正在为您转发，请稍等..."
