@@ -49,7 +49,7 @@ class Trace {
             apiPath : "common.trace" ,
             method : "post" ,
             data : traceData ,
-            showCustomLoading : false ,
+            showLoading : false ,
             tips : false ,
             successCallback : ()=> { } ,
             errorCallback : ()=> {
@@ -78,7 +78,7 @@ class Trace {
             apiPath : "common.trace" ,
             method : "post" ,
             data : traceData ,
-            showCustomLoading : false ,
+            showLoading : false ,
             tips : false ,
             successCallback : ()=> {} ,
             errorCallback : ()=> {

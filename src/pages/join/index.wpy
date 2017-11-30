@@ -47,7 +47,8 @@
 </template>
 
 <script>
-    import wepy from "wepy" ;    
+    import wepy from "wepy" ;
+    import Trace from "../../mixins/trace" ;  //大数据埋点 api
     export default class Index extends wepy.page {
         config = {
             "navigationBarTitleText" : "买房就找悟空找房"
@@ -58,20 +59,22 @@
             mobile : "" ,
             remark : "" ,
             msg : "" ,
-            showError : false
+            showError : false ,
+            trace : new Trace  //埋点api
         } ;
         methods = {
             bindInput :(e)=>{
-                let field = e.currentTarget.dataset.name ;
-                console.log(field) ; 
-                /*
+                let field = e.currentTarget.dataset.name ;                
+                
                 if(field === "name") this.name= e.detail.value ;
                 if(field === "mobile") this.mobile= e.detail.value ;
                 if(field === "city") this.city= e.detail.value ;
                 if(field === "remark") this.remark= e.detail.value ;
-                */
+                
             } ,
             commit : ()=>{
+                //先埋点
+                this.trace.uv({ eventName : 1221001 }) ;
                 //验证必填项
                 if( ! this.name ) {
                     this.error("姓名不能为空！") ;
@@ -145,30 +148,35 @@
                             this.msg = data.data.message || "系统错误，请稍后重试！" ;
                             this.showError = true ;                        
                         }
-                        setTimeout(()=>{ this.showError = false ; } , 3000 ) ;
+                        this.$apply();
+                        setTimeout(()=>{ this.showError = false ; this.$apply();} , 3000 ) ;
                     } ,
                     fail : ()=>{
                         this.msg = "系统异常，请稍后重试！" ;
                         this.showError = true ;                        
-                        setTimeout(()=>{ this.showError = false ; } , 3000 ) ;
+                        setTimeout(()=>{ this.showError = false ; this.$apply();} , 3000 ) ;
                     } ,
                     complete : ()=>{
 
                     }
                 }) ;
-            } ,
-            error : (msg)=>{
+            }             
+        } ;
+        error(msg){
                 this.msg = msg ;
                 this.showError = true ;
-                setTimeout(()=>{ this.showError = false ; this.msg = "" ; } , 3000 ) ;
-            }
-        } ;
+                this.$apply();
+                setTimeout(()=>{ this.showError = false ; this.msg = "" ; this.$apply(); } , 3000 ) ;
+        };
         onLoad() {
-           
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           页面埋点
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/            
+           this.trace.pv({ "pageName" : "1221" }) ;
         } ;
         onShareAppMessage(){
             return {
-            title : "悟空找房城市发展合作申请"      
+                title : "悟空找房城市发展合作申请"
             } ;
         }
     }
