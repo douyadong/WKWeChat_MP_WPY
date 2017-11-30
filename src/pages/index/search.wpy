@@ -38,7 +38,7 @@
 
     export default class Search extends wepy.page {
         config = {
-            
+            navigationBarTitleText: "悟空找房",
         } ;
         components = {            
             
