@@ -33,7 +33,8 @@
     "pages/report/write",
     "pages/common/video" ,
     "pages/store/index" ,   
-    "pages/join/index"    
+    "pages/join/index" ,
+    "pages/hinge/index"
   ],
   "window": {
     "backgroundColor": "#f0f0f0",
