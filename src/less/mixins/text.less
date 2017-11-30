@@ -3,8 +3,11 @@
  2. 文件名称：text.less(混合 -> 文本类)
  3. 作者：zhaohuagang@lifang.com
  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-.text-ellipsis() {    
+.text-ellipsis(@lines : 1) {    
     overflow : hidden ;
-    white-space : nowrap ;
-    text-overflow : ellipsis ;        
+    text-overflow : ellipsis ;
+    display : -webkit-box !important ;
+    word-break : break-all ;
+    -webkit-box-orient : vertical ;
+    -webkit-line-clamp : @lines ;      
 }
