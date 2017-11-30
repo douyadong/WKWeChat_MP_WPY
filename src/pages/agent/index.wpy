@@ -71,9 +71,6 @@
                 successCallback:function(res){
                     self.agentInfo=res.data;
                     self.$apply();
-                    selt.agentInfo.secondHouseListModels.forEach((item)=>{
-                        item.bigDataParam={eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.agentInfo.agentId}
-                    })
                     console.log(self.agentInfo);
                      //动态改变页面title;
                     wx.setNavigationBarTitle({title:self.agentInfo.agentName+'的名片'});
@@ -92,6 +89,9 @@
                     self.houseInfo=res.data;
                     self.pageStates.pageIndex += (res.secondHouseListModels&& res.secondHouseListModels.length || 0);
                     self.$apply();
+                    self.houseInfo.secondHouseListModels.forEach((item)=>{
+                        item.bigDataParam = {eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.pageParams.agentId}};
+                    })
                 }
             });
             // 页面埋点;
@@ -113,6 +113,9 @@
                         self.houseInfo.secondHouseListModels= self.houseInfo.secondHouseListModels.concat(res.data.secondHouseListModels);
                         self.pageStates.pageIndex += (res.data.secondHouseListModels&& res.data.secondHouseListModels.length || 0);
                         self.$apply();
+                        self.houseInfo.secondHouseListModels.forEach((item)=>{
+                            item.bigDataParam = {eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.pageParams.agentId}};
+                        })
                     }   
                 }
             })
