@@ -12,16 +12,16 @@
                 <text wx:if="{{lessenShow == false}}">{{apiData.areaPriceInfo.name || "--"}}</text>
                 <view class="price" style="font-size:{{ lessenShow == true? 36:28 }}rpx ; margin-top: {{ lessenShow == true? 0:50}}rpx;">周边房源均价 <text class="price-show" style="font-size:{{ lessenShow == true? 36:48 }}rpx ;">{{apiData.areaPriceInfo.avgPrice}}</text></view>
             </view>
-            <tables :titles="titles" :styles="styles" @childFn.user = "parentFn"></tables>
+            <tables :titles="titles" :styles="styles" :eventName="eventName" @childFn.user = "parentFn"></tables>
         </view>
         <view class="content" style="margin-top: {{ lessenShow == true? 260:0}}rpx;">
              <view class="store-house" wx:if="{{condition == 0}}">
                  <repeat for="{{apiData.houseList}}" key="index" index="index" item="item">
-                      <house :item ="item"></house>
+                      <house :item ="item" :bigDataParam="{eventName:1208001,eventParam:{house_id:item.houseId}}"></house>
                  </repeat>
              </view>
              <view class="store-agent" wx:if="{{condition == 1}}">                
-                <agent :items.sync = "agentList"></agent>
+                <agent :items.sync = "agentList" :eventName=""></agent>
              </view>
         </view>
     <view class="base-colors"></view>
@@ -44,6 +44,8 @@
         } ; 
         data = {
             titles:['推荐好房','推荐经纪人'],
+            eventName:['1208006','1208002'],
+            agentEventName:['1208004','1208005'],
             styles:{
                 positionLeft : '124r'    // tabs传参
             },
@@ -90,6 +92,9 @@
                     let areaPriceInfo = res.data ;
                     this.apiData.areaPriceInfo = areaPriceInfo;
                     this.$apply();
+                    wx.setNavigationBarTitle({
+                        title:"悟空找房"+this.apiData.areaPriceInfo.name+"房源"
+                    })
                 }
             }) ;
             // 房源接口调取
@@ -157,6 +162,11 @@
             }
 
         };
+        onShareAppMessage() {
+            return {
+                title: "悟空找房"+this.apiData.areaPriceInfo.name+"房源",
+            }
+        }
     }
 </script>
 
