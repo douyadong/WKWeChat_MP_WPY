@@ -56,8 +56,8 @@
             display: inline-block;
             position: absolute;
             bottom:0;
-            transition: .5s cubic-bezier(.35,0,.25,1);
-            -webkit-transition: .5s cubic-bezier(.35,0,.25,1);
+         /*   transition: .5s cubic-bezier(.35,0,.25,1);
+            -webkit-transition: .5s cubic-bezier(.35,0,.25,1);*/
         }
         &:after{
             content: '';
