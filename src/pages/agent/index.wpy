@@ -20,7 +20,7 @@
         <view class="house-number">TA的房源<text class="number">[{{houseInfo.total}}套]</text></view>
         <view class="house-list">
             <repeat for="{{houseInfo.secondHouseListModels}}" key="index" index="index" item="item">
-                <esf :item="item" :bigDataParam="{eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:{{agentInfo.agentId}}}}"></esf>
+                <esf :item="item"></esf>
             </repeat>
         </view>
     </view>
@@ -71,6 +71,9 @@
                 successCallback:function(res){
                     self.agentInfo=res.data;
                     self.$apply();
+                    selt.agentInfo.secondHouseListModels.forEach((item)=>{
+                        item.bigDataParam={eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.agentInfo.agentId}
+                    })
                     console.log(self.agentInfo);
                      //动态改变页面title;
                     wx.setNavigationBarTitle({title:self.agentInfo.agentName+'的名片'});

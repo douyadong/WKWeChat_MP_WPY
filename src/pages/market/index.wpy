@@ -82,10 +82,12 @@
             // 当页面滚动超过一定距离时,区域参考价固定
             if (e.scrollTop > 135) {
                 this.fixed = true;
+                this.$apply();
             }
             // 页面上滚到顶部时，区域参考价固定;
             if (e.scrollTop < 135) {
                 this.fixed = false;
+                this.$apply();
             }
         };
         // 分享转发;
