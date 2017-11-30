@@ -43,17 +43,17 @@ export default {
             "similar" : "wxmpOldHouseDetail/getSimilarList.rest"
         } ,
         "estate": {
-            "detail" : "wxmpEstate/estateDetail.rest" ,
-            "comment" : "estate/queryEstateCommentList.rest" ,
+            "detail" : "wxmpEstate/estateDetail.rest" ,   // 小区详情
+            "comment" : "estate/queryEstateCommentList.rest" ,// 小区评论
             "onSale" : "wxmpEstate/estateSellingHouseList.rest"
         } ,
         "market" : {
            "index" : "housePrice/getAreaPriceList.rest"
         } ,
         "store": {
-            "index" : "housePrice/getAreaPriceInfo.rest" ,
-            "house" : "wxmpStore/getHouseList.rest" ,
-            "agent" : "wxmpStore/getAgentList.rest"
+            "index" : "housePrice/getAreaPriceInfo.rest" , // 门店周边房价
+            "house" : "wxmpStore/getHouseList.rest" ,// 房源列表
+            "agent" : "wxmpStore/getAgentList.rest" // 经纪人列表
         }
     }
 } ;

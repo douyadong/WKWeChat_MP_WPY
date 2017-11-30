@@ -70,7 +70,7 @@
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          获取接口数据
          -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        getData(){
+        getData(storeId,dicId){
             // agent数据获取
             apiDataFilter.request({
                 apiPath : "store.agent",
@@ -93,7 +93,7 @@
                     this.apiData.areaPriceInfo = areaPriceInfo;
                     this.$apply();
                     wx.setNavigationBarTitle({
-                        title:"悟空找房"+this.apiData.areaPriceInfo.name+"房源"
+                        title:"悟空找房"
                     })
                 }
             }) ;
@@ -115,9 +115,8 @@
             }) ;
         };
         onLoad(option) {
-            let  storeId = option.storeId;
-            this.getData();
-            this.trace.pv({ pageName:"1208" ,pageParam:storeId})
+            this.getData(option.storeId,option.dicId);
+            this.trace.pv({ pageName:"1208" ,pageParam:option.storeId})
         };
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          滚动条滚动函数
