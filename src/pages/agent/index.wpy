@@ -24,7 +24,7 @@
             </repeat>
         </view>
     </view>
-    <assistant :agent.sync="agentInfo"></assistant>
+    <assistant :agent.sync="agentInfo" portrait="off"></assistant>
 </template>
 
 <script>
