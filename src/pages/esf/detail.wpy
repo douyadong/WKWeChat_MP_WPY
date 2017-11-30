@@ -236,7 +236,8 @@
     .highlight {
         .source-title {
             font-size : @great-font-size ;
-            padding : 15rpx 0 30rpx 0 ;
+            margin : 15rpx 0 30rpx 0 ;
+            .text-ellipsis(2) ;
         }
         .outline {
             .flex() ;
