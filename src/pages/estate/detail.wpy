@@ -7,15 +7,15 @@
 -->
 <template lang="wxml">
     <view class="estate-detail">
-         <swipers :items="estateInfo.imgList"></swipers>
+         <swipers :items.sync="imgList"></swipers>
           <summary :estateInfo.sync = "estateInfo"></summary>
          <view class="wk-panel top-gap">
-             <view class="panel-header">小区评论  <navigator class="amount" url="/pages/estate/comment?subEstateId={{subEstateId}} "><view >{{estateInfo.comment.amount}}<text class="iconfont icon-next"></text></view></navigator></view>
+             <view class="panel-header">小区评论  <view class="amount" @tap="navigatorUrl">{{estateInfo.comment.amount}}<text class="iconfont icon-next"></text></view></view>
              <view class="panel-body">
                  <comments :commentList.sync="commentList"></comments>
              </view>
          </view>
-    <qmap :estate="estate"></qmap>
+    <qmap :estate.sync="estate" :eventName="1214003"></qmap>
     </view>
 </template>
 
@@ -26,6 +26,7 @@
     import Summary from "./sections/summary" ;
     import Comments from "./sections/comments";
     import apiDataFilter from "../../mixins/apiDataFilter";
+    import Trace  from "../../mixins/trace"
     export default class Detail extends wepy.page {
         components = {
             swipers: Swipers,
@@ -34,17 +35,23 @@
             qmap: Map
         } ;
         data = {
-            estateInfo:{},
-            commentList:[],
-            estate:{
+            estateInfo:{}, // 小区信息
+            commentList:[], // 评论列表
+            imgList:[],// 照片列表
+            estate:{     // 坐标
                 latitude:'',
                 longitude:'',
-                estateAddr:''
+                estateAddr:'',
+                subEstateId:''
             },
-            subEstateId:16990
+            subEstateId:16990, //小区id
+            trace: new Trace()
         } ;
         methods = {
-
+            navigatorUrl(){
+                this.trace.uv({eventName:1214002,eventParam:{estate_id:this.subEstateId}});
+                wx.navigateTo({url:"/pages/estate/comment?subEstateId=" + this.subEstateId});
+            }
         } ;
         getDetail(subEstateId){
             apiDataFilter.request({
@@ -55,21 +62,30 @@
                     if (estateDetail){
                         this.estateInfo = estateDetail.estateInfo;
                         this.commentList = this.estateInfo.comment.commentList;
+                        this.imgList = this.estateInfo.imgList;
                         this.estate.latitude = this.estateInfo.latitude;
                         this.estate.longitude = this.estateInfo.longitude;
                         this.estate.estateAddr = this.estateInfo.estateAddr;
+                        this.estate.subEstateId = subEstateId;
                         this.$apply();
+
                     }
-                    console.log(this.estate)
                 }
             }) ;
         };
         onLoad(option) {
+            this.subEstateId = option.subEstateId;
             console.log("option.subEstateId"+option.subEstateId);
-            this.getDetail(this.subEstateId);
+            this.getDetail(16990);
+            this.trace.pv({pageName:1214,pageParam:{estate_id:this.subEstateId} })
         };
         onShow(){
 
+        }
+        onShareAppMessage() {
+            return {
+                title: "买房就找悟空找房",
+            }
         }
     }
 </script>

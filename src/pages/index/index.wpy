@@ -72,7 +72,7 @@
                 <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
                     <view @tap="selectType" class="item {{item.active?'active':''}}" wx:for="{{filter.typeSection.items}}" data-id="{{item.id}}">{{item.text}}</view> 
                     <view class="confirm">
-                        <button class="button" @tap="reload">确定</button>
+                        <button class="button" @tap="clickConfirmType">确定</button>
                     </view>
                 </view>
                 <view class="items sorts {{filter.selectedFilterSection == 'sort'? '' : 'invisible'}}">
@@ -87,7 +87,7 @@
         <view class="house-count {{expand?'expand':''}}">已为您展示附近 {{total}} 套房源</view>     
         <view class="items"> 
             <repeat for="{{items}}" item="item">
-                <esf :item="item"></esf>
+                <esf :item="item" eventName="1209013"></esf>
             </repeat>
             <view style="text-align: center; font-size: 28rpx; color: #4E4E4E ;{{reachBottom?'':'display:none'}}">
                 我是有底线的^_^
@@ -132,6 +132,7 @@
     import Esf from "../../components/esf";
     import apiDataFilter from "../../mixins/apiDataFilter";
     import Tips from "../../components/tips" ;
+    import Trace from "../../mixins/trace";
 
     const DEFAULT = {
         selectedDistrictId: "",
@@ -377,7 +378,8 @@
                 tipsMsg: "",
                 expand: false,
                 showTotal: false,
-                fixed: false          
+                fixed: false,
+                trace: new Trace          
         } ;
         computed = {
             
@@ -389,6 +391,9 @@
                    name = '';
                }
                this.filter.selectedFilterSection = name;
+               if(name == 'sort') {
+                   this.trace.uv({eventName: "1209008"});
+               }
                //this.setData('filter.selectedFilterSection',name)
            },
            selectSort(e) {//切换排序规则
@@ -397,10 +402,17 @@
                 this.filter.sortSection.selectedId = sortId;
                 this.filter.selectedFilterSection = "";
                 this.refresh();
+
+                if(sortId > 0){//默认排序不埋点
+                    let eventName = 1209008 + sortId;
+                    this.trace.uv({eventName: eventName});
+                }
+
            },
 
            selectType(e) {//切换房型                
-                let typeId = e.currentTarget.dataset.id;                
+                let typeId = e.currentTarget.dataset.id;  
+                this.uv({eventName: "1209006", eventParam: {room: 0}});              
                 let type = this.filter.typeSection.items.filter((it)=>{
                     return it.id == typeId;
                 })[0];
@@ -435,6 +447,7 @@
                 this.filter.totalSection.customEndPrice = "";
                 this.filter.totalSection.customStartPrice = "";
                 this.filter.selectedFilterSection = "";
+                this.trace.uv({eventName: "1209004"});
                 this.$apply();
                 this.refresh();
             },
@@ -443,6 +456,9 @@
                 this.filter.totalSection.priceStart = this.filter.totalSection.customStartPrice;
                 this.filter.totalSection.priceEnd = this.filter.totalSection.customEndPrice;
                 this.filter.selectedFilterSection = "";
+
+                this.trace.uv({eventName: "1209005", eventParam: {price_range: this.filter.totalSection.customStartPrice + "-" + this.filter.totalSection.customEndPrice}});
+
                 this.refresh();
             },
             selectDistrictMetro(e) {//切换区域或地铁
@@ -475,6 +491,7 @@
                 }else{
                     this.filter.districtSection.meter = "";
                     this.filter.districtSection.isNear = false;
+                    this.trace.uv({ eventName: "1209003", eventParam: {region_id: this.filter.districtSection.selectedDistrictId, town_id: townId} });
                 }
                 
                 this.filter.districtSection.selectedTownId = townId;
@@ -495,16 +512,34 @@
                 this.filter.districtSection.selectedTownId = "";
                 this.filter.districtSection.isNear = false;                
 
+                this.trace.uv({ eventName: "1209003", eventParam: { subwary_id: this.filter.districtSection.selectedMetroId, station_id: stationId }});
+
                 this.refresh();
             },
            reload() {// 刷新列表
             this.filter.selectedFilterSection = "";            
             this.refresh();
            },
+           clickConfirmType() {// 户型选择确定点击事件
+                let tmpA = [];
+                this.filter.typeSection.items.forEach(function(t){
+                    if(t.active) {
+                        tmpA.push(t.text);
+                    }
+                });
+                if(tmpA.length == 0){
+                    tmpA.push(0);
+                }
+                let str = tmpA.join(',');
+                this.trace.uv({eventName: "1209007", eventParam:{room: str}});
+                this.filter.selectedFilterSection = "";            
+                this.refresh();
+           },
            switchCity() {
                wx.navigateTo({url:'/pages/index/city'});
            },
            searchEstate() {
+               this.trace.uv({ eventName: "1209001" });
                wx.navigateTo({
                    url: "/pages/index/search"
                });
@@ -541,6 +576,7 @@
                this.filter.totalSection[name=="start"?"customStartPrice":"customEndPrice"] = value;
            },
            gotoPriceList() {
+               this.trace.uv({ eventName: "1209002" });
                wx.navigateTo('/pages/market/index?cityId='+this.city.cityId);
            },
            clickCover() {
@@ -554,6 +590,8 @@
             //首次读取storage中是否有city，否则就是默认城市
             this.city = wx.getStorageSync("city") || DEFAULT.city;
             //this.getDistrictsAndMetro();            
+
+            this.trace.pv({ pageName: "1209" });
 
            //todo:弹出loading
            //定位

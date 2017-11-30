@@ -11,22 +11,30 @@
 
 <script>
     import wepy from "wepy" ;
+    import Trace  from "../mixins/trace"
     export default class Tables extends wepy.component {
         props = {
             titles : Array,     // ['推荐好房','推荐经纪人']
-            styles : Object,   // styles : { color ?:'#000000', changeColor?:'#4081D6', fontSize?: 32, lineHeight?:88, positionLeft:'124r' }  有问号代表可以不传值
+            styles : Object, // styles : { color ?:'#000000', changeColor?:'#4081D6', fontSize?: 32, lineHeight?:88, positionLeft:'124r' }  有问号代表可以不传值
+            eventName: Array
         } ;
         data = {
             positionIndex: 0,
             positionLeft: '124r',
-            titleLength : 0
+            titleLength : 0,
+            trace: new Trace()
         } ;
         methods = {
             getIndex(index,item,event){
                 this.positionIndex =  index;
                 this.titleLength = item.length;
                 this.positionLeft = event.currentTarget.offsetLeft;
-                this.$emit('childFn', this.positionIndex)
+                this.$emit('childFn', this.positionIndex);
+                this.titles.forEach((value, key)=>{
+                    if (index == key){
+                        this.trace.uv({eventName:this.eventName[index]})
+                    }
+                })
             },
         } ;
         onLoad() {
@@ -56,8 +64,8 @@
             display: inline-block;
             position: absolute;
             bottom:0;
-            transition: .5s cubic-bezier(.35,0,.25,1);
-            -webkit-transition: .5s cubic-bezier(.35,0,.25,1);
+         /*   transition: .5s cubic-bezier(.35,0,.25,1);
+            -webkit-transition: .5s cubic-bezier(.35,0,.25,1);*/
         }
         &:after{
             content: '';

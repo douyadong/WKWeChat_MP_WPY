@@ -34,9 +34,11 @@
 <script>
     import wepy from "wepy" ;    
     import apiDataFilter from "../../mixins/apiDataFilter";
+    import Trace from "../../mixins/trace";
+
     export default class Search extends wepy.page {
         config = {
-            
+            navigationBarTitleText: "悟空找房",
         } ;
         components = {            
             
@@ -47,7 +49,8 @@
             city: {                
             },
             items: [],
-            noData: false
+            noData: false,
+            trace: new Trace
         } ;
         computed = {
             
@@ -100,6 +103,7 @@
            },
            selectEstate(e) {
                wx.setStorageSync("estate", e.currentTarget.dataset.item);
+               this.trace.uv({eventName: "1211001", eventParam:{estate_id: e.currentTarget.dataset.item.value, choice_content: e.currentTarget.dataset.item.displayStr}});
                wx.navigateBack();
            }
         } ;
@@ -108,6 +112,7 @@
         } ;
         onLoad() {
            this.city = wx.getStorageSync("city");
+           this.trace.pv({ pageName: "1211" });
            //wx.setStorageSync('estate',null);
         };
         generateHighlight(str, subStr) {//拆分成用于高亮显示的数据结构

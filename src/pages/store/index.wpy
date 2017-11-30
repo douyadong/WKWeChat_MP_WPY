@@ -12,16 +12,16 @@
                 <text wx:if="{{lessenShow == false}}">{{apiData.areaPriceInfo.name || "--"}}</text>
                 <view class="price" style="font-size:{{ lessenShow == true? 36:28 }}rpx ; margin-top: {{ lessenShow == true? 0:50}}rpx;">周边房源均价 <text class="price-show" style="font-size:{{ lessenShow == true? 36:48 }}rpx ;">{{apiData.areaPriceInfo.avgPrice}}</text></view>
             </view>
-            <tables :titles="titles" :styles="styles" @childFn.user = "parentFn"></tables>
+            <tables :titles="titles" :styles="styles" :eventName="eventName" @childFn.user = "parentFn"></tables>
         </view>
         <view class="content" style="margin-top: {{ lessenShow == true? 260:0}}rpx;">
              <view class="store-house" wx:if="{{condition == 0}}">
                  <repeat for="{{apiData.houseList}}" key="index" index="index" item="item">
-                      <house :item ="item"></house>
+                      <house :item ="item" :bigDataParam="{eventName:1208001,eventParam:{house_id:item.houseId}}"></house>
                  </repeat>
              </view>
              <view class="store-agent" wx:if="{{condition == 1}}">                
-                <agent :items.sync = "agentList"></agent>
+                <agent :items.sync = "agentList" :eventName=""></agent>
              </view>
         </view>
     <view class="base-colors"></view>
@@ -35,6 +35,7 @@
     import Esf from "../../components/esf" ;
     import Agent from "../../components/agent" ;
     import apiDataFilter from "../../mixins/apiDataFilter";
+    import Trace  from "../../mixins/trace"
     export default class Index extends wepy.page {
         components = {
             tables : Tables,
@@ -43,26 +44,28 @@
         } ; 
         data = {
             titles:['推荐好房','推荐经纪人'],
+            eventName:['1208006','1208002'],
+            agentEventName:['1208004','1208005'],
             styles:{
-                positionLeft : '124r'
+                positionLeft : '124r'    // tabs传参
             },
-            condition: 0,
-            lessenShow:false,
+            condition: 0,     // tabs标识
+            lessenShow:false,    // 头部是否缩进标识
             apiData:{
-                areaPriceInfo :'',
-                houseList:[],
+                areaPriceInfo :'',  // 周边房源
+                houseList:[],     // 房源列表
             },
-            agentList:[],
+            agentList:[],    //  经纪人数据列表
             pageIndex:0,
             agentPageIndex:0,
             pageSize: 20,
+            trace: new Trace()
         } ;
         methods = {
             // tabs获取相应的区块
             parentFn (index) {
                 this.condition = index;
             },
-
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          获取接口数据
@@ -89,6 +92,9 @@
                     let areaPriceInfo = res.data ;
                     this.apiData.areaPriceInfo = areaPriceInfo;
                     this.$apply();
+                    wx.setNavigationBarTitle({
+                        title:"悟空找房"+this.apiData.areaPriceInfo.name+"房源"
+                    })
                 }
             }) ;
             // 房源接口调取
@@ -105,11 +111,10 @@
                 }
             }) ;
         };
-        events = {
-
-        } ;
-        onLoad() {
-            this.getData()
+        onLoad(option) {
+            let  storeId = option.storeId;
+            this.getData();
+            this.trace.pv({ pageName:"1208" ,pageParam:storeId})
         };
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          滚动条滚动函数
@@ -157,6 +162,11 @@
             }
 
         };
+        onShareAppMessage() {
+            return {
+                title: "悟空找房"+this.apiData.areaPriceInfo.name+"房源",
+            }
+        }
     }
 </script>
 
