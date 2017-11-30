@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
      <repeat for="{{ items }}" key="index" index="index" item="agent">
-        <view class="agent">
+        <view class="agent" @tap="traceAgent(agent.agentId)">
             <image src="{{ agent.agentHeadImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
             <view class="tel" @tap="phoning">
                 <text class="iconfont icon-tel"></text>
@@ -46,12 +46,14 @@
     import Modal from "./modal" ;
     import Tips from "./tips" ;
     import adf from "../mixins/apiDataFilter" ;
+    import Trace  from "../mixins/trace"
     export default class Com extends wepy.component {
         props = {
             items : {
                 type: Array,
                 default: 'null'
-            }
+            },
+            eventName: Array   // 埋点点击事件传值  数组(第一个为微信埋点参数，第二个为手机埋点参数)
         } ;
         components = {
             modal : Modal ,
@@ -61,7 +63,8 @@
             addWechatModalVisibility : false ,  //添加微信modal框的显示状态
             tipsVisibility : false ,  //tips框的显示状态
             tipsMsg : "",
-            agent:""
+            agent:"",
+            trace: new Trace()
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          提示信息
@@ -87,6 +90,7 @@
                         this.tips(res) ;
                     }
                 }) ;
+                this.trace.uv({eventName:this.eventName[1]})
             } ,
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             点击添加微信调用的方法
@@ -95,6 +99,7 @@
                 this.addWechatModalVisibility = true ;
                 this.agent = agent;
                 this.$apply();
+                this.trace.uv({eventName:this.eventName[0]})
             } ,
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             保存到相册调用方法
@@ -124,6 +129,8 @@
                         }
                     }
                 }) ;
+
+                this.trace.uv({eventName:1218004})
             } ,
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             复制微信号调用方法
@@ -138,10 +145,17 @@
                         this.tips("经纪人微信号复制失败！") ;
                     }
                 }) ;
-            }
+                this.trace.uv({eventName:1218005})
+            },
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            点击条目的埋点函数
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+           traceAgent(agent_id){
+             this.trace.uv({eventName:1208003,eventParam:{agent_id:agent_id}})
+           }
         } ;
         onLoad() {
-               console.log("items"+this.items);
+
         }
     }
 </script>
