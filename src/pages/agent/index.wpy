@@ -24,7 +24,7 @@
             </repeat>
         </view>
     </view>
-    <assistant :agent.sync="agentInfo"></assistant>
+    <assistant :agent.sync="agentInfo" portrait="off" wechatEventName="1218002" telEventName="1218003"></assistant>
 </template>
 
 <script>
@@ -32,6 +32,7 @@
     import Esf from "../../components/esf";
     import Assistant from "../../components/assistant";
     import apiDataFilter from "../../mixins/apiDataFilter";
+    import Trace from "../../mixins/trace" ;  //大数据埋点 api
     export default class Index extends wepy.page {
         config = {
             
@@ -41,9 +42,11 @@
             assistant: Assistant
         };
         data = {
+            pageParams:{},//页面query参数;
             agentInfo: '',//经纪人身份信息;
             houseInfo:'',//房源列表信息;
-            pageInfo:{
+            trace:new Trace, //埋点api
+            pageStates:{
                     pageIndex:0,//评论的起始条数
                     pageSize:20,//评论信息每次加载多少条
                     total:0
@@ -60,6 +63,7 @@
         };
         onLoad(options) {
             let self=this;
+            self.pageParams=options;
             //经济人身份信息;
             apiDataFilter.request({
                 apiPath : "agent.index" ,
@@ -77,16 +81,21 @@
                 apiPath : "agent.house" ,
                 data : { 
                     "agentId":100632 ,
-                    "pageIndex":self.pageInfo.pageIndex,
-                    "pageSize":self.pageInfo.pageSize, 
+                    "pageIndex":self.pageStates.pageIndex,
+                    "pageSize":self.pageStates.pageSize, 
                     } ,
                 successCallback:function(res){
                     console.log(res);
                     self.houseInfo=res.data;
-                    self.pageInfo.pageIndex += (res.secondHouseListModels&& res.secondHouseListModels.length || 0);
+                    self.pageStates.pageIndex += (res.secondHouseListModels&& res.secondHouseListModels.length || 0);
                     self.$apply();
+                    self.houseInfo.secondHouseListModels.forEach((item)=>{
+                        item.bigDataParam = {eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.pageParams.agentId}};
+                    })
                 }
-            })
+            });
+            // 页面埋点;
+            self.trace.pv({"pageName" : "1218","pageParam":{"agent_id":self.pageParams.agentId}})
         };
         onReachBottom() {
             // 页面上拉触发该函数用于滚动加载数据
@@ -96,17 +105,24 @@
                 apiPath : "agent.house",
                 data : { 
                     "agentId":100632,
-                    "pageIndex":self.pageInfo.pageIndex,
-                    "pageSize":self.pageInfo.pageSize, 
+                    "pageIndex":self.pageStates.pageIndex,
+                    "pageSize":self.pageStates.pageSize, 
                     } ,
                 successCallback:function(res){
                     if(res.data.secondHouseListModels){
                         self.houseInfo.secondHouseListModels= self.houseInfo.secondHouseListModels.concat(res.data.secondHouseListModels);
-                        self.pageInfo.pageIndex += (res.data.secondHouseListModels&& res.data.secondHouseListModels.length || 0);
+                        self.pageStates.pageIndex += (res.data.secondHouseListModels&& res.data.secondHouseListModels.length || 0);
                         self.$apply();
+                        self.houseInfo.secondHouseListModels.forEach((item)=>{
+                            item.bigDataParam = {eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.pageParams.agentId}};
+                        })
                     }   
                 }
             })
+        };
+        // 分享转发;
+        onShareAppMessage() {
+            return { "title" : this.agentInfo.storeName+'经纪人'+this.agentInfo.agentName+'的名片' }
         }
     }
 </script>

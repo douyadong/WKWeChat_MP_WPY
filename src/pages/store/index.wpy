@@ -17,11 +17,11 @@
         <view class="content" style="margin-top: {{ lessenShow == true? 260:0}}rpx;">
              <view class="store-house" wx:if="{{condition == 0}}">
                  <repeat for="{{apiData.houseList}}" key="index" index="index" item="item">
-                      <house :item ="item" :bigDataParam="{eventName:1208001,eventParam:{house_id:item.houseId}}"></house>
+                      <house :item ="item" ></house>
                  </repeat>
              </view>
              <view class="store-agent" wx:if="{{condition == 1}}">                
-                <agent :items.sync = "agentList" :eventName=""></agent>
+                <agent :items.sync = "agentList" :eventName="agentEventName"></agent>
              </view>
         </view>
     <view class="base-colors"></view>
@@ -59,7 +59,8 @@
             pageIndex:0,
             agentPageIndex:0,
             pageSize: 20,
-            trace: new Trace()
+            trace: new Trace(),
+            storeId:''
         } ;
         methods = {
             // tabs获取相应的区块
@@ -70,11 +71,11 @@
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          获取接口数据
          -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        getData(){
-            // agent数据获取
+        getData(storeId,dicId){
+            // agent数据获取   10027
             apiDataFilter.request({
                 apiPath : "store.agent",
-                data : { "storeId" : 10027,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
+                data : { "storeId" : storeId,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
                 successCallback : res => {
                     let agent = res.data ;
                     if(agent.agentList){
@@ -87,34 +88,37 @@
             // 周边房价接口调取
             apiDataFilter.request({
                 apiPath : "store.index",
-                data : { "dicId" : 43,"dicType":5 } ,
+                data : { "dicId" : dicId,"dicType":5 } ,
                 successCallback : res => {
                     let areaPriceInfo = res.data ;
                     this.apiData.areaPriceInfo = areaPriceInfo;
                     this.$apply();
-                    wx.setNavigationBarTitle({
-                        title:"悟空找房"+this.apiData.areaPriceInfo.name+"房源"
-                    })
                 }
             }) ;
             // 房源接口调取
             apiDataFilter.request({
                 apiPath : "store.house",
-                data : { "storeId" : 10027 ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
+                data : { "storeId" : storeId ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
                 successCallback : res => {
                     let houseList = res.data ;
                     if(houseList.secondHouseListModels){
                         this.apiData.houseList = houseList.secondHouseListModels;
                         this.pageIndex += houseList.secondHouseListModels.length;
+                        this.apiData.houseList.forEach((item)=>{
+                            item.bigDataParam = {eventName:"1208001",eventParam:{house_id:item.houseId}}
+                        });
                         this.$apply();
                     }
                 }
             }) ;
         };
         onLoad(option) {
-            let  storeId = option.storeId;
-            this.getData();
-            this.trace.pv({ pageName:"1208" ,pageParam:storeId})
+            this.storeId = option.storeId;
+            wx.setNavigationBarTitle({
+                title:"悟空找房"
+            });
+            this.getData(option.storeId,option.dicId);
+            this.trace.pv({ pageName:"1208" ,pageParam:option.storeId})
         };
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          滚动条滚动函数
@@ -134,13 +138,15 @@
                 // 房源接口调取
                 apiDataFilter.request({
                     apiPath : "store.house",
-                    data : { "storeId" : 10027 ,"pageSize":this.pageSize ,"pageIndex": this.pageIndex}  ,
+                    data : { "storeId" : this.storeId ,"pageSize":this.pageSize ,"pageIndex": this.pageIndex}  ,
                     successCallback : res => {
                         let houseList = res.data;
-
                         if (houseList.secondHouseListModels){
                             this.pageIndex += houseList.secondHouseListModels.length;
                             this.apiData.houseList = this.apiData.houseList.concat(houseList.secondHouseListModels);
+                            this.apiData.houseList.forEach((item)=>{
+                                item.bigDataParam = {eventName:1208001,eventParam:{house_id:item.houseId}}
+                            });
                             this.$apply();
                         }
                     }
@@ -149,7 +155,7 @@
                 // agent数据获取
                 apiDataFilter.request({
                     apiPath : "store.agent",
-                    data : { "storeId" : 10027 ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize } ,
+                    data : { "storeId" : this.storeId ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize } ,
                     successCallback : res => {
                         let agent = res.data ;
                         if(agent.agentList){

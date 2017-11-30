@@ -39,6 +39,7 @@
     // import info from "./../../mock/house-price.js";
     import wepy from "wepy";
     import apiDataFilter from "../../mixins/apiDataFilter";
+    import Trace from "../../mixins/trace" ;  //大数据埋点 api
     export default class Index extends wepy.page {
         config = {
             "navigationBarTitleText": "房价行情"
@@ -47,8 +48,9 @@
 
         };
         data = {
-            info: '',
-            fixed: false  
+            info: '',//各区房价行情
+            fixed: false,  //nav是否固定;
+            trace:new Trace //埋点api
         };
         computed = {
 
@@ -69,21 +71,29 @@
                 data : { "dicId":43, "dicType":3 } ,
                 successCallback:res => {
                     console.log(res);
-                    this.info=res.data;//在真机上测试两种方法必须同时使用，页面才能达到要求;
+                    this.info=res.data;
                     this.$apply();
                 }
             })
+            // 页面埋点;
+            this.trace.pv({"pageName" : "1212"});
         };
         onPageScroll(e) {
             // 当页面滚动超过一定距离时,区域参考价固定
             if (e.scrollTop > 135) {
                 this.fixed = true;
+                this.$apply();
             }
             // 页面上滚到顶部时，区域参考价固定;
             if (e.scrollTop < 135) {
                 this.fixed = false;
+                this.$apply();
             }
         };
+        // 分享转发;
+        onShareAppMessage() {
+            return { "title" : "买房就找悟空找房" }
+        }
     }
 </script>
 
