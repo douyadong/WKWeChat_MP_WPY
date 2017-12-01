@@ -113,7 +113,7 @@
                     }
                 }) ;
             }else {
-                console.log("缺少参数")
+                console.log("缺少参数storeId或者dicId")
             }
 
         };
