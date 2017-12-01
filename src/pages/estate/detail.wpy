@@ -18,7 +18,7 @@
                  <view class="nocomment" wx:if="{{!commentList}}">当前暂无评论</view>
              </view>
          </view>
-    <qmap :estate.sync="estate" :eventName="1214003"></qmap>
+    <qmap wx:if="{{estate.latitude && estate.longitude}}" :estate.sync="estate" :eventName="1214003"></qmap>
     </view>
 </template>
 
