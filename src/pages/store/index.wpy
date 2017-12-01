@@ -73,12 +73,12 @@
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          获取接口数据
          -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        getData(storeId,dicId){
-            if(storeId && dicId){
+        getData(storeId){
+           /* if(storeId && dicId){*/
                 // agent数据获取   10027   43
                 apiDataFilter.request({
                     apiPath : "store.agent",
-                    data : { "storeId" : storeId ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
+                    data : { "storeId" : storeId || 10027,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
                     successCallback : res => {
                         let agent = res.data ;
                         this.agentTotal = agent.total;
@@ -92,7 +92,7 @@
                 // 周边房价接口调取
                 apiDataFilter.request({
                     apiPath : "store.index",
-                    data : { "dicId" : dicId ,"dicType":5 } ,
+                    data : { "dicId" : storeId || 10027,"dicType":5 } ,
                     successCallback : res => {
                         let areaPriceInfo = res.data ;
                         this.apiData.areaPriceInfo = areaPriceInfo;
@@ -102,7 +102,7 @@
                 // 房源接口调取
                 apiDataFilter.request({
                     apiPath : "store.house",
-                    data : { "storeId" : storeId ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
+                    data : { "storeId" : storeId || 10027,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
                     successCallback : res => {
                         let houseList = res.data ;
                         this.houseTotal = houseList.total;
@@ -116,9 +116,9 @@
                         }
                     }
                 }) ;
-            }else {
+         /*   }else {
                 console.log("缺少参数storeId或者dicId")
-            }
+            }*/
 
         };
         onLoad(option) {
@@ -126,7 +126,7 @@
             wx.setNavigationBarTitle({
                 title:"悟空找房"
             });
-            this.getData(option.storeId,option.dicId);
+            this.getData(option.storeId);
             this.trace.pv({ pageName:"1208" ,pageParam:option.storeId})
         };
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
