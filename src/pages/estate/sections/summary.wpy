@@ -94,7 +94,7 @@
     @import "../../../less/mixins.less" ;
 
     .summary{
-        padding-top: 30rpx;
+        padding : 30rpx 30rpx 25rpx 30rpx;
        /* background-color: @white-font-color;*/
         .panel-bd{
             .row{
