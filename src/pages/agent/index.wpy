@@ -73,7 +73,6 @@
                     "pageSize":self.pageStates.pageSize, 
                     } ,
                 successCallback:function(res){
-                    console.log(res);
                     self.houseInfo=res.data;
                     self.pageStates.pageIndex += (res.secondHouseListModels&& res.secondHouseListModels.length || 0);
                     self.houseInfo.secondHouseListModels.forEach((item)=>{
@@ -89,7 +88,6 @@
                 successCallback:function(res){
                     self.agentInfo=res.data;
                     self.$apply();
-                    console.log(self.agentInfo);
                      //动态改变页面title;
                     wx.setNavigationBarTitle({title:self.agentInfo.agentName+'的名片'});
                 }
