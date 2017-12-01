@@ -99,24 +99,27 @@
             // 页面上拉触发该函数用于滚动加载数据
             //经纪人房源信息;
             let self=this;
-            apiDataFilter.request({
-                apiPath : "agent.house",
-                data : { 
-                    "agentId":options.agentId,
-                    "pageIndex":self.pageStates.pageIndex,
-                    "pageSize":self.pageStates.pageSize, 
+            // 判断房源是否加载完毕;
+            if(self.houseInfo.total!=self.houseInfo.secondHouseListModels.length){
+                 apiDataFilter.request({
+                    apiPath : "agent.house",
+                    data : { 
+                        "agentId":options.agentId,
+                        "pageIndex":self.pageStates.pageIndex,
+                        "pageSize":self.pageStates.pageSize, 
                     } ,
-                successCallback:function(res){
-                    if(res.data){
-                        self.houseInfo.secondHouseListModels= self.houseInfo.secondHouseListModels.concat(res.data.secondHouseListModels);
-                        self.pageStates.pageIndex += (res.data.secondHouseListModels&& res.data.secondHouseListModels.length || 0);
-                        self.houseInfo.secondHouseListModels.forEach((item)=>{
+                    successCallback:function(res){
+                        if(res.data){
+                            self.houseInfo.secondHouseListModels= self.houseInfo.secondHouseListModels.concat(res.data.secondHouseListModels);
+                            self.pageStates.pageIndex += (res.data.secondHouseListModels&& res.data.secondHouseListModels.length || 0);
+                            self.houseInfo.secondHouseListModels.forEach((item)=>{
                             item.bigDataParam = {eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.pageParams.agentId}};
-                        });
-                        self.$apply();
-                    }   
-                }
-            })
+                            });
+                            self.$apply();
+                        }   
+                    }
+                })
+            }
         };
         // 分享转发;
         onShareAppMessage() {
