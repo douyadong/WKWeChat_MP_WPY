@@ -62,12 +62,12 @@
 
         };
         onLoad(options) {
-            let dicId=options.dicId;
-            let dicType=options.dicType;
+            let city = wx.getStorageSync("city") || {} ;
+            let dicId=city.cityId||43;
             let that=this;
             apiDataFilter.request({
                 apiPath : "market.index" ,
-                data : { "dicId":dicId, "dicType":dicType } ,
+                data : { "dicId":dicId, "dicType":2 } ,
                 successCallback:res => {
                     console.log(res);
                     this.info=res.data;
