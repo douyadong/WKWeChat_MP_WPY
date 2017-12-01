@@ -62,13 +62,12 @@
 
         };
         onLoad(options) {
-            let params=options;
-            let dicId=params.dicId;
-            let dicType=params.dicType;
+            let dicId=options.dicId;
+            let dicType=options.dicType;
             let that=this;
             apiDataFilter.request({
                 apiPath : "market.index" ,
-                data : { "dicId":43, "dicType":3 } ,
+                data : { "dicId":dicId, "dicType":dicType } ,
                 successCallback:res => {
                     console.log(res);
                     this.info=res.data;
