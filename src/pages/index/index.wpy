@@ -108,7 +108,7 @@
             您可以扩大搜索范围，找到更多的房源
         </view>
         <button class="clear" @tap="clearFilter">
-            清楚条件
+            清除条件
         </button>
        </view>       
     </view>
@@ -123,16 +123,23 @@
         </view>
     </view>
           
-
-    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
+    <!--定位失败的modal框-->
+    <modal :visibility.sync="tipsVisibility" title="定位失败">
+        <view slot="body">            
+            <view style="text-align: center">请手动选择您的城市</view>
+        </view>
+        <view slot="footer" class="modal-footer">
+            <view class="wk-btn wk-btn-transparent" @tap="switchCity">去选择</view>            
+        </view>
+    </modal>    
 </template>
 
 <script>
     import wepy from "wepy" ;    
     import Esf from "../../components/esf";
-    import apiDataFilter from "../../mixins/apiDataFilter";
-    import Tips from "../../components/tips" ;
+    import apiDataFilter from "../../mixins/apiDataFilter";    
     import Trace from "../../mixins/trace";
+    import Modal from "../../components/modal";
 
     const DEFAULT = {
         selectedDistrictId: "",
@@ -151,7 +158,7 @@
             lat: "",
             cityPinyin: "shanghai"
         },
-        highCities: [43,221,741,771,1873],/*43  上海市
+        highCities: [43,221,741,771,1873,873],/*43  上海市
 221  廊坊市
 741  南京市
 771  苏州市
@@ -262,17 +269,14 @@
         } ;
         components = {            
             esf: Esf,
-            tips: Tips
+            modal: Modal
         } ; 
         data = {  
                 city: null/*{
                     cityId: 1,
                     cityName: "北京"
                 }*/,                
-                estate: {
-                    id: "",
-                    name: ""
-                },
+                estate: null,
                 filter : {
                     selectedFilterSection: "",
                     districtSection: {
@@ -413,7 +417,7 @@
 
            selectType(e) {//切换房型                
                 let typeId = e.currentTarget.dataset.id;  
-                this.uv({eventName: "1209006", eventParam: {room: 0}});              
+                this.trace.uv({eventName: "1209006", eventParam: {room: 0}});              
                 let type = this.filter.typeSection.items.filter((it)=>{
                     return it.id == typeId;
                 })[0];
@@ -587,7 +591,8 @@
         events = {
 
         } ;
-        onLoad() {            
+        onLoad() {        
+            this.firstTime = true;    
             //首次读取storage中是否有city，否则就是默认城市
             this.city = wx.getStorageSync("city") || DEFAULT.city;
             //this.getDistrictsAndMetro();            
@@ -623,7 +628,7 @@
                             }
                             this.getDistrictsAndMetro(); 
                             this.$apply();            
-                        }                        
+                        }                      
                     });
                },
                fail: (opts)=>{                       
@@ -631,20 +636,25 @@
                         this.getDistrictsAndMetro(); 
                    } else {//定位失败                        
                         this.getDistrictsAndMetro();
-                        this.tipsMsg = "定位失败";
+                        //this.tipsMsg = "定位失败";
                         this.tipsVisibility = true;
                         this.$apply();
                    }
+                   this.tipsVisibility = true;
                    if(!wx.getStorageSync('city')){
                        wx.setStorageSync('city', this.city);
                    }
                },
                complete: ()=>{
                    wx.hideLoading();
+                   this.firstTime = true;
                }
            });
         };
         onShow(options) {
+            if(this.firstTime) {
+                return;
+            }
             this.estate = wx.getStorageSync("estate"); 
             let city = wx.getStorageSync("city");
             if(city && this.city) {
@@ -654,11 +664,7 @@
                     this.getDistrictsAndMetro();
                     return;
                 }
-            }
-
-            if(this.estate){//从
-
-            }
+            }            
 
             this.refresh();                        
         };
@@ -682,11 +688,12 @@
                         //this.filter.sortSection.selectedId = DEFAULT.selectedSortId;
 
                         //根据城市修改总价筛选
-                        if(DEFAULT.highCities.indexOf(this.city.cityId) > -1){
+                        if(DEFAULT.highCities.filter((item)=>{ return item == this.city.cityId;}).length > 0){
                             this.filter.totalSection.items = DEFAULT.totalOptionsHigh;
                         } else {
                             this.filter.totalSection.items = DEFAULT.totalOptionsLow;
                         }
+                        console.log('city: ', this.city);
 
                         this.$apply();
 
@@ -781,7 +788,8 @@
             //收集查询条件    
             let districtId = !this.filter.districtSection.isNear &&this.filter.districtSection.selectedDistrictId || "";
             let townId = !this.filter.districtSection.isNear && this.filter.districtSection.selectedTownId || "";
-            let subEstateId = this.estate && this.estate.realIdObj.subEstateId;
+            let subEstateId = this.estate && this.estate.realIdObj && this.estate.realIdObj.subEstateId;
+            console.log(this.estate);
             if(this.estate){
                 districtId = this.estate.realIdObj.districtId;
                 townId = this.estate.realIdObj.townId;
@@ -804,6 +812,7 @@
                 localLat: this.filter.districtSection.isNear && this.city.lat || ""
             };
 
+            this.loading = true;
             apiDataFilter.request({
                 apiPath: "index.secondHouseList",
                 method: "POST",
@@ -813,6 +822,9 @@
                     this.total = data.data && data.data.total || 0;
                     this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0);                    
                     cb && cb(data);                                  
+                },
+                completeCallback: ()=>{
+                    this.loading = false;
                 }
             });     
         };
@@ -844,9 +856,8 @@
         onReachBottom() {//触底加载
             if(this.total <= this.offset) {//已到底
                 return;
-            }
-
-            this.getEsfList(this.offset,(data)=>{
+            }                        
+            this.getEsfList(this.offset,(data)=>{                
                 this.items = this.items.concat(data.data.secondHouseListModels);
                 this.$apply();
             });
@@ -1192,6 +1203,7 @@
 
     page {
         height: 100%;
+        background-color: #fff;
     }
     .error {
         text-align: center;
