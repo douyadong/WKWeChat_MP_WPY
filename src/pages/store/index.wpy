@@ -60,7 +60,7 @@
             agentPageIndex:0,
             pageSize: 20,
             trace: new Trace(),
-            storeId:''
+            storeId:''  // 店铺Id
         } ;
         methods = {
             // tabs获取相应的区块
@@ -72,45 +72,50 @@
          获取接口数据
          -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         getData(storeId,dicId){
-            // agent数据获取   10027
-            apiDataFilter.request({
-                apiPath : "store.agent",
-                data : { "storeId" : storeId,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
-                successCallback : res => {
-                    let agent = res.data ;
-                    if(agent.agentList){
-                        this.agentPageIndex += agent.agentList.length;
-                        this.agentList = agent.agentList;
+            if(storeId && dicId){
+                // agent数据获取   10027
+                apiDataFilter.request({
+                    apiPath : "store.agent",
+                    data : { "storeId" : storeId,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
+                    successCallback : res => {
+                        let agent = res.data ;
+                        if(agent.agentList){
+                            this.agentPageIndex += agent.agentList.length;
+                            this.agentList = agent.agentList;
+                            this.$apply();
+                        }
+                    }
+                }) ;
+                // 周边房价接口调取
+                apiDataFilter.request({
+                    apiPath : "store.index",
+                    data : { "dicId" : dicId,"dicType":5 } ,
+                    successCallback : res => {
+                        let areaPriceInfo = res.data ;
+                        this.apiData.areaPriceInfo = areaPriceInfo;
                         this.$apply();
                     }
-                }
-            }) ;
-            // 周边房价接口调取
-            apiDataFilter.request({
-                apiPath : "store.index",
-                data : { "dicId" : dicId,"dicType":5 } ,
-                successCallback : res => {
-                    let areaPriceInfo = res.data ;
-                    this.apiData.areaPriceInfo = areaPriceInfo;
-                    this.$apply();
-                }
-            }) ;
-            // 房源接口调取
-            apiDataFilter.request({
-                apiPath : "store.house",
-                data : { "storeId" : storeId ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
-                successCallback : res => {
-                    let houseList = res.data ;
-                    if(houseList.secondHouseListModels){
-                        this.apiData.houseList = houseList.secondHouseListModels;
-                        this.pageIndex += houseList.secondHouseListModels.length;
-                        this.apiData.houseList.forEach((item)=>{
-                            item.bigDataParam = {eventName:"1208001",eventParam:{house_id:item.houseId}}
-                        });
-                        this.$apply();
+                }) ;
+                // 房源接口调取
+                apiDataFilter.request({
+                    apiPath : "store.house",
+                    data : { "storeId" : storeId ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
+                    successCallback : res => {
+                        let houseList = res.data ;
+                        if(houseList.secondHouseListModels){
+                            this.apiData.houseList = houseList.secondHouseListModels;
+                            this.pageIndex += houseList.secondHouseListModels.length;
+                            this.apiData.houseList.forEach((item)=>{
+                                item.bigDataParam = {eventName:"1208001",eventParam:{house_id:item.houseId}}
+                            });
+                            this.$apply();
+                        }
                     }
-                }
-            }) ;
+                }) ;
+            }else {
+                console.log("缺少参数storeId或者dicId")
+            }
+
         };
         onLoad(option) {
             this.storeId = option.storeId;
@@ -168,6 +173,9 @@
             }
 
         };
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+         分享标题
+         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         onShareAppMessage() {
             return {
                 title: "悟空找房"+this.apiData.areaPriceInfo.name+"房源",

@@ -64,18 +64,6 @@
         onLoad(options) {
             let self=this;
             self.pageParams=options;
-            //经济人身份信息;
-            apiDataFilter.request({
-                apiPath : "agent.index" ,
-                data : { "agentId":options.agentId } ,
-                successCallback:function(res){
-                    self.agentInfo=res.data;
-                    self.$apply();
-                    console.log(self.agentInfo);
-                     //动态改变页面title;
-                    wx.setNavigationBarTitle({title:self.agentInfo.agentName+'的名片'});
-                }
-            });
             //页面刚开始加载时获取的房源列表信息;
             apiDataFilter.request({
                 apiPath : "agent.house" ,
@@ -92,6 +80,18 @@
                         item.bigDataParam = {eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.pageParams.agentId}};
                     });
                     self.$apply();
+                }
+            });
+            //经济人身份信息;
+            apiDataFilter.request({
+                apiPath : "agent.index" ,
+                data : { "agentId":options.agentId } ,
+                successCallback:function(res){
+                    self.agentInfo=res.data;
+                    self.$apply();
+                    console.log(self.agentInfo);
+                     //动态改变页面title;
+                    wx.setNavigationBarTitle({title:self.agentInfo.agentName+'的名片'});
                 }
             });
             // 页面埋点;

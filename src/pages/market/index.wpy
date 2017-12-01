@@ -11,7 +11,7 @@
         <text class="city-price">{{info.avgPrice}}</text>
         <text class="ratio">
             <text class="compare">环比上月</text>
-            <text class="iconfont icon-desc" wx:if="{{info.flag=='-1'}}"></text>
+            <text class="iconfont icon-desc" wx:if="{{info.flag=='0'}}"></text>
             <text class="iconfont icon-asc" wx:if="{{info.flag=='1'}}"></text>
             <text>{{info.increase}}</text>
         </text>
@@ -62,12 +62,12 @@
 
         };
         onLoad(options) {
-            let dicId=options.dicId;
-            let dicType=options.dicType;
+            let city = wx.getStorageSync("city") || {} ;
+            let dicId=city.cityId||43;
             let that=this;
             apiDataFilter.request({
                 apiPath : "market.index" ,
-                data : { "dicId":dicId, "dicType":dicType } ,
+                data : { "dicId":dicId, "dicType":2 } ,
                 successCallback:res => {
                     console.log(res);
                     this.info=res.data;
