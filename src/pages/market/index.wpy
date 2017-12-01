@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view class="hd">
-        <view class="city">今日{{info.name}}房价</view>
+        <view class="city">今日{{cityName}}房价</view>
         <text class="city-price">{{info.avgPrice}}</text>
         <text class="ratio">
             <text class="compare">环比上月</text>
@@ -50,7 +50,8 @@
         data = {
             info: '',//各区房价行情
             fixed: false,  //nav是否固定;
-            trace:new Trace //埋点api
+            trace:new Trace, //埋点api
+            cityName:''
         };
         computed = {
 
@@ -64,12 +65,13 @@
         onLoad(options) {
             let city = wx.getStorageSync("city") || {} ;
             let dicId=city.cityId||43;
+            this.cityName=city.cityName;
+            this.$apply();
             let that=this;
             apiDataFilter.request({
                 apiPath : "market.index" ,
                 data : { "dicId":dicId, "dicType":2 } ,
                 successCallback:res => {
-                    console.log(res);
                     this.info=res.data;
                     this.$apply();
                 }
@@ -125,12 +127,14 @@
 
     // 其它区域房价
     .nav {
+        background-color: #fff;
         border-bottom: 1rpx solid #d8d8d8;
         padding: 0 30rpx;
         .now-area {
             color: #000;
             font-size: 32rpx;
-            margin: 30rpx 0 48rpx 0;
+            padding-top: 30rpx;
+            padding-bottom: 48rpx;
         }
         .title {
             .clearfix();
@@ -160,9 +164,10 @@
 
     // 具体区域房价行情;
     .bd {
-        padding: 0 30rpx;
+        background-color: #fff;
         text-align: center;
         .price-info {
+            padding: 0 30rpx;
             border-bottom: 1rpx solid #d8d8d8;
             .clearfix();
             color: #000;
