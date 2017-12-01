@@ -23,7 +23,7 @@
         <view class="filter">
             <view class="district-total-type-sort">
                 <view class="district-section">
-                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{filter.districtSection.selectedDistrictId != '' && filter.districtSection.selectedDistrictId != '-1' && filter.districtSection.selectedMetroId != '-1' && filter.districtSection.selectedMetroId != '' ? 'active' : ''}}" @tap="switchFilter" data-name="district">区域</view>                
+                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{filter.districtSection.selectedDistrictId != '' && filter.districtSection.selectedDistrictId != '-1' && filter.districtSection.selectedMetroId != '-1' && filter.districtSection.selectedMetroId != '' ? 'active' : ''}}" @tap="switchFilter" data-name="district">区域</view>        
                 </view>            
                 <view class="total-section">
                     <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId!=''?'active':''}}" @tap="switchFilter" data-name="total">总价</view>                
@@ -640,7 +640,7 @@
                         this.tipsVisibility = true;
                         this.$apply();
                    }
-                   this.tipsVisibility = true;
+                   //this.tipsVisibility = true;
                    if(!wx.getStorageSync('city')){
                        wx.setStorageSync('city', this.city);
                    }
@@ -758,7 +758,7 @@
                                 }else{
                                     d.splice(0,0,{
                                         id: "-2",
-                                        name: "附近/定位失败"                                        
+                                        name: "定位失败"                                        
                                     });
                                 }
                                 this.filter.districtSection.districts = d;
@@ -796,8 +796,8 @@
             }
             let params = {
                 cityId: this.city.cityId,
-                districtId: districtId,
-                townId: townId,
+                districtId: districtId == "-1"?null:districtId,
+                townId: townId == "-1"? null: townId,
                 subEstateId: subEstateId,
                 priceStart: this.filter.totalSection.priceStart,
                 priceEnd: this.filter.totalSection.priceEnd,
@@ -962,11 +962,14 @@
             .district-section, .total-section, .type-section, .sort-section {
                 text-align: center;
                 .flex(1);
-                position: relative;
+                position: relative;                
+                view{
+                  .text-ellipsis();                                  
+                }                
                 .closed::after {
                     content: '';
                     .triangle-down(9rpx, #7C7C7C);
-                    vertical-align: middle !important;                    
+                    vertical-align: middle !important;
                 }
 
                 .open {
@@ -1239,6 +1242,10 @@
             line-height: 1;
             padding-top: 31rpx;
             padding-bottom: 31rpx;
+
+            &::after {
+                border: none;
+            }
         }
     }
 
