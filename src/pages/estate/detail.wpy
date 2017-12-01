@@ -65,7 +65,7 @@
         getDetail(subEstateId){
             apiDataFilter.request({
                 apiPath : "estate.detail",
-                data : { "subEstateId" : subEstateId } ,
+                data : { "subEstateId" : subEstateId  } ,
                 successCallback : res => {
                     let estateDetail = res.data ;
                     if (estateDetail){
