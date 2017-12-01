@@ -10,9 +10,12 @@
          <swipers :items.sync="imgList"></swipers>
           <summary :estateInfo.sync = "estateInfo"></summary>
          <view class="wk-panel top-gap">
-             <view class="panel-header">小区评论  <view class="amount" @tap="navigatorUrl">{{estateInfo.comment.amount}}<text class="iconfont icon-next"></text></view></view>
+             <view class="panel-header">小区评论  <view class="amount" wx:if="{{ commentList}}" @tap="navigatorUrl">{{estateInfo.comment.amount}}<text class="iconfont icon-next"></text></view></view>
              <view class="panel-body">
-                 <comments :commentList.sync="commentList"></comments>
+                 <view wx:if=" {{commentList}}">
+                     <comments  :commentList.sync="commentList"></comments>
+                 </view>
+                 <view class="nocomment" wx:if="{{!commentList}}">当前暂无评论</view>
              </view>
          </view>
     <qmap :estate.sync="estate" :eventName="1214003"></qmap>
@@ -44,15 +47,21 @@
                 estateAddr:'',
                 subEstateId:''
             },
-            subEstateId:16990, //小区id
+            subEstateId:" ", //小区id
             trace: new Trace()
         } ;
         methods = {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+             埋点和路由跳转
+             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             navigatorUrl(){
                 this.trace.uv({eventName:1214002,eventParam:{estate_id:this.subEstateId}});
                 wx.navigateTo({url:"/pages/estate/comment?subEstateId=" + this.subEstateId});
             }
         } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        接口获取小区信息
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         getDetail(subEstateId){
             apiDataFilter.request({
                 apiPath : "estate.detail",
@@ -61,7 +70,11 @@
                     let estateDetail = res.data ;
                     if (estateDetail){
                         this.estateInfo = estateDetail.estateInfo;
-                        this.commentList = this.estateInfo.comment.commentList;
+                        if (this.estateInfo.comment){
+                            this.commentList = this.estateInfo.comment.commentList;
+                        }else {
+                            this.commentList = null
+                        }
                         this.imgList = this.estateInfo.imgList;
                         this.estate.latitude = this.estateInfo.latitude;
                         this.estate.longitude = this.estateInfo.longitude;
@@ -75,13 +88,12 @@
         };
         onLoad(option) {
             this.subEstateId = option.subEstateId;
-            console.log("option.subEstateId"+option.subEstateId);
-            this.getDetail(16990);
+            this.getDetail(this.subEstateId);
             this.trace.pv({pageName:1214,pageParam:{estate_id:this.subEstateId} })
         };
-        onShow(){
-
-        }
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        页面标题
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         onShareAppMessage() {
             return {
                 title: "买房就找悟空找房",
@@ -107,6 +119,7 @@
         float: right;
         font-size: @default-font-size;
         color: @blue-color;
+        display: inline-block;
     }
     .summary{
         padding-top: 30rpx;
@@ -153,6 +166,16 @@
                     border-top: 1px solid @light-line-gray-color;
                     -webkit-transform: scalY(0.5);
                 }
+            }
+        }
+    }
+    .top-gap{
+        .panel-body{
+            .nocomment{
+                font-size: 28rpx;
+                color: #7C7C7C;
+                letter-spacing: 0;
+                line-height: 40rpx;
             }
         }
     }
