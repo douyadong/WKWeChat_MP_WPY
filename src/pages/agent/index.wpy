@@ -175,7 +175,7 @@
         // 房源列表;
         .house-list {
             // .clearfix();
-            padding-left: 30rpx;
+            padding : 0 30rpx;
         }
     }
 </style>
