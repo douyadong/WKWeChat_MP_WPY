@@ -45,38 +45,38 @@
                             </view>
                             <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='district'?'visible':''}}">
                             <view class="left">
-                                <view @tap="selectDistrict" class="item {{item.id == filter.districtSection.selectedDistrictId? 'active':''}}" wx:for-key="{{item.id}}" wx:for="{{filter.districtSection.districts}}" data-id="{{item.id}}">{{item.name}}</view>
+                                <view @tap="selectDistrict" class="item {{item.id == filter.districtSection.selectedDistrictId? 'active':''}}" wx:key="{{item.id}}" wx:for="{{filter.districtSection.districts}}" data-id="{{item.id}}">{{item.name}}</view>
                             </view>
-                            <view class="right" wx:for-key="{{item.id}}" wx:for="{{filter.districtSection.districts}}" wx:if="{{filter.districtSection.selectedDistrictId == item.id}}">
-                                <block wx:for-key="{{*this}}" wx:for="{{item.subList}}" wx:for-item="sl">
-                                    <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{sl.towns}}" wx:for-item="town" wx:for-key="{{*this}}" data-type="{{town.type}}" data-id="{{town.id}}">{{town.name}}</view>
+                            <view class="right" wx:key="{{item.id}}" wx:for="{{filter.districtSection.districts}}" wx:if="{{filter.districtSection.selectedDistrictId == item.id}}">
+                                <block wx:key="{{*this}}" wx:for="{{item.subList}}" wx:for-item="sl">
+                                    <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{sl.towns}}" wx:for-item="town" wx:key="{{*this}}" data-type="{{town.type}}" data-id="{{town.id}}">{{town.name}}</view>
                                 </block>                            
                             </view>
                             </view>
                             <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='metro'?'visible':''}}">
                             <view class="left">
-                                <view @tap="selectMetro" class="item {{item.id == filter.districtSection.selectedMetroId? 'active':''}}" wx:for-key="{{item.id}}" wx:for="{{filter.districtSection.metros}}" data-id="{{item.id}}">{{item.name}}</view>
+                                <view @tap="selectMetro" class="item {{item.id == filter.districtSection.selectedMetroId? 'active':''}}" wx:key="{{item.id}}" wx:for="{{filter.districtSection.metros}}" data-id="{{item.id}}">{{item.name}}</view>
                             </view>
-                            <view class="right" wx:for="{{*this}}" wx:for="{{filter.districtSection.metros}}" wx:if="{{filter.districtSection.selectedMetroId == item.id}}">
+                            <view class="right" wx:key="{{*this}}" wx:for="{{filter.districtSection.metros}}" wx:if="{{filter.districtSection.selectedMetroId == item.id}}">
                                 <view @tap="selectStation" class="item {{station.id==filter.districtSection.selectedStationId?'active':''}}" wx:for="{{item.subList}}" wx:for-item="station" data-id="{{station.id}}">{{station.name}}</view>
                             </view>
                             </view>
                         </view>
                     </view>
                     <view class="items totals {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
-                        <view @tap="selectTotal" class="{{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:for-key="{{item.id}}">{{item.text}}</view>
+                        <view @tap="selectTotal" class="{{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:key="{{item.id}}">{{item.text}}</view>
                         <view class="custom">
                             <view class="input"><input data-name="start" @input="typeTotal" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="input"><input @input="typeTotal" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="button" @tap="clickCustomPrice">确定</view>
                         </view>
                     </view>
                     <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
-                        <view @tap="selectType" class="item {{item.active?'active':''}}" wx:for="{{filter.typeSection.items}}" wx:for-key="{{item.id}}" data-id="{{item.id}}">{{item.text}}</view> 
+                        <view @tap="selectType" class="item {{item.active?'active':''}}" wx:for="{{filter.typeSection.items}}" wx:key="{{item.id}}" data-id="{{item.id}}">{{item.text}}</view> 
                         <view class="confirm">
                             <button class="button" @tap="clickConfirmType">确定</button>
                         </view>
                     </view>
                     <view class="items sorts {{filter.selectedFilterSection == 'sort'? '' : 'invisible'}}">
-                        <view @tap="selectSort" class="{{filter.sortSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.sortSection.items}}" wx:for-key="{{item.id}}" data-id="{{item.id}}">{{item.text}}</view>
+                        <view @tap="selectSort" class="{{filter.sortSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.sortSection.items}}" wx:key="{{item.id}}" data-id="{{item.id}}">{{item.text}}</view>
                     </view>
                 </view>    
         </view>
@@ -87,7 +87,7 @@
         <view class="house-count {{expand?'expand':''}} {{!countVisible? 'invisible':''}}">已为您展示附近 {{total}} 套房源</view>     
         <view class="items"> 
             <repeat for="{{items}}" item="item">
-                <esf :item="item"></esf>
+                <esf :item="item" openType="1"></esf>
             </repeat>
             <view style="text-align: center; font-size: 28rpx; color: #4E4E4E ;{{reachBottom?'':'display:none'}}">
                 我是有底线的^_^
