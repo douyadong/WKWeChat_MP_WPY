@@ -49,7 +49,7 @@
             <view><text class="hd">预算</text><text class="bd">首付{{ house.advancePayment }} 万，月供 {{ house.mortgage }} 元</text></view>
             <view>
                 <text class="hd">小区</text>
-                <navigator url="/pages/estate/detail?estateId={{ estate.subEstateId }}" class="bd" @tap="uv( 'estate' , 1213002 )">
+                <navigator url="/pages/estate/detail?subEstateId={{ estate.subEstateId }}" open-type="redirect" class="bd" @tap="uv( 'estate' , 1213002 )">
                     <text>{{ estate.estateName }}</text>
                     <text class="iconfont icon-next"></text>
                 </navigator>
@@ -84,7 +84,7 @@
     </view>
     <view class="estate wk-panel top-gap">
         <view class="panel-header">小区信息</view>
-        <navigator class="panel-body" url="/pages/estate/detail?estateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213004 )">
+        <navigator class="panel-body" url="/pages/estate/detail?subEstateId={{ estate.subEstateId }}" open-type="redirect" @tap="uv( 'estate' , 1213004 )">
             <image src="{{ estate.estateImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
             <text class="name">{{ estate.estateName }}</text>
             <view class="outline">
@@ -95,7 +95,7 @@
         </navigator>
         <block wx:if="{{ estate.sameEstateHouseAmount }}">
             <view class="hr"></view>
-            <navigator class="total-item" url="/pages/esf/list?type=onsale&estateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213006 )">
+            <navigator class="total-item" url="/pages/esf/list?type=onsale&subEstateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213006 )">
                 <text>在售房源</text>
                 <view>
                     <text>{{ estate.sameEstateHouseAmount || 0 }} 套</text>
@@ -105,7 +105,7 @@
         </block>
         <block wx:if="{{ estate.comment.amount }}">
             <view class="hr"></view>
-            <navigator class="total-item" url="/pages/estate/comment?estateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213005 )">
+            <navigator class="total-item" url="/pages/estate/comment?subEstateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213005 )">
                 <text>用户评论</text>
                 <view>
                     <text>{{ estate.comment.amount || 0 }} 条</text>

@@ -3,10 +3,10 @@
     export default class extends wepy.app {
         config = {
             "pages" : [
+                "pages/index/index" ,
                 "pages/esf/detail" ,  
                 "pages/store/index" ,
-                "pages/agent/index" ,                             
-                "pages/index/index" ,             
+                "pages/agent/index" ,
                 "pages/market/index" ,
                 "pages/common/player" ,                
                 "pages/demo/index" ,
@@ -16,7 +16,7 @@
                 "pages/estate/detail" ,
                 "pages/estate/comment" ,              
                 "pages/join/index" ,
-                "pages/hinge/index"        
+                "pages/hinge/index"
             ] ,
             "window": {
                 "backgroundTextStyle" : "light" ,

@@ -60,7 +60,7 @@
                 case "onsale" : 
                 pageTitle = "小区在售房源" ;
                 pageName = "1216" ;
-                pageParam = { "estate_id" : this.pageParams.estateId } ;
+                pageParam = { "estate_id" : this.pageParams.subEstateId } ;
                 this.apiPath = "estate.onSale" ;
                 break ;
 
@@ -89,7 +89,7 @@
         }
         loadData() {
             let reqData = { "offset" : this.pageStates.offset , "pageSize" : this.pageStates.pageSize } ;
-            if( this.pageParams.type === "onsale" ) reqData.subEstateId = this.pageParams.estateId ;
+            if( this.pageParams.type === "onsale" ) reqData.subEstateId = this.pageParams.subEstateId ;
             else if( this.pageParams.type === "similar" ) reqData.houseId = this.pageParams.houseId ;
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             从api接口读取数据
