@@ -9,82 +9,82 @@
     <view @tap="clickCover" class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
     </view> 
     <block wx:if="{{isOpenCity}}"><view class="header {{fixed?'fixed':''}}">
-    <view class="city-search" >
-        <view class="city" @tap="switchCity">{{city.cityName}}</view>
-        <view class="search-box">
-            <text class="iconfont icon-search"></text><view class="estate-address" @tap="searchEstate">{{estate && estate.displayStr || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.displayStr ? '':'invisible'}}" @tap="clearEstate"></text>
+        <view class="city-search" >
+            <view class="city" @tap="switchCity">{{city.cityName}}</view>
+            <view class="search-box">
+                <text class="iconfont icon-search"></text><view class="estate-address" @tap="searchEstate">{{estate && estate.displayStr || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.displayStr ? '':'invisible'}}" @tap="clearEstate"></text>
+            </view>
+        </view>
+        <view class="current-price">
+            <view class="title">今日{{city && city.cityName}}房价</view>
+            <view class="price">{{unitPrice}}</view>
+            <view class="detail" @tap="gotoPriceList">查看 <text class="iconfont icon-next"></text></view>
+        </view>
+        <view class="filter">
+            <view class="district-total-type-sort">
+                <view class="district-section">
+                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{filter.districtSection.selectedDistrictId != '' && filter.districtSection.selectedDistrictId != '-1' && filter.districtSection.selectedMetroId != '-1' && filter.districtSection.selectedMetroId != '' ? 'active' : ''}}" @tap="switchFilter" data-name="district">区域</view>                
+                </view>            
+                <view class="total-section">
+                    <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId!=''?'active':''}}" @tap="switchFilter" data-name="total">总价</view>                
+                </view>
+                <view class="type-section">
+                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length>0?'active':''}}" @tap="switchFilter" data-name="type">户型</view>                
+                </view>
+                <view class="sort-section">
+                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId !== '' ? 'active': ''}}" @tap="switchFilter" data-name="sort">排序</view>
+                    
+                </view>            
+            </view>    
+            <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
+                    <view class="items {{filter.selectedFilterSection == 'district'? '' : 'invisible'}}">
+                        <view class="wk-tabs">
+                            <view class="tabs-handle">
+                                <view class="{{filter.districtSection.selectedSection == 'district' ? 'on':''}}" data-name="district" @tap="selectDistrictMetro"><text>区域</text></view>
+                                <view class="{{filter.districtSection.selectedSection == 'metro' ? 'on':''}}" @tap="selectDistrictMetro" data-name="metro"><text>地铁</text></view>                            
+                            </view>
+                            <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='district'?'visible':''}}">
+                            <view class="left">
+                                <view @tap="selectDistrict" class="item {{item.id == filter.districtSection.selectedDistrictId? 'active':''}}" wx:for-key="{{item.id}}" wx:for="{{filter.districtSection.districts}}" data-id="{{item.id}}">{{item.name}}</view>
+                            </view>
+                            <view class="right" wx:for-key="{{item.id}}" wx:for="{{filter.districtSection.districts}}" wx:if="{{filter.districtSection.selectedDistrictId == item.id}}">
+                                <block wx:for-key="{{*this}}" wx:for="{{item.subList}}" wx:for-item="sl">
+                                    <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{sl.towns}}" wx:for-item="town" wx:for-key="{{*this}}" data-type="{{town.type}}" data-id="{{town.id}}">{{town.name}}</view>
+                                </block>                            
+                            </view>
+                            </view>
+                            <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='metro'?'visible':''}}">
+                            <view class="left">
+                                <view @tap="selectMetro" class="item {{item.id == filter.districtSection.selectedMetroId? 'active':''}}" wx:for-key="{{item.id}}" wx:for="{{filter.districtSection.metros}}" data-id="{{item.id}}">{{item.name}}</view>
+                            </view>
+                            <view class="right" wx:for="{{*this}}" wx:for="{{filter.districtSection.metros}}" wx:if="{{filter.districtSection.selectedMetroId == item.id}}">
+                                <view @tap="selectStation" class="item {{station.id==filter.districtSection.selectedStationId?'active':''}}" wx:for="{{item.subList}}" wx:for-item="station" data-id="{{station.id}}">{{station.name}}</view>
+                            </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="items totals {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
+                        <view @tap="selectTotal" class="{{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:for-key="{{item.id}}">{{item.text}}</view>
+                        <view class="custom">
+                            <view class="input"><input data-name="start" @input="typeTotal" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="input"><input @input="typeTotal" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="button" @tap="clickCustomPrice">确定</view>
+                        </view>
+                    </view>
+                    <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
+                        <view @tap="selectType" class="item {{item.active?'active':''}}" wx:for="{{filter.typeSection.items}}" wx:for-key="{{item.id}}" data-id="{{item.id}}">{{item.text}}</view> 
+                        <view class="confirm">
+                            <button class="button" @tap="clickConfirmType">确定</button>
+                        </view>
+                    </view>
+                    <view class="items sorts {{filter.selectedFilterSection == 'sort'? '' : 'invisible'}}">
+                        <view @tap="selectSort" class="{{filter.sortSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.sortSection.items}}" wx:for-key="{{item.id}}" data-id="{{item.id}}">{{item.text}}</view>
+                    </view>
+                </view>    
         </view>
     </view>
-    <view class="current-price">
-        <view class="title">今日{{city && city.cityName}}房价</view>
-        <view class="price">{{unitPrice}}</view>
-        <view class="detail" @tap="gotoPriceList">查看 <text class="iconfont icon-next"></text></view>
-    </view>
-    <view class="filter">
-        <view class="district-total-type-sort">
-            <view class="district-section">
-                <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{filter.districtSection.selectedDistrictId != '' && filter.districtSection.selectedDistrictId != '-1' && filter.districtSection.selectedMetroId != '-1' && filter.districtSection.selectedMetroId != '' ? 'active' : ''}}" @tap="switchFilter" data-name="district">区域</view>                
-            </view>            
-            <view class="total-section">
-                <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId!=''?'active':''}}" @tap="switchFilter" data-name="total">总价</view>                
-            </view>
-            <view class="type-section">
-                <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length>0?'active':''}}" @tap="switchFilter" data-name="type">户型</view>                
-            </view>
-            <view class="sort-section">
-                <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId !== '' ? 'active': ''}}" @tap="switchFilter" data-name="sort">排序</view>
-                
-            </view>            
-        </view>    
-        <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
-                <view class="items {{filter.selectedFilterSection == 'district'? '' : 'invisible'}}">
-                    <view class="wk-tabs">
-                        <view class="tabs-handle">
-                            <view class="{{filter.districtSection.selectedSection == 'district' ? 'on':''}}" data-name="district" @tap="selectDistrictMetro"><text>区域</text></view>
-                            <view class="{{filter.districtSection.selectedSection == 'metro' ? 'on':''}}" @tap="selectDistrictMetro" data-name="metro"><text>地铁</text></view>                            
-                        </view>
-                        <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='district'?'visible':''}}">
-                           <view class="left">
-                            <view @tap="selectDistrict" class="item {{item.id == filter.districtSection.selectedDistrictId? 'active':''}}" wx:for="{{filter.districtSection.districts}}" data-id="{{item.id}}">{{item.name}}</view>
-                           </view>
-                           <view class="right" wx:for="{{filter.districtSection.districts}}" wx:if="{{filter.districtSection.selectedDistrictId == item.id}}">
-                            <block wx:for="{{item.subList}}" wx:for-item="sl">
-                                <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{sl.towns}}" wx:for-item="town" data-type="{{town.type}}" data-id="{{town.id}}">{{town.name}}</view>
-                            </block>                            
-                           </view>
-                        </view>
-                        <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='metro'?'visible':''}}">
-                           <view class="left">
-                            <view @tap="selectMetro" class="item {{item.id == filter.districtSection.selectedMetroId? 'active':''}}" wx:for="{{filter.districtSection.metros}}" data-id="{{item.id}}">{{item.name}}</view>
-                           </view>
-                           <view class="right" wx:for="{{filter.districtSection.metros}}" wx:if="{{filter.districtSection.selectedMetroId == item.id}}">
-                            <view @tap="selectStation" class="item {{station.id==filter.districtSection.selectedStationId?'active':''}}" wx:for="{{item.subList}}" wx:for-item="station" data-id="{{station.id}}">{{station.name}}</view>
-                           </view>
-                        </view>
-                    </view>
-                </view>
-                <view class="items totals {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
-                    <view @tap="selectTotal" class="{{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:for-key="{{item.id}}">{{item.text}}</view>
-                    <view class="custom">
-                        <view class="input"><input data-name="start" @input="typeTotal" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="input"><input @input="typeTotal" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="button" @tap="clickCustomPrice">确定</view>
-                    </view>
-                </view>
-                <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
-                    <view @tap="selectType" class="item {{item.active?'active':''}}" wx:for="{{filter.typeSection.items}}" data-id="{{item.id}}">{{item.text}}</view> 
-                    <view class="confirm">
-                        <button class="button" @tap="clickConfirmType">确定</button>
-                    </view>
-                </view>
-                <view class="items sorts {{filter.selectedFilterSection == 'sort'? '' : 'invisible'}}">
-                    <view @tap="selectSort" class="{{filter.sortSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.sortSection.items}}" data-id="{{item.id}}">{{item.text}}</view>
-                </view>
-            </view>    
-    </view>
-    </view>
 
-    <view class="esf-items">        
+    <view class="esf-items" style="{{fixed? 'margin-top:190rpx':''}}">        
        <block wx:if="{{items && items.length>0}}">       
-        <view class="house-count {{expand?'expand':''}}">已为您展示附近 {{total}} 套房源</view>     
+        <view class="house-count {{expand?'expand':''}} {{!countVisible? 'invisible':''}}">已为您展示附近 {{total}} 套房源</view>     
         <view class="items"> 
             <repeat for="{{items}}" item="item">
                 <esf :item="item"></esf>
@@ -379,7 +379,8 @@
                 expand: false,
                 showTotal: false,
                 fixed: false,
-                trace: new Trace          
+                trace: new Trace,
+                countVisible: true          
         } ;
         computed = {
             
@@ -577,7 +578,7 @@
            },
            gotoPriceList() {
                this.trace.uv({ eventName: "1209002" });
-               wx.navigateTo('/pages/market/index?cityId='+this.city.cityId);
+               wx.navigateTo({url:'/pages/market/index?cityId='+this.city.cityId});
            },
            clickCover() {
                this.filter.selectedFilterSection = "";
@@ -593,7 +594,7 @@
 
             this.trace.pv({ pageName: "1209" });
 
-           //todo:弹出loading
+           wx.showLoading();
            //定位
            wx.getLocation({
                success: (res)=>{
@@ -639,7 +640,7 @@
                    }
                },
                complete: ()=>{
-                   //todo:消失loading
+                   wx.hideLoading();
                }
            });
         };
@@ -828,7 +829,12 @@
                     setTimeout(()=>{
                         this.expand = false;
                         this.$apply();
+                        setTimeout(()=>{
+                            this.countVisible = false;
+                            this.$apply();
+                        });
                     },4000);
+                    
                 }
                 this.showTotal = false;
                 this.$apply();
@@ -845,22 +851,14 @@
                 this.$apply();
             });
         };
-        onPageScroll(opt) {
-            if(opt.scrollTop > 200) {
-                if(!this.fixed){
-                    this.fixed = true;
-                    this.$apply();
-                }
-            } else {
-                if(this.fixed){
-                    this.fixed = false;
-                    this.$apply();
-                }
-            }
-
-            
-        };
-        
+        onPageScroll(opt) {            
+            if(opt.scrollTop > 10) {            
+                this.fixed = true;
+                    
+            } else {                
+                this.fixed = false;                
+            }            
+        };        
     }
 </script>
 
@@ -915,9 +913,9 @@
         padding: 63rpx 30rpx;
         background-image: linear-gradient(90deg, #64BCF0 6%, rgba(0,125,255,0.82) 91%);
         position: relative;
-        transition: height 2s;
-        -webkit-transition: height 2s;
         height: 144rpx;
+        transition: .5s cubic-bezier(.35,0,.25,1);
+        -webkit-transition: .5s cubic-bezier(.35,0,.25,1);      
         .title {
             font-size: 50rpx;
             line-height: 1;
@@ -992,8 +990,7 @@
                     max-height: 500rpx;
                 }*/
 
-                .items {
-                    transition: all 2s;
+                .items {                    
                     background-color: #fff;
                     /*max-height: 0rpx;
                     overflow: auto;
@@ -1159,30 +1156,36 @@
     .esf-items {
         position: relative;
         background-color: #fff;        
-        height: 100%;       
+        //height: 100%;       
         .house-count {
-            padding: 16rpx 0;
-            font-size: 28rpx;
+            
             line-height: 1;
             color: #4081D6;
-            text-align: center;
-            /*border: 1px solid #E4E4E4;*/            
-            transition: all 4s;
-            -webkit-transition: all 4s;                      
+            text-align: center;                       
+            /*transition: all 4s;
+            -webkit-transition: all 4s;*/
+            transition: 2s cubic-bezier(.35,0,.25,1);
+            -webkit-transition: 2s cubic-bezier(.35,0,.25,1); 
             box-sizing: border-box; 
             vertical-align: middle;
             position: absolute;
             width: 100%;
             background-color: #fff;
             border-bottom: 1px solid #E4E4E4;
+            height: 0;
+            padding: 0;
+            font-size: 0;
             top: -60rpx;
             &.expand {
                top: 0;
+               padding: 16rpx 0;
+               font-size: 28rpx;
+               height: 60rpx;
             }         
         }
 
         .items {
-            padding:0 15rpx;
+            padding:0 30rpx;
             background-color: #fff; 
         }        
     }
@@ -1272,11 +1275,13 @@
         &.fixed{
             width: 100%;
             position: fixed;
+            top: 0;
             .current-price {
+                //display: none;                
+                padding: 0;
                 height: 0rpx;
-                padding: 0rpx;
-                .title,.price,.detail{
-                    font-size: 0rpx;
+                .title, price, .detail {
+                    font-size: 0;
                 }
             }
         }

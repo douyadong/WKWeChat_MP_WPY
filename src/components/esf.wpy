@@ -14,7 +14,7 @@
                 <text>{{item.houseTypeStr}} </text><text>{{item.spaceAreaStr}} </text>|<text> {{item.district}}</text> <text> {{item.town}}</text>                
             </view>
             <view class="tags">            
-                <text class="tag" wx:for-item="tag" wx:for="{{item.tags}}">{{tag}}</text>
+                <text class="tag" wx:for-item="tag" wx:for-key="{{tag}}" wx:for="{{item.tags}}">{{tag}}</text>
             </view>
             <view class="total-unit">
                 <text class="total">{{item.totalPriceStr}}</text>
