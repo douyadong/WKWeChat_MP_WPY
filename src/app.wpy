@@ -16,7 +16,7 @@
                 "pages/estate/detail" ,
                 "pages/estate/comment" ,              
                 "pages/join/index" ,
-                "pages/hinge/index"        
+                "pages/hinge/index"
             ] ,
             "window": {
                 "backgroundTextStyle" : "light" ,

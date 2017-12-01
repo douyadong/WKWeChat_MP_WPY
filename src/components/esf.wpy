@@ -14,7 +14,7 @@
                 <text>{{item.houseTypeStr}} </text><text>{{item.spaceAreaStr}} </text>|<text> {{item.district}}</text> <text> {{item.town}}</text>                
             </view>
             <view class="tags">            
-                <text class="tag" wx:for-item="tag" wx:for="{{item.tags}}">{{tag}}</text>
+                <text class="tag" wx:for-item="tag" wx:key="{{tag}}" wx:for="{{item.tags}}">{{tag}}</text>
             </view>
             <view class="total-unit">
                 <text class="total">{{item.totalPriceStr}}</text>
@@ -36,14 +36,20 @@ export default class Com extends wepy.component {
         trace: new Trace
     } ;
     props = {
+        openType: String,
         bigDataParam: String,
         item: Object        
     };
     methods = {
-        click:function(e){
-            console.log(this.item.bigDataParam);            
+        click:function(e){                
+            console.log(this.openType);      
             this.trace.uv(this.item.bigDataParam);
-            wx.navigateTo({url:"/pages/esf/detail?houseId=" + e.currentTarget.dataset.id});
+            let url = "/pages/esf/detail?houseId=" + e.currentTarget.dataset.id;
+            if(this.openType == 1){
+                wx.navigateTo({url: url});
+            } else {
+                wx.redirectTo({url: url});
+            }
         }
     } ;
     events = {
