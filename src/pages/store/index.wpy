@@ -73,12 +73,12 @@
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          获取接口数据
          -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        getData(storeId){
-            if(storeId){
+        getData(){
+            if(this.storeId){
                 // agent数据获取   10027   43
                 apiDataFilter.request({
                     apiPath : "store.agent",
-                    data : { "storeId" : storeId ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
+                    data : { "storeId" : this.storeId ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
                     successCallback : res => {
                         let agent = res.data ;
                         this.agentTotal = agent.total;
@@ -92,7 +92,7 @@
                 // 周边房价接口调取
                 apiDataFilter.request({
                     apiPath : "store.index",
-                    data : { "dicId" : storeId ,"dicType":5 } ,
+                    data : { "dicId" : this.storeId ,"dicType":5 } ,
                     successCallback : res => {
                         let areaPriceInfo = res.data ;
                         this.apiData.areaPriceInfo = areaPriceInfo;
@@ -102,7 +102,7 @@
                 // 房源接口调取
                 apiDataFilter.request({
                     apiPath : "store.house",
-                    data : { "storeId" : storeId ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
+                    data : { "storeId" : this.storeId ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
                     successCallback : res => {
                         let houseList = res.data ;
                         this.houseTotal = houseList.total;
@@ -126,7 +126,7 @@
             wx.setNavigationBarTitle({
                 title:"悟空找房"
             });
-            this.getData(this.storeId);
+            this.getData();
             this.trace.pv({ pageName:"1208" ,pageParam:{store_id:this.storeId}})
         };
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
