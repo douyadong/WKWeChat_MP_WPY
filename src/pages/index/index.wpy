@@ -83,7 +83,7 @@
 
     <view class="esf-items" style="{{fixed? 'margin-top:190rpx':''}}">        
        <block wx:if="{{items && items.length>0}}">       
-        <view class="house-count {{expand?'expand':''}} {{!countVisible? 'invisible':''}}">已为您展示附近 {{total}} 套房源</view>     
+        <view class="house-count {{expand?'expand':''}} {{!countVisible? 'invisible':''}}">{{totalTipText}}</view>     
         <view class="items"> 
             <repeat for="{{items}}" item="item">
                 <esf :item="item" openType="1"></esf>
@@ -214,7 +214,7 @@
                             id: 9,
                             text: "2000万及以上",
                             start: 2000,
-                            //end: null
+                            end: -1
                         }],// 上海、广州、杭州、苏州、廊坊、南京用这个
         totalOptionsLow: [{
                             id: -1,
@@ -260,7 +260,7 @@
                             id: 8,
                             text: "500万以上",
                             start: 500,
-                            //end: undefined
+                            end: -1
                         }],//其他城市用这个
     }
 
@@ -402,7 +402,9 @@
                 showTotal: false,
                 fixed: false,
                 trace: new Trace,
-                countVisible: true          
+                countVisible: true,
+                showNearText: false,//用来区分加载房源数的文案
+                //manualFilter: false,//是否用户手动筛选附近        
         } ;
         computed = {
             districtDisplayName(){
@@ -475,6 +477,13 @@
                 }
 
                 return str;
+            },
+            totalTipText(){
+                //"共找xx套房源";
+                //"已为您展示附近xx套房源"
+                let str = "共找xx套房源";
+                if(this.showNearText) str = "已为您展示附近xx套房源";
+                return str.replace('xx',this.total);
             }
         } ;
         methods = {
@@ -494,6 +503,8 @@
                 if(this.filter.sortSection.selectedId == sortId) return;
                 this.filter.sortSection.selectedId = sortId;
                 this.filter.selectedFilterSection = "";
+                this.showTotal = true;
+
                 this.refresh();
 
                 if(sortId > 0){//默认排序不埋点
@@ -542,6 +553,7 @@
                 this.filter.selectedFilterSection = "";
                 this.trace.uv({eventName: "1209004"});
                 this.$apply();
+                this.showTotal = true;
                 this.refresh();
             },
             clickCustomPrice() {//点击自定义价钱确定
@@ -613,11 +625,13 @@
                     this.filter.districtSection.meter = this.filter.districtSection.meters.filter((it)=>{
                         return it.id == townId;
                     })[0].meter;
-                    this.filter.districtSection.isNear = true;                    
+                    this.filter.districtSection.isNear = true; 
+                    this.showTotal = false;                   
                 }else{
                     this.filter.districtSection.meter = "";
                     this.filter.districtSection.isNear = false;
                     this.trace.uv({ eventName: "1209003", eventParam: {region_id: this.filter.districtSection.selectedDistrictId, town_id: townId} });
+                    this.showTotal = true;
                 }
                 
                 this.filter.districtSection.selectedTownId = townId;
@@ -657,10 +671,12 @@
 
                 this.trace.uv({ eventName: "1209003", eventParam: { subwary_id: this.filter.districtSection.selectedMetroId, station_id: stationId }});
                 this.filter.selectedFilterSection = "";
+                this.showTotal = true;
                 this.refresh();
             },
            reload() {// 刷新列表
-            this.filter.selectedFilterSection = "";            
+            this.filter.selectedFilterSection = "";  
+            this.showTotal = true;          
             this.refresh();
            },
            clickConfirmType() {// 户型选择确定点击事件
@@ -680,7 +696,7 @@
                 this.filter.selectedFilterSection = "";  
                 this.filter.typeSection.innerSelectedIds = arr;
 
-
+                this.showTotal = true;
                 this.refresh();
            },
            switchCity() {
@@ -694,7 +710,8 @@
            },
            clearEstate() {
                wx.setStorageSync("estate",null);
-               this.estate = null;               
+               this.estate = null;         
+               this.showTotal = true;      
                this.refresh();
            },   
            clearFilter() {//清空筛选条件
@@ -728,7 +745,8 @@
                 this.filter.typeSection.items.forEach((it)=>{
                     it.active = false;
                 })
-                                
+
+                this.showTotal = true;  
                 this.refresh();
            },
            typeTotal(e) {
@@ -772,7 +790,7 @@
                             data.data.isLocated = true;//定位成功标志位
                             wx.setStorageSync("city",data.data);
                             wx.setStorageSync("locationCity",data.data);
-                            this.showTotal = true;
+                                                       
                             if(this.city){
                                 if(this.city.cityId != data.data.cityId){//定位的城市不是默认城市
                                     this.city = data.data;                                    
@@ -782,6 +800,10 @@
                             } else {
                                 this.city = data.data;                                
                             }
+                            this.showTotal = true; 
+                            //if(this.firstTime){
+                                this.showNearText = true;
+                            //}
                             this.getDistrictsAndMetro(); 
                             this.$apply();            
                         }                      
@@ -821,6 +843,7 @@
                 }
             }            
 
+            this.showTotal = true;
             this.refresh();                        
         };
         getDistrictsAndMetro() {
@@ -964,7 +987,7 @@
                 townId: townId == "-1"? null: townId,
                 subEstateId: subEstateId,
                 priceStart: this.filter.totalSection.priceStart,
-                priceEnd: this.filter.totalSection.priceEnd,
+                priceEnd: this.filter.totalSection.priceEnd || -1,
                 houseType: this.filter.typeSection.innerSelectedIds.filter((ht)=>{return ht!=0}),
                 offset: offset,
                 pageSize: 20,
@@ -984,6 +1007,9 @@
                 data: params,
                 successCallback: (data)=>{     
                     this.total = data.data && data.data.total || 0;
+                    if(this.total==0 && this.showTotal) {
+                        this.showTotal = false;
+                    }
                     this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0);                    
                     cb && cb(data);                                  
                 },
@@ -1000,16 +1026,19 @@
                 this.items.forEach((item)=>{
                     item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
                 });
+                console.log('showTotal:',this.showTotal);
                 if(this.showTotal){
                     this.expand = true;
+                    this.countVisible = true;
                     setTimeout(()=>{
                         this.expand = false;
                         this.$apply();
                         setTimeout(()=>{
                             this.countVisible = false;
-                            this.$apply();
+                            this.showNearText = false;
+                            this.$apply();                        
                         });
-                    },4000);
+                    },3000);
                     
                 }
                 this.showTotal = false;
@@ -1020,7 +1049,8 @@
         onReachBottom() {//触底加载
             if(this.total <= this.offset) {//已到底
                 return;
-            }                        
+            }   
+            this.showTotal = true;                     
             this.getEsfList(this.offset,(data)=>{                
                 this.items = this.items.concat(data.data.secondHouseListModels);
                 this.$apply();
