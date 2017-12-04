@@ -68,7 +68,7 @@
                 <text class="bd">{{ house.ownerMotivation }}</text>
                 <text class="hd">周边设施</text>
                 <text class="bd">{{ house.aroundSupport }}</text>
-                <view class="panel-more" wx:if="{{ ! pageStates.summaryOptional }}" @tap="spreadOptional">查看更多</view>
+                <!--<view class="panel-more" wx:if="{{ ! pageStates.summaryOptional }}" @tap="spreadOptional">查看更多</view>
                 <view class="optional" wx:if="{{ pageStates.summaryOptional }}">
                     <text class="hd">户型介绍</text>
                     <text class="bd">{{ house.houseTypeDesc }}</text>
@@ -78,7 +78,7 @@
                     <text class="bd">{{ house.taxDesc }}</text>
                     <text class="hd">其他</text>
                     <text class="bd">{{ house.otherIntroduce }}</text>
-                </view>
+                </view>-->
             </block>
         </view>        
     </view>
@@ -156,7 +156,7 @@
         data = {
             pageParams : {} ,  //页面query参数
             pageStates : {  //页面状态值
-                summaryOptional : false //基本信息可选字段现实与否
+                //summaryOptional : false //基本信息可选字段现实与否
             } ,
             house : {} ,  //房源信息
             estate : {} ,  //小区信息
@@ -170,10 +170,12 @@
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             点击基本信息里面的查看更多展开更多选项
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            /*
            spreadOptional : ()=> {
                this.pageStates.summaryOptional = true ;                       
                this.methods.uv( "other" , 1213003 ) ;
            } ,
+           */
            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
            uv埋点方法
            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/

@@ -22,7 +22,7 @@
             <text>将{{ agent.agentName }}的二维码保存到相册</text>
             <image src="{{ agent.agentWChartQRImgUrl }}" mode="aspectFill" lazy-load="true" class="qrcode"></image>
             <text>方法二：</text>
-            <text>复制微信号添加微信号：{{ agent.agentWChatId }}</text>            
+            <text>复制{{ agent.agentName }}的微信号添加微信号：{{ agent.agentWChatId }}</text>            
         </view>
         <view slot="footer" class="modal-footer">
             <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum" data-src="{{ agent.agentWChartQRImgUrl }}">保存到相册</view>
