@@ -196,6 +196,8 @@
             this.trace.pv({ "pageName" : "1067" , "pageParam" : { "house_id" : this.pageParams.houseId } }) ;
         } ; 
         onShow() {
+            let requestData = { "houseId" : this.pageParams.houseId || 1466775 } ;
+            if(this.pageParams.agentId) requestData.agentId = this.pageParams.agentId ;
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             从api接口读取数据
             1. 有相册的houseId : 1466775 , 1466769
@@ -205,7 +207,7 @@
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                  
            adf.request({
                 apiPath : "esf.detail" ,
-                data : { "houseId" : this.pageParams.houseId || 1000653022 } ,
+                data : requestData ,
                 successCallback : (res)=> {                   
                     let apiData = res.data ;
                     this.house = apiData.house ;
