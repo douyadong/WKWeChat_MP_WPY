@@ -21,7 +21,7 @@
                  </repeat>
              </view>
              <view class="store-agent" wx:if="{{condition == 1}}">                
-                <agent :items.sync = "agentList" :eventName="agentEventName"></agent>
+                <agent :items.sync = "agentList" wechatEventName="1208004" telEventName="1208005"></agent>
              </view>
         </view>
     <view class="base-colors"></view>

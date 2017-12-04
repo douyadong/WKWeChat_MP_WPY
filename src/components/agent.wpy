@@ -7,34 +7,36 @@
 -->
 <template lang="wxml">
      <repeat for="{{ items }}" key="index" index="index" item="agent">
-        <view class="agent" @tap="traceAgent(agent.agentId)">
-            <image src="{{ agent.agentHeadImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
-            <view class="tel" @tap="phoning">
+        <view class="agent">
+            <view class="tel" @tap="phoning" data-agentid="{{ agent.agentId }}">
                 <text class="iconfont icon-tel"></text>
                 <text class="memo">电话咨询</text>
             </view>
             <view class="wechat" @tap="addWechat({{agent}})" wx:if="{{ agent.agentWChatId }}">
                 <text class="iconfont icon-wechat"></text>
                 <text class="memo">添加微信</text>
-            </view>        
-            <view class="summary">
-                <text class="name">{{ agent.agentName }}</text>
-                <text class="seniority">加入悟空：{{ agent.serviceYears }}</text>
-            </view>        
+            </view>
+            <navigator @tap="traceAgent(agent.agentId)" url="/pages/agent/index?agentId={{ agent.agentId }}" class="{{ ! agent.agentWChatId ? 'no-wechat' : '' }}">
+                <image src="{{ agent.agentHeadImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
+                <view class="summary">
+                    <text class="name">{{ agent.agentName }}</text>
+                    <text class="seniority">加入悟空：{{ agent.serviceYears }}</text>
+                </view>
+            </navigator>
         </view>
     </repeat>
     <!--添加微信的modal框-->
     <modal :visibility.sync="addWechatModalVisibility" title="添加微信">
        <view slot="body">
            <text>方法一：</text>
-            <text>将{{ agent.agentName }}的二维码保存到相册</text>
-           <image src="{{ agent.agentWChartQRImgUrl }}" mode="aspectFill" lazy-load="true" class="qrcode"></image>
+            <text>将{{ currentAgent.agentName }}的二维码保存到相册</text>
+           <image src="{{ currentAgent.agentWChartQRImgUrl }}" mode="aspectFill" lazy-load="true" class="qrcode"></image>
            <text>方法二：</text>
-           <text>复制微信号添加微信号：{{ agent.agentWChatId }}</text>
+           <text>复制微信号添加微信号：{{ currentAgent.agentWChatId }}</text>
         </view>
         <view slot="footer" class="modal-footer">
-               <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum" data-src="{{ agent.agentWChartQRImgUrl }}">保存到相册</view>
-               <view class="wk-btn wk-btn-transparent" @tap="copyWechat" data-wechatid="{{ agent.agentWChatId }}">复制微信号</view>
+               <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum" data-src="{{ currentAgent.agentWChartQRImgUrl }}">保存到相册</view>
+               <view class="wk-btn wk-btn-transparent" @tap="copyWechat" data-wechatid="{{ currentAgent.agentWChatId }}">复制微信号</view>
         </view>
     </modal>
     <!--tips框-->
@@ -52,8 +54,9 @@
             items : {
                 type: Array,
                 default: 'null'
-            },
-            eventName: Array   // 埋点点击事件传值  数组(第一个为微信埋点参数，第二个为手机埋点参数)
+            } ,
+            wechatEventName : String ,
+            telEventName : String
         } ;
         components = {
             modal : Modal ,
@@ -62,9 +65,9 @@
         data = {
             addWechatModalVisibility : false ,  //添加微信modal框的显示状态
             tipsVisibility : false ,  //tips框的显示状态
-            tipsMsg : "",
-            agent:"",
-            trace: new Trace()
+            tipsMsg : "" , 
+            currentAgent : {} ,  //当前操作经纪人
+            trace : new Trace  //埋点api
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          提示信息
@@ -79,27 +82,26 @@
             点击电话咨询调用的方法
             先通过调用短接号的接口拿到经纪人的短接号码，然后再拨打出去
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-            phoning : ()=> {
+            phoning : (event)=> {                    
                 adf.request({
                     apiPath : "common.dial" ,
-                    data : { "agentId" : this.agent.agentId } ,
+                    data : { "agentId" : event.currentTarget.dataset.agentid } ,
                     successCallback : (res)=> {
-                        wx.makePhoneCall({ phoneNumber : res.data.dial + "," + res.data.digits }) ;
+                        if( res.data.dial && res.data.digits )  wx.makePhoneCall({ phoneNumber : res.data.dial + "," + res.data.digits }) ;
                     } ,
                     errorCallback : (res)=> {                        
                         this.tips(res) ;
                     }
                 }) ;
-                this.trace.uv({eventName:this.eventName[1]})
+                this.trace.uv({ eventName : this.telEventName }) ; 
             } ,
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             点击添加微信调用的方法
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             addWechat : (agent)=> {
                 this.addWechatModalVisibility = true ;
-                this.agent = agent;
-                this.$apply();
-                this.trace.uv({eventName:this.eventName[0]})
+                this.currentAgent = agent ;
+                this.trace.uv({ eventName : this.wechatEventName }) ;
             } ,
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             保存到相册调用方法
@@ -129,8 +131,10 @@
                         }
                     }
                 }) ;
-
-                this.trace.uv({eventName:1218004})
+                /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                事件埋点
+                -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                this.trace.uv({ eventName : 1218004 }) ;
             } ,
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             复制微信号调用方法
@@ -145,13 +149,13 @@
                         this.tips("经纪人微信号复制失败！") ;
                     }
                 }) ;
-                this.trace.uv({eventName:1218005})
-            },
+                this.trace.uv({ eventName : 1218005 }) ;
+            } ,
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             点击条目的埋点函数
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
            traceAgent(agent_id){
-             this.trace.uv({eventName:1208003,eventParam:{agent_id:agent_id}})
+             this.trace.uv({ eventName : 1208003 , eventParam : { agent_id : agent_id } }) ;
            }
         } ;
         onLoad() {
@@ -167,12 +171,33 @@
         border-bottom : 1rpx solid @light-line-gray-color ;
         .clearfix() ;
         padding : @common-margin 0 @common-margin 0 ;
-        &>image {
-            display : block ;
-            float : left ;
-            height : 120rpx ;
-            width : 120rpx ;
-        }
+        navigator {
+            .clearfix() ;
+             margin-right : 240rpx ;
+             &.no-wechat {
+                 margin-right : 120rpx ;
+             }
+            &>image {
+                display : block ;
+                float : left ;
+                height : 120rpx ;
+                width : 120rpx ;
+            }
+            .summary {
+                margin-left : 150rpx ;
+                text {
+                    display : block ;
+                }
+                .name {
+                    font-size : @large-font-size ;
+                    line-height : 70rpx ;
+                }
+                .seniority {
+                    color : @light-font-color ;
+                    font-size : @default-font-size ;
+                }
+            }
+        }        
         .tel , .wechat {
             float : right ;
             margin-top : @gap-dimension ;
@@ -196,20 +221,7 @@
             border-right : 1rpx solid @primary-color ;
             color : @success-color ;
         }
-        .summary {
-            margin : 0 240rpx 0 150rpx ;
-            text {
-                display : block ;
-            }
-            .name {
-                font-size : @large-font-size ;
-                line-height : 70rpx ;
-            }
-            .seniority {
-                color : @light-font-color ;
-                font-size : @default-font-size ;
-            }
-        }
+        
     }
     .wk-modal {
         .modal-body {
