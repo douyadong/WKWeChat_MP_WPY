@@ -20,7 +20,7 @@
         <view class="house-number">TA的房源<text class="number">[{{houseInfo.total}}套]</text></view>
         <view class="house-list">
             <repeat for="{{houseInfo.secondHouseListModels}}" key="index" index="index" item="item">
-                <esf :item="item"></esf>
+                <esf :item="item" :agentId="agentId"></esf>
             </repeat>
         </view>
     </view>
@@ -44,6 +44,7 @@
         data = {
             pageParams:{},//页面query参数;
             agentInfo: '',//经纪人身份信息;
+            agentId : "" ,  //二手房组件里面要传经纪人id，组件传值绑定只能是一层
             houseInfo:'',//房源列表信息;
             trace:new Trace, //埋点api
             pageStates:{
@@ -64,6 +65,7 @@
         onLoad(options) {
             let self=this;
             self.pageParams=options;
+            this.agentId = this.pageParams.agentId ;
             self.$apply();
             //页面刚开始加载时获取的房源列表信息;
             apiDataFilter.request({
