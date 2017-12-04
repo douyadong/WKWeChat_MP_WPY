@@ -12,7 +12,7 @@
         <view class="city-search" >
             <view class="city" @tap="switchCity">{{city.cityName}}</view>
             <view class="search-box">
-                <text class="iconfont icon-search"></text><view class="estate-address" @tap="searchEstate">{{estate && estate.displayStr || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.keyword ? '':'invisible'}}" @tap="clearEstate"></text>
+                <text class="iconfont icon-search"></text><view class="estate-address" @tap="searchEstate">{{estate && estate.keyword || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.keyword ? '':'invisible'}}" @tap="clearEstate"></text>
             </view>
         </view>
         <view class="current-price">
@@ -40,7 +40,7 @@
                         <view class="wk-tabs">
                             <view class="tabs-handle">
                                 <view class="{{filter.districtSection.selectedSection == 'district' ? 'on':''}}" data-name="district" @tap="selectDistrictMetro"><text>区域</text></view>
-                                <view class="{{filter.districtSection.selectedSection == 'metro' ? 'on':''}}" @tap="selectDistrictMetro" data-name="metro"><text>地铁</text></view>                            
+                                <view wx:if="{{filter.districtSection.metros && filter.districtSection.metros.length > 1}}" class="{{filter.districtSection.selectedSection == 'metro' ? 'on':''}}" @tap="selectDistrictMetro" data-name="metro"><text>地铁</text></view>                            
                             </view>
                             <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='district'?'visible':''}}">
                             <view class="left">
@@ -645,6 +645,7 @@
                 this.refresh();
             },
             selectMetro(e) {//选择具体地铁线路
+                this.estate = null;
                 let metroId = e.currentTarget.dataset.id;
                 let metroText = e.currentTarget.dataset.text;
                 if(this.filter.districtSection.selectedMetroId == metroId) return;
@@ -903,6 +904,7 @@
                                 
 
                                 this.filter.districtSection.metros = d;
+                                //console.log('metros', d);
                                 this.$apply();
                             }
                         });
@@ -974,12 +976,14 @@
             let subEstateId = this.estate && this.estate.realIdObj && this.estate.realIdObj.subEstateId;
             let subwayLine = this.filter.districtSection.innerSelectedMetroId;
             let subwayStation = this.filter.districtSection.innerSelectedStationId;
-            //console.log(this.estate);
-            if(this.estate && this.realIdObj){
+            console.log('estate:',this.estate);
+            if(this.estate && this.estate.realIdObj){
+
                 districtId = this.estate.realIdObj.districtId || districtId;
                 townId = this.estate.realIdObj.townId || townId;
                 subwayLine = this.estate.realIdObj.subwayLine || subwayLine;
                 subwayStation = this.estate.realIdObj.subwayStation;
+                console.log('districtId: ', districtId);
             }
             let params = {
                 cityId: this.city.cityId,
@@ -998,6 +1002,8 @@
                 localLon: this.filter.districtSection.isNear && this.city.lon || "",
                 localLat: this.filter.districtSection.isNear && this.city.lat || ""
             };
+
+            
 
             this.loading = true;
             apiDataFilter.request({
