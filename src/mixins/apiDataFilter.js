@@ -47,9 +47,7 @@ class ApiDataFilter {
             method : requestMethod ,
             data ,
             dataType ,
-            success : function (res) {
-                showNavigationBarLoading && wx.hideNavigationBarLoading() ;
-                if(showLoading) wx.hideLoading() ;
+            success : function (res) {                
                 if ( res.statusCode.toString() === "200" && res.data.status.toString() == apiConf.successStatusCode ) {
                     typeof successCallback == "function" && successCallback(res.data) ;
                 }
@@ -60,12 +58,13 @@ class ApiDataFilter {
                     errorProcesser(res.data.message) ;
                 }
             } ,
-            fail : function (error) {
-                showNavigationBarLoading && wx.hideNavigationBarLoading() ;                
+            fail : function (error) {                             
                 errorProcesser(error) ;                
             } ,
             complete : function () {
-                typeof completeCallback == "function" && completeCallback() ;
+                showNavigationBarLoading && wx.hideNavigationBarLoading() ;
+                if(showLoading) wx.hideLoading() ;
+                typeof completeCallback == "function" && completeCallback() ;                
             }
         }
 

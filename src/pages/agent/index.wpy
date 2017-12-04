@@ -64,6 +64,7 @@
         onLoad(options) {
             let self=this;
             self.pageParams=options;
+            self.$apply();
             //页面刚开始加载时获取的房源列表信息;
             apiDataFilter.request({
                 apiPath : "agent.house" ,
@@ -73,8 +74,9 @@
                     "pageSize":self.pageStates.pageSize, 
                     } ,
                 successCallback:function(res){
+                    console.log(res)
                     self.houseInfo=res.data;
-                    self.pageStates.pageIndex += (res.secondHouseListModels&& res.secondHouseListModels.length || 0);
+                    self.pageStates.pageIndex += (res.data.secondHouseListModels&& res.data.secondHouseListModels.length || 0);
                     self.houseInfo.secondHouseListModels.forEach((item)=>{
                         item.bigDataParam = {eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.pageParams.agentId}};
                     });
@@ -95,16 +97,16 @@
             // 页面埋点;
             self.trace.pv({"pageName" : "1218","pageParam":{"agent_id":self.pageParams.agentId}})
         };
-        onReachBottom(options) {
+        onReachBottom() {
             // 页面上拉触发该函数用于滚动加载数据
             //经纪人房源信息;
             let self=this;
-            // 判断房源是否加载完毕;
-            if(self.houseInfo.total!=self.houseInfo.secondHouseListModels.length){
+            // 判断房源是否加载完毕;self.houseInfo.total
+            if(self.pageStates.pageIndex<self.houseInfo.total){
                  apiDataFilter.request({
                     apiPath : "agent.house",
                     data : { 
-                        "agentId":options.agentId,
+                        "agentId":self.pageParams.agentId,
                         "pageIndex":self.pageStates.pageIndex,
                         "pageSize":self.pageStates.pageSize, 
                     } ,
@@ -174,7 +176,7 @@
         // 房源列表;
         .house-list {
             // .clearfix();
-            padding-left: 30rpx;
+            padding : 0 30rpx;
         }
     }
 </style>
