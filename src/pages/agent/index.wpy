@@ -74,6 +74,7 @@
                     "pageSize":self.pageStates.pageSize, 
                     } ,
                 successCallback:function(res){
+                    console.log(res)
                     self.houseInfo=res.data;
                     self.pageStates.pageIndex += (res.data.secondHouseListModels&& res.data.secondHouseListModels.length || 0);
                     self.houseInfo.secondHouseListModels.forEach((item)=>{
