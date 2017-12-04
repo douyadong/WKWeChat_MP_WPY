@@ -74,7 +74,7 @@
          获取接口数据
          -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         getData(storeId){
-            if(storeId && dicId){
+            if(storeId){
                 // agent数据获取   10027   43
                 apiDataFilter.request({
                     apiPath : "store.agent",
@@ -122,12 +122,12 @@
 
         };
         onLoad(option) {
-            this.storeId = option.storeId;
+            this.storeId = option.storeId || 10027;
             wx.setNavigationBarTitle({
                 title:"悟空找房"
             });
-            this.getData(option.storeId);
-            this.trace.pv({ pageName:"1208" ,pageParam:option.storeId})
+            this.getData(this.storeId);
+            this.trace.pv({ pageName:"1208" ,pageParam:{store_id:this.storeId}})
         };
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          滚动条滚动函数
