@@ -425,7 +425,7 @@
                     str = this.filter.districtSection.innerSelectedStationText;
                 }
 
-                return str;
+                return str == '不限' : '区域': str;
             },
             totalDisplayName(){
                 let str = "总价";
@@ -626,7 +626,7 @@
                         return it.id == townId;
                     })[0].meter;
                     this.filter.districtSection.isNear = true; 
-                    this.showTotal = false;                   
+                    this.showTotal = true;                   
                 }else{
                     this.filter.districtSection.meter = "";
                     this.filter.districtSection.isNear = false;
@@ -982,8 +982,8 @@
                 districtId = this.estate.realIdObj.districtId || districtId;
                 townId = this.estate.realIdObj.townId || townId;
                 subwayLine = this.estate.realIdObj.subwayLine || subwayLine;
-                subwayStation = this.estate.realIdObj.subwayStation;
-                console.log('districtId: ', districtId);
+                subwayStation = this.estate.realIdObj.subwayStation || subwayStation;
+                //console.log('districtId: ', districtId);
             }
             let params = {
                 cityId: this.city.cityId,
@@ -996,8 +996,8 @@
                 offset: offset,
                 pageSize: 20,
                 orderType: this.filter.sortSection.selectedId,
-                subwayLine: this.filter.districtSection.selectedMetroId,
-                subwayStation: this.filter.districtSection.selectedStationId,
+                subwayLine: subwayLine,
+                subwayStation: subwayStation,
                 endMetres: this.filter.districtSection.isNear && this.filter.districtSection.meter || "",
                 localLon: this.filter.districtSection.isNear && this.city.lon || "",
                 localLat: this.filter.districtSection.isNear && this.city.lat || ""
