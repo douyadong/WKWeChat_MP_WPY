@@ -23,17 +23,16 @@
         <view class="filter">
             <view class="district-total-type-sort">
                 <view class="district-section">
-                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{filter.districtSection.selectedDistrictId != '' && filter.districtSection.selectedDistrictId != '-1' && filter.districtSection.selectedMetroId != '-1' && filter.districtSection.selectedMetroId != '' ? 'active' : ''}}" @tap="switchFilter" data-name="district">区域</view>        
+                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{filter.districtSection.selectedDistrictId != '' && filter.districtSection.selectedDistrictId != '-1' && filter.districtSection.selectedMetroId != '-1' && filter.districtSection.selectedMetroId != '' ? 'active' : ''}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view>        
                 </view>            
                 <view class="total-section">
-                    <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId!=''?'active':''}}" @tap="switchFilter" data-name="total">总价</view>                
+                    <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{totalDisplayName!='总价'?'active':''}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view>                
                 </view>
                 <view class="type-section">
-                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length>0?'active':''}}" @tap="switchFilter" data-name="type">户型</view>                
+                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length>0?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
                 </view>
                 <view class="sort-section">
-                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId !== '' ? 'active': ''}}" @tap="switchFilter" data-name="sort">排序</view>
-                    
+                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId !== '' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
                 </view>            
             </view>    
             <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
@@ -124,14 +123,16 @@
     </view>
           
     <!--定位失败的modal框-->
-    <modal :visibility.sync="tipsVisibility" title="定位失败">
+    <modal :visibility.sync="modalVisibility" title="定位失败">
         <view slot="body">            
             <view style="text-align: center">请手动选择您的城市</view>
         </view>
         <view slot="footer" class="modal-footer">
             <view class="wk-btn wk-btn-transparent" @tap="switchCity">去选择</view>            
         </view>
-    </modal>    
+    </modal>   
+
+    <tips :visibility.sync="tipsVisibility" :msg="tipsMsg"></tips> 
 </template>
 
 <script>
@@ -140,6 +141,7 @@
     import apiDataFilter from "../../mixins/apiDataFilter";    
     import Trace from "../../mixins/trace";
     import Modal from "../../components/modal";
+    import Tips from "../../components/tips";
 
     const DEFAULT = {
         selectedDistrictId: "",
@@ -269,7 +271,8 @@
         } ;
         components = {            
             esf: Esf,
-            modal: Modal
+            modal: Modal,
+            tips: Tips
         } ; 
         data = {  
                 city: null/*{
@@ -348,7 +351,8 @@
                             text: "五室及以上",
                             active: false
                         }],
-                        selectedIds: DEFAULT.selectedTypeIds
+                        selectedIds: DEFAULT.selectedTypeIds,
+                        innerSelectedIds: DEFAULT.selectedTypeIds
                     },
                     sortSection: {
                         items: [{
@@ -379,6 +383,7 @@
                 reachBottom: false,              
                 items: [],
                 tipsVisibility: false,
+                modalVisibility: false,
                 tipsMsg: "",
                 expand: false,
                 showTotal: false,
@@ -387,7 +392,62 @@
                 countVisible: true          
         } ;
         computed = {
-            
+            districtDisplayName(){
+                let str = "区域";
+                
+
+                return str;
+            },
+            totalDisplayName(){
+                let str = "总价";
+                let id = this.filter.totalSection.selectedId;                
+                if(id){
+                    let item = this.filter.totalSection.items.filter((t)=>{ return t.id == id});                    
+                    if(item.length > 0){
+                        str = item[0].text;
+                    }
+                }else if(this.filter.totalSection.customStartPrice || this.filter.totalSection.customEndPrice){
+                    if(this.filter.totalSection.customStartPrice > 0 && !this.filter.totalSection.customEndPrice){
+                        str = this.filter.totalSection.customStartPrice + "万以上";
+                    } else if(this.filter.totalSection.customStartPrice > 0 && !this.filter.totalSection.customEndPrice){
+                        str = this.filter.totalSection.customEndPrice + "万以下";
+                    }else {
+                        str = this.filter.totalSection.customStartPrice + "万-" + this.filter.totalSection.customEndPrice + "万";
+                    }                    
+                }
+
+                return str;
+            },
+            typeDisplayName(){
+                let str = "户型";
+                if(this.filter.typeSection.innerSelectedIds.length > 0) {
+                    let item = this.filter.typeSection.items.filter((t)=>{
+                        return this.filter.typeSection.innerSelectedIds.filter((x)=>{
+                            return x == t.id;
+                        }).length > 0;
+                    });
+                    if(item.length == 1){
+                        str = item[0].text;
+                    } else {
+                        str = "多选";
+                    }                    
+                }
+
+                return str;
+            },
+            sortDisplayName(){
+                let str = "排序";
+                if(this.filter.sortSection.selectedId != ''){
+                    let item = this.filter.sortSection.items.filter((t)=>{
+                        return t.id == this.filter.sortSection.selectedId;
+                    });
+                    if(item.length > 0){
+                        str = item[0].text;
+                    }
+                }
+
+                return str;
+            }
         } ;
         methods = {
            switchFilter(e) { //切换筛选条件事件处理函数
@@ -458,6 +518,32 @@
             },
             clickCustomPrice() {//点击自定义价钱确定
                 this.filter.totalSection.selectedId = "";
+                let start = this.filter.totalSection.customStartPrice;
+                let end = this.filter.totalSection.customEndPrice;
+                if(start != ''){
+                    start = parseInt(start);
+                    if(start != this.filter.totalSection.customStartPrice){
+                        this.tipsVisibility = true;
+                        this.tipsMsg = "价格区间必须为整数";                        
+                        return;
+                    }
+                }
+
+                if(end != ''){
+                    end = parseInt(end);
+                    if(end != this.filter.totalSection.customEndPrice){
+                        this.tipsVisibility = true;
+                        this.tipsMsg = "价格区间必须为整数";                        
+                        return;
+                    }
+                }
+
+                if(start > end) {
+                    this.tipsVisibility = true;
+                    this.tipsMsg = "最大值不能小于最小值";                        
+                    return;
+                }
+
                 this.filter.totalSection.priceStart = this.filter.totalSection.customStartPrice;
                 this.filter.totalSection.priceEnd = this.filter.totalSection.customEndPrice;
                 this.filter.selectedFilterSection = "";
@@ -527,9 +613,11 @@
            },
            clickConfirmType() {// 户型选择确定点击事件
                 let tmpA = [];
+                let arr = [];
                 this.filter.typeSection.items.forEach(function(t){
                     if(t.active) {
                         tmpA.push(t.text);
+                        arr.push(t.id);
                     }
                 });
                 if(tmpA.length == 0){
@@ -537,7 +625,10 @@
                 }
                 let str = tmpA.join(',');
                 this.trace.uv({eventName: "1209007", eventParam:{room: str}});
-                this.filter.selectedFilterSection = "";            
+                this.filter.selectedFilterSection = "";  
+                this.filter.typeSection.innerSelectedIds = arr;
+
+
                 this.refresh();
            },
            switchCity() {
@@ -568,6 +659,7 @@
                 this.filter.totalSection.customStartPrice = "";
                 this.filter.totalSection.customEndPrice = "";
                 this.filter.typeSection.selectedIds = [];
+                this.filter.typeSection.innerSelectedIds = [];
                 this.filter.sortSection.selectedId = DEFAULT.selectedSortId;
                 this.filter.typeSection.items.forEach((it)=>{
                     it.active = false;
@@ -647,11 +739,11 @@
                },
                complete: ()=>{
                    wx.hideLoading();
-                   this.firstTime = true;
+                   this.firstTime = false;                   
                }
            });
         };
-        onShow(options) {
+        onShow(options) {            
             if(this.firstTime) {
                 return;
             }
@@ -693,7 +785,7 @@
                         } else {
                             this.filter.totalSection.items = DEFAULT.totalOptionsLow;
                         }
-                        console.log('city: ', this.city);
+                        //console.log('city: ', this.city);
 
                         this.$apply();
 
@@ -789,7 +881,7 @@
             let districtId = !this.filter.districtSection.isNear &&this.filter.districtSection.selectedDistrictId || "";
             let townId = !this.filter.districtSection.isNear && this.filter.districtSection.selectedTownId || "";
             let subEstateId = this.estate && this.estate.realIdObj && this.estate.realIdObj.subEstateId;
-            console.log(this.estate);
+            //console.log(this.estate);
             if(this.estate){
                 districtId = this.estate.realIdObj.districtId;
                 townId = this.estate.realIdObj.townId;
@@ -801,7 +893,7 @@
                 subEstateId: subEstateId,
                 priceStart: this.filter.totalSection.priceStart,
                 priceEnd: this.filter.totalSection.priceEnd,
-                houseType: this.filter.typeSection.selectedIds.filter((ht)=>{return ht!=0}),
+                houseType: this.filter.typeSection.innerSelectedIds.filter((ht)=>{return ht!=0}),
                 offset: offset,
                 pageSize: 20,
                 orderType: this.filter.sortSection.selectedId,
@@ -869,7 +961,10 @@
             } else {                
                 this.fixed = false;                
             }            
-        };        
+        };    
+        onShareAppMessage() {
+            return { "title" : "买房就找悟空找房" }
+        };    
     }
 </script>
 
@@ -956,29 +1051,38 @@
             padding: 30rpx 0;
             box-shadow: 0 2rpx 2rpx #E4E4E4;
             margin-bottom: 4rpx;
+            padding-right: 26rpx;
                      
             .flex();            
 
             .district-section, .total-section, .type-section, .sort-section {
                 text-align: center;
                 .flex(1);
-                position: relative;                
+                position: relative; 
+                .text-ellipsis();               
                 view{
                   .text-ellipsis();                                  
-                }                
+                }            
+                padding-right: 20rpx;    
                 .closed::after {
+                    background-color: #fff;
                     content: '';
-                    .triangle-down(9rpx, #7C7C7C);
-                    vertical-align: middle !important;
+                    position: absolute;
+                    top: 20rpx;
+                    .triangle-down(9rpx, #7C7C7C);                    
+                    right: 0;                    
                 }
 
                 .open {
                     color:  #4081D6;
                     &::after {
+                        background-color: #fff;
+                        position: absolute;
+                        right: 0;
+                        top: 20rpx;
                         color:  #4081D6;
                         content: '';
-                        .triangle-up(9rpx, #7C7C7C);                        
-                        vertical-align: middle !important;
+                        .triangle-up(9rpx, #7C7C7C);                                                
                     }
                 }
             }                                              
