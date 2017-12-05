@@ -64,10 +64,10 @@
                     </view>
                     <view class="items totals {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
                         <view class="list">
-                        <view @tap="selectTotal" class="{item {filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:key="{{item.id}}">{{item.text}}</view>
+                        <view @tap="selectTotal" class="item {{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:key="{{item.id}}">{{item.text}}</view>
                         </view>
                         <view class="custom">
-                            <view class="item input"><input data-name="start" @input="typeTotal" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="item input"><input @input="typeTotal" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="item button" @tap="clickCustomPrice">确定</view>
+                            <view class="item input"><input data-name="start" @input="typeTotalStart" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="item input"><input @input="typeTotalEnd" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="item button" @tap="clickCustomPrice">确定</view>
                         </view>
                     </view>
                     <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
@@ -265,6 +265,39 @@
                             end: -1
                         }],//其他城市用这个
     }
+
+    let debounce = function(func, wait, immediate) {
+        var timeout, args, context, timestamp, result;
+
+        var later = function() {
+        var last = Date.now() - timestamp;
+
+        if (last < wait && last >= 0) {
+            timeout = setTimeout(later, wait - last);
+        } else {
+            timeout = null;
+            if (!immediate) {
+            result = func.apply(context, args);
+            if (!timeout) context = args = null;
+            }
+        }
+        };
+
+        return function() {
+            context = this;
+            args = arguments;
+            timestamp = Date.now();
+            var callNow = immediate && !timeout;
+            if (!timeout) timeout = setTimeout(later, wait);
+            if (callNow) {
+                result = func.apply(context, args);
+                context = args = null;
+            }
+
+            return result;
+        };
+    };
+
 
     export default class Index extends wepy.page {
         config = {            
@@ -597,9 +630,10 @@
                 this.filter.totalSection.priceEnd = this.filter.totalSection.customEndPrice;
                 this.filter.selectedFilterSection = "";
 
-                this.trace.uv({eventName: "1209005", eventParam: {price_range: this.filter.totalSection.customStartPrice + "-" + this.filter.totalSection.customEndPrice}});
-
+                this.showTotal = true;                
                 this.refresh();
+
+                this.trace.uv({eventName: "1209005", eventParam: {price_range: this.filter.totalSection.customStartPrice + "-" + this.filter.totalSection.customEndPrice}});
             },
             selectDistrictMetro(e) {//切换区域或地铁
                 let name = e.currentTarget.dataset.name;
@@ -711,6 +745,7 @@
            },
            switchCity() {
                this.filter.selectedFilterSection = "";
+               this.modalVisibility = false;
                wx.navigateTo({url:'/pages/index/city'});
            },
            searchEstate() {               
@@ -761,12 +796,14 @@
                 this.showTotal = true;  
                 this.refresh();
            },
-           typeTotal(e) {
-               let name = e.currentTarget.dataset.name;
+           typeTotalStart: debounce((e)=>{
                let value = e.detail.value;
-               //this.setData('filter.totalSection.' + name=="start"?"customStartPrice":"customEndPrice", value);
-               this.filter.totalSection[name=="start"?"customStartPrice":"customEndPrice"] = value;
-           },
+               this.filter.totalSection.customStartPrice = value;
+           },2000),           
+           typeTotalEnd: debounce((e)=>{
+               let value = e.detail.value; 
+               this.filter.totalSection.customEndPrice = value;
+           },2000),          
            gotoPriceList() {
                this.trace.uv({ eventName: "1209002" });
                wx.navigateTo({url:'/pages/market/index?cityId='+this.city.cityId});
@@ -779,7 +816,8 @@
 
         } ;
         onLoad() {        
-            this.firstTime = true;    
+            this.firstTime = true; 
+            let opened = wx.getStorageSync('opened'); //是否打开过  
             //首次读取storage中是否有city，否则就是默认城市
             this.city = wx.getStorageSync("city") || DEFAULT.city;
             //this.getDistrictsAndMetro();            
@@ -826,8 +864,10 @@
                    if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位
                         this.getDistrictsAndMetro(); 
                    } else {//定位失败                        
-                        this.getDistrictsAndMetro();                        
-                        this.modalVisibility = true;
+                        this.getDistrictsAndMetro();  
+                        if(!opened){
+                            this.modalVisibility = true;
+                        }                        
                         this.$apply();
                    }
                    //this.tipsVisibility = true;
@@ -837,7 +877,8 @@
                },
                complete: ()=>{
                    wx.hideLoading();
-                   this.firstTime = false;                   
+                   this.firstTime = false; 
+                   wx.setStorageSync('opened', true);                  
                }
            });
         };
