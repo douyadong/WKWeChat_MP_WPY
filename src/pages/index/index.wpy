@@ -5,7 +5,7 @@
         1.
         2.        
 -->
-<template lang="wxml">
+<template lang="wxml">    
     <view @tap="clickCover" class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
     </view> 
     <block wx:if="{{isOpenCity}}"><view class="header {{fixed || filter.selectedFilterSection?'fixed':''}}">
@@ -66,8 +66,8 @@
                         <view class="list">
                         <view @tap="selectTotal" class="item {{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:key="{{item.id}}">{{item.text}}</view>
                         </view>
-                        <view class="custom">
-                            <view class="item input"><input data-name="start" @input="typeTotalStart" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="item input"><input @input="typeTotalEnd" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="item button" @tap="clickCustomPrice">确定</view>
+                        <view class="custom" wx:if="{{showCustomPrice}}">
+                            <view class="item input"><input data-name="start" type="number" @input="typeTotalStart"/></view>-<view class="item input"><input type="number" @input="typeTotalEnd" data-name="end"/></view><view class="item button" @tap="clickCustomPrice">确定</view>
                         </view>
                     </view>
                     <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
@@ -309,7 +309,8 @@
             modal: Modal,
             tips: Tips
         } ; 
-        data = {  
+        data = {                  
+                showCustomPrice: true,
                 city: null/*{
                     cityId: 1,
                     cityName: "北京"
@@ -591,10 +592,12 @@
                 this.filter.totalSection.priceEnd = totalItem.end;
                 this.filter.totalSection.customEndPrice = "";
                 this.filter.totalSection.customStartPrice = "";
+                this.showCustomPrice = false;
                 this.filter.selectedFilterSection = "";
                 this.trace.uv({eventName: "1209004"});
                 this.$apply();
                 this.showTotal = true;
+                this.showCustomPrice = true;
                 this.refresh();
             },
             clickCustomPrice() {//点击自定义价钱确定
@@ -718,11 +721,6 @@
                 this.showTotal = true;
                 this.refresh();
             },
-           reload() {// 刷新列表
-            this.filter.selectedFilterSection = "";  
-            this.showTotal = true;          
-            this.refresh();
-           },
            clickConfirmType() {// 户型选择确定点击事件
                 let tmpA = [];
                 let arr = [];
@@ -794,16 +792,21 @@
                 })
 
                 this.showTotal = true;  
+                this.showCustomPrice = false;
+                this.$apply();
+                this.showCustomPrice = true;
                 this.refresh();
            },
-           typeTotalStart: debounce((e)=>{
+           typeTotalStart(e){               
                let value = e.detail.value;
                this.filter.totalSection.customStartPrice = value;
-           },2000),           
-           typeTotalEnd: debounce((e)=>{
+               this.$apply();
+           },           
+           typeTotalEnd(e){
                let value = e.detail.value; 
                this.filter.totalSection.customEndPrice = value;
-           },2000),          
+               this.$apply();
+           },          
            gotoPriceList() {
                this.trace.uv({ eventName: "1209002" });
                wx.navigateTo({url:'/pages/market/index?cityId='+this.city.cityId});
@@ -898,7 +901,7 @@
             }            
 
             this.showTotal = true;
-            this.refresh();                        
+            this.refresh(false);                        
         };
         getDistrictsAndMetro() {
             //判断当前城市是否开通业务
@@ -943,6 +946,7 @@
                             t.active = false;
                         });
                         this.estate = null;
+                        this.showCustomPrice = false;
                         wx.setStorageSync('estate',null);
 
                         //根据城市修改总价筛选
@@ -954,7 +958,7 @@
                         //console.log('city: ', this.city);
 
                         this.$apply();
-
+                        this.showCustomPrice = true;
                         //地铁数据
                         apiDataFilter.request({
                             apiPath: "index.getCitySubwayLines",
@@ -1103,14 +1107,11 @@
                 }
             });     
         };
-        refresh() {//刷新
+        refresh(navigateToTop = true) {//刷新
             this.offset = 0;
             this.reachBottom = false;            
             this.getEsfList(this.offset,(data)=>{
-                this.items = data.data.secondHouseListModels || [];
-                /*this.items.forEach((item)=>{
-                    item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
-                });*/       
+                this.items = data.data.secondHouseListModels || [];      
                 if(this.showTotal){
                     this.expand = true;
                     this.countVisible = true;
@@ -1126,9 +1127,11 @@
                     
                 }
                 this.showTotal = false;
-                wx.pageScrollTo({
-                    scrollTop: 0
-                })  
+                if(navigateToTop){
+                    wx.pageScrollTo({
+                        scrollTop: 0
+                    }); 
+                }
                 this.$apply();
             });
             this.$apply();
