@@ -23,7 +23,7 @@
         <view class="filter">
             <view class="district-total-type-sort">
                 <view class="district-section">
-                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{filter.districtSection.selectedDistrictId != '' && filter.districtSection.selectedDistrictId != '-1' && filter.districtSection.selectedMetroId != '-1' && filter.districtSection.selectedMetroId != '' ? 'active' : ''}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view>        
+                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{districtDisplayName != '区域' ? 'active' : ''}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view>        
                 </view>            
                 <view class="total-section">
                     <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view>                
@@ -425,7 +425,7 @@
                     str = this.filter.districtSection.innerSelectedStationText;
                 }
 
-                return str == '不限' : '区域': str;
+                return str == '不限' ? '区域': str;
             },
             totalDisplayName(){
                 let str = "总价";
@@ -703,11 +703,11 @@
            switchCity() {
                wx.navigateTo({url:'/pages/index/city'});
            },
-           searchEstate() {
-               this.trace.uv({ eventName: "1209001" });
+           searchEstate() {               
                wx.navigateTo({
                    url: "/pages/index/search"
                });
+               this.trace.uv({ eventName: "1209001" });
            },
            clearEstate() {
                wx.setStorageSync("estate",null);
@@ -853,6 +853,10 @@
                 apiPath: "index.getAllCityBusiness",
                 successCallback: (data)=>{                                       
                     let cities = data.data || [];
+                    cities = cities.filter((item)=>{
+                        return item.oldBusiness;
+                    });
+
                     if(cities.filter((item)=>{ return item.cityId == this.city.cityId}).length == 0){
                         this.isOpenCity = false;
                         this.$apply();                                            
@@ -975,10 +979,8 @@
             let townId = !this.filter.districtSection.isNear && this.filter.districtSection.innerSelectedTownId || "";
             let subEstateId = this.estate && this.estate.realIdObj && this.estate.realIdObj.subEstateId;
             let subwayLine = this.filter.districtSection.innerSelectedMetroId;
-            let subwayStation = this.filter.districtSection.innerSelectedStationId;
-            console.log('estate:',this.estate);
+            let subwayStation = this.filter.districtSection.innerSelectedStationId;            
             if(this.estate && this.estate.realIdObj){
-
                 districtId = this.estate.realIdObj.districtId || districtId;
                 townId = this.estate.realIdObj.townId || townId;
                 subwayLine = this.estate.realIdObj.subwayLine || subwayLine;
@@ -1016,7 +1018,12 @@
                     if(this.total==0 && this.showTotal) {
                         this.showTotal = false;
                     }
-                    this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0);                    
+                    this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0);   
+                    if(data.data.secondHouseListModels){
+                        data.data.secondHouseListModels.forEach((item)=>{
+                            item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
+                        });         
+                    }                 
                     cb && cb(data);                                  
                 },
                 completeCallback: ()=>{
@@ -1029,10 +1036,9 @@
             this.reachBottom = false;            
             this.getEsfList(this.offset,(data)=>{
                 this.items = data.data.secondHouseListModels || [];
-                this.items.forEach((item)=>{
+                /*this.items.forEach((item)=>{
                     item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
-                });
-                console.log('showTotal:',this.showTotal);
+                });*/       
                 if(this.showTotal){
                     this.expand = true;
                     this.countVisible = true;
@@ -1057,7 +1063,12 @@
                 return;
             }   
             this.showTotal = true;                     
-            this.getEsfList(this.offset,(data)=>{                
+            this.getEsfList(this.offset,(data)=>{   
+                /*if(data.data.secondHouseListModels){
+                    data.data.secondHouseListModels.forEach((item)=>{
+                        item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
+                    });
+                }*/            
                 this.items = this.items.concat(data.data.secondHouseListModels);
                 this.$apply();
             });
@@ -1104,6 +1115,7 @@
             padding: 12rpx 0rpx 2rpx 30rpx;
             .estate-address {
                 margin-left: 9rpx;
+                width: 100%;
                 &::before {
 
                 }
@@ -1383,27 +1395,24 @@
         position: relative;
         background-color: #fff;        
         //height: 100%;       
-        .house-count {
-            
+        .house-count {            
             line-height: 1;
             color: #4081D6;
-            text-align: center;                       
-            /*transition: all 4s;
-            -webkit-transition: all 4s;*/
+            text-align: center;
             transition: 2s cubic-bezier(.35,0,.25,1);
             -webkit-transition: 2s cubic-bezier(.35,0,.25,1); 
             box-sizing: border-box; 
             vertical-align: middle;
-            position: absolute;
+            //position: absolute;
             width: 100%;
             background-color: #fff;
             border-bottom: 1px solid #E4E4E4;
             height: 0;
             padding: 0;
             font-size: 0;
-            top: -60rpx;
+            //top: -60rpx;
             &.expand {
-               top: 0;
+               //top: 0;
                padding: 16rpx 0;
                font-size: 28rpx;
                height: 60rpx;
