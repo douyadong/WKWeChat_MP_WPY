@@ -36,14 +36,13 @@ export default class Com extends wepy.component {
         trace: new Trace
     } ;
     props = {
-        openType: String,
-        bigDataParam: String,
+        openType: String,        
         item: Object,
         agentId: String       
     };
     methods = {
         click:function(e){                                
-            this.trace.uv(this.item.bigDataParam);
+            if(this.item.bigDataParam) this.trace.uv(this.item.bigDataParam) ;
             let url = "/pages/esf/detail?houseId=" + e.currentTarget.dataset.id;
             if(this.agentId){
                 url += "&agentId=" + this.agentId;

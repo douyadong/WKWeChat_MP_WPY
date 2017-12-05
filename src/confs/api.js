@@ -9,9 +9,8 @@ export default {
     "timeout" : 60 * 1000 ,  //超时请求时间，单位：毫秒
     "successStatusCode" : "1" ,
     "prefix" : {        
-        "test" : "https://minapp-test.yfyk365.com" ,
-        //"test" : "http://10.0.18.79:8118" ,
-        //"test" : "http://10.0.90.92:8080",
+        //"test" : "https://minapp-test.yfyk365.com" ,
+        "test" : "http://10.0.18.79:8118" ,
         "sim" : "https://minapp-sim.yfyk365.com" ,
         "prod" : "https://minapp.yfyk365.com"
     } ,

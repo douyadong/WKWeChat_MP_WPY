@@ -9,13 +9,13 @@
     <view class="estate-detail">
          <swipers :items.sync="imgList"></swipers>
           <summary :estateInfo.sync = "estateInfo"></summary>
-         <view class="wk-panel top-gap">
-             <view class="panel-header">小区评论  <view class="amount" wx:if="{{ commentList}}" @tap="navigatorUrl">{{estateInfo.comment.amount}}<text class="iconfont icon-next"></text></view></view>
+         <view class="wk-panel top-gap" wx:if="{{ commentList}}">
+             <view class="panel-header">小区评论  <view class="amount"  @tap="navigatorUrl">{{estateInfo.comment.amount}}<text class="iconfont icon-next"></text></view></view>
              <view class="panel-body">
-                 <view wx:if=" {{commentList}}">
+                 <view >
                      <comments  :commentList.sync="commentList"></comments>
                  </view>
-                 <view class="nocomment" wx:if="{{!commentList}}">当前暂无评论</view>
+                <!-- <view class="nocomment" wx:if="{{!commentList}}">当前暂无评论</view>-->
              </view>
          </view>
     <qmap wx:if="{{estate.latitude && estate.longitude}}" :estate.sync="estate" :eventName="1214003"></qmap>
