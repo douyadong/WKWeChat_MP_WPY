@@ -5,7 +5,7 @@
         1.
         2.        
 -->
-<template lang="wxml">    
+<template lang="wxml">
     <view @tap="clickCover" class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
     </view> 
     <block wx:if="{{isOpenCity}}"><view class="header {{fixed || filter.selectedFilterSection?'fixed':''}}">
@@ -38,9 +38,9 @@
             <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
                     <view class="items {{filter.selectedFilterSection == 'district'? '' : 'invisible'}}">
                         <view class="wk-tabs">
-                            <view class="tabs-handle">
+                            <view class="tabs-handle" wx:if="{{filter.districtSection.metros && filter.districtSection.metros.length > 1}}">
                                 <view class="{{filter.districtSection.selectedSection == 'district' ? 'on':''}}" data-name="district" @tap="selectDistrictMetro"><text>区域</text></view>
-                                <view wx:if="{{filter.districtSection.metros && filter.districtSection.metros.length > 1}}" class="{{filter.districtSection.selectedSection == 'metro' ? 'on':''}}" @tap="selectDistrictMetro" data-name="metro"><text>地铁</text></view>                            
+                                <view class="{{filter.districtSection.selectedSection == 'metro' ? 'on':''}}" @tap="selectDistrictMetro" data-name="metro"><text>地铁</text></view>                            
                             </view>
                             <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='district'?'visible':''}}">
                             <view class="left">
@@ -53,19 +53,21 @@
                             </view>
                             </view>
                             <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='metro'?'visible':''}}">
-                            <view class="left">
+                            <view  class="left">
                                 <view @tap="selectMetro" class="item {{item.id == filter.districtSection.selectedMetroId? 'active':''}}" wx:key="{{item.id}}" wx:for="{{filter.districtSection.metros}}" data-text="{{item.name}}" data-id="{{item.id}}">{{item.name}}</view>
                             </view>
-                            <view class="right" wx:key="{{*this}}" wx:for="{{filter.districtSection.metros}}" wx:if="{{filter.districtSection.selectedMetroId == item.id}}">
+                            <view  class="right" wx:key="{{*this}}" wx:for="{{filter.districtSection.metros}}" wx:if="{{filter.districtSection.selectedMetroId == item.id}}">
                                 <view @tap="selectStation" class="item {{station.id==filter.districtSection.selectedStationId?'active':''}}" wx:for="{{item.subList}}" wx:for-item="station" data-text="{{station.name}}" data-id="{{station.id}}" wx:key="station.id">{{station.name}}</view>
                             </view>
                             </view>
                         </view>
                     </view>
                     <view class="items totals {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
-                        <view @tap="selectTotal" class="{{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:key="{{item.id}}">{{item.text}}</view>
+                        <view class="list">
+                        <view @tap="selectTotal" class="{item {filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:key="{{item.id}}">{{item.text}}</view>
+                        </view>
                         <view class="custom">
-                            <view class="input"><input data-name="start" @input="typeTotal" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="input"><input @input="typeTotal" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="button" @tap="clickCustomPrice">确定</view>
+                            <view class="item input"><input data-name="start" @input="typeTotal" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="item input"><input @input="typeTotal" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="item button" @tap="clickCustomPrice">确定</view>
                         </view>
                     </view>
                     <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
@@ -81,7 +83,7 @@
         </view>
     </view>
 
-    <view class="esf-items" style="{{fixed? 'margin-top:190rpx':''}}">        
+    <view class="esf-items" style="{{fixed? 'margin-top:190rpx;':''}} {{filter.selectedFilterSection!=''? 'overflow:hidden;height: 100%': ''}}">        
        <block wx:if="{{items && items.length>0}}">       
         <view class="house-count {{expand?'expand':''}} {{!countVisible? 'invisible':''}}">{{totalTipText}}</view>     
         <view class="items"> 
@@ -413,7 +415,7 @@
                     str = this.filter.districtSection.innerSelectedDistrictText;
                 }
 
-                if(this.filter.districtSection.innerSelectedTownText != ''){
+                if(this.filter.districtSection.innerSelectedTownText != '' && this.filter.districtSection.innerSelectedTownText != '不限'){
                     str = this.filter.districtSection.innerSelectedTownText;
                 }
 
@@ -421,7 +423,7 @@
                     str = this.filter.districtSection.innerSelectedMetroText;
                 }
 
-                if(this.filter.districtSection.innerSelectedStationText != ''){
+                if(this.filter.districtSection.innerSelectedStationText != '' &&this.filter.districtSection.innerSelectedStationText != '不限'){
                     str = this.filter.districtSection.innerSelectedStationText;
                 }
 
@@ -487,6 +489,12 @@
             }
         } ;
         methods = {
+            touchmove(e){
+                console.log('touchmove');
+                console.log(e);
+                //e.stopPropagation();
+                return false;
+            },
            switchFilter(e) { //切换筛选条件事件处理函数
                let name = e.currentTarget.dataset.name;
                if(this.filter.selectedFilterSection == name){
@@ -646,6 +654,7 @@
             },
             selectMetro(e) {//选择具体地铁线路
                 this.estate = null;
+                wx.setStorageSync('estate',null);
                 let metroId = e.currentTarget.dataset.id;
                 let metroText = e.currentTarget.dataset.text;
                 if(this.filter.districtSection.selectedMetroId == metroId) return;
@@ -701,9 +710,11 @@
                 this.refresh();
            },
            switchCity() {
+               this.filter.selectedFilterSection = "";
                wx.navigateTo({url:'/pages/index/city'});
            },
            searchEstate() {               
+               this.filter.selectedFilterSection = '';
                wx.navigateTo({
                    url: "/pages/index/search"
                });
@@ -753,6 +764,7 @@
            typeTotal(e) {
                let name = e.currentTarget.dataset.name;
                let value = e.detail.value;
+               //this.setData('filter.totalSection.' + name=="start"?"customStartPrice":"customEndPrice", value);
                this.filter.totalSection[name=="start"?"customStartPrice":"customEndPrice"] = value;
            },
            gotoPriceList() {
@@ -870,10 +882,27 @@
                         this.filter.districtSection.selectedTownText = '';
                         this.filter.districtSection.selectedMetroText = '';
                         this.filter.districtSection.selectedStationText = '';
+                        this.filter.districtSection.innserSelectedDistrictId = DEFAULT.selectedDistrictId;
+                        this.filter.districtSection.innserSelectedTownId = DEFAULT.selectedTownId;
+                        this.filter.districtSection.innerSelectedMetroId = DEFAULT.selectedMetroId;
+                        this.filter.districtSection.innerSelectedStationId = DEFAULT.selectedStationId;
+                        this.filter.districtSection.innerSelectedDistrictText = '';
+                        this.filter.districtSection.innerSelectedTownText = '';
+                        this.filter.districtSection.innerSelectedMetroText = '';
+                        this.filter.districtSection.innerSelectedStationText = '';
 
                         this.filter.totalSection.selectedId = DEFAULT.selectedTotalId;
-                        //this.filter.typeSection.selectedId = DEFAULT.selectedTypeId;
-                        //this.filter.sortSection.selectedId = DEFAULT.selectedSortId;
+                        this.filter.typeSection.selectedIds = [];
+                        this.filter.sortSection.selectedId = DEFAULT.selectedSortId;
+                        this.filter.totalSection.priceStart = "";
+                        this.filter.totalSection.priceEnd = "";
+                        this.filter.totalSection.customStartPrice = "";
+                        this.filter.totalSection.customEndPrice = "";
+                        this.filter.typeSection.items.forEach((t)=>{
+                            t.active = false;
+                        });
+                        this.estate = null;
+                        wx.setStorageSync('estate',null);
 
                         //根据城市修改总价筛选
                         if(DEFAULT.highCities.filter((item)=>{ return item == this.city.cityId;}).length > 0){
@@ -955,7 +984,6 @@
                             }
                         });
 
-
                         apiDataFilter.request({
                             apiPath: "index.getAreaPriceInfo",
                             data: {
@@ -974,6 +1002,9 @@
             });            
         };
         getEsfList(offset,cb) {
+            if(this.filter.selectedFilterSection != '') {
+                return;
+            }
             //收集查询条件    
             let districtId = !this.filter.districtSection.isNear &&this.filter.districtSection.innerSelectedDistrictId || "";
             let townId = !this.filter.districtSection.isNear && this.filter.districtSection.innerSelectedTownId || "";
@@ -992,7 +1023,7 @@
                 districtId: districtId == "-1"?null:districtId,
                 townId: townId == "-1"? null: townId,
                 subEstateId: subEstateId,
-                priceStart: this.filter.totalSection.priceStart,
+                priceStart: this.filter.totalSection.priceStart || 0,
                 priceEnd: this.filter.totalSection.priceEnd || -1,
                 houseType: this.filter.typeSection.innerSelectedIds.filter((ht)=>{return ht!=0}),
                 offset: offset,
@@ -1024,7 +1055,7 @@
                             item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
                         });         
                     }                 
-                    cb && cb(data);                                  
+                    cb && cb(data);                                                  
                 },
                 completeCallback: ()=>{
                     this.loading = false;
@@ -1054,6 +1085,9 @@
                     
                 }
                 this.showTotal = false;
+                wx.pageScrollTo({
+                    scrollTop: 0
+                })  
                 this.$apply();
             });
             this.$apply();
@@ -1301,7 +1335,11 @@
                 .totals {
                     padding-left: 40rpx;
                     padding-right: 40rpx;
-                    view {
+                    .list {
+                        height: 450rpx;
+                        overflow: auto;
+                    }
+                    .item {
                         padding-top: 29rpx;
                         padding-bottom: 29rpx;
                         font-size: 30rpx;
@@ -1356,13 +1394,15 @@
     .district-metro {
         &.visible {
             .flex();
-        }  
+        }        
 
+        height: 500rpx;
         .flex();
         .left {
             .flex(1);
             background-color: #F0F0F0;
             font-size: 30rpx;     
+            overflow: auto;
 
             .item {
                 line-height: 1;
@@ -1378,7 +1418,7 @@
             .flex(1);
             font-size: 30rpx;
             background-color: #fff;
-            
+            overflow: auto;
 
             .item {
                 line-height: 1;
@@ -1405,17 +1445,18 @@
             vertical-align: middle;
             //position: absolute;
             width: 100%;
-            background-color: #fff;
-            border-bottom: 1px solid #E4E4E4;
+            background-color: #fff;            
             height: 0;
             padding: 0;
             font-size: 0;
+            border-bottom: 0px solid #E4E4E4;
             //top: -60rpx;
             &.expand {
                //top: 0;
                padding: 16rpx 0;
                font-size: 28rpx;
                height: 60rpx;
+               border-bottom: 1px solid #E4E4E4;
             }         
         }
 
