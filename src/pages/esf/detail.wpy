@@ -33,6 +33,7 @@
             <text  wx:elif="{{ house.fullYears >= 2 }}">满二</text>
             <text wx:if="{{ house.isSubwayHouse === 1 }}">地铁</text>
             <text wx:if="{{ house.isSchoolHouse === 1 }}">近学校</text>
+            <text wx:if="{{ house.priceHasDown === 1 }}">降价</text>
             <text wx:if="{{ house.isNewOnStore === 1 }}">新上</text>
             <text wx:if="{{ house.orientation === 9 }}">南北通透</text> 
         </view>
