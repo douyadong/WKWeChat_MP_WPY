@@ -42,8 +42,7 @@ export default class Com extends wepy.component {
         agentId: String       
     };
     methods = {
-        click:function(e){                
-            console.log(this.openType);      
+        click:function(e){                                
             this.trace.uv(this.item.bigDataParam);
             let url = "/pages/esf/detail?houseId=" + e.currentTarget.dataset.id;
             if(this.agentId){
@@ -99,7 +98,7 @@ export default class Com extends wepy.component {
                 line-height: 28rpx;
                 color: #000;                
                 background-color: #fff;
-
+                overflow: hidden;
                 .tag {
                     display:  inline-block;
                     border-radius: 6rpx;

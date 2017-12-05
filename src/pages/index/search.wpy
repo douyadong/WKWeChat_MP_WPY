@@ -9,7 +9,7 @@
     <view class="city-search">
         <view class="city">{{city.cityName}}</view>
         <view class="search-box">
-            <text class="iconfont icon-search"></text><input value="{{keyword}}" @input="keywordChange" class="estate-address" placeholder="小区或地址" confirm-type="search"></input><text class="iconfont icon-close {{keyword == ''? 'invisible':''}}" @tap="clearKeyword"></text>
+            <text class="iconfont icon-search"></text><input value="{{keyword}}" @input="keywordChange" class="estate-address" placeholder="搜索小区或地址" focus="true" confirm-type="search"></input><text class="iconfont icon-close {{keyword == ''? 'invisible':''}}" @tap="clearKeyword"></text>
         </view>
     </view>
     <view class="result">       
@@ -127,6 +127,8 @@
         onLoad() {
            this.city = wx.getStorageSync("city");
            this.trace.pv({ pageName: "1211" });
+
+
            //wx.setStorageSync('estate',null);
         };
         generateHighlight(str, subStr) {//拆分成用于高亮显示的数据结构
