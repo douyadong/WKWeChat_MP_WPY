@@ -54,8 +54,11 @@
 
             apiDataFilter.request({
                 apiPath: "index.getAllCityBusiness",
-                successCallback: (data)=>{                                       
-                    this.cities = data.data || [];
+                successCallback: (data)=>{         
+                    let cities =  (data.data || []).filter((item)=>{
+                        return item.oldBusiness;
+                    });
+                    this.cities = cities;                    
                     this.$apply();                    
                 }
             });            
