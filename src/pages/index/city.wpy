@@ -8,7 +8,7 @@
 <template lang="wxml">
     <view>
        <view class="header">定位城市</view>
-       <view class="item">{{city.cityName}}</view>
+       <view class="item">{{city && city.cityName || '定位失败'}}</view>
        <view class="header">全部城市</view>
        <view>
         <view @tap="selectCity" wx:key="{{item.cityId}}" class="item" wx:for="{{cities}}" data-city="{{item}}">{{item.cityName}}</view>

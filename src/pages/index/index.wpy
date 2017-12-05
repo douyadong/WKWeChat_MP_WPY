@@ -719,6 +719,10 @@
                 this.trace.uv({ eventName: "1209003", eventParam: { subwary_id: this.filter.districtSection.selectedMetroId, station_id: stationId }});
                 this.filter.selectedFilterSection = "";
                 this.showTotal = true;
+
+                this.estate = null;
+                wx.setStorageSync('estate',null);
+
                 this.refresh();
             },
            clickConfirmType() {// 户型选择确定点击事件
@@ -867,10 +871,11 @@
                    if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位
                         this.getDistrictsAndMetro(); 
                    } else {//定位失败                        
-                        this.getDistrictsAndMetro();  
+                        //this.getDistrictsAndMetro();  
                         if(!opened){
                             this.modalVisibility = true;
-                        }                        
+                        }
+                        this.city = null;          
                         this.$apply();
                    }
                    //this.tipsVisibility = true;
@@ -889,7 +894,27 @@
             if(this.firstTime) {
                 return;
             }
-            this.estate = wx.getStorageSync("estate"); 
+            this.estate = wx.getStorageSync("estate");
+            if(this.estate) {//清空区域板块和地铁筛选条件
+                this.filter.districtSection.selectedDistrictId = "";
+                this.filter.districtSection.selectedDistrictText = "";
+                this.filter.districtSection.selectedTownId = "";
+                this.filter.districtSection.selectedTownText = "";
+                this.filter.districtSection.selectedMetroId = "";
+                this.filter.districtSection.selectedMetroText = "";
+                this.filter.districtSection.selectedStationId = "";
+                this.filter.districtSection.selectedStationText = "";
+                this.filter.districtSection.isNear = false;
+                this.filter.districtSection.innerSelectedDistrictId = "";
+                this.filter.districtSection.innerSelectedDistrictText = "";
+                this.filter.districtSection.innerSelectedTownId = "";
+                this.filter.districtSection.innerSelectedTownText = "";
+                this.filter.districtSection.innerSelectedMetroId = "";
+                this.filter.districtSection.innerSelectedMetroText = "";
+                this.filter.districtSection.innerSelectedStationId = "";
+                this.filter.districtSection.innerSelectedStationText = "";
+            }
+
             let city = wx.getStorageSync("city");
             if(city && this.city) {
                 if(city.cityId != this.city.cityId) {//城市发生了变化，重新加载区域地铁和房源
