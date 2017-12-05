@@ -37,7 +37,7 @@
             <text wx:if="{{ house.orientation === 9 }}">南北通透</text> 
         </view>
         <view class="cols2-fields">
-            <view><text class="hd">单价</text><text class="bd">{{ house.unitPrice }}元 / ㎡</text></view>
+            <view><text class="hd">单价</text><text class="bd">{{ house.unitPrice }}</text></view>
             <view><text class="hd">年代</text><text class="bd">{{ house.completed }} 年</text></view>
             <view><text class="hd">类型</text><text class="bd">{{ house.houseType }}</text></view>
             <view><text class="hd">楼层</text><text class="bd">{{ house.floorDesc }}</text></view>
