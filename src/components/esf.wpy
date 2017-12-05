@@ -9,9 +9,9 @@
     <view class="esf-item" @tap="click" data-id="{{item.houseId}}">
         <image src="{{ item.firstImgUrl }}?x-oss-process=image/resize,w_120"></image>
         <view class="info">
-            <view class="title">{{item.houseTitle}}</view>
+            <view class="title">{{item.houseTitle&&'太长太长的标题太长太长的标题太长太长的标题太长太长的标题太长太长的标题太长太长的标题太长太长的标题太长太长的标题太长太长的标题'}}</view>
             <view class="type-area-district-town">
-                <text>{{item.houseTypeStr}} </text><text>{{item.spaceAreaStr}} </text>|<text> {{item.district}}</text> <text> {{item.town}}</text>                
+                <text>{{item.houseTypeStr}} </text><text>{{item.spaceAreaStr}} </text>|<text> {{item.district}}</text> <text> {{item.town}} 太长太长的标题太长太长的标题太长太长的标题太长太长的标题太长太长的标题太长太长的标题太长太长的标题</text>                
             </view>
             <view class="tags" wx:if="{{item.tags && item.tags.length}}">            
                 <text class="tag" wx:for-item="tag" wx:key="{{tag}}" wx:for="{{item.tags}}">{{tag}}</text>
@@ -36,14 +36,13 @@ export default class Com extends wepy.component {
         trace: new Trace
     } ;
     props = {
-        openType: String,
-        bigDataParam: String,
+        openType: String,        
         item: Object,
         agentId: String       
     };
     methods = {
         click:function(e){                                
-            this.trace.uv(this.item.bigDataParam);
+            if(this.item.bigDataParam) this.trace.uv(this.item.bigDataParam) ;
             let url = "/pages/esf/detail?houseId=" + e.currentTarget.dataset.id;
             if(this.agentId){
                 url += "&agentId=" + this.agentId;
@@ -83,14 +82,16 @@ export default class Com extends wepy.component {
             .title {
                 font-size: 32rpx;
                 color: #000;
-                line-height: 36rpx;
-                .text-ellipsis();
+                //line-height: 36rpx;
+                .text-ellipsis();                
             }
             .type-area-district-town {
                 margin-top: 14rpx;
                 font-size: 22rpx;
-                line-height: 24rpx;
+                //line-height: 24rpx;
                 color: #7C7C7C;
+                overflow: hidden;
+                .text-ellipsis();
             }
             .tags {
                 margin-top: 20rpx;
@@ -103,7 +104,7 @@ export default class Com extends wepy.component {
                     display:  inline-block;
                     border-radius: 6rpx;
                     background-color: #F5F5F5;
-                    padding: 6rpx 15rpx;
+                    padding: 6rpx 14rpx;
 
                     & + .tag {
                         margin-left: 10rpx;
