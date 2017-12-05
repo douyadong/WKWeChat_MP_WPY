@@ -9,7 +9,7 @@
     <view class="city-search">
         <view class="city">{{city.cityName}}</view>
         <view class="search-box">
-            <text class="iconfont icon-search"></text><input value="{{keyword}}" @input="keywordChange" class="estate-address" placeholder="搜索小区或地址" focus="true" confirm-type="search"></input><text class="iconfont icon-close {{keyword == ''? 'invisible':''}}" @tap="clearKeyword"></text>
+            <text class="iconfont icon-search"></text><input value="{{keyword}}" @input="keywordChange" class="estate-address" placeholder="搜索小区或地址" focus="true" confirm-type="search" bindconfirm="confirm"></input><text class="iconfont icon-close {{keyword == ''? 'invisible':''}}" @tap="clearKeyword"></text>
         </view>
     </view>
     <view class="result">       
@@ -43,7 +43,7 @@
         components = {            
             
         } ; 
-        data = {
+        data = {            
             keyword: "",
             lastKeyword: "",
             city: {                
@@ -63,6 +63,7 @@
                     this.lastKeyword = keyword;
                     apiDataFilter.request({
                         apiPath: "index.acWord",
+                        showLoading: false,
                         data: {
                             cityId: this.city.cityId,
                             keyword: keyword,
@@ -115,9 +116,20 @@
                this.keyword = '';               
            },
            selectEstate(e) {
-               wx.setStorageSync("estate", e.currentTarget.dataset.item);
-               console.log(e.currentTarget.dataset.item);
-               this.trace.uv({eventName: "1211001", eventParam:{estate_id: e.currentTarget.dataset.item.value, choice_content: e.currentTarget.dataset.item.displayStr}});
+               let item = e.currentTarget.dataset.item;
+
+               wx.setStorageSync("estate", item);               
+               this.trace.uv({eventName: "1211001", eventParam:{estate_id: item.subEstateId || item.showId, choice_content: item.keyword}});
+               wx.navigateBack();
+           },
+           confirm(e) {
+               //let = e.currentTarget.dataset.item;
+               if(!this.items || this.items.length == 0){
+                   return;
+               }
+               let item = this.items[0];
+               wx.setStorageSync("estate", item);               
+               this.trace.uv({eventName: "1211001", eventParam:{estate_id: item.subEstateId || item.showId, choice_content: item.keyword}});
                wx.navigateBack();
            }
         } ;
@@ -178,7 +190,8 @@
             .estate-address {
                 line-height: 1;                
                 margin-left: 10rpx;   
-                font-size: 26rpx;             
+                font-size: 26rpx;     
+                width: 100%;        
                 &::before {
 
                 }

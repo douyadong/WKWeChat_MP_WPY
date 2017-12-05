@@ -11,7 +11,7 @@
         <view class="info">
             <view class="title">{{item.houseTitle}}</view>
             <view class="type-area-district-town">
-                <text>{{item.houseTypeStr}} </text><text>{{item.spaceAreaStr}} </text>|<text> {{item.district}}</text> <text> {{item.town}}</text>                
+                <text>{{item.houseTypeStr}} </text><text>{{item.spaceAreaStr}} </text>|<text> {{item.district}}</text> <text> {{item.town}} </text>                
             </view>
             <view class="tags" wx:if="{{item.tags && item.tags.length}}">            
                 <text class="tag" wx:for-item="tag" wx:key="{{tag}}" wx:for="{{item.tags}}">{{tag}}</text>
@@ -82,15 +82,16 @@ export default class Com extends wepy.component {
             .title {
                 font-size: 32rpx;
                 color: #000;
-                line-height: 36rpx;
-                .text-ellipsis();
+                //line-height: 36rpx;
+                .text-ellipsis();                
             }
             .type-area-district-town {
                 margin-top: 14rpx;
                 font-size: 22rpx;
-                line-height: 24rpx;
+                //line-height: 24rpx;
                 color: #7C7C7C;
                 overflow: hidden;
+                .text-ellipsis();
             }
             .tags {
                 margin-top: 20rpx;

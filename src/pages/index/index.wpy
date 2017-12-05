@@ -5,7 +5,7 @@
         1.
         2.        
 -->
-<template lang="wxml">
+<template lang="wxml">    
     <view @tap="clickCover" class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
     </view> 
     <block wx:if="{{isOpenCity}}"><view class="header {{fixed || filter.selectedFilterSection?'fixed':''}}">
@@ -64,10 +64,10 @@
                     </view>
                     <view class="items totals {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
                         <view class="list">
-                        <view @tap="selectTotal" class="{item {filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:key="{{item.id}}">{{item.text}}</view>
+                        <view @tap="selectTotal" class="item {{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:key="{{item.id}}">{{item.text}}</view>
                         </view>
-                        <view class="custom">
-                            <view class="item input"><input data-name="start" @input="typeTotal" value="{{filter.totalSection.customStartPrice}}"/></view>-<view class="item input"><input @input="typeTotal" data-name="end" value="{{filter.totalSection.customEndPrice}}"/></view><view class="item button" @tap="clickCustomPrice">确定</view>
+                        <view class="custom" wx:if="{{showCustomPrice}}">
+                            <view class="item input"><input data-name="start" type="number" @input="typeTotalStart"/></view>-<view class="item input"><input type="number" @input="typeTotalEnd" data-name="end"/></view><view class="item button" @tap="clickCustomPrice">确定</view>
                         </view>
                     </view>
                     <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
@@ -266,6 +266,39 @@
                         }],//其他城市用这个
     }
 
+    let debounce = function(func, wait, immediate) {
+        var timeout, args, context, timestamp, result;
+
+        var later = function() {
+        var last = Date.now() - timestamp;
+
+        if (last < wait && last >= 0) {
+            timeout = setTimeout(later, wait - last);
+        } else {
+            timeout = null;
+            if (!immediate) {
+            result = func.apply(context, args);
+            if (!timeout) context = args = null;
+            }
+        }
+        };
+
+        return function() {
+            context = this;
+            args = arguments;
+            timestamp = Date.now();
+            var callNow = immediate && !timeout;
+            if (!timeout) timeout = setTimeout(later, wait);
+            if (callNow) {
+                result = func.apply(context, args);
+                context = args = null;
+            }
+
+            return result;
+        };
+    };
+
+
     export default class Index extends wepy.page {
         config = {            
             navigationBarTitleText: "悟空找房",
@@ -276,7 +309,8 @@
             modal: Modal,
             tips: Tips
         } ; 
-        data = {  
+        data = {                  
+                showCustomPrice: true,
                 city: null/*{
                     cityId: 1,
                     cityName: "北京"
@@ -558,10 +592,12 @@
                 this.filter.totalSection.priceEnd = totalItem.end;
                 this.filter.totalSection.customEndPrice = "";
                 this.filter.totalSection.customStartPrice = "";
+                this.showCustomPrice = false;
                 this.filter.selectedFilterSection = "";
                 this.trace.uv({eventName: "1209004"});
                 this.$apply();
                 this.showTotal = true;
+                this.showCustomPrice = true;
                 this.refresh();
             },
             clickCustomPrice() {//点击自定义价钱确定
@@ -597,9 +633,10 @@
                 this.filter.totalSection.priceEnd = this.filter.totalSection.customEndPrice;
                 this.filter.selectedFilterSection = "";
 
-                this.trace.uv({eventName: "1209005", eventParam: {price_range: this.filter.totalSection.customStartPrice + "-" + this.filter.totalSection.customEndPrice}});
-
+                this.showTotal = true;                
                 this.refresh();
+
+                this.trace.uv({eventName: "1209005", eventParam: {price_range: this.filter.totalSection.customStartPrice + "-" + this.filter.totalSection.customEndPrice}});
             },
             selectDistrictMetro(e) {//切换区域或地铁
                 let name = e.currentTarget.dataset.name;
@@ -682,13 +719,12 @@
                 this.trace.uv({ eventName: "1209003", eventParam: { subwary_id: this.filter.districtSection.selectedMetroId, station_id: stationId }});
                 this.filter.selectedFilterSection = "";
                 this.showTotal = true;
+
+                this.estate = null;
+                wx.setStorageSync('estate',null);
+
                 this.refresh();
             },
-           reload() {// 刷新列表
-            this.filter.selectedFilterSection = "";  
-            this.showTotal = true;          
-            this.refresh();
-           },
            clickConfirmType() {// 户型选择确定点击事件
                 let tmpA = [];
                 let arr = [];
@@ -711,6 +747,7 @@
            },
            switchCity() {
                this.filter.selectedFilterSection = "";
+               this.modalVisibility = false;
                wx.navigateTo({url:'/pages/index/city'});
            },
            searchEstate() {               
@@ -759,14 +796,21 @@
                 })
 
                 this.showTotal = true;  
+                this.showCustomPrice = false;
+                this.$apply();
+                this.showCustomPrice = true;
                 this.refresh();
            },
-           typeTotal(e) {
-               let name = e.currentTarget.dataset.name;
+           typeTotalStart(e){               
                let value = e.detail.value;
-               //this.setData('filter.totalSection.' + name=="start"?"customStartPrice":"customEndPrice", value);
-               this.filter.totalSection[name=="start"?"customStartPrice":"customEndPrice"] = value;
-           },
+               this.filter.totalSection.customStartPrice = value;
+               this.$apply();
+           },           
+           typeTotalEnd(e){
+               let value = e.detail.value; 
+               this.filter.totalSection.customEndPrice = value;
+               this.$apply();
+           },          
            gotoPriceList() {
                this.trace.uv({ eventName: "1209002" });
                wx.navigateTo({url:'/pages/market/index?cityId='+this.city.cityId});
@@ -779,7 +823,8 @@
 
         } ;
         onLoad() {        
-            this.firstTime = true;    
+            this.firstTime = true; 
+            let opened = wx.getStorageSync('opened'); //是否打开过  
             //首次读取storage中是否有city，否则就是默认城市
             this.city = wx.getStorageSync("city") || DEFAULT.city;
             //this.getDistrictsAndMetro();            
@@ -826,8 +871,11 @@
                    if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位
                         this.getDistrictsAndMetro(); 
                    } else {//定位失败                        
-                        this.getDistrictsAndMetro();                        
-                        this.modalVisibility = true;
+                        //this.getDistrictsAndMetro();  
+                        if(!opened){
+                            this.modalVisibility = true;
+                        }
+                        this.city = null;          
                         this.$apply();
                    }
                    //this.tipsVisibility = true;
@@ -837,7 +885,8 @@
                },
                complete: ()=>{
                    wx.hideLoading();
-                   this.firstTime = false;                   
+                   this.firstTime = false; 
+                   wx.setStorageSync('opened', true);                  
                }
            });
         };
@@ -845,7 +894,27 @@
             if(this.firstTime) {
                 return;
             }
-            this.estate = wx.getStorageSync("estate"); 
+            this.estate = wx.getStorageSync("estate");
+            if(this.estate) {//清空区域板块和地铁筛选条件
+                this.filter.districtSection.selectedDistrictId = "";
+                this.filter.districtSection.selectedDistrictText = "";
+                this.filter.districtSection.selectedTownId = "";
+                this.filter.districtSection.selectedTownText = "";
+                this.filter.districtSection.selectedMetroId = "";
+                this.filter.districtSection.selectedMetroText = "";
+                this.filter.districtSection.selectedStationId = "";
+                this.filter.districtSection.selectedStationText = "";
+                this.filter.districtSection.isNear = false;
+                this.filter.districtSection.innerSelectedDistrictId = "";
+                this.filter.districtSection.innerSelectedDistrictText = "";
+                this.filter.districtSection.innerSelectedTownId = "";
+                this.filter.districtSection.innerSelectedTownText = "";
+                this.filter.districtSection.innerSelectedMetroId = "";
+                this.filter.districtSection.innerSelectedMetroText = "";
+                this.filter.districtSection.innerSelectedStationId = "";
+                this.filter.districtSection.innerSelectedStationText = "";
+            }
+
             let city = wx.getStorageSync("city");
             if(city && this.city) {
                 if(city.cityId != this.city.cityId) {//城市发生了变化，重新加载区域地铁和房源
@@ -857,7 +926,7 @@
             }            
 
             this.showTotal = true;
-            this.refresh();                        
+            this.refresh(false);                        
         };
         getDistrictsAndMetro() {
             //判断当前城市是否开通业务
@@ -902,6 +971,7 @@
                             t.active = false;
                         });
                         this.estate = null;
+                        this.showCustomPrice = false;
                         wx.setStorageSync('estate',null);
 
                         //根据城市修改总价筛选
@@ -913,7 +983,7 @@
                         //console.log('city: ', this.city);
 
                         this.$apply();
-
+                        this.showCustomPrice = true;
                         //地铁数据
                         apiDataFilter.request({
                             apiPath: "index.getCitySubwayLines",
@@ -1062,14 +1132,11 @@
                 }
             });     
         };
-        refresh() {//刷新
+        refresh(navigateToTop = true) {//刷新
             this.offset = 0;
             this.reachBottom = false;            
             this.getEsfList(this.offset,(data)=>{
-                this.items = data.data.secondHouseListModels || [];
-                /*this.items.forEach((item)=>{
-                    item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
-                });*/       
+                this.items = data.data.secondHouseListModels || [];      
                 if(this.showTotal){
                     this.expand = true;
                     this.countVisible = true;
@@ -1085,9 +1152,11 @@
                     
                 }
                 this.showTotal = false;
-                wx.pageScrollTo({
-                    scrollTop: 0
-                })  
+                if(navigateToTop){
+                    wx.pageScrollTo({
+                        scrollTop: 0
+                    }); 
+                }
                 this.$apply();
             });
             this.$apply();

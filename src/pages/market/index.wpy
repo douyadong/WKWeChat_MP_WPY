@@ -103,7 +103,8 @@
     @import "../../less/mixins.less";
     // 今日房价
     .hd {
-        background: url(http://img.wkzf.com/b262848128334e3daab102eb97e1b747);
+        background: url(http://img.wkzf.com/b262848128334e3daab102eb97e1b747) no-repeat;
+        background-size: 100% 100%;
         color: white;
         height: 270rpx;
         padding: 0 30rpx;
