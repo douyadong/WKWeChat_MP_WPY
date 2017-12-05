@@ -90,6 +90,7 @@ export default class Com extends wepy.component {
                 font-size: 22rpx;
                 line-height: 24rpx;
                 color: #7C7C7C;
+                overflow: hidden;
             }
             .tags {
                 margin-top: 20rpx;
@@ -102,7 +103,7 @@ export default class Com extends wepy.component {
                     display:  inline-block;
                     border-radius: 6rpx;
                     background-color: #F5F5F5;
-                    padding: 6rpx 15rpx;
+                    padding: 6rpx 14rpx;
 
                     & + .tag {
                         margin-left: 10rpx;
