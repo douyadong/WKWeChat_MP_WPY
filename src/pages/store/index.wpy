@@ -17,7 +17,7 @@
         <view class="content" style="margin-top: {{ lessenShow == true? 260:0}}rpx;">
              <view class="store-house" wx:if="{{condition == 0}}">
                  <repeat for="{{apiData.houseList}}" key="index" index="index" item="item">
-                      <house :item ="item" ></house>
+                      <house :item ="item" openType="1"></house>
                  </repeat>
              </view>
              <view class="store-agent" wx:if="{{condition == 1}}">                
@@ -122,7 +122,7 @@
 
         };
         onLoad(option) {
-            this.storeId = option.storeId || 10027;
+            this.storeId = option.storeId || 257 ;
             wx.setNavigationBarTitle({
                 title:"悟空找房"
             });

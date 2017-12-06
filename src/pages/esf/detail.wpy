@@ -33,6 +33,7 @@
             <text  wx:elif="{{ house.fullYears >= 2 }}">满二</text>
             <text wx:if="{{ house.isSubwayHouse === 1 }}">地铁</text>
             <text wx:if="{{ house.isSchoolHouse === 1 }}">近学校</text>
+            <text wx:if="{{ house.priceHasDown === 1 }}">降价</text>
             <text wx:if="{{ house.isNewOnStore === 1 }}">新上</text>
             <text wx:if="{{ house.orientation === 9 }}">南北通透</text> 
         </view>
@@ -95,7 +96,7 @@
         </navigator>
         <block wx:if="{{ estate.sameEstateHouseAmount }}">
             <view class="hr"></view>
-            <navigator class="total-item" url="/pages/esf/list?type=onsale&subEstateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213006 )">
+            <navigator class="total-item" url="/pages/esf/list?type=onsale&subEstateId={{ estate.subEstateId }}" open-type="redirect" @tap="uv( 'estate' , 1213006 )">
                 <text>在售房源</text>
                 <view>
                     <text>{{ estate.sameEstateHouseAmount || 0 }} 套</text>
@@ -122,7 +123,7 @@
                 <esf :item.sync="item"></esf>
             </repeat>
         </view>
-        <view class="panel-more">
+        <view class="panel-more" wx:if="{{ sameTownTotalCount > 5 }}">
             <navigator url="/pages/esf/list?type=similar&houseId={{ house.houseId }}">查看更多</navigator>
         </view>
     </view>
@@ -195,7 +196,7 @@
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             页面埋点
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/            
-            this.trace.pv({ "pageName" : "1067" , "pageParam" : { "house_id" : this.pageParams.houseId } }) ;
+            this.trace.pv({ "pageName" : "1213" , "pageParam" : { "house_id" : this.pageParams.houseId , "agent_id" : this.pageParams.agentId } }) ;
         } ; 
         onShow() {
             let requestData = { "houseId" : this.pageParams.houseId || 1466775 } ;
@@ -221,10 +222,14 @@
                     this.sameTownHouseList.forEach((item)=>{
                         item.bigDataParam = { eventName : "1213008" , eventParam : { house_id : item.houseId } } ;
                     }) ;
-                    this.sameTownTotalCount = apiData.sameTownTotalCount ;
+                    this.sameTownTotalCount = apiData.sameTownTotalCount || 0 ;
                     this.agent = apiData.agent ;
                     this.albums = apiData.house.imgList ;
-                    this.$apply() ;                     
+                    this.$apply() ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    设置页面标题
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    wx.setNavigationBarTitle({ title : apiData.house.district + " " + apiData.house.town }) ;        
                 }
             }) ;              
         } ; 
