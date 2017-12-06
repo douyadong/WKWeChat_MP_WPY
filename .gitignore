@@ -6,3 +6,4 @@ src/app.wpy
 .vscode/*
 jsconfig.json
 src/mock/*
+/.wepycache
