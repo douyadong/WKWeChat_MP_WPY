@@ -117,7 +117,7 @@
                     }
                 }) ;
             }else {
-                console.log("缺少参数storeId或者dicId")
+                console.log("缺少参数storeId")
             }
 
         };
