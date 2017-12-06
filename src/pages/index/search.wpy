@@ -172,11 +172,11 @@
             color: #000;            
             .flex-shrink(0);
             padding:10rpx 0;
-            &::after {
+            /*&::after {
                 content: '';
                 vertical-align: middle !important;
                 .triangle-down(8rpx,#7c7c7c);
-            }            
+            }*/           
         }
         .search-box {
             .flex();

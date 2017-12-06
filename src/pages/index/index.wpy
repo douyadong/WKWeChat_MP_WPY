@@ -16,14 +16,14 @@
             </view>
         </view>
         <view class="current-price">
-            <view class="title">今日{{city && city.cityName}}房价</view>
-            <view class="price">{{unitPrice}}</view>
+            <view class="title">今日{{city && city.cityName||''}}房价</view>
+            <view class="price">{{unitPrice||'--'}}</view>
             <view class="detail" @tap="gotoPriceList">查看 <text class="iconfont icon-next"></text></view>
         </view>
         <view class="filter">
             <view class="district-total-type-sort">
                 <view class="district-section">
-                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{districtDisplayName != '区域' ? 'active' : ''}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view>        
+                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{districtDisplayName != '区域' ? 'active' : ''}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view>      
                 </view>            
                 <view class="total-section">
                     <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view>                
@@ -800,6 +800,8 @@
                    } else {//定位失败（比如关闭了定位功能）                        
                         if(!opened || !this.city){
                             this.modalVisibility = true;
+                        } else {
+                            this.getDistrictsAndMetro();
                         }
                         //this.city = null;    
                         this.$apply();
@@ -832,15 +834,19 @@
             }
 
             let city = wx.getStorageSync("city");
-            if(city && this.city) {
-                if(city.cityId != this.city.cityId) {//城市发生了变化，重新加载区域地铁和房源
+            if(city) {
+                if(!this.city || city.cityId != this.city.cityId){//城市发生了变化，重新加载区域地铁和房源
                     this.city = city;
                     this.showTotal = true;
                     this.getDistrictsAndMetro();
                     return;
-                }
+                }                
             }            
             
+            if(!this.items || this.items.length == 0){
+                this.refresh();
+            }                        
+
             //this.refresh(false);                        
         };
         getDistrictsAndMetro() {//获取当前城市的区域板块和地铁线路数据
@@ -1015,6 +1021,9 @@
                 },
                 completeCallback: ()=>{
                     this.loading = false;
+                },
+                errorCallback: ()=>{
+                    this.isLoadError = true;
                 }
             });     
         };
@@ -1204,9 +1213,9 @@
                 text-align: center;
                 .flex(1);
                 position: relative; 
-                .text-ellipsis();               
+                .text-ellipsis();  
                 view{
-                  .text-ellipsis();                                  
+                    .text-ellipsis();                     
                 }            
                 padding-right: 20rpx;    
                 .closed::after {
@@ -1326,7 +1335,7 @@
                     padding-left: 40rpx;
                     padding-right: 40rpx;
                     .list {
-                        height: 450rpx;
+                        height: 600rpx;
                         overflow: auto;
                     }
                     .item {
@@ -1386,7 +1395,7 @@
             .flex();
         }        
 
-        height: 500rpx;
+        height: 660rpx;
         .flex();
         .left {
             .flex(1);
