@@ -55,7 +55,8 @@
             } ,
             portraitEventName : String ,
             wechatEventName : String ,
-            telEventName : String
+            telEventName : String ,
+            houseId : String  //二手房详情页面需要传递这个参数
         } ;
         components = {
             modal : Modal ,
@@ -92,9 +93,11 @@
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             phoning : ()=> {
                 this.methods.uv(this.telEventName) ;
+                let requestData = { "agentId" : this.agent.agentId } ;
+                if(this.houseId) requestData.houseId = this.houseId ;
                 adf.request({
                     apiPath : "common.dial" ,
-                    data : { "agentId" : this.agent.agentId } ,
+                    data : requestData ,
                     successCallback : (res)=> {                        
                         wx.makePhoneCall({ phoneNumber : res.data.dial + "," + res.data.digits }) ;
                     } ,
