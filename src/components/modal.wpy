@@ -14,8 +14,8 @@
             </view>
             <slot name="footer"></slot>
         </view>
-        <view class="modal-close">
-            <text class="iconfont icon-close" @tap="closeModal"></text>
+        <view class="modal-close" wx:if="{{!disclosable}}">
+            <text class="iconfont icon-close" @tap="closeModal">{{disclosable}}</text>
         </view>
     </view>
 </template>
@@ -28,6 +28,10 @@
             visibility : {
                 type : Boolean ,
                 twoWay : true
+            },
+            disclosable: {
+                type: Boolean,
+                twoWay: true
             }
         } ;
         data = {
