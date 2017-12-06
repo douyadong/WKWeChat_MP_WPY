@@ -16,7 +16,7 @@
                 <text class="iconfont icon-wechat"></text>
                 <text class="memo">添加微信</text>
             </view>
-            <navigator @tap="traceAgent(agent.agentId)" url="/pages/agent/index?agentId={{ agent.agentId }}" class="{{ ! agent.agentWChatId ? 'no-wechat' : '' }}">
+            <navigator @tap="traceAgent({{ agent.agentId }})" url="/pages/agent/index?agentId={{ agent.agentId }}" class="{{ ! agent.agentWChatId ? 'no-wechat' : '' }}">
                 <image src="{{ agent.agentHeadImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
                 <view class="summary">
                     <text class="name">{{ agent.agentName }}</text>
