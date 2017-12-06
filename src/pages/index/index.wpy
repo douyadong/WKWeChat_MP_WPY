@@ -125,7 +125,7 @@
     </view>
           
     <!--定位失败的modal框-->
-    <modal :visibility.sync="modalVisibility" title="定位失败">
+    <modal :visibility.sync="modalVisibility" :disclosable.sync="trueValue" title="定位失败">
         <view slot="body">            
             <view style="text-align: center">请手动选择您的城市</view>
         </view>
@@ -153,15 +153,21 @@
         selectedSection: "district",
         selectedTotalId: 0,
         selectedTypeIds: [],
-        selectedSortId: "",
+        selectedSortId: "",        
         offset: 0,
         city: {
+            cityId: 771,
+            cityName: "苏州",
+            lon: "",
+            lat: "",
+            cityPinyin: "suzhou"
+        }/*{
             cityId: 43,
             cityName: "上海",
             lon: "",
             lat: "",
             cityPinyin: "shanghai"
-        },
+        },*/,
         highCities: [43,221,741,771,1873,873],/*43  上海市 221  廊坊市 741  南京市 771  苏州市 1873  广州市*/
         totalOptionsHigh:[{
                             id: -1,
@@ -272,7 +278,8 @@
             modal: Modal,
             tips: Tips
         } ; 
-        data = {                  
+        data = {              
+                trueValue: true,               
                 showCustomPrice: true,//是否显示自定义价格框，为了清空自定义价格中的文本用的。因为双向绑定输入会延迟，因此借助wx:if把input重新加载来清空其中的内容，我也是醉了！
                 city: null,          
                 estate: null,//小区或地址查询条件
@@ -303,6 +310,7 @@
                         meters: [{
                             id: 0,
                             name: "不限（智能范围）", 
+                            meter: 5000,
                             type: "near"                                                       
                         },{
                             id: 1,
@@ -424,6 +432,10 @@
                     str = this.filter.districtSection.innerSelectedStationText;
                 }
 
+                if(this.filter.districtSection.isNear && this.filter.districtSection.selectedTownId == '0'){
+                    str = "附近";
+                }                
+
                 return str == '不限' ? '区域': str;
             },
             totalDisplayName(){//总价筛选的显示文本
@@ -539,7 +551,7 @@
                 }
                 this.filter.typeSection.selectedIds = arr;
 
-                this.trace.uv({eventName: "1209006", eventParam: {room: 0}});                
+                this.trace.uv({eventName: "1209006", eventParam: {room: type.id}});                
             },
             selectTotal(e) {//切换总价
                 let totalItem = e.currentTarget.dataset.item;
@@ -629,10 +641,12 @@
                         return it.id == townId;
                     })[0].meter;
                     this.filter.districtSection.isNear = true; 
+                    console.log("selectTown中设置isNear为true");
                     this.showTotal = true;                   
                 }else{
                     this.filter.districtSection.meter = "";
                     this.filter.districtSection.isNear = false;
+                    console.log("selectTown中设置isNear为false");
                     this.trace.uv({ eventName: "1209003", eventParam: {region_id: this.filter.districtSection.selectedDistrictId, town_id: townId} });
                     this.showTotal = true;
                 }
@@ -672,7 +686,8 @@
                 this.filter.districtSection.selectedTownId = "";
                 this.filter.districtSection.selectedDistrictText = '';
                 this.filter.districtSection.selectedTownText = '';
-                this.filter.districtSection.isNear = false;                
+                this.filter.districtSection.isNear = false;
+                console.log("selectStation中设置isNear为false");              
 
                 this.trace.uv({ eventName: "1209003", eventParam: { subwary_id: this.filter.districtSection.selectedMetroId, station_id: stationId }});
                 this.filter.selectedFilterSection = "";
@@ -695,7 +710,7 @@
                 if(tmpA.length == 0){
                     tmpA.push(0);
                 }
-                let str = tmpA.join(',');
+                let str = arr.join(',');
                 
                 this.filter.selectedFilterSection = "";  
                 this.filter.typeSection.innerSelectedIds = arr;
@@ -772,27 +787,25 @@
                             data.data.lon = res.longitude;
                             data.data.lat = res.latitude;
                             data.data.isLocated = true;//定位成功标志位
+                            this.filter.districtSection.isNear = true;
+                            this.filter.districtSection.isNNN = true;
+                            console.log('定位成功设置isNear为true');
                             wx.setStorageSync("city",data.data);
                             wx.setStorageSync("locationCity",data.data);
-                                                       
-                            /*if(this.city){
-                                if(this.city.cityId != data.data.cityId){//定位的城市跟上次记录的城市不同
-                                    this.city = data.data;                                    
-                                } else {
-                                    this.city = data.data;
-                                }                                                              
-                            } else {
-                                this.city = data.data;                                
-                            }*/
+
                             this.city = data.data;
                             wx.setStorageSync('city', this.city);
-                            this.showTotal = true;                            
+                            this.showTotal = true;
+                            this.showNearText = true;                      
                             this.getDistrictsAndMetro(); 
                             this.$apply();            
                         }                      
                     });
                },
-               fail: (opts)=>{                       
+               fail: (opts)=>{
+                   this.clearDistrictFilter();
+                   this.showTotal = true;
+                   //this.$apply();              
                    if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位导致定位失败
                         this.city = this.city || DEFAULT.city;
                         wx.setStorageSync('city', this.city);
@@ -801,11 +814,12 @@
                         if(!opened || !this.city){
                             this.modalVisibility = true;
                         } else {
+                            this.city.isLocated = false;
                             this.getDistrictsAndMetro();
                         }
                         //this.city = null;    
                         this.$apply();
-                   }
+                   }                   
                },
                complete: ()=>{
                    wx.hideLoading();//定位完成（不论成功失败），隐藏loading
@@ -819,9 +833,9 @@
         onShow(options) {            
             if(this.firstTime) {//还在执行onload中的定位时，直接返回
                 return;
-            }
+            }                      
             let estate  = wx.getStorageSync("estate");            
-            if(this.estate) {//清空区域板块和地铁筛选条件                
+            if(estate) {//清空区域板块和地铁筛选条件                
                 this.clearDistrictFilter();
                 this.clearMetroFilter();                
                 if(this.estate && (this.estate.subEstateId == estate.subEstateId || this.estate.showId == estate.showId)){
@@ -834,6 +848,9 @@
             }
 
             let city = wx.getStorageSync("city");
+            if(!this.city && !city){
+                return;
+            }
             if(city) {
                 if(!this.city || city.cityId != this.city.cityId){//城市发生了变化，重新加载区域地铁和房源
                     this.city = city;
@@ -938,6 +955,7 @@
                                     });
                                     this.filter.districtSection.selectedDistrictId = "-2";
                                     this.filter.districtSection.selectedTownId = "0";
+                                    this.$apply();
                                 }else{
                                     d.splice(0,0,{
                                         id: "-2",
@@ -962,6 +980,12 @@
                             }
 
                         });
+
+                        if(this.city.isLocated){
+                            this.filter.districtSection.isNear = true;
+                            this.filter.districtSection.meter = 5000;
+                        }
+                        this.showTotal = true;
                         this.refresh();
                     }
                 }
@@ -999,7 +1023,9 @@
                 endMetres: this.filter.districtSection.isNear && this.filter.districtSection.meter || "",
                 localLon: this.filter.districtSection.isNear && this.city.lon || "",
                 localLat: this.filter.districtSection.isNear && this.city.lat || ""
-            };            
+            }; 
+
+            console.log('isNear in getEsfList:',this.filter.districtSection.isNear);
 
             this.loading = true;
             apiDataFilter.request({
@@ -1040,7 +1066,9 @@
                         this.$apply();
                         setTimeout(()=>{
                             this.countVisible = false;
-                            this.showNearText = false;
+                            setTimeout(()=>{
+                                this.showNearText = false;
+                            })
                             this.$apply();                        
                         });
                     },3000);
@@ -1086,6 +1114,7 @@
             this.filter.districtSection.innerSelectedDistrictText = '';
             this.filter.districtSection.innerSelectedTownText = '';
             this.filter.districtSection.isNear = false;
+            console.log("clearDistrictFilter中把isNear设置为false");
             this.filter.districtSection.meter = "";            
         };
         clearMetroFilter() {//清除地铁线路筛选条件            
@@ -1146,7 +1175,7 @@
             border-radius: 6rpx;
             font-size: 26rpx;
             color: #7C7C7C;
-            padding: 12rpx 0rpx 2rpx 30rpx;
+            padding: 10rpx 0rpx 2rpx 30rpx;
             .estate-address {
                 margin-left: 9rpx;
                 width: 100%;
