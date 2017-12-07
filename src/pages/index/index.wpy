@@ -12,7 +12,7 @@
         <view class="city-search" >
             <view class="city" @tap="switchCity">{{city.cityName}}</view>
             <view class="search-box">
-                <text class="iconfont icon-search"></text><view class="estate-address" @tap="searchEstate">{{estate && estate.keyword || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.keyword ? '':'invisible'}}" @tap="clearEstate"></text>
+                <text class="iconfont icon-search"></text><view class="estate-address {{estate&&estate.keyword ? '':'empty'}}" @tap="searchEstate">{{estate && estate.keyword || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.keyword ? '':'invisible'}}" @tap="clearEstate"></text>
             </view>
         </view>
         <view class="current-price">
@@ -22,17 +22,17 @@
         </view>
         <view class="filter">
             <view class="district-total-type-sort">
-                <view class="district-section">
-                    <view class="{{filter.selectedFilterSection == 'district'? 'open' : 'closed'}} {{districtDisplayName != '区域' ? 'active' : ''}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view>      
+                <view class="district-section {{districtDisplayName != '区域' ? 'active' : ''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}"></view>                         
                 </view>            
-                <view class="total-section">
-                    <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view>                
+                <view class="total-section {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}"></view>             
                 </view>
-                <view class="type-section">
-                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length > 0 && filter.typeSection.selectedIds[0] !== '' ?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
+                <view class="type-section {{filter.typeSection.selectedIds.length > 0 && filter.typeSection.selectedIds[0] !== '' ?'active':''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}"></view>                
                 </view>
-                <view class="sort-section">
-                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId !== '' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
+                <view class="sort-section {{filter.sortSection.selectedId !== '' ? 'active': ''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}"></view> 
                 </view>            
             </view>    
             <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
@@ -125,7 +125,7 @@
     </view>
           
     <!--定位失败的modal框-->
-    <modal :visibility.sync="modalVisibility" :disclosable.sync="trueValue" title="定位失败">
+    <modal :visibility.sync="modalVisibility" hasCloseBtn="false" title="定位失败">
         <view slot="body">            
             <view style="text-align: center">请手动选择您的城市</view>
         </view>
@@ -156,18 +156,12 @@
         selectedSortId: "",        
         offset: 0,
         city: {
-            cityId: 771,
-            cityName: "苏州",
-            lon: "",
-            lat: "",
-            cityPinyin: "suzhou"
-        }/*{
             cityId: 43,
             cityName: "上海",
             lon: "",
             lat: "",
             cityPinyin: "shanghai"
-        },*/,
+        },
         highCities: [43,221,741,771,1873,873],/*43  上海市 221  廊坊市 741  南京市 771  苏州市 1873  广州市*/
         totalOptionsHigh:[{
                             id: -1,
@@ -280,8 +274,7 @@
         } ; 
         data = {
                 cityName: "",//用来显示未开通城市名称的
-                nodata: false,
-                trueValue: true,               
+                nodata: false,                       
                 showCustomPrice: true,//是否显示自定义价格框，为了清空自定义价格中的文本用的。因为双向绑定输入会延迟，因此借助wx:if把input重新加载来清空其中的内容，我也是醉了！
                 city: null,          
                 estate: null,//小区或地址查询条件
@@ -1178,6 +1171,7 @@
         .flex();
         .city {
             font-size: 28rpx;
+            line-height: 40rpx;
             color: #000;            
             .flex-shrink(0);
             padding:10rpx 0;
@@ -1195,13 +1189,18 @@
             border-radius: 6rpx;
             font-size: 26rpx;
             color: #7C7C7C;
-            padding: 10rpx 0rpx 2rpx 30rpx;
+            padding: 10rpx 0rpx 9rpx 30rpx;
+            line-height: 37rpx;
             .estate-address {
                 margin-left: 9rpx;
-                width: 100%;
-                &::before {
-
-                }
+                width: 100%; 
+                color: #000;  
+                &.empty{
+                    color: #7C7C7C;
+                }               
+            }
+            .icon-search{
+                font-size: 26rpx;
             }
 
             position: relative;
@@ -1213,6 +1212,7 @@
                 &.invisible {
                     display: none;
                 }
+                z-index: 10;
             }
         }
     }
@@ -1247,47 +1247,55 @@
 
     .filter {
          position: relative;
+         background-color: #fff;
         .district-total-type-sort {
             background-color: #fff;
             color: #000;
-            font-size: 32rpx;
-            padding: 30rpx 0;
-            box-shadow: 0 2rpx 2rpx #E4E4E4;
+            font-size: 28rpx;
+            padding: 28rpx 0;
+            box-shadow: 0 4rpx 4rpx #E4E4E4;
             margin-bottom: 4rpx;
-            padding-right: 26rpx;
+            //padding-right: 26rpx;
                      
             .flex();            
 
             .district-section, .total-section, .type-section, .sort-section {
                 text-align: center;
-                .flex(1);
-                position: relative; 
-                .text-ellipsis();  
-                view{
-                    .text-ellipsis();                     
+                vertical-align: middle;
+                .flex(1);                
+                view.sn{                    
+                    max-width: 80%;                                       
+                    display: inline-block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    vertical-align: middle;
+                    &.open{
+                        color: #4081D6;
+                    }
                 }            
-                padding-right: 20rpx;    
-                .closed::after {
-                    background-color: #fff;
-                    content: '';
-                    position: absolute;
-                    top: 20rpx;
-                    .triangle-down(9rpx, #7C7C7C);                    
-                    right: 0;                    
-                }
+                //padding-right: 20rpx;            
+                .triangle{
+                    display: inline-block;
+                    vertical-align: middle;
+                    &.closed {
+                        background-color: #fff;                    
+                        .triangle-down(9rpx, #7C7C7C);                    
+                        
+                    }                    
 
-                .open {
-                    color:  #4081D6;
-                    &::after {
+                    &.open {
                         background-color: #fff;
-                        position: absolute;
-                        right: 0;
-                        top: 20rpx;
-                        color:  #4081D6;
-                        content: '';
-                        .triangle-up(9rpx, #7C7C7C);                                                
+                        color:  #4081D6;                        
+                        .triangle-up(9rpx, #4081D6);                        
                     }
                 }
+
+                &.active {
+                    .triangle.closed {
+                        border-top-color:  #4081D6;
+                    }
+                }                
             }                                              
         }
 
@@ -1300,24 +1308,13 @@
         }
         .content {                                
                 margin-top: 8rpx;
-                position: absolute;
+                //position: absolute;
                 width: 100%;
                 top: 92rpx;                           
                 font-size: 30rpx;                               
-                /*max-height: 0rpx;
-                overflow: auto;
-                &.show {
-                    max-height: 500rpx;
-                }*/
 
                 .items {                    
                     background-color: #fff;
-                    /*max-height: 0rpx;
-                    overflow: auto;
-
-                    &.show {
-                        max-height: 500rpx;
-                    }*/
                 }          
 
                 .sorts {
@@ -1483,12 +1480,13 @@
         position: relative;
         background-color: #fff;        
         //height: 100%;       
-        .house-count {            
+        .house-count {      
+            overflow: hidden;      
             line-height: 1;
             color: #4081D6;
             text-align: center;
-            transition: 2s cubic-bezier(.35,0,.25,1);
-            -webkit-transition: 2s cubic-bezier(.35,0,.25,1); 
+            transition: .5s cubic-bezier(.35,0,.25,1);
+            -webkit-transition: .5s cubic-bezier(.35,0,.25,1); 
             box-sizing: border-box; 
             vertical-align: middle;
             //position: absolute;
@@ -1496,13 +1494,14 @@
             background-color: #fff;            
             height: 0;
             padding: 0;
-            font-size: 0;
+            //font-size: 0;
             border-bottom: 0px solid #E4E4E4;
+            font-size: 28rpx;
             //top: -60rpx;
             &.expand {
                //top: 0;
                padding: 16rpx 0;
-               font-size: 28rpx;
+               //font-size: 28rpx;
                height: 60rpx;
                border-bottom: 1px solid #E4E4E4;
             }         
