@@ -1053,9 +1053,9 @@
                             item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
                         });         
                     }
-                    if((!data.data.secondHouseListModels || data.data.secondHouseListModels.length == 0) && this.items.length == 0){
-                        this.nodata = true;
-                    }        
+                    if(!data.data || !data.data.secondHouseListModels || data.data.total == 0){
+                        this.nodata = true;                        
+                    }       
                     cb && cb(data);                                                  
                 },
                 completeCallback: ()=>{
