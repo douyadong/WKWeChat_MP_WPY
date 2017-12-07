@@ -117,7 +117,7 @@
     <view class="no-open" wx:if="{{!isOpenCity}}">
         <view>
         <view>很抱歉</view>
-        <view>{{cityName}}暂未开通二手房业务</view>
+        <view>{{city && city.cityName || ''}}暂未开通二手房业务</view>
         <button class="switch-city" @tap="switchCity">
             去看看其他城市的二手房
         </button>
@@ -279,6 +279,7 @@
             tips: Tips
         } ; 
         data = {
+                cityName: "",//用来显示未开通城市名称的
                 nodata: false,
                 trueValue: true,               
                 showCustomPrice: true,//是否显示自定义价格框，为了清空自定义价格中的文本用的。因为双向绑定输入会延迟，因此借助wx:if把input重新加载来清空其中的内容，我也是醉了！
@@ -810,6 +811,7 @@
                    this.showTotal = true;
                    //this.$apply();              
                    if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位导致定位失败
+                        this.isOpenCity = true;
                         this.city = this.city || DEFAULT.city;
                         wx.setStorageSync('city', this.city);
                         this.getDistrictsAndMetro(); 
@@ -863,7 +865,11 @@
                     this.getDistrictsAndMetro();
                     return;
                 }                
-            }            
+            }    
+
+            if(!this.isOpenCity){
+                return false;
+            }
             
             if(!this.items || this.items.length == 0){
                 this.refresh();
@@ -884,8 +890,11 @@
 
                     if(cities.filter((item)=>{ return item.cityId == this.city.cityId}).length == 0){//没开通二手房业务
                         this.isOpenCity = false;
+                        this.cityName = this.city.cityName;
                         this.$apply();                                            
-                    }else{                    
+                    }else{        
+                        this.isOpenCity = true;
+                        this.cityName = "";         
                         this.clearDistrictFilter();
                         this.clearMetroFilter();
                         this.clearSortFilter();
