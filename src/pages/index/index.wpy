@@ -784,9 +784,8 @@
                             data.data.lon = res.longitude;
                             data.data.lat = res.latitude;
                             data.data.isLocated = true;//定位成功标志位
-                            this.filter.districtSection.isNear = true;
-                            this.filter.districtSection.isNNN = true;
-                            console.log('定位成功设置isNear为true');
+                            this.filter.districtSection.isNear = true;                            
+                            //console.log('定位成功设置isNear为true');
                             wx.setStorageSync("city",data.data);
                             wx.setStorageSync("locationCity",data.data);
 
