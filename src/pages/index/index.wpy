@@ -29,10 +29,10 @@
                     <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view>                
                 </view>
                 <view class="type-section">
-                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{typeDisplayName!='户型'?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
+                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length > 0 && filter.typeSection.selectedIds[0] != '' ?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
                 </view>
                 <view class="sort-section">
-                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{sortDisplayName !== '排序' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
+                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId != '' && filter.sortSection.selectedId != '0' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
                 </view>            
             </view>    
             <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
@@ -117,7 +117,7 @@
     <view class="no-open" wx:if="{{!isOpenCity}}">
         <view>
         <view>很抱歉</view>
-        <view>{{cityName}}暂未开通二手房业务</view>
+        <view>{{city && city.cityName || ''}}暂未开通二手房业务</view>
         <button class="switch-city" @tap="switchCity">
             去看看其他城市的二手房
         </button>
@@ -279,6 +279,7 @@
             tips: Tips
         } ; 
         data = {
+                cityName: "",//用来显示未开通城市名称的
                 nodata: false,
                 trueValue: true,               
                 showCustomPrice: true,//是否显示自定义价格框，为了清空自定义价格中的文本用的。因为双向绑定输入会延迟，因此借助wx:if把input重新加载来清空其中的内容，我也是醉了！
@@ -808,8 +809,9 @@
                fail: (opts)=>{
                    this.clearDistrictFilter();
                    this.showTotal = true;
-                   //this.$apply();              
-                   if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位导致定位失败
+                   //this.$apply();       
+                   //this.isOpenCity = true;
+                   if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位导致定位失败   
                         this.city = this.city || DEFAULT.city;
                         wx.setStorageSync('city', this.city);
                         this.getDistrictsAndMetro(); 
@@ -836,7 +838,9 @@
         onShow(options) {            
             if(this.firstTime) {//还在执行onload中的定位时，直接返回
                 return;
-            }                      
+            }
+
+            //获取小区和地址筛选条件
             let estate  = wx.getStorageSync("estate");            
             if(estate) {//清空区域板块和地铁筛选条件                
                 this.clearDistrictFilter();
@@ -861,7 +865,11 @@
                     this.getDistrictsAndMetro();
                     return;
                 }                
-            }            
+            }    
+
+            if(!this.isOpenCity){
+                return false;
+            }
             
             if(!this.items || this.items.length == 0){
                 this.refresh();
@@ -870,6 +878,7 @@
             //this.refresh(false);                        
         };
         getDistrictsAndMetro() {//获取当前城市的区域板块和地铁线路数据
+            this.isOpenCity = true;
             //判断当前城市是否开通业务
             apiDataFilter.request({
                 apiPath: "index.getAllCityBusiness",
@@ -882,8 +891,11 @@
 
                     if(cities.filter((item)=>{ return item.cityId == this.city.cityId}).length == 0){//没开通二手房业务
                         this.isOpenCity = false;
+                        this.cityName = this.city.cityName;
                         this.$apply();                                            
-                    }else{                    
+                    }else{        
+                        this.isOpenCity = true;
+                        this.cityName = "";         
                         this.clearDistrictFilter();
                         this.clearMetroFilter();
                         this.clearSortFilter();
