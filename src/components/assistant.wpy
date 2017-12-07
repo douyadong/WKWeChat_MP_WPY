@@ -31,6 +31,18 @@
     </modal>
     <!--tips框-->
     <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
+    <!--拨打电话的modal框-->
+    <modal :visibility.sync="phoningModalVisibility" title="确定拨打电话">
+        <view slot="body">
+            <text>电话号码：4000595130 转 92484</text>
+            <text>分机号：92484（可能需要拨分机号）</text>              
+        </view>
+        <view slot="footer" class="modal-footer">
+            <view class="cancel wk-btn wk-btn-transparent">取消</view>
+            <view class="wk-btn wk-btn-transparent">呼叫</view>
+        </view>
+    </modal>
+    <!--tips框-->
 </template>
 
 <script>
@@ -64,6 +76,7 @@
         } ;
         data = {            
             addWechatModalVisibility : false ,  //添加微信modal框的显示状态
+            phoningModalVisibility : false ,  //拨打电话弹框的显示状态
             tipsVisibility : false ,  //tips框的显示状态
             tipsMsg : "" ,
             trace : new Trace  //埋点api
