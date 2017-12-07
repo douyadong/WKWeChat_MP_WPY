@@ -16,33 +16,34 @@
         <text class="tel" @tap="phoning">电话咨询</text>
     </view>
     <!--添加微信的modal框-->
-    <modal :visibility.sync="addWechatModalVisibility" title="添加微信">
+    <addWechatModal :visibility.sync="addWechatModalVisibility" title="添加微信">
         <view slot="body">
-            <text>方法一：</text>
-            <text>将{{ agent.agentName }}的二维码保存到相册</text>
+            <view>方法一：</view>
+            <view>将{{ agent.agentName }}的二维码保存到相册</view>
             <image src="{{ agent.agentWChartQRImgUrl }}" mode="aspectFill" lazy-load="true" class="qrcode"></image>
-            <text>方法二：</text>
-            <text>复制{{ agent.agentName }}的微信号添加微信号：{{ agent.agentWChatId }}</text>            
+            <view>方法二：</view>
+            <view>复制{{ agent.agentName }}的微信号添加微信号：{{ agent.agentWChatId }}</view>            
         </view>
         <view slot="footer" class="modal-footer">
             <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum" data-src="{{ agent.agentWChartQRImgUrl }}">保存到相册</view>
             <view class="wk-btn wk-btn-transparent" @tap="copyWechat" data-wechatid="{{ agent.agentWChatId }}">复制微信号</view>
         </view>
-    </modal>
+    </addWechatModal>
     <!--tips框-->
-    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
+    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>    
+    <!--tips框-->
     <!--拨打电话的modal框-->
-    <modal :visibility.sync="phoningModalVisibility" title="确定拨打电话">
+    <phoningModal :visibility.sync="phoningModalVisibility" title="确定拨打电话">
         <view slot="body">
-            <text>电话号码：4000595130 转 92484</text>
-            <text>分机号：92484（可能需要拨分机号）</text>              
+            <view>电话号码：{{ dial }} 转 {{ digits }}</view>
+            <view>分机号：<text class="digits">{{ digits }}</text>（可能需要拨分机号）</view>              
         </view>
         <view slot="footer" class="modal-footer">
-            <view class="cancel wk-btn wk-btn-transparent">取消</view>
-            <view class="wk-btn wk-btn-transparent">呼叫</view>
+            <view class="cancel wk-btn wk-btn-transparent" @tap="closePhoningModal">取消</view>
+            <view class="wk-btn wk-btn-transparent" @tap="confirmPhoning" data-union="{{ dial + ',' + digits }}">呼叫</view>
         </view>
-    </modal>
-    <!--tips框-->
+    </phoningModal>
+    
 </template>
 
 <script>
@@ -71,7 +72,8 @@
             houseId : String  //二手房详情页面需要传递这个参数
         } ;
         components = {
-            modal : Modal ,
+            phoningModal : Modal ,
+            addWechatModal : Modal ,
             tips : Tips
         } ;
         data = {            
@@ -79,6 +81,8 @@
             phoningModalVisibility : false ,  //拨打电话弹框的显示状态
             tipsVisibility : false ,  //tips框的显示状态
             tipsMsg : "" ,
+            dial : "" ,  //经纪人总机号码
+            digits : "" ,  //经纪人分机号
             trace : new Trace  //埋点api
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -102,7 +106,7 @@
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             点击电话咨询调用的方法
             1. 埋点            
-            2. 先通过调用短接号的接口拿到经纪人的短接号码，然后再拨打出去
+            2. 显示拨打电话弹框并通过调用短接号的接口拿到经纪人的短接号码并显示
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             phoning : ()=> {
                 this.methods.uv(this.telEventName) ;
@@ -111,8 +115,11 @@
                 adf.request({
                     apiPath : "common.dial" ,
                     data : requestData ,
-                    successCallback : (res)=> {                        
-                        wx.makePhoneCall({ phoneNumber : res.data.dial + "," + res.data.digits }) ;
+                    successCallback : (res)=> {
+                        this.phoningModalVisibility = true ;
+                        this.dial = res.data.dial ;
+                        this.digits = res.data.digits ;
+                        this.$apply() ;
                     } ,
                     errorCallback : (res)=> {                        
                         this.tips(res) ;
@@ -176,6 +183,19 @@
                         this.tips("经纪人微信号复制失败！") ;
                     }
                 }) ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            拨打电话弹框里面点击了取消按钮关闭当前弹框的事件监听
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            closePhoningModal : ()=> {
+                this.phoningModalVisibility = false ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            确认拨出电话的事件监听
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            confirmPhoning : (event)=> {
+                wx.makePhoneCall({ phoneNumber : event.currentTarget.dataset.union }) ;
+                this.phoningModalVisibility = false ;
             }
         } ;        
     }
@@ -238,15 +258,17 @@
     }
     .wk-modal {
         .modal-body {
-            text {
-                display : block ;
+            &>view {               
                 text-align : center ;
+                text.digits {
+                    color : @primary-color ;
+                }
             }            
             .qrcode {
                 .center-block() ;
                 height : 300rpx ;
                 width : 300rpx ;
             }
-        }       
+        }        
     }
 </style>

@@ -88,6 +88,9 @@
                     color : @blue-font-color ;
                     font-size : @large-font-size ;
                     line-height : 90rpx ;
+                    &.cancel {
+                        color : @light-font-color ;
+                    }
                 }
              }
         }
