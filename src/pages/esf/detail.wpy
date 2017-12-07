@@ -52,7 +52,7 @@
                 <text class="hd">小区</text>
                 <navigator url="/pages/estate/detail?subEstateId={{ estate.subEstateId }}" open-type="redirect" class="bd" @tap="uv( 'estate' , 1213002 )">
                     <text>{{ estate.estateName }}</text>
-                    <text class="iconfont icon-clear"></text>
+                    <text class="iconfont icon-next"></text>
                 </navigator>
             </view>
             <view><text class="hd">地铁</text><text class="bd">{{ estate.subwayName }}</text></view>
