@@ -33,7 +33,7 @@
     <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>    
     <!--tips框-->
     <!--拨打电话的modal框-->
-    <phoningModal :visibility.sync="phoningModalVisibility" title="确定拨打电话">
+    <phoningModal :visibility.sync="phoningModalVisibility" title="确定拨打电话" hasCloseBtn="false">
         <view slot="body">
             <view>电话号码：{{ dial }} 转 {{ digits }}</view>
             <view>分机号：<text class="digits">{{ digits }}</text>（可能需要拨分机号）</view>              

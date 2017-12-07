@@ -14,7 +14,7 @@
             </view>
             <slot name="footer"></slot>
         </view>
-        <view class="modal-close" wx:if="{{!disclosable}}">
+        <view class="modal-close" wx:if="{{ hasCloseBtn === 'true' }}">
             <text class="iconfont icon-close" @tap="closeModal">{{disclosable}}</text>
         </view>
     </view>
@@ -29,9 +29,9 @@
                 type : Boolean ,
                 twoWay : true
             },
-            disclosable: {
-                type: Boolean,
-                twoWay: true
+            hasCloseBtn : {
+                type : String ,
+                default : "true" //可以为true | false
             }
         } ;
         data = {
