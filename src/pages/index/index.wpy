@@ -29,10 +29,10 @@
                     <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view>                
                 </view>
                 <view class="type-section">
-                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length > 0 && filter.typeSection.selectedIds[0] != '' ?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
+                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length > 0 && filter.typeSection.selectedIds[0] !== '' ?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
                 </view>
                 <view class="sort-section">
-                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId != '' && filter.sortSection.selectedId != '0' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
+                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId !== '' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
                 </view>            
             </view>    
             <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
@@ -810,7 +810,8 @@
                    this.clearDistrictFilter();
                    this.showTotal = true;
                    //this.$apply();       
-                   //this.isOpenCity = true;
+                   this.isOpenCity = true;
+                   this.$apply();
                    if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位导致定位失败   
                         this.city = this.city || DEFAULT.city;
                         wx.setStorageSync('city', this.city);
