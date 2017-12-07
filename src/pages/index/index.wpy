@@ -809,9 +809,9 @@
                fail: (opts)=>{
                    this.clearDistrictFilter();
                    this.showTotal = true;
-                   //this.$apply();              
-                   if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位导致定位失败
-                        this.isOpenCity = true;
+                   //this.$apply();       
+                   //this.isOpenCity = true;
+                   if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位导致定位失败   
                         this.city = this.city || DEFAULT.city;
                         wx.setStorageSync('city', this.city);
                         this.getDistrictsAndMetro(); 
@@ -878,6 +878,7 @@
             //this.refresh(false);                        
         };
         getDistrictsAndMetro() {//获取当前城市的区域板块和地铁线路数据
+            this.isOpenCity = true;
             //判断当前城市是否开通业务
             apiDataFilter.request({
                 apiPath: "index.getAllCityBusiness",
