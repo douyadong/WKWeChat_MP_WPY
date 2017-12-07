@@ -29,10 +29,10 @@
                     <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view>                
                 </view>
                 <view class="type-section">
-                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length>0?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
+                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{typeDisplayName!='户型'?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
                 </view>
                 <view class="sort-section">
-                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId !== '' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
+                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{sortDisplayName !== '排序' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
                 </view>            
             </view>    
             <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
@@ -101,7 +101,7 @@
         <view>加载失败，点击刷新</view>
        </view>
 
-       <view class="no-data" wx:if="{{!items || items.length == 0}}">
+       <view class="no-data" wx:if="{{nodata}}">
         <view class="desc">
             暂时没有符合条件的房源
         </view>
@@ -278,7 +278,8 @@
             modal: Modal,
             tips: Tips
         } ; 
-        data = {              
+        data = {
+                nodata: false,
                 trueValue: true,               
                 showCustomPrice: true,//是否显示自定义价格框，为了清空自定义价格中的文本用的。因为双向绑定输入会延迟，因此借助wx:if把input重新加载来清空其中的内容，我也是醉了！
                 city: null,          
@@ -474,7 +475,7 @@
                     }                    
                 }
 
-                return str;
+                return str == "不限" ? "户型" : str;
             },
             sortDisplayName(){//排序筛选的显示文本
                 let str = "排序";
@@ -485,6 +486,8 @@
                     if(item.length > 0){
                         str = item[0].text;
                     }
+                } else {
+                    str = "排序"
                 }
 
                 return str;
@@ -838,7 +841,7 @@
             if(estate) {//清空区域板块和地铁筛选条件                
                 this.clearDistrictFilter();
                 this.clearMetroFilter();                
-                if(this.estate && (this.estate.subEstateId == estate.subEstateId || this.estate.showId == estate.showId)){
+                if(this.estate && (this.estate.subEstateId == estate.subEstateId && this.estate.showId == estate.showId)){
 
                 }else{
                     this.estate = estate;
@@ -1028,6 +1031,7 @@
             console.log('isNear in getEsfList:',this.filter.districtSection.isNear);
 
             this.loading = true;
+            this.nodata = false;
             apiDataFilter.request({
                 apiPath: "index.secondHouseList",
                 method: "POST",                
@@ -1042,7 +1046,10 @@
                         data.data.secondHouseListModels.forEach((item)=>{
                             item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
                         });         
-                    }                 
+                    }
+                    if((!data.data.secondHouseListModels || data.data.secondHouseListModels.length == 0) && this.items.length == 0){
+                        this.nodata = true;
+                    }        
                     cb && cb(data);                                                  
                 },
                 completeCallback: ()=>{
@@ -1364,7 +1371,7 @@
                     padding-left: 40rpx;
                     padding-right: 40rpx;
                     .list {
-                        height: 600rpx;
+                        height: 500rpx;
                         overflow: auto;
                     }
                     .item {
