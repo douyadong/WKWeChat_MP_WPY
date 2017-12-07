@@ -29,10 +29,10 @@
                     <view class="{{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}  {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view>                
                 </view>
                 <view class="type-section">
-                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{typeDisplayName!='户型'?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
+                    <view class="{{filter.selectedFilterSection == 'type'? 'open' : 'closed'}} {{filter.typeSection.selectedIds.length > 0 && filter.typeSection.selectedIds[0] != '' ?'active':''}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view>                
                 </view>
                 <view class="sort-section">
-                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{sortDisplayName !== '排序' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
+                    <view class="{{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}} {{filter.sortSection.selectedId != '' && filter.sortSection.selectedId != '0' ? 'active': ''}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view>                    
                 </view>            
             </view>    
             <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
@@ -836,7 +836,9 @@
         onShow(options) {            
             if(this.firstTime) {//还在执行onload中的定位时，直接返回
                 return;
-            }                      
+            }
+
+            //获取小区和地址筛选条件
             let estate  = wx.getStorageSync("estate");            
             if(estate) {//清空区域板块和地铁筛选条件                
                 this.clearDistrictFilter();
