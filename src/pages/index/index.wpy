@@ -22,7 +22,7 @@
         </view>
         <view class="filter">
             <view class="district-total-type-sort">
-                <view class="district-section {{districtDisplayName != '区域' && this.filter.districtSection.selectedTownId!== '-2' ? 'active' : ''}}">
+                <view class="district-section {{districtDisplayName != '区域' && filter.districtSection.selectedTownId !== '0' ? 'active' : ''}}">
                     <view class="sn {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}"></view>                         
                 </view>            
                 <view class="total-section {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}">
@@ -830,12 +830,7 @@
             this.trace.pv({ pageName: "1209" });       
             if(this.firstTime) {//还在执行onload中的定位时，直接返回
                 return;
-            }
-
-            if(!this.city){
-                this.modalVisibility = true;
-                return;
-            }
+            }            
 
             //获取小区和地址筛选条件
             let estate  = wx.getStorageSync("estate");            
@@ -853,6 +848,7 @@
 
             let city = wx.getStorageSync("city");
             if(!this.city && !city){
+                this.modalVisibility = true;
                 return;
             }
             if(city) {
