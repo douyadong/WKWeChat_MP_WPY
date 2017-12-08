@@ -832,6 +832,11 @@
                 return;
             }
 
+            if(!this.city){
+                this.modalVisibility = true;
+                return;
+            }
+
             //获取小区和地址筛选条件
             let estate  = wx.getStorageSync("estate");            
             if(estate) {//清空区域板块和地铁筛选条件                
