@@ -1,0 +1,33 @@
+<!--
+    @组件名称：loading组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+<template lang="wxml">
+    <view class="data-loading" wx:if="{{ visibility }}">
+        <image src="" mode="scaleToFill"></image>
+        <text>加载中...</text>
+    </view>
+</template>
+
+<script>
+import wepy from "wepy" ;
+export default class Com extends wepy.component {    
+    props = {        
+        visibility : {
+            type : Boolean ,
+            twoWay : true
+        }
+    } ;   
+}
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .data-loading {
+        
+    }
+</style>
