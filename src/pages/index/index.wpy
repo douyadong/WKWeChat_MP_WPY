@@ -830,12 +830,7 @@
             this.trace.pv({ pageName: "1209" });       
             if(this.firstTime) {//还在执行onload中的定位时，直接返回
                 return;
-            }
-
-            if(!this.city){
-                this.modalVisibility = true;
-                return;
-            }
+            }            
 
             //获取小区和地址筛选条件
             let estate  = wx.getStorageSync("estate");            
@@ -853,6 +848,7 @@
 
             let city = wx.getStorageSync("city");
             if(!this.city && !city){
+                this.modalVisibility = true;
                 return;
             }
             if(city) {
