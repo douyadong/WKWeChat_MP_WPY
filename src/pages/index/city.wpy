@@ -7,8 +7,8 @@
 -->
 <template lang="wxml">
     <view>
-       <view class="header" wx:if="{{city}}">定位城市</view>
-       <view class="item" wx:if="{{city}}">{{city.cityName || '定位失败'}}</view>
+       <view class="header" wx:if="{{isOpenCity}}">定位城市</view>
+       <view class="item" wx:if="{{isOpenCity}}">{{city && city.cityName || '定位失败'}}</view>
        <view class="header">全部城市</view>
        <view>
         <view @tap="selectCity" wx:key="{{item.cityId}}" wx:for-index="idx" class="item {{idx>0?'has-border':''}}" wx:for="{{cities}}" data-city="{{item}}">{{item.cityName}}</view>
@@ -32,7 +32,8 @@
 
             },
             cities: [],
-            trace: new Trace
+            trace: new Trace,
+            isOpenCity: true
         } ;
         computed = {
             
@@ -59,12 +60,10 @@
                         return item.oldBusiness;
                     });
                     this.cities = cities;
-                    if(this.city){
-                        /*console.log(this.city);
-                        console.log(this.cities);
-                        console.log(this.cities.filter((t)=>{return t.cityId == this.city.cityId;}));*/
+                    if(this.city){                        
                         if(this.cities.filter((t)=>{return t.cityId == this.city.cityId;}).length == 0){
-                            this.city = null;
+                            //this.city = null;
+                            this.isOpenCity = false;
                         }
                     }       
                     this.$apply();                    
