@@ -51,9 +51,14 @@
         };
         onLoad(option) {
            this.subEstateId = option.subEstateId;
-           this.getDetail(this.subEstateId);
-           this.trace.pv({pageName:1215 , pageParam:{estate_id:this.subEstateId}})
-        };
+           this.getDetail(this.subEstateId);           
+        } ;
+        onShow() {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            页面埋点
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            this.trace.pv({ pageName : 1215 , pageParam : { estate_id : this.subEstateId }}) ;
+        } ;
         onReachBottom() {
             this.getDetail(this.subEstateId) ;
         } ;
