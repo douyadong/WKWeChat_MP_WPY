@@ -22,7 +22,7 @@
         </view>
         <view class="filter">
             <view class="district-total-type-sort">
-                <view class="district-section {{districtDisplayName != '区域' ? 'active' : ''}}">
+                <view class="district-section {{districtDisplayName != '区域' && this.filter.districtSection.selectedTownId!== '-2' ? 'active' : ''}}">
                     <view class="sn {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}"></view>                         
                 </view>            
                 <view class="total-section {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}">
@@ -824,11 +824,10 @@
                    this.firstTime = false;
                    wx.setStorageSync('opened', true);                  
                }
-           });
-
-           this.trace.pv({ pageName: "1209" });
+           });           
         };
-        onShow(options) {            
+        onShow(options) {     
+            this.trace.pv({ pageName: "1209" });       
             if(this.firstTime) {//还在执行onload中的定位时，直接返回
                 return;
             }

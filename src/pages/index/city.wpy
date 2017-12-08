@@ -48,7 +48,6 @@
 
         } ;
         onLoad() {
-           this.trace.pv({pageName: "1210"});
         };
         onShow() {    
             this.city = wx.getStorageSync('city');
@@ -68,7 +67,10 @@
                     }       
                     this.$apply();                    
                 }
-            });            
+            });          
+
+           this.trace.pv({pageName: "1210"});
+              
         }
     }
 </script>
