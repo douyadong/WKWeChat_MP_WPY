@@ -22,16 +22,16 @@
         </view>
         <view class="filter">
             <view class="district-total-type-sort">
-                <view class="district-section {{districtDisplayName != '区域' && filter.districtSection.selectedTownId !== '0' ? 'active' : ''}}">
+                <view class="district-section {{districtDisplayName != '区域' ? 'active' : ''}}">
                     <view class="sn {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}"></view>                         
                 </view>            
-                <view class="total-section {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}">
+                <view class="total-section {{totalDisplayName !== '总价' ?'active':''}}">
                     <view class="sn {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}"></view>             
                 </view>
-                <view class="type-section {{filter.typeSection.selectedIds.length > 0 && filter.typeSection.selectedIds[0] !== '' ?'active':''}}">
+                <view class="type-section {{typeDisplayName !== '户型' ?'active':''}}">
                     <view class="sn {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}"></view>                
                 </view>
-                <view class="sort-section {{filter.sortSection.selectedId !== '' ? 'active': ''}}">
+                <view class="sort-section {{filter.sortSection.selectedId != '' ? 'active': ''}}">
                     <view class="sn {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}"></view> 
                 </view>            
             </view>    
@@ -473,7 +473,7 @@
             },
             sortDisplayName(){//排序筛选的显示文本
                 let str = "排序";
-                if(this.filter.sortSection.selectedId != ''){
+                /*if(this.filter.sortSection.selectedId != ''){
                     let item = this.filter.sortSection.items.filter((t)=>{
                         return t.id == this.filter.sortSection.selectedId;
                     });
@@ -482,7 +482,7 @@
                     }
                 } else {
                     str = "排序"
-                }
+                }*/
 
                 return str;
             },
