@@ -28,7 +28,7 @@ class ApiDataFilter {
     @errorCallback : 请求异常的回调处理
     @completeCallback : 清酒完成就执行的回调
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-    request({ apiPath , data = {} , method = "get" , dataType = "json" , contentType , showNavigationBarLoading = false , showLoading = true , tips = true , successCallback , errorCallback , completeCallback }) {
+    request({ apiPath , data = {} , method = "get" , dataType = "json" , contentType , showNavigationBarLoading = false , showLoading = true , tips = true , successCallback , errorCallback , completeCallback , loadingCallback }) {
         let requestMethod = method.toLowerCase() ;
         let errorProcesser = ( errorCallback && typeof errorCallback ==="function" ) ? errorCallback : this.errorCallback ;         
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -38,7 +38,9 @@ class ApiDataFilter {
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         首先根据showLoading参数决定是否需要开启自定义的加载提示
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
-        if(showLoading) wx.showLoading({ "title" : "加载中" }) ;
+        if(showLoading) {
+            loadingCallback && typeof loadingCallback == "function" && loadingCallback() ;
+        }
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         请求参数拼装
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
@@ -62,8 +64,7 @@ class ApiDataFilter {
                 errorProcesser(error) ;                
             } ,
             complete : function () {
-                showNavigationBarLoading && wx.hideNavigationBarLoading() ;
-                if(showLoading) wx.hideLoading() ;
+                showNavigationBarLoading && wx.hideNavigationBarLoading() ;                
                 typeof completeCallback == "function" && completeCallback() ;                
             }
         }

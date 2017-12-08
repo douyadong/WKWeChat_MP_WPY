@@ -6,10 +6,16 @@
         2.        
 -->
 <template lang="wxml">
-    <view class="esf-list">
+    <view class="esf-list" wx:if="{{ ! loadingVisibility && ! loadfailVisibility }}">
        <repeat for="{{ houseList }}" key="index" index="index" item="item">
             <esf :item="item" openType="2"></esf>
         </repeat>
+    </view>
+    <!--加载中组件-->
+    <loading :fullscreen="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view class="loadfail-container" @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
+        <loadfail :fullscreen="loadfailFullscreen"></loadfail>
     </view>
 </template>
 
@@ -19,6 +25,8 @@
     载入组件资源
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     import Esf from "../../components/esf" ;
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     载入工具资源
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -29,7 +37,9 @@
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     export default class List extends wepy.page {
         components = {            
-            esf : Esf
+            esf : Esf ,
+            loading : Loading ,
+            loadfail : Loadfail
         } ; 
         data = {
             apiPath : "" , //到底调用哪个接口的数据来渲染页面
@@ -40,7 +50,20 @@
                 "pageSize" : 20 , //每页显示多少条
                 "requestable" : true //是否可以继续请求，如果结果加载完了就不能请求了
             } ,
-            trace : new Trace
+            trace : new Trace ,
+            loadingVisibility : true ,  //数据加载的loading条
+            loadfailVisibility : false ,  //数据加载失败的组件显示状态
+            loadingFullscreen : "true" ,  //加载条要不要全屏，页面第一次进入全屏，只要加载了数据就设置为"false"
+            loadfailFullscreen : "true"  //加载条要不要全屏，页面第一次进入全屏，只要加载了数据就设置为"false"
+        } ;
+        methods = {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            加载失败画面点击刷新处理
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            refreshPage : ()=> {  
+                console.log("taping") ;              
+                this.loadData() ;
+            }
         } ;
         onLoad(options) {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +112,7 @@
         } ;
         onReachBottom() {
             if( this.pageStates.requestable && this.pageParams.type != "similar" ) this.loadData() ;
-        }
+        } ;
         loadData() {
             let reqData = { "offset" : this.pageStates.offset , "pageSize" : this.pageStates.pageSize } ;
             if( this.pageParams.type === "onsale" ) reqData.subEstateId = this.pageParams.subEstateId ;
@@ -107,7 +130,22 @@
                         this.pageStates.offset += houseList.length ;
                     }                    
                     if( this.houseList.length === res.count ) this.pageStates.requestable = false ;  //如果加载完了要改变标识
-                    this.$apply() ;           
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    加载中和加载错误全部不显示
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.loadingVisibility = false ;
+                    this.loadfailVisibility = false ;                    
+                    this.$apply() ;                    
+                } ,
+                loadingCallback : ()=> {
+                    this.loadingVisibility = true ;
+                    this.loadfailVisibility = false ;                
+                    this.$apply() ;
+                } ,                
+                errorCallback : ()=> {
+                    this.loadingVisibility = false ;
+                    this.loadfailVisibility = true ;                    
+                    this.$apply() ;
                 }
             }) ;
         } ;
@@ -130,5 +168,8 @@
         .esf-item {
             margin : @gap-dimension @common-margin ;
         }
+    }
+    .loadfail-container {
+        height : 100% ;
     }
 </style>

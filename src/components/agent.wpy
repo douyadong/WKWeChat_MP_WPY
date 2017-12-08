@@ -267,6 +267,7 @@
             .qrcode {
                 .center-block() ;
                 height : 300rpx ;
+                margin : 30rpx 0 ;
                 width : 300rpx ;
             }
         }

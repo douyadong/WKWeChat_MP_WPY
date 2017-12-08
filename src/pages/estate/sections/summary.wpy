@@ -50,13 +50,13 @@
             <view class="row-hd">开发商</view>
             <view class="row-bd">{{estateInfo.developers}}</view>
         </view>
-        <view class="row underline" >
+        <view class="row underline" wx:if="{{ estateInfo.subwayName }}">
             <view class="row-hd">地铁</view>
-            <view class="row-bd">{{estateInfo.subwayName}}</view>
+            <view class="row-bd">{{ estateInfo.subwayName }}</view>
         </view>
-        <view class="row">
+        <view class="row" wx:if="{{ estateInfo.schoolName }}">
             <view class="row-hd">学校</view>
-            <view class="row-bd bd">{{estateInfo.schoolName}}</view>
+            <view class="row-bd bd">{{ estateInfo.schoolName }}</view>
         </view>
     </view>
     <!--<block wx:if="{{ estateInfo.sameEstateHouseAmount > 0 }}">
