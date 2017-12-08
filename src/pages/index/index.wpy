@@ -22,16 +22,16 @@
         </view>
         <view class="filter">
             <view class="district-total-type-sort">
-                <view class="district-section {{districtDisplayName != '区域' && filter.districtSection.selectedTownId !== '0' ? 'active' : ''}}">
+                <view class="district-section {{districtDisplayName != '区域' ? 'active' : ''}}">
                     <view class="sn {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}"></view>                         
                 </view>            
-                <view class="total-section {{filter.totalSection.selectedId || filter.totalSection.priceStart !== '' || filter.totalSection.priceEnd !== '' ?'active':''}}">
+                <view class="total-section {{totalDisplayName !== '总价' ?'active':''}}">
                     <view class="sn {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}"></view>             
                 </view>
-                <view class="type-section {{filter.typeSection.selectedIds.length > 0 && filter.typeSection.selectedIds[0] !== '' ?'active':''}}">
+                <view class="type-section {{typeDisplayName !== '户型' ?'active':''}}">
                     <view class="sn {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}"></view>                
                 </view>
-                <view class="sort-section {{filter.sortSection.selectedId !== '' ? 'active': ''}}">
+                <view class="sort-section {{filter.sortSection.selectedId != '' ? 'active': ''}}">
                     <view class="sn {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}"></view> 
                 </view>            
             </view>    
@@ -85,19 +85,19 @@
 
     <view class="esf-items" style="{{fixed? 'margin-top:190rpx;':''}} {{filter.selectedFilterSection!=''? 'overflow:hidden;height: 100%': ''}}">        
        <block wx:if="{{items && items.length>0}}">       
-        <view class="house-count {{expand?'expand':''}} {{!countVisible? 'invisible':''}}">{{totalTipText}}</view>     
+        <view class="house-count {{expand?'expand':''}}">{{totalTipText}}</view>     
         <view class="items"> 
             <repeat for="{{items}}" item="item">
                 <esf :item="item" openType="1"></esf>
             </repeat>
-            <view style="text-align: center; font-size: 28rpx; color: #4E4E4E ;{{reachBottom?'':'display:none'}}">
+            <view style="text-align: center; font-size: 28rpx; color: #4E4E4E; padding: 10rpx; {{reachBottom?'':'display:none'}}">
                 我是有底线的^_^
             </view>
         </view>
        </block> 
 
        <view class="error" wx:if="{{isLoadError}}">
-        <image src="http://img.wkzf.com/04f36182e2754599889eae69fc206270" @tap="refresh"></image>
+        <image src="https://img.wkzf.com/04f36182e2754599889eae69fc206270" @tap="refresh"></image>
         <view>加载失败，点击刷新</view>
        </view>
 
@@ -473,7 +473,7 @@
             },
             sortDisplayName(){//排序筛选的显示文本
                 let str = "排序";
-                if(this.filter.sortSection.selectedId != ''){
+                /*if(this.filter.sortSection.selectedId != ''){
                     let item = this.filter.sortSection.items.filter((t)=>{
                         return t.id == this.filter.sortSection.selectedId;
                     });
@@ -482,7 +482,7 @@
                     }
                 } else {
                     str = "排序"
-                }
+                }*/
 
                 return str;
             },
@@ -593,6 +593,12 @@
                 if(start !== '' && end !== '' && start > end) {
                     this.tipsVisibility = true;
                     this.tipsMsg = "最大值不能小于最小值";                        
+                    return;
+                }
+
+                if(start === 0 && end === 0){
+                    this.tipsVisibility = true;
+                    this.tipsMsg = "价格区间必须大于0"; 
                     return;
                 }
 
@@ -1046,7 +1052,10 @@
                     if(this.total==0 && this.showTotal) {
                         this.showTotal = false;
                     }
-                    this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0);   
+                    this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0); 
+                    if(this.offset >= this.total) {
+                        this.reachBottom = true;
+                    }  
                     if(data.data.secondHouseListModels){
                         data.data.secondHouseListModels.forEach((item)=>{
                             item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
@@ -1071,20 +1080,22 @@
             this.getEsfList(this.offset,(data)=>{
                 this.items = data.data.secondHouseListModels || [];      
                 if(this.showTotal){
-                    this.expand = true;
-                    this.countVisible = true;
                     setTimeout(()=>{
-                        this.expand = false;
+                        this.expand = true;
                         this.$apply();
+                        //this.countVisible = true;
                         setTimeout(()=>{
-                            this.countVisible = false;
+                            this.expand = false;
+                            this.$apply();
                             setTimeout(()=>{
-                                this.showNearText = false;
-                            })
-                            this.$apply();                        
-                        });
-                    },3000);
-                    
+                                //this.countVisible = false;
+                                setTimeout(()=>{
+                                    this.showNearText = false;
+                                })
+                                this.$apply();                        
+                            });
+                        },3000);
+                    });            
                 }
                 this.showTotal = false;
                 if(navigateToTop){
@@ -1098,6 +1109,7 @@
         };
         onReachBottom() {//触底加载
             if(this.total <= this.offset) {//已到底
+                this.reachBottom = true;
                 return;
             }   
             this.showTotal = true;                     
@@ -1477,8 +1489,7 @@
 
     .esf-items {
         position: relative;
-        background-color: #fff;        
-        //height: 100%;       
+        background-color: #fff;                     
         .house-count {      
             overflow: hidden;      
             line-height: 1;
@@ -1487,20 +1498,16 @@
             transition: .5s cubic-bezier(.35,0,.25,1);
             -webkit-transition: .5s cubic-bezier(.35,0,.25,1); 
             box-sizing: border-box; 
-            vertical-align: middle;
-            //position: absolute;
+            vertical-align: middle;            
             width: 100%;
             background-color: #fff;            
             height: 0;
-            padding: 0;
-            //font-size: 0;
+            padding: 0;            
             border-bottom: 0px solid #E4E4E4;
             font-size: 28rpx;
             //top: -60rpx;
-            &.expand {
-               //top: 0;
-               padding: 16rpx 0;
-               //font-size: 28rpx;
+            &.expand {               
+               padding: 16rpx 0;               
                height: 60rpx;
                border-bottom: 1px solid #E4E4E4;
             }         
