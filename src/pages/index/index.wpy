@@ -85,7 +85,7 @@
 
     <view class="esf-items" style="{{fixed? 'margin-top:190rpx;':''}} {{filter.selectedFilterSection!=''? 'overflow:hidden;height: 100%': ''}}">        
        <block wx:if="{{items && items.length>0}}">       
-        <view class="house-count {{expand?'expand':''}} {{!countVisible? 'invisible':''}}">{{totalTipText}}</view>     
+        <view class="house-count {{expand?'expand':''}}">{{totalTipText}}</view>     
         <view class="items"> 
             <repeat for="{{items}}" item="item">
                 <esf :item="item" openType="1"></esf>
@@ -1052,7 +1052,10 @@
                     if(this.total==0 && this.showTotal) {
                         this.showTotal = false;
                     }
-                    this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0);   
+                    this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0); 
+                    if(this.offset >= this.total) {
+                        this.reachBottom = true;
+                    }  
                     if(data.data.secondHouseListModels){
                         data.data.secondHouseListModels.forEach((item)=>{
                             item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
@@ -1077,20 +1080,22 @@
             this.getEsfList(this.offset,(data)=>{
                 this.items = data.data.secondHouseListModels || [];      
                 if(this.showTotal){
-                    this.expand = true;
-                    this.countVisible = true;
                     setTimeout(()=>{
-                        this.expand = false;
+                        this.expand = true;
                         this.$apply();
+                        //this.countVisible = true;
                         setTimeout(()=>{
-                            this.countVisible = false;
+                            this.expand = false;
+                            this.$apply();
                             setTimeout(()=>{
-                                this.showNearText = false;
-                            })
-                            this.$apply();                        
-                        });
-                    },3000);
-                    
+                                //this.countVisible = false;
+                                setTimeout(()=>{
+                                    this.showNearText = false;
+                                })
+                                this.$apply();                        
+                            });
+                        },3000);
+                    });            
                 }
                 this.showTotal = false;
                 if(navigateToTop){
@@ -1484,8 +1489,7 @@
 
     .esf-items {
         position: relative;
-        background-color: #fff;        
-        //height: 100%;       
+        background-color: #fff;                     
         .house-count {      
             overflow: hidden;      
             line-height: 1;
@@ -1494,20 +1498,16 @@
             transition: .5s cubic-bezier(.35,0,.25,1);
             -webkit-transition: .5s cubic-bezier(.35,0,.25,1); 
             box-sizing: border-box; 
-            vertical-align: middle;
-            //position: absolute;
+            vertical-align: middle;            
             width: 100%;
             background-color: #fff;            
             height: 0;
-            padding: 0;
-            //font-size: 0;
+            padding: 0;            
             border-bottom: 0px solid #E4E4E4;
             font-size: 28rpx;
             //top: -60rpx;
-            &.expand {
-               //top: 0;
-               padding: 16rpx 0;
-               //font-size: 28rpx;
+            &.expand {               
+               padding: 16rpx 0;               
                height: 60rpx;
                border-bottom: 1px solid #E4E4E4;
             }         
