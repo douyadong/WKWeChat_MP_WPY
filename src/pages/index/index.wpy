@@ -90,14 +90,14 @@
             <repeat for="{{items}}" item="item">
                 <esf :item="item" openType="1"></esf>
             </repeat>
-            <view style="text-align: center; font-size: 28rpx; color: #4E4E4E ;{{reachBottom?'':'display:none'}}">
+            <view style="text-align: center; font-size: 28rpx; color: #4E4E4E; padding: 10rpx; {{reachBottom?'':'display:none'}}">
                 我是有底线的^_^
             </view>
         </view>
        </block> 
 
        <view class="error" wx:if="{{isLoadError}}">
-        <image src="http://img.wkzf.com/04f36182e2754599889eae69fc206270" @tap="refresh"></image>
+        <image src="https://img.wkzf.com/04f36182e2754599889eae69fc206270" @tap="refresh"></image>
         <view>加载失败，点击刷新</view>
        </view>
 
@@ -593,6 +593,12 @@
                 if(start !== '' && end !== '' && start > end) {
                     this.tipsVisibility = true;
                     this.tipsMsg = "最大值不能小于最小值";                        
+                    return;
+                }
+
+                if(start === 0 && end === 0){
+                    this.tipsVisibility = true;
+                    this.tipsMsg = "价格区间必须大于0"; 
                     return;
                 }
 
@@ -1098,6 +1104,7 @@
         };
         onReachBottom() {//触底加载
             if(this.total <= this.offset) {//已到底
+                this.reachBottom = true;
                 return;
             }   
             this.showTotal = true;                     
