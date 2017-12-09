@@ -6,94 +6,140 @@
         2.        
 -->
 <template lang="wxml">
-    <view class="hd">
-        <view class="city">今日{{cityName}}房价</view>
-        <text class="city-price">{{info.avgPrice}}</text>
-        <text class="ratio">
-            <text class="compare">环比上月</text>
-            <text class="iconfont icon-desc" wx:if="{{info.flag=='0'}}"></text>
-            <text class="iconfont icon-asc" wx:if="{{info.flag=='1'}}"></text>
-            <text>{{info.increase}}</text>
-        </text>
-    </view>
-    <view class="nav {{fixed==true?'fixed':''}}">
-        <view class="now-area">当前各区参考均价</view>
-        <view class="title">
-            <text class="area">区域</text>
-            <text class="average">参考均价</text>
-            <text class="rate">涨幅</text>
+    <!--页面内容-->
+    <block wx:if="{{ ! loadingVisibility && ! loadfailVisibility }}">
+        <view class="hd">
+            <view class="city">今日{{ cityName }}房价</view>
+            <text class="city-price">{{ info.avgPrice }}</text>
+            <text class="ratio">
+                <text class="compare">环比上月</text>
+                <text class="iconfont icon-desc" wx:if="{{ info.flag == '0' }}"></text>
+                <text class="iconfont icon-asc" wx:if="{{ info.flag == '1' }}"></text>
+                <text>{{ info.increase }}</text>
+            </text>
         </view>
-    </view>
-    <view class="bd">
-        <repeat for="{{info.subList}}" key="index" index="index" item="item">
-            <view class="price-info">
-                <text class="location">{{item.name}}</text>
-                <text class="cost">{{item.avgPrice}}</text>
-                <text class="scale {{item.flag=='1'?'rise':'lower'}}">{{item.increase}}</text>
+        <view class="nav {{ fixed == true ? 'fixed' : '' }}">
+            <view class="now-area">当前各区参考均价</view>
+            <view class="title">
+                <text class="area">区域</text>
+                <text class="average">参考均价</text>
+                <text class="rate">涨幅</text>
             </view>
-        </repeat>
+        </view>
+        <view class="bd">
+            <repeat for="{{ info.subList }}" key="index" index="index" item="item">
+                <view class="price-info">
+                    <text class="location">{{ item.name }}</text>
+                    <text class="cost">{{ item.avgPrice }}</text>
+                    <text class="scale {{ item.flag == '1' ? 'rise' : 'lower' }}">{{ item.increase }}</text>
+                </view>
+            </repeat>
+        </view>
+    </block>
+    <!--加载中组件-->
+    <loading wx:if="{{ loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view class="loadfail-container" @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
+        <loadfail></loadfail>
     </view>
 </template>
 
-<script>
-    // import info from "./../../mock/house-price.js";
-    import wepy from "wepy";
+<script>    
+    import wepy from "wepy" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载相关组件
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具api
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     import apiDataFilter from "../../mixins/apiDataFilter";
     import Trace from "../../mixins/trace" ;  //大数据埋点 api
+
     export default class Index extends wepy.page {
         config = {
             "navigationBarTitleText": "房价行情"
-        };
+        } ;
         components = {
-
-        };
+            loading : Loading ,
+            loadfail : Loadfail
+        } ;
         data = {
-            info: '',//各区房价行情
-            fixed: false,  //nav是否固定;
-            trace:new Trace, //埋点api
-            cityName:''
-        };
-        computed = {
-
-        };
+            info : "" , //各区房价行情
+            fixed : false ,  //nav是否固定;
+            trace : new Trace , //埋点api
+            cityId : 43 ,
+            cityName : "上海" ,
+            loadingVisibility : true ,  //数据加载的loading条
+            loadfailVisibility : false   //数据加载失败的组件显示状态
+        } ;
         methods = {
-
-        };
-        events = {
-
-        };
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           加载失败画面点击刷新处理
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+           refreshPage : ()=> {
+               console.log("taping") ;
+               this.loadData() ;
+           }
+        } ;
         onLoad(options) {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           把城市信息从缓存中保存到data中
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             let city = wx.getStorageSync("city") || {} ;
-            let dicId=city.cityId||43;
-            this.cityName=city.cityName;
-            this.$apply();
-            let that=this;
+            this.cityId = city.cityId || 43 ;
+            this.cityName = city.cityName || "上海" ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        加载页面数据的方法
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        loadData() {
             apiDataFilter.request({
                 apiPath : "market.index" ,
-                data : { "dicId":dicId, "dicType":3 } ,
-                successCallback:res => {
-                    this.info=res.data;
-                    this.$apply();
+                data : { "dicId" : this.cityId , "dicType" : 3 } ,
+                successCallback : (res) => {
+                    this.info=res.data ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    加载中和加载错误全部不显示
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.loadingVisibility = false ;
+                    this.loadfailVisibility = false ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    wepy让改变生效
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/  
+                    this.$apply() ;
+                } ,
+                loadingCallback : ()=> {
+                    this.loadingVisibility = true ;
+                    this.loadfailVisibility = false ;                
+                    this.$apply() ;
+                } ,                
+                errorCallback : ()=> {
+                    this.loadingVisibility = false ;
+                    this.loadfailVisibility = true ;                    
+                    this.$apply() ;
                 }
-            }) ;            
-           
-        };
+            }) ; 
+        } ;
         onShow() {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             页面埋点
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
              this.trace.pv({ "pageName" : "1212" }) ;
+             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            加载数据
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            this.loadData() ;
         } ;
         onPageScroll(e) {
             // 当页面滚动超过一定距离时,区域参考价固定
             if (e.scrollTop > 135) {
-                this.fixed = true;
-                this.$apply();
+                this.fixed = true ;                
             }
             // 页面上滚到顶部时，区域参考价固定;
             if (e.scrollTop < 135) {
-                this.fixed = false;
-                this.$apply();
+                this.fixed = false ;                
             }
         };
         // 分享转发;
