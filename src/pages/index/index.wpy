@@ -137,9 +137,9 @@
     <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
 
     <!--加载中组件-->
-    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ !reachBottom }}"></loading>
+    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
     <!--加载失败组件-->
-    <view @tap="errorReload" wx:if="{{ loadfailVisibility }}" style="{{fixed?'padding-top: 200rpx':''}}">
+    <view @tap="errorReload" wx:if="{{ loadfailVisibility }}" style="{{fixed && loadfailFullscreen=='true'?'padding-top: 200rpx':''}}">
         <loadfail :fullscreen.sync="loadfailFullscreen" :fullscreen.sync="loadfailFullscreen"></loadfail>
     </view> 
 </template>
@@ -415,7 +415,7 @@
                 countVisible: true,//控制...
                 showNearText: false,//用来区分加载房源数的文案  
                 loadingFullscreen: "false",
-                loadingVisibility: true,
+                loadingVisibility: false,
                 loadfailFullscreen: "false",
                 loadfailVisibility: false,                              
         } ;
@@ -1078,6 +1078,7 @@
                     this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0); 
                     if(this.offset >= this.total) {
                         this.reachBottom = true;
+                        this.loadingVisibility = false;
                     }  
                     if(data.data.secondHouseListModels){
                         data.data.secondHouseListModels.forEach((item)=>{
@@ -1091,12 +1092,14 @@
                 },
                 completeCallback: ()=>{
                     //this.loading = false;
-                    this.loadingVisibility = false;
+                    //this.loadingVisibility = false;
                     this.$apply();
                 },
                 errorCallback: ()=>{
                     //this.isLoadError = true;
                     this.loadfailVisibility = true;
+                    this.loadingVisibility = false;
+                    //this.reachBottom = true;
                     if(this.offset == 0){
                         this.loadfailFullscreen = 'true';
                     }else{
@@ -1159,6 +1162,7 @@
             }
             if(this.total <= this.offset) {//已到底
                 this.reachBottom = true;
+                this.loadingVisibility = false;
                 return;
             }             
             this.showTotal = true;                     
