@@ -128,6 +128,7 @@
                 <navigator url="/pages/esf/list?type=similar&houseId={{ house.houseId }}">查看更多</navigator>
             </view>
         </view>
+        <view class="bottom-gap"></view>
         <assistant :agent.sync="agent" portraitEventName="1213009" wechatEventName="1213011" telEventName="1213010" :houseId.sync="houseId"></assistant>
     </block>
     <!--加载中组件-->
@@ -437,7 +438,6 @@
             border : none ;
         }
     }
-
     .loadfail-container {
         height : 100% ;
     }

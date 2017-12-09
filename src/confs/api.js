@@ -9,9 +9,8 @@ export default {
     "timeout" : 60 * 1000 ,  //超时请求时间，单位：毫秒
     "successStatusCode" : "1" ,
     "prefix" : {        
-        "test" : "https://minapp-test.yfyk365.com" ,
-        //"test" : "http://10.0.18.79:8118" ,
-        "sim" : "https://minapp-sim.yfyk365.com" ,
+        "test" : "https://minapp-test.yfyk365.com" ,        
+        "sim" : "https://minapp-sim1.yfyk365.com" ,
         "prod" : "https://minapp.yfyk365.com"
     } ,
     "suffix" : { //后缀代表接口去掉prefix的部分，这里可以是无限级的树状结构，根据自己的需要

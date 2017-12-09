@@ -6,16 +6,16 @@
         2.        
 -->
 <template lang="wxml">
-    <view class="esf-list" wx:if="{{ ! loadingVisibility && ! loadfailVisibility }}">
+    <view class="esf-list">
        <repeat for="{{ houseList }}" key="index" index="index" item="item">
             <esf :item="item" openType="2"></esf>
         </repeat>
     </view>
     <!--加载中组件-->
-    <loading :fullscreen="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
+    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
     <!--加载失败组件-->
-    <view class="loadfail-container" @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
-        <loadfail :fullscreen="loadfailFullscreen"></loadfail>
+    <view style="{{ loadfailFullscreen === 'true' ? 'height : 100% ;' : '' }}" @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
+        <loadfail :fullscreen.sync="loadfailFullscreen"></loadfail>
     </view>
 </template>
 
@@ -69,7 +69,11 @@
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             将页面query参数值存放到data下的pageParams下
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-            this.pageParams = options ;            
+            this.pageParams = options ; 
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            调试参数
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            this.pageParams.type = "onsale" ;       
         } ;
         onShow() {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -115,8 +119,8 @@
         } ;
         loadData() {
             let reqData = { "offset" : this.pageStates.offset , "pageSize" : this.pageStates.pageSize } ;
-            if( this.pageParams.type === "onsale" ) reqData.subEstateId = this.pageParams.subEstateId ;
-            else if( this.pageParams.type === "similar" ) reqData.houseId = this.pageParams.houseId ;
+            if( this.pageParams.type === "onsale" ) reqData.subEstateId = this.pageParams.subEstateId || 35248 ;
+            else if( this.pageParams.type === "similar" ) reqData.houseId = this.pageParams.houseId || 1000653022 ;
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             从api接口读取数据
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                  
@@ -124,12 +128,19 @@
                 apiPath : this.apiPath ,
                 data : reqData ,
                 successCallback : (res)=> {
-                    if(res.data.length) {
-                        let houseList = res.data ;                        
+                    if(res.data) {
+                        let houseList = res.data || [] ;                        
                         this.houseList = this.houseList.concat(houseList) ;
-                        this.pageStates.offset += houseList.length ;
+                        this.pageStates.offset += houseList.length ;                        
                     }                    
                     if( this.houseList.length === res.count ) this.pageStates.requestable = false ;  //如果加载完了要改变标识
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    只要有了房源，加载样式就改变了
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    if(this.houseList.length) {
+                        this.loadingFullscreen = "false" ;  //加载条不要全屏
+                        this.loadfailFullscreen = "false" ;  //加载失败状态也不要全屏
+                    }
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     加载中和加载错误全部不显示
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -168,8 +179,5 @@
         .esf-item {
             margin : @gap-dimension @common-margin ;
         }
-    }
-    .loadfail-container {
-        height : 100% ;
-    }
+    }    
 </style>

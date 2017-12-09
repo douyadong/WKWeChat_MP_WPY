@@ -6,140 +6,191 @@
         2.        
 -->
 <template lang="wxml">
-    <view class="agent">
-        <view class="card">
-            <image src="{{agentInfo.headRoundImgUrl}}?x-oss-process=image/resize,w_120"  mode="aspectFill" lazy-load="true"></image>
-            <view class="agent-info">
-                <view class="id-info">
-                    <text class="name">{{agentInfo.agentName}}</text>
-                    <text class="company">| {{agentInfo.abbreviation}} {{agentInfo.storeName}}</text>
-                </view>
-                <view class="join-long">入住悟空：{{agentInfo.serviceYears}}</view>
-            </view>      
+    <block wx:if="{{ firstRequest  && ! loadingVisibility && ! loadfailVisibility }}"></block>
+        <view class="agent">
+            <view class="card">
+                <image src="{{agentInfo.headRoundImgUrl}}?x-oss-process=image/resize,w_120"  mode="aspectFill" lazy-load="true"></image>
+                <view class="agent-info">
+                    <view class="id-info">
+                        <text class="name">{{agentInfo.agentName}}</text>
+                        <text class="company">| {{agentInfo.abbreviation}} {{agentInfo.storeName}}</text>
+                    </view>
+                    <view class="join-long">入住悟空：{{agentInfo.serviceYears}}</view>
+                </view>      
+            </view>
+            <view class="house-number">TA的房源<text class="number">[{{houseInfo.total}}套]</text></view>            
         </view>
-        <view class="house-number">TA的房源<text class="number">[{{houseInfo.total}}套]</text></view>
-        <view class="house-list">
-            <repeat for="{{houseInfo.secondHouseListModels}}" key="index" index="index" item="item">
-                <esf :item="item" :agentId="agentId"></esf>
-            </repeat>
-        </view>
+        <assistant :agent.sync="agentInfo" portrait="off" wechatEventName="1218002" telEventName="1218003"></assistant>
+    </block>
+    <view class="house-list">
+        <repeat for="{{houseInfo.secondHouseListModels}}" key="index" index="index" item="item">
+            <esf :item="item" :agentId="agentId"></esf>
+        </repeat>
     </view>
-    <assistant :agent.sync="agentInfo" portrait="off" wechatEventName="1218002" telEventName="1218003"></assistant>
+    <!--加载中组件-->
+    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view style="{{ loadfailFullscreen === 'true' ? 'height : 100% ;' : '' }}" @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
+        <loadfail :fullscreen.sync="loadfailFullscreen"></loadfail>
+    </view>
 </template>
 
 <script>
-    import wepy from "wepy";
+    import wepy from "wepy" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载组件资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     import Esf from "../../components/esf";
     import Assistant from "../../components/assistant";
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具api资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     import apiDataFilter from "../../mixins/apiDataFilter";
     import Trace from "../../mixins/trace" ;  //大数据埋点 api
+    
     export default class Index extends wepy.page {
-        config = {
-            
-        };
         components = {
-            esf: Esf,
-            assistant: Assistant
-        };
+            esf : Esf ,
+            assistant : Assistant ,
+            loading : Loading ,
+            loadfail : Loadfail
+        } ;
         data = {
-            pageParams:{},//页面query参数;
-            agentInfo: '',//经纪人身份信息;
+            pageParams : { } ,//页面query参数;
+            agentInfo : {} , //经纪人身份信息;
             agentId : "" ,  //二手房组件里面要传经纪人id，组件传值绑定只能是一层
-            houseInfo:'',//房源列表信息;
-            trace:new Trace, //埋点api
-            pageStates:{
-                    pageIndex:0,//评论的起始条数
-                    pageSize:20,//评论信息每次加载多少条
-                    total:0
+            houseInfo : {
+                total : 0 ,
+                secondHouseListModels : []
+            } , //房源列表信息;
+            trace : new Trace , //埋点api
+            firstRequest : true ,  //是否第一次请求，第一次请求上面的经纪人信息不呈现，后面请求都呈现
+            loadingVisibility : true ,  //数据加载的loading条
+            loadfailVisibility : false ,  //数据加载失败的组件显示状态
+            loadingFullscreen : "true" ,  //加载条要不要全屏，页面第一次进入全屏，只要加载了数据就设置为"false"
+            loadfailFullscreen : "true" ,  //加载条要不要全屏，页面第一次进入全屏，只要加载了数据就设置为"false"
+            pageStates : {
+                pageIndex : 0 , //评论的起始条数
+                pageSize : 20 , //评论信息每次加载多少条               
+                requestable : true
             }
-        };
-        computed = {
-
-        };
+        } ;
         methods = {
-
-        };
-        events = {
-
-        };
-        onLoad(options) {
-            let self=this;
-            self.pageParams=options;
-            this.agentId = this.pageParams.agentId ;
-            self.$apply();
-            //页面刚开始加载时获取的房源列表信息;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            加载失败画面点击刷新处理
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            refreshPage : ()=> {  
+                if(this.pageStates.requestable) {
+                    this.loadHouseData() ;
+                    this.loadAgentData() ;
+                }
+            }
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        获取房源信息
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        loadHouseData() {
             apiDataFilter.request({
                 apiPath : "agent.house" ,
                 data : { 
-                    "agentId":options.agentId ,
-                    "pageIndex":self.pageStates.pageIndex,
-                    "pageSize":self.pageStates.pageSize, 
-                    } ,
-                successCallback:function(res){
-                    console.log(res)
-                    self.houseInfo=res.data;
-                    self.pageStates.pageIndex += (res.data.secondHouseListModels&& res.data.secondHouseListModels.length || 0);
-                    self.houseInfo.secondHouseListModels.forEach((item)=>{
-                        item.bigDataParam = {eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.pageParams.agentId}};
-                    });
-                    self.$apply();
+                    "agentId" : this.pageParams.agentId ,
+                    "pageIndex" : this.pageStates.pageIndex ,
+                    "pageSize" : this.pageStates.pageSize
+                } ,
+                successCallback : (res)=> {                   
+                    this.houseInfo.total = res.data.total || 0 ;
+                    let houseList = res.data.secondHouseListModels || [] ;                    
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    让数据请求的指针累加
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.pageStates.pageIndex += houseList.length ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    给二手房房源数据赋予大数据埋点信息
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    houseList && houseList.forEach((item)=>{
+                        item.bigDataParam = { eventName : "1218001" , eventParam : { house_id : item.houseId , agent_id : this.pageParams.agentId } } ;
+                    }) ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    把数据累加
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.houseInfo.secondHouseListModels = this.houseInfo.secondHouseListModels.concat(houseList) ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    如果加载完了要改变标识
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                    
+                    if( this.houseInfo.secondHouseListModels.length === res.data.total ) this.pageStates.requestable = false ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    改变loading和loadfail组件显示状态
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+                    this.loadingVisibility = false ;
+                    this.loadfailVisibility = false ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    wepy让数据改变生效
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.$apply() ;
                 }
-            });
-            //经济人身份信息;
+            }) ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        获取经纪人身份信息
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        loadAgentData() {
             apiDataFilter.request({
                 apiPath : "agent.index" ,
-                data : { "agentId":options.agentId } ,
-                successCallback:function(res){
-                    self.agentInfo=res.data;
-                    self.$apply();
-                     //动态改变页面title;
-                    wx.setNavigationBarTitle({title:self.agentInfo.agentName+'的名片'});
+                data : { "agentId" : this.pageParams.agentId } ,
+                successCallback : (res)=> {
+                    this.agentInfo = res.data || {} ;                    
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    wepy让数据改变生效
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.$apply() ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    设置页面标题
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    wx.setNavigationBarTitle({ title : this.agentInfo.agentName + "的名片" }) ;
                 }
-            });            
-            
-        };
+            }) ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        页面onload执行
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        onLoad(options) {            
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            将所有的页面参数存放到pageParams里面
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            this.pageParams=options ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            二手房组件里面要传经纪人id，组件传值绑定只能是一层，吧这个值给到data中
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            this.agentId = this.pageParams.agentId ;
+        } ;
         onShow() {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             页面埋点
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
             this.trace.pv({ "pageName" : "1218" , "pageParam" : { "agent_id" : this.pageParams.agentId } }) ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            最后请求数据
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            if(this.pageStates.requestable) {
+                this.loadHouseData() ;
+                this.loadAgentData() ;
+            }
         } ;
         onReachBottom() {
-            // 页面上拉触发该函数用于滚动加载数据
-            //经纪人房源信息;
-            let self=this;
-            // 判断房源是否加载完毕;self.houseInfo.total
-            if(self.pageStates.pageIndex<self.houseInfo.total){
-                 apiDataFilter.request({
-                    apiPath : "agent.house",
-                    data : { 
-                        "agentId":self.pageParams.agentId,
-                        "pageIndex":self.pageStates.pageIndex,
-                        "pageSize":self.pageStates.pageSize, 
-                    } ,
-                    successCallback:function(res){
-                        if(res.data){
-                            self.houseInfo.secondHouseListModels= self.houseInfo.secondHouseListModels.concat(res.data.secondHouseListModels);
-                            self.pageStates.pageIndex += (res.data.secondHouseListModels&& res.data.secondHouseListModels.length || 0);
-                            self.houseInfo.secondHouseListModels.forEach((item)=>{
-                            item.bigDataParam = {eventName:"1218001",eventParam:{house_id:item.houseId,agent_id:self.pageParams.agentId}};
-                            });
-                            self.$apply();
-                        }   
-                    }
-                })
-            }
-        };
+            if(this.pageStates.requestable) this.loadHouseData() ;
+        } ;
         // 分享转发;
         onShareAppMessage() {
-            return { "title" : this.agentInfo.storeName+'经纪人'+this.agentInfo.agentName+'的名片' }
+            return { "title" : this.agentInfo.storeName + "经纪人" + this.agentInfo.agentName + "的名片" } ;
         }
     }
 </script>
 
 <style lang="less" scoped>
-    @import "../../less/variables.less";
-    @import "../../less/mixins.less"; 
+    @import "../../less/variables.less" ;
+    @import "../../less/mixins.less" ; 
     // 经纪人信息;
     .agent {
         background-color: #fff;
