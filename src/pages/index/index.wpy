@@ -12,7 +12,7 @@
         <view class="city-search" >
             <view class="city" @tap="switchCity">{{city.cityName}}</view>
             <view class="search-box">
-                <text class="iconfont icon-search"></text><view class="estate-address {{estate&&estate.keyword ? '':'empty'}}" @tap="searchEstate">{{estate && estate.keyword || '搜索小区或地址'}}</view><text class="iconfont icon-close {{estate && estate.keyword ? '':'invisible'}}" @tap="clearEstate"></text>
+                <text class="iconfont icon-search"></text><view class="estate-address {{estate&&estate.keyword ? '':'empty'}}" @tap="searchEstate">{{estate && estate.keyword || '搜索小区或地址'}}</view><text class="iconfont icon-clear {{estate && estate.keyword ? '':'invisible'}}" @tap="clearEstate"></text>
             </view>
         </view>
         <view class="current-price">
@@ -1268,7 +1268,7 @@
             }
 
             position: relative;
-            .icon-close {
+            .icon-clear {
                 margin-top: 4rpx;
                 font-size: 26rpx;
                 position: absolute;

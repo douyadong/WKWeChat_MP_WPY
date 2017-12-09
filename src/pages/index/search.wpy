@@ -9,7 +9,7 @@
     <view class="city-search">
         <view class="city">{{city.cityName}}</view>
         <view class="search-box">
-            <text class="iconfont icon-search"></text><input value="{{keyword}}" @input="keywordChange" class="estate-address" placeholder="搜索小区或地址" focus="true" confirm-type="search" bindconfirm="confirm"></input><text class="iconfont icon-close {{keyword == ''? 'invisible':''}}" @tap="clearKeyword"></text>
+            <text class="iconfont icon-search"></text><input value="{{keyword}}" @input="keywordChange" class="estate-address" placeholder="搜索小区或地址" focus="true" confirm-type="search" bindconfirm="confirm"></input><text class="iconfont icon-clear {{keyword == ''? 'invisible':''}}" @tap="clearKeyword"></text>
         </view>
     </view>
     <view class="result">       
@@ -291,7 +291,7 @@
                 vertical-align: middle;                
             }
 
-            .icon-close {                
+            .icon-clear {                
                 font-size: 26rpx;
                 position: absolute;
                 right: 19rpx;
