@@ -137,7 +137,7 @@
     <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
 
     <!--加载中组件-->
-    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
+    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ !reachBottom }}"></loading>
     <!--加载失败组件-->
     <view @tap="errorReload" wx:if="{{ loadfailVisibility }}" style="{{fixed?'padding-top: 200rpx':''}}">
         <loadfail :fullscreen.sync="loadfailFullscreen" :fullscreen.sync="loadfailFullscreen"></loadfail>
@@ -415,7 +415,7 @@
                 countVisible: true,//控制...
                 showNearText: false,//用来区分加载房源数的文案  
                 loadingFullscreen: "false",
-                loadingVisibility: false,
+                loadingVisibility: true,
                 loadfailFullscreen: "false",
                 loadfailVisibility: false,                              
         } ;
@@ -1160,7 +1160,7 @@
             if(this.total <= this.offset) {//已到底
                 this.reachBottom = true;
                 return;
-            }   
+            }             
             this.showTotal = true;                     
             this.getEsfList(this.offset,(data)=>{          
                 this.items = this.items.concat(data.data.secondHouseListModels);
