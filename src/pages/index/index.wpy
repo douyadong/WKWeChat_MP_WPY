@@ -659,12 +659,12 @@
                         return it.id == townId;
                     })[0].meter;
                     this.filter.districtSection.isNear = true; 
-                    console.log("selectTown中设置isNear为true");
+                    //console.log("selectTown中设置isNear为true");
                     this.showTotal = true;                   
                 }else{
                     this.filter.districtSection.meter = "";
                     this.filter.districtSection.isNear = false;
-                    console.log("selectTown中设置isNear为false");
+                    //console.log("selectTown中设置isNear为false");
                     this.trace.uv({ eventName: "1209003", eventParam: {region_id: this.filter.districtSection.selectedDistrictId, town_id: townId} });
                     this.showTotal = true;
                 }
@@ -705,7 +705,7 @@
                 this.filter.districtSection.selectedDistrictText = '';
                 this.filter.districtSection.selectedTownText = '';
                 this.filter.districtSection.isNear = false;
-                console.log("selectStation中设置isNear为false");              
+                //console.log("selectStation中设置isNear为false");              
 
                 this.trace.uv({ eventName: "1209003", eventParam: { subwary_id: this.filter.districtSection.selectedMetroId, station_id: stationId }});
                 this.filter.selectedFilterSection = "";
@@ -1191,7 +1191,7 @@
             this.filter.districtSection.innerSelectedDistrictText = '';
             this.filter.districtSection.innerSelectedTownText = '';
             this.filter.districtSection.isNear = false;
-            console.log("clearDistrictFilter中把isNear设置为false");
+            //console.log("clearDistrictFilter中把isNear设置为false");
             this.filter.districtSection.meter = "";            
         };
         clearMetroFilter() {//清除地铁线路筛选条件            
