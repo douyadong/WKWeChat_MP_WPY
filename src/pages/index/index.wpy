@@ -134,7 +134,14 @@
         </view>
     </modal>   
 
-    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips> 
+    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
+
+    <!--加载中组件-->
+    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view @tap="errorReload" wx:if="{{ loadfailVisibility }}" style="{{fixed?'padding-top: 200rpx':''}}">
+        <loadfail :fullscreen.sync="loadfailFullscreen" :fullscreen.sync="loadfailFullscreen"></loadfail>
+    </view> 
 </template>
 
 <script>
@@ -144,6 +151,8 @@
     import Trace from "../../mixins/trace";
     import Modal from "../../components/modal";
     import Tips from "../../components/tips";
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;    
 
     const DEFAULT = {
         selectedDistrictId: "",
@@ -270,7 +279,9 @@
         components = {            
             esf: Esf,
             modal: Modal,
-            tips: Tips
+            tips: Tips,
+            loading : Loading ,
+            loadfail : Loadfail
         } ; 
         data = {
                 cityName: "",//用来显示未开通城市名称的
@@ -402,7 +413,11 @@
                 fixed: false,//控制头部内容的吸顶
                 trace: new Trace,//埋点
                 countVisible: true,//控制...
-                showNearText: false,//用来区分加载房源数的文案                
+                showNearText: false,//用来区分加载房源数的文案  
+                loadingFullscreen: "false",
+                loadingVisibility: false,
+                loadfailFullscreen: "false",
+                loadfailVisibility: false,                              
         } ;
         computed = {
             districtDisplayName(){//区域查询的显示文本
@@ -775,7 +790,10 @@
            let opened = wx.getStorageSync('opened'); //是否打开过  
            //首次读取storage中是否有city，否则就是默认城市
            this.city = wx.getStorageSync("city");// || DEFAULT.city;            
-           wx.showLoading();//定位是显示loading
+           wx.showLoading({
+               title: "定位中",
+               mask: true
+           });//定位是显示loading
            //定位
            wx.getLocation({
                success: (res)=>{//定位成功
@@ -1009,6 +1027,13 @@
             if(this.filter.selectedFilterSection != '') {
                 return;
             }
+
+            this.loading = true;
+            this.nodata = false;
+            this.loadingVisibility = true;
+            this.loadfailVisibility = false;
+            this.$apply();
+
             //收集查询条件    
             let districtId = !this.filter.districtSection.isNear &&this.filter.districtSection.innerSelectedDistrictId || "";
             let townId = !this.filter.districtSection.isNear && this.filter.districtSection.innerSelectedTownId || "";
@@ -1039,10 +1064,8 @@
                 localLat: this.filter.districtSection.isNear && this.city.lat || ""
             }; 
 
-            console.log('isNear in getEsfList:',this.filter.districtSection.isNear);
-
-            this.loading = true;
-            this.nodata = false;
+            //console.log('isNear in getEsfList:',this.filter.districtSection.isNear);
+            
             apiDataFilter.request({
                 apiPath: "index.secondHouseList",
                 method: "POST",                
@@ -1067,16 +1090,27 @@
                     cb && cb(data);                                                  
                 },
                 completeCallback: ()=>{
-                    this.loading = false;
+                    //this.loading = false;
+                    this.loadingVisibility = false;
+                    this.$apply();
                 },
                 errorCallback: ()=>{
-                    this.isLoadError = true;
+                    //this.isLoadError = true;
+                    this.loadfailVisibility = true;
+                    if(this.offset == 0){
+                        this.loadfailFullscreen = 'true';
+                    }else{
+                        this.loadfailFullscreen = 'false';
+                    }
+                    this.$apply();
                 }
             });     
         };
-        refresh(navigateToTop = true) {//刷新
+        refresh(navigateToTop = true) {//刷新            
             this.offset = 0;//查询开始位置为0
-            this.reachBottom = false;            
+            this.reachBottom = false;   
+            this.items = [];         
+            this.$apply();
             this.getEsfList(this.offset,(data)=>{
                 this.items = data.data.secondHouseListModels || [];      
                 if(this.showTotal){
@@ -1104,10 +1138,25 @@
                     }); 
                 }
                 this.$apply();
-            });
-            this.$apply();
+            });            
         };
+        errorReload(){//接口错误后点击重新加载执行的操作
+            //第一次接口就失败的reload
+            if(this.offset == 0){
+                this.refresh();
+                return;
+            }
+            //非第一次接口失败的reload
+            this.showTotal = true;                     
+            this.getEsfList(this.offset,(data)=>{          
+                this.items = this.items.concat(data.data.secondHouseListModels);
+                this.$apply();
+            });            
+        }
         onReachBottom() {//触底加载
+            if(this.loadfailVisibility){//加载失败直接返回
+                return;
+            }
             if(this.total <= this.offset) {//已到底
                 this.reachBottom = true;
                 return;

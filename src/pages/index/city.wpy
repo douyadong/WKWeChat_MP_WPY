@@ -14,20 +14,35 @@
         <view @tap="selectCity" wx:key="{{item.cityId}}" wx:for-index="idx" class="item {{idx>0?'has-border':''}}" wx:for="{{cities}}" data-city="{{item}}">{{item.cityName}}</view>
        </view>
     </view>
+
+    <!--加载中组件-->
+    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
+        <loadfail :fullscreen.sync="loadfailFullscreen" :fullscreen.sync="loadfailFullscreen"></loadfail>
+    </view>
 </template>
 
 <script>    
     import wepy from "wepy" ;  
     import apiDataFilter from "../../mixins/apiDataFilter";
     import Trace from "../../mixins/trace";
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;
     export default class City extends wepy.page {
         config = {
             navigationBarTitleText: "选择城市",
         } ;
         components = {            
-            
+            loading : Loading ,
+            loadfail : Loadfail
         } ; 
         data = {
+            loadingFullscreen: "false",
+            loadingVisibility: true,
+            loadfailFullscreen: "false",
+            loadfailVisibility: false,
+
             city: {
 
             },
@@ -42,6 +57,9 @@
            selectCity(e) {               
                wx.setStorageSync("city",e.currentTarget.dataset.city);
                wx.navigateBack();
+           },
+           refreshPage() {
+               this.fetchData();
            }
         } ;
         events = {
@@ -52,6 +70,16 @@
         onShow() {    
             this.city = wx.getStorageSync('city');
 
+            //setTimeout(()=>{
+            this.fetchData();
+            //},3000);                      
+
+            this.trace.pv({pageName: "1210"});              
+        };
+        fetchData() {
+            this.loadingVisibility = true;
+            this.loadfailVisibility = false;
+            this.$apply();
             apiDataFilter.request({
                 apiPath: "index.getAllCityBusiness",
                 successCallback: (data)=>{         
@@ -60,17 +88,21 @@
                     });
                     this.cities = cities;
                     if(this.city){                        
-                        if(this.cities.filter((t)=>{return t.cityId == this.city.cityId;}).length == 0){
-                            //this.city = null;
+                        if(this.cities.filter((t)=>{return t.cityId == this.city.cityId;}).length == 0){ 
                             this.isOpenCity = false;
                         }
-                    }       
+                    }                           
                     this.$apply();                    
+                },
+                errorCallback: ()=>{
+                    this.loadfailVisibility = true;
+                    this.$apply();
+                },
+                completeCallback: ()=>{
+                    this.loadingVisibility = false;
+                    this.$apply();
                 }
-            });          
-
-           this.trace.pv({pageName: "1210"});
-              
+            });
         }
     }
 </script>

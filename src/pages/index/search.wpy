@@ -29,19 +29,28 @@
             <view class="address">您可以更换其他关键字再试一次</view>
        </view>
     </view>
+
+    <!--加载中组件-->
+    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view @tap="reload" wx:if="{{ loadfailVisibility }}">
+        <loadfail :fullscreen.sync="loadfailFullscreen" :fullscreen.sync="loadfailFullscreen"></loadfail>
+    </view>
 </template>
 
 <script>
     import wepy from "wepy" ;    
     import apiDataFilter from "../../mixins/apiDataFilter";
     import Trace from "../../mixins/trace";
-
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;
     export default class Search extends wepy.page {
         config = {
             navigationBarTitleText: "悟空找房",
         } ;
         components = {            
-            
+            loading : Loading ,
+            loadfail : Loadfail
         } ; 
         data = {            
             keyword: "",
@@ -50,15 +59,22 @@
             },
             items: [],
             noData: false,
-            trace: new Trace
+            trace: new Trace,
+            loadingFullscreen: "false",
+            loadingVisibility: false,
+            loadfailFullscreen: "false",
+            loadfailVisibility: false,
         } ;
         computed = {
             
         } ;
         methods = {
            keywordChange(e) {
-               this.keyword = (e.detail.value || '').trim();
-               if(this.keyword && this.keyword != this.lastKeyword){//发请求
+               this.keyword = (e.detail.value || '').trim();               
+               if(this.keyword && this.keyword != this.lastKeyword){
+                   this.fetchData();
+               }
+               /*if(this.keyword && this.keyword != this.lastKeyword){//发请求
                     let keyword = this.keyword;
                     this.lastKeyword = keyword;
                     apiDataFilter.request({
@@ -110,10 +126,11 @@
                             this.$apply();
                         }
                     });
-               }
+               }*/
            },
            clearKeyword() {
                this.keyword = ''; 
+               this.items = [];
                this.$apply(); 
                return false;             
            },
@@ -133,6 +150,9 @@
                wx.setStorageSync("estate", item);               
                this.trace.uv({eventName: "1211001", eventParam:{estate_id: item.subEstateId || item.showId, choice_content: item.keyword}});
                wx.navigateBack();
+           },
+           reload(){
+               this.fetchData();
            }
         } ;
         events = {
@@ -157,6 +177,74 @@
            };
         onShow() {
             this.trace.pv({ pageName: "1211" });
+        };
+        fetchData() {            
+            //if(this.keyword && this.keyword != this.lastKeyword){//发请求
+                
+                let keyword = this.keyword;
+                this.lastKeyword = keyword;
+                this.loadingVisibility = true;
+                this.loadfailVisibility = false;
+                this.items = [];
+                this.noData = false;
+                apiDataFilter.request({
+                    apiPath: "index.acWord",
+                    showLoading: false,
+                    data: {
+                        cityId: this.city.cityId,
+                        keyword: keyword,
+                        associationType: 0
+                    },
+                    successCallback: (data)=>{                                                    
+                        this.items = data.data && data.data.map((item)=>{
+                            item.address = this.generateHighlight(item.address,item.markName);
+                            item.names = this.generateHighlight(item.keyword,item.markName);
+                            switch(item.type.toString()){//1 区域（行政区）2 板块 3地铁线路 4地铁站 5 小区名&地铁
+                                case "1":
+                                    item.realIdObj = {
+                                        districtId: item.showId
+                                    }
+                                break;
+                                case "2":
+                                    item.realIdObj = {
+                                        townId: item.showId
+                                    }
+                                break;
+                                case "3":
+                                    item.realIdObj = {
+                                        subwayLine: item.showId
+                                    };
+                                break;
+                                case "4":
+                                    item.realIdObj = {
+                                        subwayStation: item.showId
+                                    };
+                                break;
+                                case "5":
+                                    item.realIdObj = {
+                                        subEstateId: item.subEstateId
+                                    }
+                                break;
+                            }
+                            return item;
+                        }) || [];
+                        if(this.items.length == 0){
+                            this.noData = true;
+                        } else {
+                            this.noData = false;
+                        }          
+                        this.$apply();
+                    },
+                    errorCallback: ()=>{
+                        this.loadfailVisibility = true;
+                        this.$apply();
+                    },
+                    completeCallback: ()=>{
+                        this.loadingVisibility = false;
+                        this.$apply();
+                    }
+                });
+            //}
         }
     }
 </script>
