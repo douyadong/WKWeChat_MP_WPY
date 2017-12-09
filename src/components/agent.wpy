@@ -82,7 +82,8 @@
             currentAgent : {} ,  //当前操作经纪人
             dial : "" ,  //当前操作经纪人总机号码
             digits : "" ,  //当前操作经纪人分机号
-            trace : new Trace  //埋点api
+            trace : new Trace,  //埋点api
+            isIOS: false,
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          提示信息
@@ -104,10 +105,14 @@
                     apiPath : "common.dial" ,
                     data : { "agentId" : event.currentTarget.dataset.agentid } ,
                     successCallback : (res)=> {
-                        this.phoningModalVisibility = true ;
-                        this.dial = res.data.dial ;
-                        this.digits = res.data.digits ;
-                        this.$apply() ;
+                        if(this.isIOS){//iOS直接拨打
+                            wx.makePhoneCall({ phoneNumber : res.data.dial + ',' + res.data.digits }) ;
+                        }else{//Android弹框后再拨打
+                            this.phoningModalVisibility = true ;
+                            this.dial = res.data.dial ;
+                            this.digits = res.data.digits ;
+                            this.$apply() ;
+                        }                        
                     } ,
                     errorCallback : (res)=> {                        
                         this.tips(res) ;
@@ -192,7 +197,11 @@
            }
         } ;
         onLoad() {
-
+            //获取当前系统的类型：iOS或Android，iOS直接拨打电话，Android弹框
+            let iOSReg = /ios/i;
+            let androidReg = /android/i;
+            let systemInfo = wx.getSystemInfoSync();
+            this.isIOS = iOSReg.test(systemInfo.system) && !androidReg.test(systemInfo.system);
         }
     }
 </script>
