@@ -6,7 +6,7 @@
         2.        
 -->
 <template lang="wxml">
-    <block wx:if="{{ firstRequest  && ! loadingVisibility && ! loadfailVisibility }}"></block>
+    <block wx:if="{{ ! firstRequest  && ! loadingVisibility && ! loadfailVisibility }}">
         <view class="agent">
             <view class="card">
                 <image src="{{agentInfo.headRoundImgUrl}}?x-oss-process=image/resize,w_120"  mode="aspectFill" lazy-load="true"></image>
@@ -19,20 +19,21 @@
                 </view>      
             </view>
             <view class="house-number">TA的房源<text class="number">[{{houseInfo.total}}套]</text></view>            
-        </view>
+        </view>        
         <assistant :agent.sync="agentInfo" portrait="off" wechatEventName="1218002" telEventName="1218003"></assistant>
     </block>
     <view class="house-list">
         <repeat for="{{houseInfo.secondHouseListModels}}" key="index" index="index" item="item">
             <esf :item="item" :agentId="agentId"></esf>
         </repeat>
-    </view>
+    </view>    
     <!--加载中组件-->
     <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
     <!--加载失败组件-->
     <view style="{{ loadfailFullscreen === 'true' ? 'height : 100% ;' : '' }}" @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
         <loadfail :fullscreen.sync="loadfailFullscreen"></loadfail>
     </view>
+    <view class="bottom-gap"></view>
 </template>
 
 <script>
@@ -117,6 +118,14 @@
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
                     this.houseInfo.secondHouseListModels = this.houseInfo.secondHouseListModels.concat(houseList) ;
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    只要有了房源数据下次请求就不是第一次请求了，加载样式也不要全屏了
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    if(this.houseInfo.secondHouseListModels.length) {
+                        this.firstRequest = false ;
+                        this.loadingFullscreen = "false" ;  //加载条不要全屏
+                        this.loadfailFullscreen = "false" ;  //加载失败状态也不要全屏
+                    }
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     如果加载完了要改变标识
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                    
                     if( this.houseInfo.secondHouseListModels.length === res.data.total ) this.pageStates.requestable = false ;
@@ -128,6 +137,16 @@
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     wepy让数据改变生效
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.$apply() ;
+                } ,
+                loadingCallback : ()=> {
+                    this.loadingVisibility = true ;
+                    this.loadfailVisibility = false ;                
+                    this.$apply() ;
+                } ,                
+                errorCallback : ()=> {
+                    this.loadingVisibility = false ;
+                    this.loadfailVisibility = true ;                    
                     this.$apply() ;
                 }
             }) ;
@@ -194,7 +213,7 @@
     // 经纪人信息;
     .agent {
         background-color: #fff;
-        padding-bottom: 130rpx;
+        //padding-bottom: 130rpx;
         .card {
             border-bottom: 1rpx solid #d8d8d8;
             .clearfix();
@@ -230,11 +249,11 @@
             .number {
                 color: @lighter-font-color;
             }
-        } 
-        // 房源列表;
-        .house-list {
-            // .clearfix();
-            padding : 0 30rpx;
-        }
+        }         
+    }
+    // 房源列表;
+    .house-list {
+        background-color : #fff ;   
+        padding : 0 30rpx;
     }
 </style>

@@ -180,7 +180,7 @@
             agent : {} ,  //经纪人数据
             albums : [] ,  //相册数据
             loadingVisibility : true ,  //数据加载的loading条
-            loadfailVisibility : true ,  //数据加载失败的组件显示状态
+            loadfailVisibility : false ,  //数据加载失败的组件显示状态
             trace : new Trace  //埋点api
         } ;
         methods = {            

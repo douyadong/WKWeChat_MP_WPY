@@ -6,7 +6,8 @@
         2.        
 -->
 <template lang="wxml">
-    <view class="estate-detail">
+    <!--整个页面内容-->
+    <view class="estate-detail" wx:if="{{ ! loadingVisibility && ! loadfailVisibility }}">
          <swipers :items.sync="imgList"></swipers>
           <summary :estateInfo.sync = "estateInfo"></summary>
          <view class="wk-panel top-gap" wx:if="{{ commentList}}">
@@ -18,83 +19,124 @@
                 <!-- <view class="nocomment" wx:if="{{!commentList}}">当前暂无评论</view>-->
              </view>
          </view>
-    <qmap wx:if="{{estate.latitude && estate.longitude}}" :estate.sync="estate" eventName="1214003"></qmap>
+        <qmap wx:if="{{estate.latitude && estate.longitude}}" :estate.sync="estate" eventName="1214003"></qmap>
+    </view>
+    <!--加载中组件-->
+    <loading wx:if="{{ loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view class="loadfail-container" @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
+        <loadfail></loadfail>
     </view>
 </template>
 
 <script>
     import wepy from "wepy";
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载相关组件
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     import Swipers from "../../components/swipers" ;
     import Map from "../../components/map" ;
     import Summary from "./sections/summary" ;
     import Comments from "./sections/comments";
-    import apiDataFilter from "../../mixins/apiDataFilter";
-    import Trace  from "../../mixins/trace"
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    import apiDataFilter from "../../mixins/apiDataFilter" ;
+    import Trace  from "../../mixins/trace" ;
+
     export default class Detail extends wepy.page {
         components = {
-            swipers: Swipers,
-            summary: Summary,
-            comments: Comments,
-            qmap: Map
+            swipers : Swipers ,
+            summary : Summary ,
+            comments : Comments ,
+            qmap : Map ,
+            loading : Loading ,
+            loadfail : Loadfail
         } ;
         data = {
-            estateInfo:{}, // 小区信息
-            commentList:[], // 评论列表
-            imgList:[],// 照片列表
-            estate:{     // 坐标
-                latitude:'',
-                longitude:'',
-                estateAddr:'',
-                subEstateId:''
-            },
-            subEstateId:" ", //小区id
-            trace: new Trace()
+            estateInfo : {} , // 小区信息
+            commentList : [] , // 评论列表
+            imgList : [] ,// 照片列表
+            estate : {     // 坐标
+                latitude : '' ,
+                longitude : '' ,
+                estateAddr : '' ,
+                subEstateId : ''
+            } ,
+            subEstateId : "", //小区id
+            trace : new Trace ,
+            loadingVisibility : true ,  //数据加载的loading条
+            loadfailVisibility : false ,  //数据加载失败的组件显示状态
         } ;
         methods = {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
              埋点和路由跳转
              -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             navigatorUrl(){
-                this.trace.uv({eventName:1214002,eventParam:{estate_id:this.subEstateId}});
-                wx.navigateTo({url:"/pages/estate/comment?subEstateId=" + this.subEstateId});
-            }
+                this.trace.uv({ eventName : 1214002 , eventParam : { estate_id : this.subEstateId } }) ;
+                wx.navigateTo({ url : "/pages/estate/comment?subEstateId=" + this.subEstateId }) ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           加载失败画面点击刷新处理
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+           refreshPage : ()=> {
+               console.log("taping") ;
+               this.loadData() ;
+           }
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         接口获取小区信息
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        getDetail(subEstateId){
+        loadData(subEstateId) {
             apiDataFilter.request({
                 apiPath : "estate.detail",
                 data : { "subEstateId" : subEstateId  } ,
-                successCallback : res => {
+                successCallback : (res) => {
                     let estateDetail = res.data ;
                     if (estateDetail){
                         this.estateInfo = estateDetail.estateInfo;
                         if (this.estateInfo.comment){
-                            this.commentList = this.estateInfo.comment.commentList;
-                        }else {
-                            this.commentList = null
-                        }
-                        this.imgList = this.estateInfo.imgList;
+                            this.commentList = this.estateInfo.comment.commentList || [] ;
+                        }                        
+                        this.imgList = this.estateInfo.imgList ;
                         this.estate.latitude = this.estateInfo.latitude;
                         this.estate.longitude = this.estateInfo.longitude;
                         this.estate.estateAddr = this.estateInfo.estateAddr;
-                        this.estate.subEstateId = subEstateId;
-                        this.$apply();
-
+                        this.estate.subEstateId = subEstateId ;
+                        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                        加载中和加载错误全部不显示
+                        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                        this.loadingVisibility = false ;
+                        this.loadfailVisibility = false ;
+                        this.$apply() ;
                     }
+                } ,
+                loadingCallback : ()=> {
+                    this.loadingVisibility = true ;
+                    this.loadfailVisibility = false ;                
+                    this.$apply() ;
+                } ,                
+                errorCallback : ()=> {
+                    this.loadingVisibility = false ;
+                    this.loadfailVisibility = true ;                    
+                    this.$apply() ;
                 }
             }) ;
         };
         onLoad(option) {
-            this.subEstateId = option.subEstateId;
-            this.getDetail(this.subEstateId);            
+            this.subEstateId = option.subEstateId || "35248" ;
         } ;
         onShow() {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             页面埋点
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             this.trace.pv({ pageName : 1214 , pageParam : { estate_id : this.subEstateId } }) ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            获取小区数据
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            this.loadData(this.subEstateId) ;
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         分享标题
@@ -183,5 +225,8 @@
                 line-height: 40rpx;
             }
         }
+    }
+    .loadfail-container {
+        height : 100% ;
     }
 </style>
