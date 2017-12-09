@@ -10,7 +10,7 @@
     <view class="estate-detail" wx:if="{{ ! loadingVisibility && ! loadfailVisibility }}">
          <swipers :items.sync="imgList"></swipers>
           <summary :estateInfo.sync = "estateInfo"></summary>
-         <view class="wk-panel top-gap" wx:if="{{ commentList}}">
+         <view class="wk-panel top-gap" wx:if="{{ commentList && commentList.length }}">
              <view class="panel-header">小区评论  <view class="amount"  @tap="navigatorUrl">{{estateInfo.comment.amount}}<text class="iconfont icon-next"></text></view></view>
              <view class="panel-body">
                  <view >
