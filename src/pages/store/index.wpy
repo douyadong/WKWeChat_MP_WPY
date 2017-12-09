@@ -122,7 +122,7 @@
 
         };
         onLoad(option) {
-            this.storeId = option.storeId || 257 ;
+            this.storeId = option.storeId || 10023 ;
             wx.setNavigationBarTitle({
                 title:"悟空找房"
             });
