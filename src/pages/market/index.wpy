@@ -8,7 +8,15 @@
 <template lang="wxml">
     <!--页面内容-->
     <block wx:if="{{ ! loadingVisibility && ! loadfailVisibility }}">
-        <view class="hd">
+        <view class="fixed-header header" wx:if="{{ fixed }}">
+            <view class="now-area">当前各区参考均价</view>
+            <view class="table-title">
+                <text class="area">区域</text>
+                <text class="average">参考均价</text>
+                <text class="rate">涨幅</text>
+            </view>
+        </view>
+        <view class="banner">
             <view class="city">今日{{ cityName }}房价</view>
             <text class="city-price">{{ info.avgPrice }}</text>
             <text class="ratio">
@@ -18,9 +26,9 @@
                 <text>{{ info.increase }}</text>
             </text>
         </view>
-        <view class="nav {{ fixed == true ? 'fixed' : '' }}">
+        <view class="header">
             <view class="now-area">当前各区参考均价</view>
-            <view class="title">
+            <view class="table-title">
                 <text class="area">区域</text>
                 <text class="average">参考均价</text>
                 <text class="rate">涨幅</text>
@@ -29,9 +37,9 @@
         <view class="bd">
             <repeat for="{{ info.subList }}" key="index" index="index" item="item">
                 <view class="price-info">
-                    <text class="location">{{ item.name }}</text>
-                    <text class="cost">{{ item.avgPrice }}</text>
-                    <text class="scale {{ item.flag == '1' ? 'rise' : 'lower' }}">{{ item.increase }}</text>
+                    <text class="area">{{ item.name }}</text>
+                    <text class="average">{{ item.avgPrice }}</text>
+                    <text class="rate {{ item.flagName }}">{{ item.increase }}</text>
                 </view>
             </repeat>
         </view>
@@ -41,7 +49,7 @@
     <!--加载失败组件-->
     <view class="loadfail-container" @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
         <loadfail></loadfail>
-    </view>
+    </view>    
 </template>
 
 <script>    
@@ -78,8 +86,7 @@
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
            加载失败画面点击刷新处理
            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-           refreshPage : ()=> {
-               console.log("taping") ;
+           refreshPage : ()=> {               
                this.loadData() ;
            }
         } ;
@@ -99,7 +106,13 @@
                 apiPath : "market.index" ,
                 data : { "dicId" : this.cityId , "dicType" : 3 } ,
                 successCallback : (res) => {
-                    this.info=res.data ;
+                    let result = res.data ;
+                    result.subList && result.subList.forEach((item)=>{
+                        item.flagName = "" ;
+                        if( item.flag == 1 ) item.flagName = "rise" ;
+                        else if( item.flag == -1 ) item.flagName = "drop" ;
+                    }) ;
+                    this.info = result ;
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     加载中和加载错误全部不显示
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -133,15 +146,9 @@
             this.loadData() ;
         } ;
         onPageScroll(e) {
-            // 当页面滚动超过一定距离时,区域参考价固定
-            if (e.scrollTop > 135) {
-                this.fixed = true ;                
-            }
-            // 页面上滚到顶部时，区域参考价固定;
-            if (e.scrollTop < 135) {
-                this.fixed = false ;                
-            }
-        };
+            this.fixed = (e.scrollTop > 185) ? true : false ;
+            this.$apply();          
+        } ;
         // 分享转发;
         onShareAppMessage() {
             return { "title" : "买房就找悟空找房" }
@@ -152,9 +159,70 @@
 <style lang="less">
     @import "../../less/variables.less";
     @import "../../less/mixins.less";
-    // 今日房价
-    .hd {
-        background: url(http://img.wkzf.com/b262848128334e3daab102eb97e1b747) no-repeat;
+    page {
+        height : 100%;
+        background-color : #fff ;
+    }
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    表格title和价格信息统一样式
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    .table-title , .price-info {
+        .clearfix() ;  
+        padding : 0 30rpx ;
+        text {
+            color : @lighter-font-color ;
+            display : block ;     
+            float : left ;
+            font-size : 28rpx ;
+            line-height : 300% ;
+            text-align : left ;
+            width : 33.3% ;
+            &.rate {
+                text-align : right ;
+            }
+        }
+    }
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    价格信息样式
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    .price-info {
+        border-bottom : 1rpx solid @light-line-gray-color ;        
+        text {
+            color : #000 ;
+            &.rise {
+                color : @red-font-color ;
+            }
+            &.drop {
+                color : @success-color ;
+            }
+        }
+    }  
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    头样式
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    .header {
+        background-color : #fff ;
+        border-bottom: 1rpx solid @light-line-gray-color ;
+        box-sizing : border-box ;  
+        &.fixed-header {
+            left  : 0 ;
+            position : fixed ;
+            top : 0 ;
+            width : 100% ;
+            z-index : 9999 ;
+        }
+        .now-area {
+            color: #000;
+            font-size: 32rpx;
+            padding : 30rpx 0 48rpx 30rpx  ;            
+        }
+    }
+       
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    banner样式
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    .banner {
+        background: url(https://img.wkzf.com/b262848128334e3daab102eb97e1b747?x-oss-process=image/resize,w_400) no-repeat;
         background-size: 100% 100%;
         color: white;
         height: 270rpx;
@@ -176,76 +244,5 @@
             }
         }
     }
-    page {
-        height: 100%;
-        background-color: #fff;
-    }
-    // 其它区域房价
-    .nav {
-        border-bottom: 1rpx solid #d8d8d8;
-        padding: 0 30rpx;
-        .now-area {
-            color: #000;
-            font-size: 32rpx;
-            padding-top: 30rpx;
-            padding-bottom: 48rpx;
-        }
-        .title {
-            .clearfix();
-            color: @lighter-font-color;
-            font-size: 28rpx;
-            padding-bottom: 30rpx;
-            position: relative;
-            .average{
-                position: absolute;
-                left:50%;
-                transform: translateX(-50%);
-            }
-            .area {
-                float: left;
-            }
-            .rate {
-                float: right;
-            }
-        }
-        &.fixed {
-            background-color: white;
-            z-index: 9999;
-            position: fixed;
-            top: 0;
-            width: 690rpx;
-        }
-    }
-
-    // 具体区域房价行情;
-    .bd {
-        background-color: #fff;
-        text-align: center;
-        .price-info {
-            padding: 0 30rpx;
-            border-bottom: 1rpx solid #d8d8d8;
-            .clearfix();
-            color: #000;
-            font-size: 30rpx;
-            line-height: 88rpx;
-            position: relative;
-            .location {
-                float: left;
-            }
-            .cost{
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-            .scale {
-                float: right;
-                &.rise{
-                    color: @red-font-color;
-                }
-                &.lower{
-                    color:@success-color;
-                }
-            }
-        }
-    }
+    
 </style>
