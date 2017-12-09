@@ -279,7 +279,7 @@
             .qrcode {
                 .center-block() ;
                 height : 300rpx ;
-                margin : 30rpx 0 ;
+                margin : 30rpx auto ;
                 width : 300rpx ;
             }
         }        
