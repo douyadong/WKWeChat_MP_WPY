@@ -1,6 +1,0 @@
-<view class="promotion" wx:for="{{promotions}}" wx:key="*this" wx:for-item="promotion">
-  <text class="iconfont icon-hui"></text>
-  <text class="title">{{promotion.title}}</text>
-  <text class="desc">{{promotion.details}}</text>
-  <view class="separator"></view>
-</view>

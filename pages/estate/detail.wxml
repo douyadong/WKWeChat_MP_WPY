@@ -1,8 +1,0 @@
-<!--相册部分-->
-<include src="sections/swiper.wxml"/>
-<!--概要部分-->
-<include src="sections/summary.wxml"/>
-<!--评论部分-->
-<include src="sections/comments.wxml"/>
-<!--位置及周边部分-->
-<include src="sections/location.wxml"/>

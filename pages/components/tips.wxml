@@ -1,8 +1,0 @@
-<template name="tips">
-    <block wx:if="{{tips.show}}">
-        <view class="mask_transparent"></view>
-        <view class="wk_tips">
-            <view class="text">{{tips.text}}</view>
-        </view>
-    </block>  
-</template>
