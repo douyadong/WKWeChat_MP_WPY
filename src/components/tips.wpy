@@ -7,7 +7,9 @@
 -->
 <template lang="wxml">
     <view class="wk-tips-mask" wx:if="{{ visibility }}">
-        <view class="wk-tips">{{ msg }}</view>
+        <view class="wk-tips">
+            <text>{{ msg }}</text>
+        </view>
     </view>
 </template>
 

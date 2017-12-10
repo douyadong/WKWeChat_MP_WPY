@@ -8,7 +8,7 @@
 <template lang="wxml">
     <view class="store">
         <view class="store-top" style="position:{{ lessenShow == true? 'fixed':'static'}};top:0;left:0; right:0; z-index:10">
-            <view class="store-pic" style="height:{{ lessenShow == true? 140:240 }}rpx; background-size:100% {{ lessenShow == true? 140:240}}rpx;  padding-top: {{ lessenShow == true? 50:0}}rpx;">
+            <view class="store-pic" style="height:{{ lessenShow == true? 140:240 }}rpx; background-size:100% auto ;  padding-top: {{ lessenShow == true? 50:0}}rpx;">
                 <text wx:if="{{lessenShow == false}}">{{apiData.areaPriceInfo.name || "--"}}</text>
                 <view class="price" style="font-size:{{ lessenShow == true? 36:28 }}rpx ; margin-top: {{ lessenShow == true? 0:50}}rpx;">周边房源均价 <text class="price-show" style="font-size:{{ lessenShow == true? 36:48 }}rpx ;">{{apiData.areaPriceInfo.avgPrice}}</text></view>
             </view>
@@ -122,7 +122,7 @@
 
         };
         onLoad(option) {
-            this.storeId = option.storeId || 10023 ;
+            this.storeId = option.storeId || 10027 ;
             wx.setNavigationBarTitle({
                 title:"悟空找房"
             });
@@ -208,8 +208,8 @@
             .store-pic {
                 width: 100%;
                 /* height:240rpx;*/
-                background: url("http://img.wkzf.com/b262848128334e3daab102eb97e1b747") no-repeat;
-                /* background-size: 100% 240rpx;*/
+                background: url("http://img.wkzf.com/b262848128334e3daab102eb97e1b747") no-repeat;    
+                background-position : 0 center ;            
                 transition: .5s cubic-bezier(.35,0,.25,1);
                 -webkit-transition: .5s cubic-bezier(.35,0,.25,1);
                 opacity: 1;

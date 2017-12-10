@@ -98,7 +98,7 @@
 
        <view class="error" wx:if="{{isLoadError}}">
         <image src="https://img.wkzf.com/04f36182e2754599889eae69fc206270" @tap="refresh"></image>
-        <view>加载失败，点击刷新</view>
+        <view>加载失败，点击重新加载</view>
        </view>
 
        <view class="no-data" wx:if="{{nodata}}">

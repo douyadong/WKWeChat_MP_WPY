@@ -8,7 +8,7 @@
 <template lang="wxml">
     <view class="load-fail {{ fullscreen == 'true' ? 'fullscreen' : '' }}">
         <image src="https://img.wkzf.com/04f36182e2754599889eae69fc206270" mode="scaleToFill" wx:if="{{ fullscreen == 'true' }}"></image>
-         <text>加载失败，点击{{ fullscreen ? "刷新" : "重新加载" }}</text>
+         <text>加载失败，点击重新加载</text>
     </view>
 </template>
 
