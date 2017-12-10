@@ -19,7 +19,11 @@ Trace的定义，在构造器里面去清除发送失败的埋点数据队列
 class Trace {
     constructor() {
         let city = wx.getStorageSync("city") || {} ;
-        this.cityId = city.cityId || 43 ;  //默认上海
+        this.cityId = city.cityId || 43 ;  //默认上海        
+        if( ! wx.getStorageSync("deviceId")) {
+            wx.setStorageSync("deviceId" , this.uuid()) ;
+        }
+        this.deviceId = wx.getStorageSync("deviceId") ;
         this.clearStorage() ; 
     }
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,7 +46,7 @@ class Trace {
             "pageName" : pageName ,
             "pageParam" : pageParam ,
             "city" : this.cityId ,
-            "deviceId" : this.uuid() ,
+            "deviceId" : this.deviceId ,
             "type" : 1
         } ;        
         adf.request({
@@ -71,7 +75,7 @@ class Trace {
             "eventName" : eventName ,
             "eventParam" : eventParam ,
             "city" : this.cityId ,
-            "deviceId" : this.uuid() ,
+            "deviceId" : this.deviceId ,
             "type" : 2
         } ;        
         adf.request({
