@@ -1,0 +1,56 @@
+<!--
+    @页面名称：播放器页面
+    @作者：豆亚东 (douyadong@lifang.com)
+    @业务逻辑说明：
+        1.
+        2.        
+-->
+<template lang="wxml">
+    <view class="video">
+        <video src="{{src}}" controls="controls" autoplay="autoplay"></video>
+    </view>
+</template>
+
+<script>
+import wepy from "wepy";
+export default class Player extends wepy.page {
+    config = {
+        "navigationBarTitleText": "房源视频"
+    };
+    components = {
+
+    };
+    data = {
+        src: ''
+    };
+    computed = {
+
+    };
+    methods = {
+
+    };
+    events = {
+
+    };
+    onLoad(options) {
+        this.src = "http://7xkvzb.com5.z0.glb.qiniucdn.com/5085474bacab4d5087e9d371a3ea5709WV.mp4"
+        let video = JSON.parse(decodeURIComponent(options));
+        this.src = video.videoUrl;
+    }
+}
+</script>
+
+<style lang="less" scoped>
+@import "../../less/variables.less";
+@import "../../less/mixins.less";
+.video {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%; 
+}
+
+video {
+    width: 100%;
+}
+</style>

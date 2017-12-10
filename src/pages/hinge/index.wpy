@@ -1,0 +1,51 @@
+<!--
+    @页面名称：扫码进小程序地址分发枢纽
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1. 这个模块是对我们一店一码项目的支持，通过微信扫码我们m站地址，通过先在小程序后台配置普通二维码凡是https://m.wkzf.com/所有页面都进入到这一页，然后对options.q得到的m站地址进行分析来决定跳转到哪个小程序页面
+        2. 暂时支持对门店首页地址的分析和转发，其他所有地址全部转向小程序首页
+-->
+<template lang="wxml">
+    <view></view>    
+</template>
+
+<script>
+    import wepy from "wepy" ;
+    export default class Index extends wepy.page {
+        config = {
+            "navigationBarTitleText" : "正在为您转发，请稍等..."
+        } ;        
+        data = { } ;        
+        onLoad(options) {
+            console.log(options) ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            定义转发的默认路径，默认会跳转到首页
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            let redirectUrl = "/pages/index/index" ; 
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            我们现在暂时只实现对门店首页地址的兼容：https://m.wkzf.com/shanghai/store/23434.html
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            if(options.q)  {
+                console.log(options.q) ;
+                let urlArray = decodeURIComponent(options.q).split("m.wkzf.com") ; 
+                console.log(urlArray) ;
+                if(urlArray.length > 1) {
+                    //说明域名后面还有东西，先去掉第一个/
+                    let pagePath = urlArray[1].substr(1) ;
+                    console.log(pagePath) ;
+                    let pathArray = pagePath.split("/") ;
+                    console.log(pathArray) ;
+                    if( pathArray.length > 2 && pathArray[1].toLowerCase() === "store") {
+                        //说明是门店详情页面
+                        let storeId = pathArray[2].replace(".html" , "") ;
+                        redirectUrl = "/pages/store/index?storeId=" + storeId ;
+                    }
+                }
+            }
+            wx.redirectTo({ "url" : redirectUrl }) ;
+        } ;        
+    }
+</script>
+
+<style lang="less" scoped>    
+</style>

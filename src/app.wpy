@@ -1,0 +1,44 @@
+<script>
+    import wepy from "wepy" ;
+    export default class extends wepy.app {
+        config = {
+            "pages" : [                 
+                "pages/index/index" , 
+                 "pages/store/index" , 
+                 "pages/esf/detail" , 
+                "pages/agent/index" ,
+                "pages/market/index" ,
+                "pages/common/player" ,                
+                "pages/demo/index" ,
+                "pages/index/city" ,
+                "pages/index/search" ,            
+                "pages/esf/list" ,  
+                "pages/estate/detail" ,
+                "pages/estate/comment" ,
+                "pages/join/index" ,
+                "pages/hinge/index"
+            ] ,
+            "window": {
+                "backgroundTextStyle" : "light" ,
+                "navigationBarBackgroundColor" : "#fff" ,
+                "navigationBarTitleText" : "买房就找悟空找房" ,
+                "navigationBarTextStyle" : "black"
+            }
+        } ;
+        constructor () {
+            super() ;        
+        } ;
+        globalData = {        
+            
+        } ;
+        onLaunch() {
+            
+        }
+
+        
+    }
+</script>
+
+<style lang="less">
+    @import "./less/app.less" ;
+</style>

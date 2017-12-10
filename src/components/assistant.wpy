@@ -1,0 +1,287 @@
+<!--
+    @组件名称：页面吸底的助手条组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+<template lang="wxml">
+    <view class="assistant">        
+        <navigator  url="/pages/agent/index?agentId={{ agent.agentId }}" wx:if="{{ portrait ==='on' }}" open-type="redirect" @tap="uv({{ portraitEventName }})">
+            <image class="img-circle" src="{{ agent.headRoundImgUrl }}?x-oss-process=image/resize,w_70" mode="aspectFill" lazy-load="true"></image>
+            <text class="name">{{ agent.agentName }}</text>
+            <text class="company">{{ agent.companyName }}</text>
+        </navigator>
+        <text class="wechat" @tap="addWechat" wx:if="{{ agent.agentWChatId }}">添加微信</text> 
+        <text class="tel" @tap="phoning">电话咨询</text>
+    </view>
+    <!--添加微信的modal框-->
+    <addWechatModal :visibility.sync="addWechatModalVisibility" title="添加微信">
+        <view slot="body">
+            <view>方法一：</view>
+            <view>将{{ agent.agentName }}的二维码保存到相册</view>
+            <image src="{{ agent.agentWChartQRImgUrl }}" mode="aspectFill" lazy-load="true" class="qrcode"></image>
+            <view>方法二：</view>
+            <text>复制{{ agent.agentName }}的微信号\n添加微信号：{{ agent.agentWChatId }}</text>            
+        </view>
+        <view slot="footer" class="modal-footer">
+            <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum" data-src="{{ agent.agentWChartQRImgUrl }}">保存到相册</view>
+            <view class="wk-btn wk-btn-transparent" @tap="copyWechat" data-wechatid="{{ agent.agentWChatId }}">复制微信号</view>
+        </view>
+    </addWechatModal>
+    <!--tips框-->
+    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>    
+    <!--tips框-->
+    <!--拨打电话的modal框-->
+    <phoningModal :visibility.sync="phoningModalVisibility" title="确定拨打电话" hasCloseBtn="false">
+        <view slot="body">
+            <view>电话号码：{{ dial }} 转 {{ digits }}</view>
+            <view>分机号：<text class="digits">{{ digits }}</text>（可能需要拨分机号）</view>              
+        </view>
+        <view slot="footer" class="modal-footer">
+            <view class="cancel wk-btn wk-btn-transparent" @tap="closePhoningModal">取消</view>
+            <view class="wk-btn wk-btn-transparent" @tap="confirmPhoning" data-union="{{ dial + ',' + digits }}">呼叫</view>
+        </view>
+    </phoningModal>
+    
+</template>
+
+<script>
+    import wepy from "wepy" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载组件资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+    import Modal from "./modal" ;
+    import Tips from "./tips" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+    import adf from "../mixins/apiDataFilter" ;
+    import Trace from "../mixins/trace" ;  //大数据埋点 api
+    
+    export default class Com extends wepy.component {
+        props = {
+            agent : Object ,
+            portrait : {
+                type : String ,
+                default : "on"
+            } ,
+            portraitEventName : String ,
+            wechatEventName : String ,
+            telEventName : String ,
+            houseId : String  //二手房详情页面需要传递这个参数
+        } ;
+        components = {
+            phoningModal : Modal ,
+            addWechatModal : Modal ,
+            tips : Tips
+        } ;
+        data = {            
+            addWechatModalVisibility : false ,  //添加微信modal框的显示状态
+            phoningModalVisibility : false ,  //拨打电话弹框的显示状态
+            tipsVisibility : false ,  //tips框的显示状态
+            tipsMsg : "" ,
+            dial : "" ,  //经纪人总机号码
+            digits : "" ,  //经纪人分机号
+            trace : new Trace,  //埋点api
+            isIOS: false
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        提示信息
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        tips = (msg) => {
+            this.tipsVisibility = true ;
+            this.tipsMsg = msg ;
+            this.$apply() ;
+        }
+        methods = {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            本页事件埋点的方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            uv : (eventName)=> {
+                this.trace.uv({
+                    eventName : eventName ,
+                    eventParam : { agent_id : this.agent.agentId }
+                }) ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            点击电话咨询调用的方法
+            1. 埋点            
+            2. 显示拨打电话弹框并通过调用短接号的接口拿到经纪人的短接号码并显示
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            phoning : ()=> {
+                this.methods.uv(this.telEventName) ;
+                let requestData = { "agentId" : this.agent.agentId } ;
+                if(this.houseId) requestData.houseId = this.houseId ;
+                adf.request({
+                    apiPath : "common.dial" ,
+                    data : requestData ,
+                    successCallback : (res)=> {                                                
+                        if(this.isIOS){//iOS直接拨打
+                            wx.makePhoneCall({ phoneNumber : res.data.dial + ',' + res.data.digits }) ;
+                        }else{//Android弹框后再拨打
+                            this.phoningModalVisibility = true ;
+                            this.dial = res.data.dial ;
+                            this.digits = res.data.digits ;
+                            this.$apply() ;
+                        }                        
+                    } ,
+                    errorCallback : (res)=> {                        
+                        this.tips(res) ;
+                    }
+                }) ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            点击添加微信调用的方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            addWechat : ()=> {
+                this.methods.uv(this.wechatEventName) ;
+                this.addWechatModalVisibility = true ;                      
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            保存到相册调用方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            saveToAlbum : function(event) {
+                /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                第一步就是埋点，由于产品经理关心是在哪个页面被点击，值关心哪个经纪人吸底条点击了多少次，所以eventName统一都用小程序经纪人详情页面的eventName
+                -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                this.methods.uv(1218004) ;
+                let self = this ;                
+                wx.getSetting({
+                    success(res) {
+                        if (!res["scope.writePhotosAlbum"]) {
+                            wx.authorize({
+                                scope : "scope.writePhotosAlbum" ,
+                                success() {
+                                    wx.downloadFile({
+                                        url : event.target.dataset.src ,
+                                        success : function(res) {
+                                            wx.saveImageToPhotosAlbum({
+                                                filePath : res.tempFilePath ,
+                                                success(res) { self.tips("已保存到手机相册！") ; } ,
+                                                fail(res) { self.tips("保存到相册失败\n请复制经纪人微信号添加") ; }
+                                            }) ;
+                                        } ,
+                                        fail : function() { self.tips("保存到相册失败\n请复制经纪人微信号添加") ; }
+                                    }) ;
+                                } ,
+                                fail(res) { self.tips("保存到相册失败\n请复制经纪人微信号添加") ; }
+                            }) ;
+                        }
+                    }
+                }) ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            复制微信号调用方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            copyWechat : (event)=> {
+                /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                第一步就是埋点，由于产品经理关心是在哪个页面被点击，值关心哪个经纪人吸底条点击了多少次，所以eventName统一都用小程序经纪人详情页面的eventName
+                -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                this.methods.uv(1218005) ;
+                wx.setClipboardData({
+                    data : event.target.dataset.wechatid ,
+                    success : (res)=> {                                                   
+                        this.tips("经纪人微信号已复制\n请前往微信添加") ;
+                    } ,
+                    fail : (res)=> {
+                        this.tips("经纪人微信号复制失败！") ;
+                    }
+                }) ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            拨打电话弹框里面点击了取消按钮关闭当前弹框的事件监听
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            closePhoningModal : ()=> {
+                this.phoningModalVisibility = false ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            确认拨出电话的事件监听
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            confirmPhoning : (event)=> {
+                wx.makePhoneCall({ phoneNumber : event.currentTarget.dataset.union }) ;
+                this.phoningModalVisibility = false ;
+            }
+        } ;  
+        onLoad() {
+            //获取当前系统的类型：iOS或Android，iOS直接拨打电话，Android弹框
+            let iOSReg = /ios/i;
+            let androidReg = /android/i;
+            let systemInfo = wx.getSystemInfoSync();
+            this.isIOS = iOSReg.test(systemInfo.system) && !androidReg.test(systemInfo.system);
+        }      
+    }
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .assistant {
+        background-color : #fff ;
+        box-shadow : 0 -2px 6px 0 rgba( 0 , 0 , 0 , .1 ) ;
+        bottom : 0 ;
+        .flex() ;
+        height : 100rpx ;
+        left : 0 ; 
+        position : fixed ;
+        width : 100% ;
+        z-index : 9900 ;
+        &>navigator {
+            .flex(1) ;
+            .clearfix() ;
+            image {                
+                display : block ;
+                float : left ;
+                height : 70rpx ;
+                margin : 15rpx ;
+                width : 70rpx ;
+            }
+            text {
+                display : block ;                
+                margin-left : 90rpx ;
+                line-height : 35rpx ;
+                &.name {
+                    font-size : @default-font-size ;
+                    line-height : 40rpx ;
+                    margin-top : 15rpx ;
+                }
+                &.company {
+                    color : @light-font-color ;
+                    font-size : @small-font-size ;
+                    line-height : 30rpx ;
+                    .text-ellipsis() ;
+                }
+            }
+        }
+        &>text {
+            color : #fff ;
+            display : block ;
+            .flex(1) ;
+            font-size : @default-font-size ;
+            line-height : 100rpx ;
+            text-align : center ;
+            &.wechat {
+                background-color : @danger-color ;
+            }
+            &.tel {
+                background-color : @primary-color ;
+            }
+        }
+    }
+    .wk-modal {
+        .modal-body {
+            &>view {               
+                text-align : center ;
+                text.digits {
+                    color : @primary-color ;
+                }
+            }            
+            .qrcode {
+                .center-block() ;
+                height : 300rpx ;
+                margin : 30rpx auto ;
+                width : 300rpx ;
+            }
+        }        
+    }
+</style>

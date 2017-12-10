@@ -1,0 +1,32 @@
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：tab.less (标签页)
+ 3. 作者：zhaohuagang@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+@import "../variables.less" ;
+@import "../mixins.less" ;
+.wk-tabs {   
+    .tabs-handle {
+        background-color : #fff ;
+        border-bottom : 1rpx solid @light-line-gray-color ;
+         .flex() ;
+        &>view {
+            .flex(1) ;
+            text-align : center ;
+            text {
+                border-bottom : 4rpx solid transparent ;
+                display : inline-block ;
+                font-size : @large-font-size ;
+                line-height : 88rpx ;
+            }
+            &.on {
+                text {
+                    border-bottom-color : @blue-color ;
+                }
+            }
+        }
+    }
+    .tabs-frame {
+        display : none ;
+    }
+}

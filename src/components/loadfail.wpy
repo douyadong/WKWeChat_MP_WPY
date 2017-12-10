@@ -1,0 +1,54 @@
+<!--
+    @组件名称：loadfail组件，就是加载失败组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+<template lang="wxml">
+    <view class="load-fail {{ fullscreen == 'true' ? 'fullscreen' : '' }}">
+        <image src="https://img.wkzf.com/04f36182e2754599889eae69fc206270" mode="scaleToFill" wx:if="{{ fullscreen == 'true' }}"></image>
+         <text>加载失败，点击重新加载</text>
+    </view>
+</template>
+
+<script>
+    import wepy from "wepy" ;
+    export default class Com extends wepy.component {    
+        props = {
+            fullscreen : {  //是否需要充满整个屏幕
+                type : String ,
+                twoWay : true ,
+                default : "true"
+            }
+        } ; 
+    }
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .load-fail {
+        background-color : #fff ;
+        padding : 20rpx 0 ;
+        text-align : center ;
+        &.fullscreen {
+            height : 100% ;
+            padding : 0 ;
+            text {
+                display : block ;
+                font-size : @larger-font-size ;  
+            }
+        }
+        image {
+            display : inline-block ;
+            height : 288rpx ;
+            margin : 200rpx 0 33rpx 0 ;
+            width : 313rpx ;
+        }
+        text {
+            color : @light-font-color ;            
+            font-size : @default-font-size ;              
+        }
+    }
+</style>

@@ -1,0 +1,116 @@
+<!--
+    @组件名称：地图图片组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+<template lang="wxml">
+    <view class="qqmap">
+        <image src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{ estate.latitude }},{{ estate.longitude }}&key={{ qqMapKey }}&size=375*250&center={{ estate.latitude }},{{ estate.longitude }}&zoom=12&scale=2" mode="aspectFill" lazy-load="true" @tap="openLocation"></image>
+        <view class="pop">
+            <view class="popover">
+                <text class="arrow"></text>
+                <text class="content">{{estate.estateAddr}}</text>
+            </view>
+        </view>
+        <text class="thumbtack"></text>
+    </view>
+</template>
+
+<script>
+    import wepy from "wepy" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/    
+    import Trace from "../mixins/trace" ;  //大数据埋点 api
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载应用配置
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/   
+    import appConf from "../confs/app" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    组件业务逻辑
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    export default class Com extends wepy.component {
+        props = {
+            estate : Object ,
+            eventName : String
+        } ;
+        data = {
+            qqMapKey : appConf.QQMapKey ,
+            trace : new Trace  //埋点api
+        } ;
+        methods = {
+            openLocation() {
+                /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                埋点
+                -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                this.trace.uv({
+                    eventName : this.eventName,
+                    eventParam : { estate_id : this.estate.subEstateId }
+                }) ;
+                /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                打开位置
+                -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                wx.openLocation({
+                    longitude : parseFloat(this.estate.longitude) ,
+                    latitude : parseFloat(this.estate.latitude) ,
+                    name : this.estate.estateName ,
+                    address : this.estate.estateAddr
+                }) ;
+            }
+        } ;     
+    }
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .qqmap {
+        height : 500rpx ;
+        position : relative ;
+        image {
+            height : 500rpx ;
+            width : 100% ;
+        }
+        .thumbtack , .pop {
+            position : absolute ;
+        }
+        .thumbtack {
+            background-color : @primary-color ;
+            border : 6rpx solid #fff ;
+            .border-radius(50%) ;
+            height : 40rpx ;
+            left : 50% ;
+            margin : -20rpx 0 0 -26rpx ;
+            top : 50% ;
+            width : 40rpx ;
+        }
+        .pop {
+            left : 0 ;
+            margin-top : 20rpx ;
+            text-align : center ;
+            top : 50% ;
+            width : 100% ;
+            z-index : 9000 ;
+            .popover {
+                display : inline-block ;
+                text {
+                    .center-block() ;
+                    &.arrow {
+                        .triangle-up( 16rpx , #fff ) ;                        
+                    }
+                    &.content {
+                        background-color : #fff ;
+                        box-shadow : 0 2px 6px 0 rgba( 0 , 0 , 0 , .1 ) ;
+                        .border-radius(8rpx) ;
+                        font-size : @default-font-size ;
+                        max-width : 94% ;
+                        margin-top : -10rpx ;
+                        padding : 20rpx ;
+                    }
+                }
+            }
+        }
+    }
+</style>

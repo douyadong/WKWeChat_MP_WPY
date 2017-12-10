@@ -1,0 +1,52 @@
+<!--
+    @组件名称：loading组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+<template lang="wxml">
+    <view class="loading {{ fullscreen == 'true' ? 'fullscreen' : '' }}">
+        <image src="https://img.wkzf.com/9f5c53fb33cc42ee9631e5d07a8bbe0e.gif" mode="scaleToFill"></image>
+        <text>加载中...</text>
+    </view>
+</template>
+
+<script>
+import wepy from "wepy" ;
+export default class Com extends wepy.component {    
+    props = {
+        fullscreen : {  //是否需要充满整个屏幕
+            type : String ,
+            twoWay : true ,
+            default : "true"
+        }
+    } ;   
+}
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .loading {
+        background-color : #fff ;
+        padding : 20rpx 0 ;
+        text-align : center ;
+        &.fullscreen {
+            height : 100% ;
+        }
+        image {
+            display : inline-block ;
+            height : 42rpx ;
+            margin-right : @gap-dimension ;
+            vertical-align : middle ;
+            width : 42rpx ;
+        }
+        text {
+            color : @light-font-color ;
+            display : inline-block ;
+            font-size : @default-font-size ;
+            vertical-align : middle ;
+        }
+    }
+</style>

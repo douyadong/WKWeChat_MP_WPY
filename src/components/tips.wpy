@@ -1,0 +1,65 @@
+<!--
+    @组件名称：tips组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2. 
+-->
+<template lang="wxml">
+    <view class="wk-tips-mask" wx:if="{{ visibility }}">
+        <view class="wk-tips">
+            <text>{{ msg }}</text>
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from "wepy" ;
+export default class Com extends wepy.component {    
+    props = {
+        msg : String ,
+        visibility : {
+            type : Boolean ,
+            twoWay : true
+        }
+    } ;
+    watch = {        
+        visibility : (newValue , oldValue )=> {            
+            if(newValue) setTimeout(()=>{                
+                this.visibility = false ; 
+                this.$apply() ;
+            } , 3000) ;
+        }
+    } ; 
+}
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .wk-tips-mask {
+        background-color : rgba(0, 0, 0, .3)  ;  
+        .flex() ;
+        .justify-content(center) ;
+        .align-items(center) ;
+        height : 100% ;
+        left : 0 ;
+        position : fixed ;
+        top : 0 ;
+        width : 100% ;
+        z-index : 10002 ;
+        &>.wk-tips {
+            background-color : rgba(0, 0, 0, .8)  ;  
+            .border-radius(6rpx) ;
+            color : #fff ;            
+            font-size : @default-font-size ;
+            line-height : 150% ;
+            max-width : 60% ;
+            min-width : 40% ;
+            padding : 30rpx 60rpx ;
+            text-align : center ;
+            z-index : 10003 ;     
+        }
+    }
+    
+</style>

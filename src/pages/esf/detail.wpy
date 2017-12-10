@@ -1,0 +1,445 @@
+<!--
+    @页面名称：二手房详情页面
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2.        
+-->
+<template lang="wxml">
+    <block wx:if="{{ ! loadingVisibility && ! loadfailVisibility }}">
+        <swipers :items.sync="albums" eventName="1213001"></swipers>
+        <view class="highlight wk-panel">
+            <view class="source-title">{{ house.houseTitle || estate.estateName }}</view>
+            <view class="hr"></view>
+            <view class="outline">
+                <view class="money">
+                    <text class="hd">总价</text>
+                    <text class="bd">{{ house.totalPrice }}万</text>
+                </view>
+                <view class="layout">
+                    <text class="hd">户型</text>
+                    <text class="bd">{{ house.houseChild }}</text>
+                </view>
+                <view class="area">
+                    <text class="hd">建筑面积</text>
+                    <text class="bd">{{ house.areaStr }}</text>
+                </view>
+            </view>
+            <view class="hr"></view>
+            <view class="tags">
+                <!--<text wx:if="{{ house.isTopHouse > 1 }}">精选</text>-->
+                <text wx:if="{{ house.isStorePush === 1 }}">店长推荐</text>
+                <text wx:elif="{{ house.commAgent > 0 }}">近学校</text>
+                <text wx:if="{{ house.fullYears >= 5 && house.onlyOne == 1 }}">满五唯一</text>
+                <text  wx:elif="{{ house.fullYears >= 2 }}">满二</text>
+                <text wx:if="{{ house.isSubwayHouse === 1 }}">地铁</text>
+                <text wx:if="{{ house.isSchoolHouse === 1 }}">近学校</text>
+                <text wx:if="{{ house.priceHasDown === 1 }}">降价</text>
+                <text wx:if="{{ house.isNewOnStore === 1 }}">新上</text>
+                <text wx:if="{{ house.orientation === 9 }}">南北通透</text> 
+            </view>
+            <view class="cols2-fields">
+                <view><text class="hd">单价</text><text class="bd">{{ house.unitPrice }}</text></view>
+                <view><text class="hd">年代</text><text class="bd">{{ house.completed }} 年</text></view>
+                <view><text class="hd">类型</text><text class="bd">{{ house.houseType }}</text></view>
+                <view><text class="hd">楼层</text><text class="bd">{{ house.floorDesc }}</text></view>
+                <view><text class="hd">装修</text><text class="bd">{{ house.decorationStr }}</text></view>
+                <view><text class="hd">朝向</text><text class="bd">{{ house.orientationStr }}</text></view>
+            </view>
+            <view class="hr fields-fence"></view>
+            <view class="cols1-fields">
+                <view><text class="hd">预算</text><text class="bd">首付{{ house.advancePayment }} 万，月供 {{ house.mortgage }} 元</text></view>
+                <view>
+                    <text class="hd">小区</text>
+                    <navigator url="/pages/estate/detail?subEstateId={{ estate.subEstateId }}" open-type="redirect" class="bd" @tap="uv( 'estate' , 1213002 )">
+                        <text>{{ estate.estateName }}</text>
+                        <text class="iconfont icon-next"></text>
+                    </navigator>
+                </view>
+                <view wx:if="{{ estate.subwayName }}"><text class="hd">地铁</text><text class="bd">{{ estate.subwayName }}</text></view>
+                <view wx:if="{{ estate.schoolName }}"><text class="hd">学校</text><text class="bd">{{ estate.schoolName }}</text></view>            
+            </view>
+        </view>
+        <view class="summary wk-panel top-gap" wx:if="{{ ! (house.houseSource === 2 && ! house.sellPoint) }}">
+            <view class="panel-header">基本信息</view>
+            <view class="panel-body">
+                <text class="hd" wx:if="{{ house.houseSource ===1 }}">主要优势</text>
+                <text class="bd">{{ house.sellPoint }}</text>
+                <block wx:if="{{ house.houseSource ===1 }}">
+                    <text class="hd">业主心态</text>
+                    <text class="bd">{{ house.ownerMotivation }}</text>
+                    <text class="hd">周边设施</text>
+                    <text class="bd">{{ house.aroundSupport }}</text>
+                    <!--<view class="panel-more" wx:if="{{ ! pageStates.summaryOptional }}" @tap="spreadOptional">查看更多</view>
+                    <view class="optional" wx:if="{{ pageStates.summaryOptional }}">
+                        <text class="hd">户型介绍</text>
+                        <text class="bd">{{ house.houseTypeDesc }}</text>
+                        <text class="hd">小区介绍</text>
+                        <text class="bd">{{ house.estateDesc }}</text>
+                        <text class="hd">税费解析</text>
+                        <text class="bd">{{ house.taxDesc }}</text>
+                        <text class="hd">其他</text>
+                        <text class="bd">{{ house.otherIntroduce }}</text>
+                    </view>-->
+                </block>
+            </view>        
+        </view>
+        <view class="estate wk-panel top-gap">
+            <view class="panel-header">小区信息</view>
+            <navigator class="panel-body" url="/pages/estate/detail?subEstateId={{ estate.subEstateId }}" open-type="redirect" @tap="uv( 'estate' , 1213004 )">
+                <image src="{{ estate.estateImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
+                <text class="name">{{ estate.estateName }}</text>
+                <view class="outline">
+                    <text>{{ estate.completed }} 年竣工 | {{ estate.totalHouse }}</text>
+                    <text class="iconfont icon-next"></text>
+                </view>
+                <text class="address">{{ estate.estateAddr }}</text>
+            </navigator>
+            <block wx:if="{{ estate.sameEstateHouseAmount }}">
+                <view class="hr"></view>
+                <navigator class="total-item" url="/pages/esf/list?type=onsale&subEstateId={{ estate.subEstateId }}" open-type="redirect" @tap="uv( 'estate' , 1213006 )">
+                    <text>在售房源</text>
+                    <view>
+                        <text>{{ estate.sameEstateHouseAmount || 0 }} 套</text>
+                        <text class="iconfont icon-next"></text>
+                    </view>
+                </navigator>
+            </block>
+            <block wx:if="{{ estate.comment.amount }}">
+                <view class="hr"></view>
+                <navigator class="total-item" url="/pages/estate/comment?subEstateId={{ estate.subEstateId }}" @tap="uv( 'estate' , 1213005 )">
+                    <text>用户评论</text>
+                    <view>
+                        <text>{{ estate.comment.amount || 0 }} 条</text>
+                        <text class="iconfont icon-next"></text>
+                    </view>
+                </navigator>
+            </block>
+        </view>
+        <qmap :estate.sync="estate" eventName="1213007" wx:if="{{ estate.latitude && estate.longitude }}"></qmap>    
+        <view class="similar wk-panel {{ (! estate.latitude || ! estate.longitude) ? 'top-gap' : '' }}" wx:if="{{ sameTownTotalCount }}">
+            <view class="panel-header">相似房源推荐</view>
+            <view class="panel-body">
+                <repeat for="{{ sameTownHouseList }}" key="index" index="index" item="item">
+                    <esf :item.sync="item"></esf>
+                </repeat>
+            </view>
+            <view class="panel-more" wx:if="{{ sameTownTotalCount > 5 }}">
+                <navigator url="/pages/esf/list?type=similar&houseId={{ house.houseId }}">查看更多</navigator>
+            </view>
+        </view>
+        <view class="bottom-gap"></view>
+        <assistant :agent.sync="agent" portraitEventName="1213009" wechatEventName="1213011" telEventName="1213010" :houseId.sync="houseId"></assistant>
+    </block>
+    <!--加载中组件-->
+    <loading wx:if="{{ loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view class="loadfail-container" @tap="refreshPage" wx:if="{{ loadfailVisibility }}">
+        <loadfail></loadfail>
+    </view>
+</template>
+
+<script>
+    import wepy from "wepy" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载相关组件
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    import Assistant from "../../components/assistant" ;
+    import Swipers from "../../components/swipers" ;
+    import Qmap from "../../components/map" ;
+    import Esf from "../../components/esf" ;
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    import adf from "../../mixins/apiDataFilter" ;
+    import Trace from "../../mixins/trace" ;  //大数据埋点 api
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    页面业务逻辑
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    export default class Detail extends wepy.page {
+        components = {
+            assistant : Assistant ,        
+            swipers : Swipers ,
+            qmap : Qmap ,
+            esf : Esf ,
+            loading : Loading ,
+            loadfail : Loadfail
+        } ; 
+        data = {
+            pageParams : {} ,  //页面query参数
+            pageStates : {  //页面状态值
+                
+            } ,
+            houseId : "" ,
+            house : {} ,  //房源信息
+            estate : {} ,  //小区信息
+            sameTownHouseList : [] ,  //相似房源推荐数据
+            sameTownTotalCount : 0 ,
+            agent : {} ,  //经纪人数据
+            albums : [] ,  //相册数据
+            loadingVisibility : true ,  //数据加载的loading条
+            loadfailVisibility : false ,  //数据加载失败的组件显示状态
+            trace : new Trace  //埋点api
+        } ;
+        methods = {            
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           uv埋点方法
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+           uv : (dataType , eventName)=> {
+               let params = { eventName : eventName } ;
+               if(dataType === "house") params.eventParam = { house_id : this.house.houseId } ;
+               else if(dataType === "estate") params.eventParam = { estate_id : this.estate.subEstateId } ;
+               else if(dataType === "agent") params.eventParam = { agent_id : this.agent.agentId } ;
+               this.trace.uv(params) ;
+           } ,
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           加载失败画面点击刷新处理
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+           refreshPage : ()=> {
+               console.log("taping") ;
+               this.loadData() ;
+           }
+        } ;
+        onLoad(options) {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            将所有的页面参数存放到pageParams里面
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            this.pageParams = options ;   
+            this.loadData() ;        
+        } ; 
+        onShow() {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            加载数据并执行后置任务，包括：
+            1. 页面埋点
+            2. 设置页面标题
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            //this.loadData() ;
+        } ;
+        loadData() {
+            let requestData = { "houseId" : this.pageParams.houseId || 1466775 } ;
+            if(this.pageParams.agentId) requestData.agentId = this.pageParams.agentId ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            从api接口读取数据
+            1. 有相册的houseId : 1466775 , 1466769
+            2. 有相似房源推荐的houseId : 1000653022
+            3. 详情页无基本信息：1000652615 1000410005
+            4. 没有经纬度值的houseId :  1466769
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                  
+           adf.request({
+                apiPath : "esf.detail" ,
+                data : requestData ,
+                successCallback : (res)=> {                   
+                    let apiData = res.data ;
+                    this.house = apiData.house ;
+                    this.houseId = apiData.house.houseId ;
+                    this.estate = apiData.estate ;
+                    this.sameTownHouseList = apiData.sameTownHouseList || [] ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    给二手房源加上埋点参数
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.sameTownHouseList.forEach((item)=>{
+                        item.bigDataParam = { eventName : "1213008" , eventParam : { house_id : item.houseId } } ;
+                    }) ;
+                    this.sameTownTotalCount = apiData.sameTownTotalCount || 0 ;
+                    this.agent = apiData.agent ;
+                    this.albums = apiData.house.imgList ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    加载中和加载错误全部不显示
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.loadingVisibility = false ;
+                    this.loadfailVisibility = false ;
+                    this.$apply() ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    页面埋点
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/            
+                    this.trace.pv({ "pageName" : "1213" , "pageParam" : { "house_id" : this.pageParams.houseId , "agent_id" : this.agent.agentId } }) ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    设置页面标题
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    wx.setNavigationBarTitle({ title : apiData.house.district + " " + apiData.house.town }) ;        
+                } ,
+                loadingCallback : ()=> {
+                    this.loadingVisibility = true ;
+                    this.loadfailVisibility = false ;                
+                    this.$apply() ;
+                } ,                
+                errorCallback : ()=> {
+                    this.loadingVisibility = false ;
+                    this.loadfailVisibility = true ;                    
+                    this.$apply() ;
+                }
+            }) ;              
+        } ; 
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        分享转发设置
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+        onShareAppMessage() {
+            return { "title" : "买房就找悟空找房" }
+        }
+    }
+</script>
+
+<style lang="less">
+    @import "../../less/variables.less" ;
+    @import "../../less/mixins.less" ;
+    page {
+        padding-bottom : 120rpx ;
+    }
+    .highlight {
+        .source-title {
+            font-size : @great-font-size ;
+            margin : 15rpx 0 30rpx 0 ;
+            .text-ellipsis(2) ;
+        }
+        .outline {
+            .flex() ;
+            padding : 30rpx 0 ;
+            view {
+                text {
+                    display : block ;
+                }
+                .hd {
+                    color : @light-font-color ;
+                    font-size : @small-font-size ;
+                    line-height : 180% ;
+                }
+                .bd {
+                    color : @danger-color ;
+                    font-size : @default-font-size ;
+                    font-weight : 600 ;
+                }
+            }
+            .layout , .area {
+                border-left : 1rpx solid @lighter-line-gray-color ;
+                padding-left : 60rpx ;
+            }
+            .money {                
+                .flex(2) ;
+            }
+            .layout {                
+                .flex(3) ;
+            }
+            .area {
+                .flex(2) ;
+            }
+        }
+        .tags {
+            padding : 30rpx 0 15rpx 0 ;
+            text {
+                .border-radius(6rpx) ;
+                background-color : @page-background-color ;
+                display : inline-block ;
+                font-size : @small-font-size ;
+                margin : 0 6rpx 6rpx 0 ;
+                padding : 6rpx 12rpx ;
+            }
+        }
+        .cols2-fields , .cols1-fields {
+            view {
+                padding : 6rpx 0 ;
+                .hd , .bd {
+                    display : block ;
+                    .clearfix() ;
+                    font-size : @default-font-size ;
+                    line-height : 150% ;
+                }
+                .hd {
+                    color : @light-font-color ;
+                    float : left ;
+                    width : 90rpx ;
+                }
+                .bd {
+                    color : @default-font-color ;
+                    margin-left : 90rpx ;
+                }
+            }
+        }
+        .cols2-fields {
+            .clearfix() ;
+            view {
+                float : left ;
+                width : 50% ;
+            }
+        }
+        .cols1-fields {
+            navigator.bd {
+                color : @blue-font-color ;
+                .clearfix() ;
+                .icon-next {
+                    float : right ;
+                }
+            }
+        }
+        .fields-fence {
+            margin : 20rpx 0 ;
+        }
+    }
+    .summary {
+        .panel-body {
+            padding-bottom : 15rpx ;
+        }
+        text {
+            display : block ;
+            font-size : @default-font-size ;
+            &.hd {
+                color : @light-font-color ;
+                line-height : 60rpx ;
+            }
+        }
+    }
+    .estate {
+        padding-bottom : @common-margin ;
+        navigator {
+            .clearfix() ;
+            &.panel-body {
+                image {
+                    display : block ;
+                    float : left ;
+                    height : 160rpx ;
+                    width : 240rpx ;
+                }
+                .name , .outline , .address {
+                    display : block ;
+                    font-size : @default-font-size ;
+                    line-height : 50rpx ;
+                    margin-left : 260rpx ;
+                }
+                .outline , .address {
+                    color : @light-font-color ;
+                }
+                .outline {
+                    .fit-height() ;
+                    .icon-next {
+                        color : @blue-font-color ;
+                        float : right ;
+                    }
+                }                
+            }
+            &.total-item {
+                &>text , &>view {
+                    font-size : @large-font-size ;
+                }
+                &>text {                    
+                    float : left ;                    
+                }
+                &>view {
+                    color : @blue-font-color ;
+                    float : right ;
+                }
+            }
+        }
+        .hr {
+            margin : @gap-dimension 0 ;
+        }
+    }
+    .similar {
+        .esf-item:last-child {
+            border : none ;
+        }
+    }
+    .loadfail-container {
+        height : 100% ;
+    }
+</style>

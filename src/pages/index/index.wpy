@@ -1,0 +1,1677 @@
+<!--
+    @页面名称：整个小程序首页
+    @作者：唐旭阳 (tangxuyang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2.        
+-->
+<template lang="wxml">    
+    <view @tap="clickCover" class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
+    </view> 
+    <block wx:if="{{isOpenCity}}"><view class="header {{fixed || filter.selectedFilterSection?'fixed':''}}">
+        <view class="city-search" >
+            <view class="city" @tap="switchCity">{{city.cityName}}</view>
+            <view class="search-box">
+                <text class="iconfont icon-search"></text><view class="estate-address {{estate&&estate.keyword ? '':'empty'}}" @tap="searchEstate">{{estate && estate.keyword || '搜索小区或地址'}}</view><text class="iconfont icon-clear {{estate && estate.keyword ? '':'invisible'}}" @tap="clearEstate"></text>
+            </view>
+        </view>
+        <view class="current-price">
+            <view class="title">今日{{city && city.cityName||''}}房价</view>
+            <view class="price">{{unitPrice||'--'}}</view>
+            <view class="detail" @tap="gotoPriceList">查看 <text class="iconfont icon-next"></text></view>
+        </view>
+        <view class="filter">
+            <view class="district-total-type-sort">
+                <view class="district-section {{districtDisplayName != '区域' ? 'active' : ''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}"></view>                         
+                </view>            
+                <view class="total-section {{totalDisplayName !== '总价' ?'active':''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}"></view>             
+                </view>
+                <view class="type-section {{typeDisplayName !== '户型' ?'active':''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}"></view>                
+                </view>
+                <view class="sort-section {{filter.sortSection.selectedId != '' ? 'active': ''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}"></view> 
+                </view>            
+            </view>    
+            <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
+                    <view class="items {{filter.selectedFilterSection == 'district'? '' : 'invisible'}}">
+                        <view class="wk-tabs">
+                            <view class="tabs-handle" wx:if="{{filter.districtSection.metros && filter.districtSection.metros.length > 1}}">
+                                <view class="{{filter.districtSection.selectedSection == 'district' ? 'on':''}}" data-name="district" @tap="selectDistrictMetro"><text>区域</text></view>
+                                <view class="{{filter.districtSection.selectedSection == 'metro' ? 'on':''}}" @tap="selectDistrictMetro" data-name="metro"><text>地铁</text></view>                            
+                            </view>
+                            <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='district'?'visible':''}}">
+                            <view class="left">
+                                <view @tap="selectDistrict" class="item {{item.id == filter.districtSection.selectedDistrictId? 'active':''}}" wx:key="{{item.id}}" wx:for="{{filter.districtSection.districts}}" data-text="{{item.name}}" data-id="{{item.id}}">{{item.name}}</view>
+                            </view>
+                            <view class="right" wx:key="{{item.id}}" wx:for="{{filter.districtSection.districts}}" wx:if="{{filter.districtSection.selectedDistrictId == item.id}}">
+                                <block wx:key="{{*this}}" wx:for="{{item.subList}}" wx:for-item="sl">
+                                    <view @tap="selectTown" class="item {{town.id==filter.districtSection.selectedTownId?'active':''}}" wx:for="{{sl.towns}}" wx:for-item="town" wx:key="{{*this}}" data-type="{{town.type}}" data-id="{{town.id}}" data-text="{{town.name}}">{{town.name}}</view>
+                                </block>                            
+                            </view>
+                            </view>
+                            <view class="district-metro tabs-frame {{filter.districtSection.selectedSection=='metro'?'visible':''}}">
+                            <view  class="left">
+                                <view @tap="selectMetro" class="item {{item.id == filter.districtSection.selectedMetroId? 'active':''}}" wx:key="{{item.id}}" wx:for="{{filter.districtSection.metros}}" data-text="{{item.name}}" data-id="{{item.id}}">{{item.name}}</view>
+                            </view>
+                            <view  class="right" wx:key="{{*this}}" wx:for="{{filter.districtSection.metros}}" wx:if="{{filter.districtSection.selectedMetroId == item.id}}">
+                                <view @tap="selectStation" class="item {{station.id==filter.districtSection.selectedStationId?'active':''}}" wx:for="{{item.subList}}" wx:for-item="station" data-text="{{station.name}}" data-id="{{station.id}}" wx:key="station.id">{{station.name}}</view>
+                            </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="items totals {{filter.selectedFilterSection == 'total'? '' : 'invisible'}}">
+                        <view class="list">
+                        <view @tap="selectTotal" class="item {{filter.totalSection.selectedId === item.id? 'active' : ''}}" wx:for="{{filter.totalSection.items}}" data-item="{{item}}" wx:key="{{item.id}}">{{item.text}}</view>
+                        </view>
+                        <view class="custom" wx:if="{{showCustomPrice}}">
+                            <view class="item input"><input data-name="start" type="number" placeholder="最低价格" @input="typeTotalStart"/></view>-<view class="item input"><input placeholder="最高价格" type="number" @input="typeTotalEnd" data-name="end"/></view><view class="item button" @tap="clickCustomPrice">确定</view>
+                        </view>
+                    </view>
+                    <view class="items types {{filter.selectedFilterSection == 'type'? '' : 'invisible'}}">
+                        <view @tap="selectType" class="item {{item.active?'active':''}}" wx:for="{{filter.typeSection.items}}" wx:key="{{item.id}}" data-id="{{item.id}}">{{item.text}}</view> 
+                        <view class="confirm">
+                            <button class="button" @tap="clickConfirmType">确定</button>
+                        </view>
+                    </view>
+                    <view class="items sorts {{filter.selectedFilterSection == 'sort'? '' : 'invisible'}}">
+                        <view @tap="selectSort" class="{{filter.sortSection.selectedId == item.id? 'active' : ''}}" wx:for="{{filter.sortSection.items}}" wx:key="{{item.id}}" data-id="{{item.id}}">{{item.text}}</view>
+                    </view>
+                </view>    
+        </view>
+    </view>
+
+    <view class="esf-items" style="{{fixed? 'margin-top:190rpx;':''}} {{filter.selectedFilterSection!=''? 'overflow:hidden;height: 100%': ''}}">        
+       <block wx:if="{{items && items.length>0}}">       
+        <view class="house-count {{expand?'expand':''}}">{{totalTipText}}</view>     
+        <view class="items"> 
+            <repeat for="{{items}}" item="item">
+                <esf :item="item" openType="1"></esf>
+            </repeat>
+            <view style="text-align: center; font-size: 28rpx; color: #4E4E4E; padding: 10rpx; {{reachBottom?'':'display:none'}}">
+                我是有底线的^_^
+            </view>
+        </view>
+       </block> 
+
+       <view class="error" wx:if="{{isLoadError}}">
+        <image src="https://img.wkzf.com/04f36182e2754599889eae69fc206270" @tap="refresh"></image>
+        <view>加载失败，点击重新加载</view>
+       </view>
+
+       <view class="no-data" wx:if="{{nodata}}">
+        <view class="desc">
+            暂时没有符合条件的房源
+        </view>
+        <view class="recommend">
+            您可以扩大搜索范围，找到更多的房源
+        </view>
+        <button class="clear" @tap="clearFilter">
+            清除条件
+        </button>
+       </view>       
+    </view>
+    </block>
+    <view class="no-open" wx:if="{{!isOpenCity}}">
+        <view>
+        <view>很抱歉</view>
+        <view>{{city && city.cityName || ''}}暂未开通二手房业务</view>
+        <button class="switch-city" @tap="switchCity">
+            去看看其他城市的二手房
+        </button>
+        </view>
+    </view>
+          
+    <!--定位失败的modal框-->
+    <modal :visibility.sync="modalVisibility" hasCloseBtn="false" title="定位失败">
+        <view slot="body">            
+            <view style="text-align: center">请手动选择您的城市</view>
+        </view>
+        <view slot="footer" class="modal-footer">
+            <view class="wk-btn wk-btn-transparent" @tap="switchCity">去选择</view>            
+        </view>
+    </modal>   
+
+    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
+
+    <!--加载中组件-->
+    <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view @tap="errorReload" wx:if="{{ loadfailVisibility }}" style="{{fixed && loadfailFullscreen=='true'?'padding-top: 200rpx':''}}">
+        <loadfail :fullscreen.sync="loadfailFullscreen" :fullscreen.sync="loadfailFullscreen"></loadfail>
+    </view> 
+</template>
+
+<script>
+    import wepy from "wepy" ;    
+    import Esf from "../../components/esf";
+    import apiDataFilter from "../../mixins/apiDataFilter";    
+    import Trace from "../../mixins/trace";
+    import Modal from "../../components/modal";
+    import Tips from "../../components/tips";
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;    
+
+    const DEFAULT = {
+        selectedDistrictId: "",
+        selectedTownId: "",
+        selectedMetroId: "",
+        selectedStationId: "",
+        selectedSection: "district",
+        selectedTotalId: 0,
+        selectedTypeIds: [],
+        selectedSortId: "",        
+        offset: 0,
+        city: {
+            cityId: 43,
+            cityName: "上海",
+            lon: "",
+            lat: "",
+            cityPinyin: "shanghai"
+        },
+        highCities: [43,221,741,771,1873,873],/*43  上海市 221  廊坊市 741  南京市 771  苏州市 1873  广州市*/
+        totalOptionsHigh:[{
+                            id: -1,
+                            text: "不限",
+                            start: "",
+                            end: ""
+                        },{
+                            id: 1,
+                            text: "100 万以下",
+                            start: 0,
+                            end: 100
+                        },{
+                            id: 2,
+                            text: "100 - 150 万",
+                            start: 100,
+                            end: 150
+                        },{
+                            id: 3,
+                            text: "150 - 200 万",
+                            start: 150,
+                            end: 200
+                        },{
+                            id: 4,
+                            text: "200 - 250 万",
+                            start: 200,
+                            end: 250
+                        },{
+                            id: 5,
+                            text: "250 - 300 万",
+                            start: 250,
+                            end: 300
+                        },{
+                            id: 6,
+                            text: "300 - 500 万",
+                            start: 300,
+                            end: 500
+                        },{
+                            id: 7,
+                            text: "500 - 1000 万",
+                            start: 500,
+                            end: 1000
+                        },{
+                            id: 8,
+                            text: "1000 - 2000 万",
+                            start: 1000,
+                            end: 2000
+                        },{
+                            id: 9,
+                            text: "2000万及以上",
+                            start: 2000,
+                            end: -1
+                        }],// 上海、广州、杭州、苏州、廊坊、南京用这个
+        totalOptionsLow: [{
+                            id: -1,
+                            text: "不限",
+                            start: "",
+                            end: ""
+                        },{
+                            id: 1,
+                            text: "50 万以下",
+                            start: 0,
+                            end: 50
+                        },{
+                            id: 2,
+                            text: "50 - 80 万",
+                            start: 50,
+                            end: 80
+                        },{
+                            id: 3,
+                            text: "80 - 100 万",
+                            start: 80,
+                            end: 100
+                        },{
+                            id: 4,
+                            text: "100 - 150 万",
+                            start: 100,
+                            end: 150
+                        },{
+                            id: 5,
+                            text: "150 - 200 万",
+                            start: 150,
+                            end: 200
+                        },{
+                            id: 6,
+                            text: "200 - 300 万",
+                            start: 200,
+                            end: 300
+                        },{
+                            id: 7,
+                            text: "300 - 500 万",
+                            start: 300,
+                            end: 500
+                        },{
+                            id: 8,
+                            text: "500万以上",
+                            start: 500,
+                            end: -1
+                        }],//其他城市用这个
+    }
+
+    export default class Index extends wepy.page {
+        config = {            
+            navigationBarTitleText: "悟空找房",
+            onReachBottomDistance: 50            
+        } ;
+        components = {            
+            esf: Esf,
+            modal: Modal,
+            tips: Tips,
+            loading : Loading ,
+            loadfail : Loadfail
+        } ; 
+        data = {
+                cityName: "",//用来显示未开通城市名称的
+                nodata: false,                       
+                showCustomPrice: true,//是否显示自定义价格框，为了清空自定义价格中的文本用的。因为双向绑定输入会延迟，因此借助wx:if把input重新加载来清空其中的内容，我也是醉了！
+                city: null,          
+                estate: null,//小区或地址查询条件
+                filter : {//筛选
+                    selectedFilterSection: "",//当前选中的筛选模块，有district、type、total和sort，对应区域、户型、总价和排序
+                    districtSection: {//区域筛选
+                        districts: [],//当前城市的区域数据，包括板块
+                        metros:[],//当前城市的地铁数据，包括地铁站点
+                        selectedDistrictId: DEFAULT.selectedDistrictId,//选中的区域id，用于控制显示
+                        selectedTownId: DEFAULT.selectedTownId,//选中的板块id，用于控制显示的
+                        selectedMotroId: DEFAULT.selectedMotroId,//选中的地铁id，用于控制显示
+                        selectedStationId: DEFAULT.selectedStationId,//选中的地铁站id，用于控制显示
+                        selectedSection: DEFAULT.selectedSection, //区域筛选中有两个一个是区域，另一个是地铁
+                        selectedDistrictText: '',//选中的区域的文本内容，暂时记录
+                        selectedTownText: '',//选中的板块的文本内容，暂时记录
+                        selectedMetroText: '',//选中的地铁文本，暂时记录
+                        selectedStationText: '',//选中的地铁站文本，暂时记录
+                        innerSelectedDistrictId: DEFAULT.selectedDistrictId,//选中的区域id，用于查询
+                        innerSelectedTownId: DEFAULT.selectedTownId,//选中的板块id，用于查询
+                        innerSelectedMetroId: DEFAULT.selectedMetroId,//选中的地铁id，用于查询
+                        innerSelectedStationId: DEFAULT.selectedStationId,//选中的地铁站id，用于查询         
+                        innerSelectedDistrictText: '',//选中的区域文本，用于显示
+                        innerSelectedMetroText: '',//选中的地铁文本，用于显示
+                        innerSelectedTownText: '',//选中的板块文本，用于显示
+                        innerSelectedStationText: '',//选中的地铁站点文本，用于显示
+                        meter: 0,//附近多少米，用于查询
+                        isNear: false,//是否附近
+                        meters: [{
+                            id: 0,
+                            name: "不限（智能范围）", 
+                            meter: 5000,
+                            type: "near"                                                       
+                        },{
+                            id: 1,
+                            name: "500米以内",
+                            meter: 500,
+                            type: "near"                                                       
+                        },{
+                            id: 2,
+                            name: "1000米以内",
+                            meter: 1000,
+                            type: "near"                                                       
+                        },{
+                            id: 3,
+                            name: "2000米以内",
+                            meter: 2000,
+                            type: "near"                                                       
+                        },{
+                            id: 4,
+                            name: "5000米以内",
+                            meter: 5000,
+                            type: "near"
+                        }]
+                    },
+                    totalSection: {//总价筛选
+                        items: DEFAULT.totalOptionsHigh,//总价筛选选项
+                        selectedId: '',//选中的总价筛选项目id
+                        priceStart: "",//最低价，用于查询
+                        priceEnd: "",//最高价，用于查询
+                        customStartPrice: "",//自定义最低价,用来显示的
+                        customEndPrice: "",//自定义最高价,用来显示的
+                    },
+                    typeSection: {//户型筛选
+                        items: [{
+                            id: 0,
+                            text: "不限",
+                            active: false
+                        },{
+                            id: 1,
+                            text: "一室",
+                            active: false
+                        },{
+                            id: 2,
+                            text: "二室",
+                            active: false
+                        },{
+                            id: 3,
+                            text: "三室",
+                            active: false
+                        },{
+                            id: 4,
+                            text: "四室",
+                            active: false
+                        },{
+                            id: 5,
+                            text: "五室及以上",
+                            active: false
+                        }],
+                        selectedIds: DEFAULT.selectedTypeIds,//选中的户型筛选项目id，用于显示
+                        innerSelectedIds: DEFAULT.selectedTypeIds//选中的户型筛选项目id，用于查询
+                    },
+                    sortSection: {//排序筛选
+                        items: [{
+                            id: 0,
+                            text: "默认排序"
+                        },{
+                            id: 1,
+                            text: "单价从低到高"
+                        },{
+                            id: 2,
+                            text: "单价从高到低"
+                        },{
+                            id: 3,
+                            text: "总价从低到高"
+                        },{
+                            id: 4,
+                            text: "总价从高到低"
+                        }],
+                        selectedId: DEFAULT.selectedSortId//选中的排序筛选项目id
+                    }
+                },                   
+                isLoadError: false,//是不是查询失败，用来控制查询失败样式的显示
+                isOpenCity: true,//是否业务开通城市，用于控制非业务城市样式的显示
+                offset: DEFAULT.offset,//请求的开始位置
+                pageSize: 20,//请求的页大小
+                total: 0,//总房源数
+                unitPrice: 0,//城市单价     
+                reachBottom: false,//是否到底了
+                items: [],//二手房源列表数据
+                tipsVisibility: false,//控制tips显示
+                modalVisibility: false,//控制modal显示，定位失败的弹框
+                tipsMsg: "",//tips的文本
+                expand: false,//控制查询出总数的条的展开和合并
+                showTotal: false,//控制查询出总数的条的显示
+                fixed: false,//控制头部内容的吸顶
+                trace: new Trace,//埋点
+                countVisible: true,//控制...
+                showNearText: false,//用来区分加载房源数的文案  
+                loadingFullscreen: "false",
+                loadingVisibility: false,
+                loadfailFullscreen: "false",
+                loadfailVisibility: false,                              
+        } ;
+        computed = {
+            districtDisplayName(){//区域查询的显示文本
+                /*
+                    选择了板块则显示板块，选择了区域则显示区域（包括附件的选项）
+                    选择了地铁站则显示地铁站，选择了地铁线则显示地铁线                    
+                */
+                let str = "区域";//默认值区域
+                if(this.filter.districtSection.innerSelectedDistrictText != ''){
+                    str = this.filter.districtSection.innerSelectedDistrictText;
+                }
+
+                if(this.filter.districtSection.innerSelectedTownText != '' && this.filter.districtSection.innerSelectedTownText != '不限'){
+                    str = this.filter.districtSection.innerSelectedTownText;
+                }
+
+                if(this.filter.districtSection.innerSelectedMetroText != ''){
+                    str = this.filter.districtSection.innerSelectedMetroText;
+                }
+
+                if(this.filter.districtSection.innerSelectedStationText != '' &&this.filter.districtSection.innerSelectedStationText != '不限'){
+                    str = this.filter.districtSection.innerSelectedStationText;
+                }
+
+                if(this.filter.districtSection.isNear && this.filter.districtSection.selectedTownId == '0'){
+                    str = "附近";
+                }                
+
+                return str == '不限' ? '区域': str;
+            },
+            totalDisplayName(){//总价筛选的显示文本
+                let str = "总价";
+                let id = this.filter.totalSection.selectedId;                
+                if(id && id!=-1){
+                    let item = this.filter.totalSection.items.filter((t)=>{ return t.id == id});                    
+                    if(item.length > 0){
+                        str = item[0].text;
+                    }
+                }else if(this.filter.totalSection.priceStart || this.filter.totalSection.priceEnd){
+                    if(this.filter.totalSection.priceStart > 0 && !this.filter.totalSection.priceEnd){
+                        str = this.filter.totalSection.priceStart + "万以上";
+                    } else if(this.filter.totalSection.priceEnd > 0 && !this.filter.totalSection.priceStart){
+                        str = this.filter.totalSection.priceEnd + "万以下";
+                    }else {
+                        str = this.filter.totalSection.priceStart + "万-" + this.filter.totalSection.priceEnd + "万";
+                    }                    
+                }
+
+                return str;
+            },
+            typeDisplayName(){//户型筛选的显示文本
+                let str = "户型";
+                
+                if(this.filter.typeSection.innerSelectedIds.length > 0 && this.filter.typeSection.innerSelectedIds[0]!==0) {
+                    let item = this.filter.typeSection.items.filter((t)=>{
+                        return this.filter.typeSection.innerSelectedIds.filter((x)=>{
+                            return x == t.id;
+                        }).length > 0;
+                    });
+                    if(item.length == 1){
+                        str = item[0].text;
+                    } else {
+                        str = "多选";
+                    }                    
+                }
+
+                return str == "不限" ? "户型" : str;
+            },
+            sortDisplayName(){//排序筛选的显示文本
+                let str = "排序";
+                /*if(this.filter.sortSection.selectedId != ''){
+                    let item = this.filter.sortSection.items.filter((t)=>{
+                        return t.id == this.filter.sortSection.selectedId;
+                    });
+                    if(item.length > 0){
+                        str = item[0].text;
+                    }
+                } else {
+                    str = "排序"
+                }*/
+
+                return str;
+            },
+            totalTipText(){//总房源数条的内容文本，定位成功时第一次自动刷新显示“已为您展示附近xx套房源”，其余都显示“共找到xx套房源”
+                //"共找xx套房源";
+                //"已为您展示附近xx套房源"
+                let str = "共找xx套房源";
+                if(this.showNearText) str = "已为您展示附近xx套房源";
+                return str.replace('xx',this.total);
+            }
+        } ;
+        methods = {
+            touchmove(e){//用来去除滚动，方案不完美，暂用
+                return false;
+            },
+           switchFilter(e) { //切换筛选条件事件处理函数
+               let name = e.currentTarget.dataset.name;
+               if(this.filter.selectedFilterSection == name){
+                   name = '';
+               }
+               this.filter.selectedFilterSection = name;
+               if(name == 'sort') {
+                   this.trace.uv({eventName: "1209008"});
+               }               
+           },
+           selectSort(e) {//切换排序规则
+                let sortId = e.currentTarget.dataset.id;
+                if(this.filter.sortSection.selectedId == sortId) return;
+                this.filter.sortSection.selectedId = sortId;
+                this.filter.selectedFilterSection = "";
+                this.showTotal = true;
+
+                this.refresh();
+
+                if(sortId > 0){//默认排序不埋点
+                    let eventName = 1209008 + sortId;
+                    this.trace.uv({eventName: eventName});
+                }
+           },
+           selectType(e) {//切换房型                
+                let typeId = e.currentTarget.dataset.id;                  
+                let type = this.filter.typeSection.items.filter((it)=>{
+                    return it.id == typeId;
+                })[0];
+                type.active = !type.active;
+                if(type.id == 0){//不限与别的互斥
+                    if(type.active){
+                        this.filter.typeSection.items.forEach((it)=>{
+                            if(it.id != typeId) {
+                                it.active = false;
+                            }
+                        });
+                    }                    
+                }else{
+                    this.filter.typeSection.items[0].active = false;
+                }
+
+                let arr = [];
+                for(let i = 0; i < this.filter.typeSection.items.length; i++){
+                    if(this.filter.typeSection.items[i].active){
+                        arr.push(this.filter.typeSection.items[i].id);
+                    }
+                }
+                this.filter.typeSection.selectedIds = arr;
+
+                this.trace.uv({eventName: "1209006", eventParam: {room: type.id}});                
+            },
+            selectTotal(e) {//切换总价
+                let totalItem = e.currentTarget.dataset.item;
+                if(this.filter.totalSection.selectedId == totalItem.id) return;
+                this.filter.totalSection.selectedId = totalItem.id;
+
+                this.filter.totalSection.priceStart = totalItem.start;
+                this.filter.totalSection.priceEnd = totalItem.end;
+                this.filter.totalSection.customEndPrice = "";
+                this.filter.totalSection.customStartPrice = "";
+                this.showCustomPrice = false;
+                this.filter.selectedFilterSection = "";
+                this.trace.uv({eventName: "1209004"});
+                this.$apply();
+                this.showTotal = true;
+                this.showCustomPrice = true;
+                this.refresh();
+            },
+            clickCustomPrice() {//点击自定义价钱确定
+                this.filter.totalSection.selectedId = "";
+                let start = this.filter.totalSection.customStartPrice;
+                let end = this.filter.totalSection.customEndPrice;                
+
+                if(start != ''){
+                    start = parseInt(start);
+                    if(start != this.filter.totalSection.customStartPrice){
+                        this.tipsVisibility = true;
+                        this.tipsMsg = "价格区间必须为整数";                           
+                        return;
+                    }
+                }
+
+                if(end != ''){
+                    end = parseInt(end);
+                    if(end != this.filter.totalSection.customEndPrice){
+                        this.tipsVisibility = true;
+                        this.tipsMsg = "价格区间必须为整数";                        
+                        return;
+                    }
+                }
+
+                if(start !== '' && end !== '' && start > end) {
+                    this.tipsVisibility = true;
+                    this.tipsMsg = "最大值不能小于最小值";                        
+                    return;
+                }
+
+                if(start === 0 && end === 0){
+                    this.tipsVisibility = true;
+                    this.tipsMsg = "价格区间必须大于0"; 
+                    return;
+                }
+
+                this.filter.totalSection.priceStart = this.filter.totalSection.customStartPrice;
+                this.filter.totalSection.priceEnd = this.filter.totalSection.customEndPrice;
+                this.filter.selectedFilterSection = "";
+
+                this.showTotal = true;                
+                this.refresh();
+
+                this.trace.uv({eventName: "1209005", eventParam: {price_range: this.filter.totalSection.customStartPrice + "-" + this.filter.totalSection.customEndPrice}});
+            },
+            selectDistrictMetro(e) {//切换区域或地铁
+                let name = e.currentTarget.dataset.name;
+                if(this.filter.districtSection.selectedSecion == name) return;
+                this.filter.districtSection.selectedSection = name;
+                this.filter.districtSection.selectedDistrictId = '';
+                this.filter.districtSection.selectedDistrictText = '';
+                this.filter.districtSection.selectedTownId = '';
+                this.filter.districtSection.selectedTownText = '';
+                this.filter.districtSection.selectedMetroId = '';
+                this.filter.districtSection.selectedStationId = '';
+            },
+            selectDistrict(e) {//选择具体区
+                let districtId = e.currentTarget.dataset.id;
+                let districtText = e.currentTarget.dataset.text;
+                if(this.filter.districtSection.selectedDistrictId == districtId) return;
+                this.filter.districtSection.selectedDistrictId = districtId;
+                this.filter.districtSection.selectedDistrictText = districtText;
+                this.filter.districtSection.selectedTownId = '';
+                this.filter.districtSection.selectedTownText = '';
+            },
+            selectTown(e) {//选择具体板块     
+                this.estate = null;
+                wx.setStorageSync('estate',null);
+
+                let townId = e.currentTarget.dataset.id;
+                let townText = e.currentTarget.dataset.text;
+                if(this.filter.districtSection.selectedTownId == townId) return;
+                let type = e.currentTarget.dataset.type;
+                if(type == "near"){//附近
+                    this.filter.districtSection.meter = this.filter.districtSection.meters.filter((it)=>{
+                        return it.id == townId;
+                    })[0].meter;
+                    this.filter.districtSection.isNear = true; 
+                    //console.log("selectTown中设置isNear为true");
+                    this.showTotal = true;                   
+                }else{
+                    this.filter.districtSection.meter = "";
+                    this.filter.districtSection.isNear = false;
+                    //console.log("selectTown中设置isNear为false");
+                    this.trace.uv({ eventName: "1209003", eventParam: {region_id: this.filter.districtSection.selectedDistrictId, town_id: townId} });
+                    this.showTotal = true;
+                }
+                
+                this.filter.districtSection.selectedTownId = townId;
+                this.filter.districtSection.selectedTownText = townText;
+                this.filter.districtSection.innerSelectedDistrictId = this.filter.districtSection.selectedDistrictId;
+                this.filter.districtSection.innerSelectedTownId = this.filter.districtSection.selectedTownId;
+                this.filter.districtSection.innerSelectedDistrictText = this.filter.districtSection.selectedDistrictText;
+                this.filter.districtSection.innerSelectedTownText = this.filter.districtSection.selectedTownText;
+
+                this.filter.selectedFilterSection = "";
+                this.refresh();
+            },
+            selectMetro(e) {//选择具体地铁线路
+                this.estate = null;
+                wx.setStorageSync('estate',null);
+                let metroId = e.currentTarget.dataset.id;
+                let metroText = e.currentTarget.dataset.text;
+                if(this.filter.districtSection.selectedMetroId == metroId) return;
+                this.filter.districtSection.selectedMetroId = metroId;
+                this.filter.districtSection.selectedMetroText = metroText;                
+                this.filter.districtSection.selectedStationId = '';
+            },
+            selectStation(e) {//选择具体地铁站点
+                let stationId = e.currentTarget.dataset.id;
+                let stationText = e.currentTarget.dataset.text;
+                if(this.filter.districtSection.selectedStationId == stationId) return;
+                this.filter.districtSection.selectedStationId = stationId;
+                this.filter.districtSection.selectedStationText = stationText;
+                this.filter.districtSection.innerSelectedMetroId = this.filter.districtSection.selectedMetroId;
+                this.filter.districtSection.innerSelectedStationId = this.filter.districtSection.selectedStationId;
+                this.filter.districtSection.innerSelectedMetroText = this.filter.districtSection.selectedMetroText;
+                this.filter.districtSection.innerSelectedStationText = this.filter.districtSection.selectedStationText;
+
+                this.filter.districtSection.selectedDistrictId = "";
+                this.filter.districtSection.selectedTownId = "";
+                this.filter.districtSection.selectedDistrictText = '';
+                this.filter.districtSection.selectedTownText = '';
+                this.filter.districtSection.isNear = false;
+                //console.log("selectStation中设置isNear为false");              
+
+                this.trace.uv({ eventName: "1209003", eventParam: { subwary_id: this.filter.districtSection.selectedMetroId, station_id: stationId }});
+                this.filter.selectedFilterSection = "";
+                this.showTotal = true;
+
+                this.estate = null;
+                wx.setStorageSync('estate',null);
+
+                this.refresh();
+            },
+           clickConfirmType() {//户型选择确定点击事件
+                let tmpA = [];
+                let arr = [];
+                this.filter.typeSection.items.forEach(function(t){
+                    if(t.active) {
+                        tmpA.push(t.text);
+                        arr.push(t.id);
+                    }
+                });
+                if(tmpA.length == 0){
+                    tmpA.push(0);
+                }
+                let str = arr.join(',');
+                
+                this.filter.selectedFilterSection = "";  
+                this.filter.typeSection.innerSelectedIds = arr;
+
+                this.showTotal = true;
+                this.refresh();
+                this.trace.uv({eventName: "1209007", eventParam:{room: str}});
+           },
+           switchCity() {//切换城市
+               this.filter.selectedFilterSection = "";
+               this.modalVisibility = false;
+               wx.navigateTo({url:'/pages/index/city'});
+           },
+           searchEstate() {//去小区和地址选择页面            
+               this.filter.selectedFilterSection = '';
+               wx.navigateTo({
+                   url: "/pages/index/search"
+               });
+               this.trace.uv({ eventName: "1209001" });
+           },
+           clearEstate() {//清空小区和地址框事件处理函数
+               wx.setStorageSync("estate",null);
+               this.estate = null;         
+               this.showTotal = true;      
+               this.refresh();
+           },   
+           clearFilter() {//清空筛选条件                
+                this.clearDistrictFilter();
+                this.clearMetroFilter();
+                this.clearTypeFilter();
+                this.clearSortFilter();                                                                
+                this.showTotal = true;                
+                this.clearTotalFilter();                
+                this.refresh();
+           },
+           typeTotalStart(e){//输入自定义总价起始价的事件处理函数             
+               let value = e.detail.value;
+               this.filter.totalSection.customStartPrice = value;
+               this.$apply();
+           },           
+           typeTotalEnd(e){//输入自定义总价结束价的事件处理函数
+               let value = e.detail.value; 
+               this.filter.totalSection.customEndPrice = value;
+               this.$apply();
+           },          
+           gotoPriceList() {
+               this.trace.uv({ eventName: "1209002" });
+               wx.navigateTo({url:'/pages/market/index?cityId='+this.city.cityId});
+           },
+           clickCover() {//点击遮罩层隐藏筛选弹框
+               this.filter.selectedFilterSection = "";
+           } 
+        } ;
+        events = {
+
+        } ;
+        onLoad() {        
+           this.firstTime = true; 
+           let opened = wx.getStorageSync('opened'); //是否打开过  
+           //首次读取storage中是否有city，否则就是默认城市
+           this.city = wx.getStorageSync("city");// || DEFAULT.city;            
+           wx.showLoading({
+               title: "定位中",
+               mask: true
+           });//定位是显示loading
+           //定位
+           wx.getLocation({
+               success: (res)=>{//定位成功
+                   //根据经纬度获取城市信息
+                    apiDataFilter.request({
+                        apiPath: "index.findCityInfoByLonAndLat",
+                        data: {
+                            lon: res.longitude,
+                            lat: res.latitude
+                        },
+                        successCallback: (data)=>{//拿到城市信息成功
+                            data.data.lon = res.longitude;
+                            data.data.lat = res.latitude;
+                            data.data.isLocated = true;//定位成功标志位
+                            this.filter.districtSection.isNear = true;                            
+                            //console.log('定位成功设置isNear为true');
+                            wx.setStorageSync("city",data.data);
+                            wx.setStorageSync("locationCity",data.data);
+
+                            this.city = data.data;
+                            wx.setStorageSync('city', this.city);
+                            this.showTotal = true;
+                            this.showNearText = true;                      
+                            this.getDistrictsAndMetro(); 
+                            this.$apply();            
+                        }                      
+                    });
+               },
+               fail: (opts)=>{
+                   this.clearDistrictFilter();
+                   this.showTotal = true;
+                   //this.$apply();       
+                   this.isOpenCity = true;
+                   this.$apply();
+                   if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位导致定位失败   
+                        this.city = this.city || DEFAULT.city;
+                        wx.setStorageSync('city', this.city);
+                        this.getDistrictsAndMetro(); 
+                   } else {//定位失败（比如关闭了定位功能）                        
+                        if(!opened || !this.city){
+                            this.modalVisibility = true;
+                        } else {
+                            this.city.isLocated = false;
+                            this.getDistrictsAndMetro();
+                        }
+                        //this.city = null;    
+                        this.$apply();
+                   }                   
+               },
+               complete: ()=>{
+                   wx.hideLoading();//定位完成（不论成功失败），隐藏loading
+                   this.firstTime = false;
+                   wx.setStorageSync('opened', true);                  
+               }
+           });           
+        };
+        onShow(options) {     
+            this.trace.pv({ pageName: "1209" });       
+            if(this.firstTime) {//还在执行onload中的定位时，直接返回
+                return;
+            }            
+
+            //获取小区和地址筛选条件
+            let estate  = wx.getStorageSync("estate");            
+            if(estate) {//清空区域板块和地铁筛选条件                
+                this.clearDistrictFilter();
+                this.clearMetroFilter();                
+                if(this.estate && (this.estate.subEstateId == estate.subEstateId && this.estate.showId == estate.showId)){
+
+                }else{
+                    this.estate = estate;
+                    this.showTotal = true;
+                    this.refresh();
+                }                
+            }
+
+            let city = wx.getStorageSync("city");
+            if(!this.city && !city){
+                this.modalVisibility = true;
+                return;
+            }
+            if(city) {
+                if(!this.city || city.cityId != this.city.cityId){//城市发生了变化，重新加载区域地铁和房源
+                    this.city = city;
+                    this.showTotal = true;
+                    this.getDistrictsAndMetro();
+                    return;
+                }                
+            }    
+
+            if(!this.isOpenCity){
+                return false;
+            }
+            
+            if(!this.items || this.items.length == 0){
+                this.refresh();
+            }                        
+
+            //this.refresh(false);                        
+        };
+        getDistrictsAndMetro() {//获取当前城市的区域板块和地铁线路数据
+            this.isOpenCity = true;
+            //判断当前城市是否开通业务
+            apiDataFilter.request({
+                apiPath: "index.getAllCityBusiness",
+                successCallback: (data)=>{                                       
+                    let cities = data.data || [];
+                    //只用二手房开通的城市
+                    cities = cities.filter((item)=>{
+                        return item.oldBusiness;
+                    });
+
+                    if(cities.filter((item)=>{ return item.cityId == this.city.cityId}).length == 0){//没开通二手房业务
+                        this.isOpenCity = false;
+                        this.cityName = this.city.cityName;
+                        this.$apply();                                            
+                    }else{        
+                        this.isOpenCity = true;
+                        this.cityName = "";         
+                        this.clearDistrictFilter();
+                        this.clearMetroFilter();
+                        this.clearSortFilter();
+                        this.clearTypeFilter();
+                        this.clearTotalFilter();
+
+                        this.estate = null;                        
+                        wx.setStorageSync('estate',null);
+
+                        //根据城市修改总价筛选
+                        if(DEFAULT.highCities.filter((item)=>{ return item == this.city.cityId;}).length > 0){
+                            this.filter.totalSection.items = DEFAULT.totalOptionsHigh;
+                        } else {
+                            this.filter.totalSection.items = DEFAULT.totalOptionsLow;
+                        }
+                        this.$apply();
+                        
+                        //地铁数据
+                        apiDataFilter.request({
+                            apiPath: "index.getCitySubwayLines",
+                            data: {
+                                cityId: this.city.cityId
+                            },
+                            successCallback: (data)=>{
+                                //加工数据，添加"不限"
+                                let d = data.data || [];
+                                d.splice(0,0,{
+                                    id: "-1",
+                                    name: "不限"
+                                });
+                                for(let i = 0; i < d.length; i++){
+                                    d[i].subList = d[i].subList || [];
+                                    d[i].subList.splice(0,0,{
+                                        id: "-1",
+                                        name: "不限"
+                                    });
+                                }
+                                
+                                this.filter.districtSection.metros = d;                                
+                                this.$apply();
+                            }
+                        });
+
+                        //区域板块数据
+                        apiDataFilter.request({
+                            apiPath: "index.getCityAreasInfo",
+                            data: {
+                                cityId: this.city.cityId
+                            },
+                            successCallback: (data)=>{
+                                let d = data.data;
+                                d.splice(0,0,{
+                                    id: "-1",
+                                    name: "不限"
+                                });                                
+                                for(let i = 0; i < d.length; i++){
+                                    d[i].subList = d[i].subList || [];
+                                    d[i].subList.splice(0,0,{
+                                        towns: [{
+                                            id: "-1",
+                                            name: "不限"
+                                        }]
+                                    });
+                                }
+                                if(this.city.isLocated){
+                                    d.splice(0,0,{
+                                        id: "-2",
+                                        name: "附近",
+                                        subList: [{
+                                            towns: this.filter.districtSection.meters
+                                        }]
+                                    });
+                                    this.filter.districtSection.selectedDistrictId = "-2";
+                                    this.filter.districtSection.selectedTownId = "0";
+                                    this.$apply();
+                                }else{
+                                    d.splice(0,0,{
+                                        id: "-2",
+                                        name: "定位失败"                                        
+                                    });
+                                }
+                                this.filter.districtSection.districts = d;
+                                this.$apply();
+                            }
+                        });
+
+                        //当前城市的房价信息
+                        apiDataFilter.request({
+                            apiPath: "index.getAreaPriceInfo",
+                            data: {
+                                dicId: this.city.cityId,
+                                dicType: 3
+                            },
+                            successCallback: (data)=>{
+                                this.unitPrice = data.data.avgPrice;
+                                this.$apply();
+                            }
+
+                        });
+
+                        if(this.city.isLocated){
+                            this.filter.districtSection.isNear = true;
+                            this.filter.districtSection.meter = 5000;
+                        }
+                        this.showTotal = true;
+                        this.refresh();
+                    }
+                }
+            });            
+        };
+        getEsfList(offset,cb) {
+            if(this.filter.selectedFilterSection != '') {
+                return;
+            }
+
+            this.loading = true;
+            this.nodata = false;
+            this.loadingVisibility = true;
+            this.loadfailVisibility = false;
+            this.$apply();
+
+            //收集查询条件    
+            let districtId = !this.filter.districtSection.isNear &&this.filter.districtSection.innerSelectedDistrictId || "";
+            let townId = !this.filter.districtSection.isNear && this.filter.districtSection.innerSelectedTownId || "";
+            let subEstateId = this.estate && this.estate.realIdObj && this.estate.realIdObj.subEstateId;
+            let subwayLine = this.filter.districtSection.innerSelectedMetroId;
+            let subwayStation = this.filter.districtSection.innerSelectedStationId;            
+            if(this.estate && this.estate.realIdObj){
+                districtId = this.estate.realIdObj.districtId || districtId;
+                townId = this.estate.realIdObj.townId || townId;
+                subwayLine = this.estate.realIdObj.subwayLine || subwayLine;
+                subwayStation = this.estate.realIdObj.subwayStation || subwayStation;                
+            }
+            let params = {
+                cityId: this.city.cityId,
+                districtId: districtId == "-1"?null:districtId,
+                townId: townId == "-1"? null: townId,
+                subEstateId: subEstateId,
+                priceStart: this.filter.totalSection.priceStart || 0,
+                priceEnd: this.filter.totalSection.priceEnd || -1,
+                houseType: this.filter.typeSection.innerSelectedIds.filter((ht)=>{return ht!=0}),
+                offset: offset,
+                pageSize: 20,
+                orderType: this.filter.sortSection.selectedId,
+                subwayLine: subwayLine,
+                subwayStation: subwayStation,
+                endMetres: this.filter.districtSection.isNear && this.filter.districtSection.meter || "",
+                localLon: this.filter.districtSection.isNear && this.city.lon || "",
+                localLat: this.filter.districtSection.isNear && this.city.lat || ""
+            }; 
+
+            //console.log('isNear in getEsfList:',this.filter.districtSection.isNear);
+            
+            apiDataFilter.request({
+                apiPath: "index.secondHouseList",
+                method: "POST",                
+                data: params,
+                successCallback: (data)=>{     
+                    this.total = data.data && data.data.total || 0;
+                    if(this.total==0 && this.showTotal) {
+                        this.showTotal = false;
+                    }
+                    this.offset = this.offset + (data.data && data.data.secondHouseListModels && data.data.secondHouseListModels.length || 0); 
+                    if(this.offset >= this.total) {
+                        this.reachBottom = true;
+                        this.loadingVisibility = false;
+                    }  
+                    if(data.data.secondHouseListModels){
+                        data.data.secondHouseListModels.forEach((item)=>{
+                            item.bigDataParam = {eventName: "1209013", eventParam:{house_id: item.houseId}};
+                        });         
+                    }
+                    if(!data.data || !data.data.secondHouseListModels || data.data.total == 0){
+                        this.nodata = true;                        
+                    }       
+                    cb && cb(data);                                                  
+                },
+                completeCallback: ()=>{
+                    //this.loading = false;
+                    //this.loadingVisibility = false;
+                    this.$apply();
+                },
+                errorCallback: ()=>{
+                    //this.isLoadError = true;
+                    this.loadfailVisibility = true;
+                    this.loadingVisibility = false;
+                    //this.reachBottom = true;
+                    if(this.offset == 0){
+                        this.loadfailFullscreen = 'true';
+                    }else{
+                        this.loadfailFullscreen = 'false';
+                    }
+                    this.$apply();
+                }
+            });     
+        };
+        refresh(navigateToTop = true) {//刷新            
+            this.offset = 0;//查询开始位置为0
+            this.reachBottom = false;   
+            this.items = [];         
+            this.$apply();
+            this.getEsfList(this.offset,(data)=>{
+                this.items = data.data.secondHouseListModels || [];      
+                if(this.showTotal){
+                    setTimeout(()=>{
+                        this.expand = true;
+                        this.$apply();
+                        //this.countVisible = true;
+                        setTimeout(()=>{
+                            this.expand = false;
+                            this.$apply();
+                            setTimeout(()=>{
+                                //this.countVisible = false;
+                                setTimeout(()=>{
+                                    this.showNearText = false;
+                                })
+                                this.$apply();                        
+                            });
+                        },3000);
+                    });            
+                }
+                this.showTotal = false;
+                if(navigateToTop){
+                    wx.pageScrollTo({
+                        scrollTop: 0
+                    }); 
+                }
+                this.$apply();
+            });            
+        };
+        errorReload(){//接口错误后点击重新加载执行的操作
+            //第一次接口就失败的reload
+            if(this.offset == 0){
+                this.refresh();
+                return;
+            }
+            //非第一次接口失败的reload
+            this.showTotal = true;                     
+            this.getEsfList(this.offset,(data)=>{          
+                this.items = this.items.concat(data.data.secondHouseListModels);
+                this.$apply();
+            });            
+        }
+        onReachBottom() {//触底加载
+            if(this.loadfailVisibility){//加载失败直接返回
+                return;
+            }
+            if(this.total <= this.offset) {//已到底
+                this.reachBottom = true;
+                this.loadingVisibility = false;
+                return;
+            }             
+            this.showTotal = true;                     
+            this.getEsfList(this.offset,(data)=>{          
+                this.items = this.items.concat(data.data.secondHouseListModels);
+                this.$apply();
+            });
+        };
+        onPageScroll(opt) {            
+            if(opt.scrollTop > 10) {            
+                this.fixed = true;                    
+            } else {                
+                this.fixed = false;                
+            }            
+        };    
+        onShareAppMessage() {
+            return { "title" : "买房就找悟空找房" }
+        };
+        clearDistrictFilter() {//清除区域板块筛选条件
+            this.filter.districtSection.selectedDistrictId = DEFAULT.selectedDistrictId;
+            this.filter.districtSection.selectedTownId = DEFAULT.selectedTownId;
+            this.filter.districtSection.selectedDistrictText = '';
+            this.filter.districtSection.selectedTownText = '';
+            this.filter.districtSection.innerSelectedDistrictId = DEFAULT.selectedDistrictId;
+            this.filter.districtSection.innerSelectedTownId = DEFAULT.selectedTownId;
+            this.filter.districtSection.innerSelectedDistrictText = '';
+            this.filter.districtSection.innerSelectedTownText = '';
+            this.filter.districtSection.isNear = false;
+            //console.log("clearDistrictFilter中把isNear设置为false");
+            this.filter.districtSection.meter = "";            
+        };
+        clearMetroFilter() {//清除地铁线路筛选条件            
+            this.filter.districtSection.selectedMotroId = DEFAULT.selectedMetroId;
+            this.filter.districtSection.selectedStationId = DEFAULT.selectedStationId;                
+            this.filter.districtSection.selectedMetroText = '';
+            this.filter.districtSection.selectedStationText = '';                
+            this.filter.districtSection.innerSelectedMotroId = DEFAULT.selectedMetroId;
+            this.filter.districtSection.innerSelectedStationId = DEFAULT.selectedStationId;                
+            this.filter.districtSection.innerSelectedMetroText = '';
+            this.filter.districtSection.innerSelectedStationText = '';
+        };
+        clearTotalFilter() {//清除总价筛选条件                           
+            this.filter.totalSection.priceStart = "";
+            this.filter.totalSection.priceEnd = "";
+            this.filter.totalSection.selectedId = DEFAULT.selectedTotalId;
+            this.filter.totalSection.customStartPrice = "";
+            this.filter.totalSection.customEndPrice = "";                        
+            this.showCustomPrice = false;
+            this.$apply();
+            this.showCustomPrice = true;
+        };
+        clearTypeFilter() {//清除户型筛选条件                          
+            this.filter.typeSection.selectedIds = [];
+            this.filter.typeSection.innerSelectedIds = [];                
+            this.filter.typeSection.items.forEach((it)=>{
+                it.active = false;
+            })
+        };
+        clearSortFilter() {//清除排序筛选条件            
+            this.filter.sortSection.selectedId = DEFAULT.selectedSortId;            
+        };
+    }
+</script>
+
+<style lang="less">
+@import '../../less/mixins';
+    .city-search {
+        padding: 0 30rpx 30rpx 30rpx;
+        background-color: #fff;
+        .flex();
+        .city {
+            font-size: 28rpx;
+            line-height: 40rpx;
+            color: #000;            
+            .flex-shrink(0);
+            padding:10rpx 0;
+            &::after {
+                content: '';
+                vertical-align: middle !important;
+                .triangle-down(8rpx,#7c7c7c);
+            }            
+        }
+        .search-box {
+            .flex();
+            .flex(1);
+            margin-left: 28rpx;            
+            background-color: #F0F0F0;
+            border-radius: 6rpx;
+            font-size: 26rpx;
+            color: #7C7C7C;
+            padding: 10rpx 0rpx 9rpx 30rpx;
+            line-height: 37rpx;
+            .estate-address {
+                margin-left: 9rpx;
+                width: 100%; 
+                color: #000;  
+                &.empty{
+                    color: #7C7C7C;
+                }               
+            }
+            .icon-search{
+                font-size: 26rpx;
+            }
+
+            position: relative;
+            .icon-clear {
+                margin-top: 4rpx;
+                font-size: 26rpx;
+                position: absolute;
+                right: 19rpx;
+                &.invisible {
+                    display: none;
+                }
+                z-index: 10;
+            }
+        }
+    }
+
+    .current-price {
+        color: #fff;
+        padding: 63rpx 30rpx;
+        background-image: linear-gradient(90deg, #64BCF0 6%, rgba(0,125,255,0.82) 91%);
+        position: relative;
+        height: 144rpx;
+        transition: .5s cubic-bezier(.35,0,.25,1);
+        -webkit-transition: .5s cubic-bezier(.35,0,.25,1);      
+        .title {
+            font-size: 50rpx;
+            line-height: 1;
+        }
+
+        .price {
+            font-size: 64rpx;
+            line-height: 1;
+            margin-top: 30rpx;
+        }
+
+        .detail {
+            font-size: 32rpx;
+            line-height: 28rpx;
+            position: absolute;
+            top: 171rpx;
+            right: 24rpx;
+        }        
+    }
+
+    .filter {
+         position: relative;
+         background-color: #fff;
+        .district-total-type-sort {
+            background-color: #fff;
+            color: #000;
+            font-size: 28rpx;
+            padding: 28rpx 0;
+            box-shadow: 0 4rpx 4rpx #E4E4E4;
+            margin-bottom: 4rpx;
+            //padding-right: 26rpx;
+                     
+            .flex();            
+
+            .district-section, .total-section, .type-section, .sort-section {
+                text-align: center;
+                vertical-align: middle;
+                .flex(1);                
+                view.sn{                    
+                    max-width: 80%;                                       
+                    display: inline-block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    vertical-align: middle;
+                    &.open{
+                        color: #4081D6;
+                    }
+                }            
+                //padding-right: 20rpx;            
+                .triangle{
+                    display: inline-block;
+                    vertical-align: middle;
+                    &.closed {
+                        background-color: #fff;                    
+                        .triangle-down(9rpx, #7C7C7C);                    
+                        
+                    }                    
+
+                    &.open {
+                        background-color: #fff;
+                        color:  #4081D6;                        
+                        .triangle-up(9rpx, #4081D6);                        
+                    }
+                }
+
+                &.active {
+                    .triangle.closed {
+                        border-top-color:  #4081D6;
+                    }
+                }                
+            }                                              
+        }
+
+        .active {
+            color:  #4081D6;
+        }
+
+        .invisible {
+            display: none
+        }
+        .content {                                
+                margin-top: 8rpx;
+                //position: absolute;
+                width: 100%;
+                top: 92rpx;                           
+                font-size: 30rpx;                               
+
+                .items {                    
+                    background-color: #fff;
+                }          
+
+                .sorts {
+                    view {
+                        padding-top: 29rpx;
+                        padding-bottom: 29rpx;
+                        font-size: 30rpx;
+                        line-height: 1;
+                        vertical-align: middle;
+                        text-align: center;
+                        & + view {
+                            border-top: 1rpx solid #E4E4E4;
+                        }
+                    }
+                }    
+
+                .types {
+                    /*&.show{*/
+                        padding: 30rpx 30rpx 50rpx 30rpx;
+                    /*}*/
+                    background-color: #fff;
+                    .item {
+                        background-color: #F5F5F5;
+                        font-size: 24rpx;
+                        color: #000;
+                        border-radius: 8rpx;
+                        text-align: center;
+                        padding: 20rpx;
+                        border: 2rpx solid #F5F5F5;
+                        width: 208rpx;
+                        display: inline-block;
+                        margin: 11rpx;
+                        box-sizing: border-box;
+                        text-align: center;
+
+                        &.active {
+                            color:  #4081D6;
+                            border: 2rpx solid  #4081D6;
+                            background-color: #fff;
+                        }                                                
+                    }
+
+                    .confirm {
+                        display: block;
+                        margin-top: 40rpx;
+                        border-top: 1px solid #D7D7D7;
+                        padding-top: 50rpx;
+                        text-align: center;
+                        .button {
+                            width: 310rpx;
+                            border-radius: 8rpx;
+                            color: #fff;
+                            background-color: #4081D6;
+                            font-size: 26rpx;
+                            text-align: center;
+                            padding:18rpx 0;
+                            box-sizing: border-box;
+                            line-height: 37rpx;
+                        }
+                    }
+                }
+
+                .totals {
+                    padding-left: 40rpx;
+                    padding-right: 40rpx;
+                    .list {
+                        height: 500rpx;
+                        overflow: auto;
+                    }
+                    .item {
+                        padding-top: 29rpx;
+                        padding-bottom: 29rpx;
+                        font-size: 30rpx;
+                        line-height: 1;
+                        vertical-align: middle;
+                        text-align: center;
+                    }
+
+                    .custom {
+                        border-top: 1rpx solid #D7D7D7;
+                        padding: 40rpx 0;
+                        color: #999;
+
+                        view {
+                            display: inline-block;
+                            padding: 0;
+                            &.input {                                
+                                border-radius: 8rpx;
+                                background-color: #F6F6F6;
+                                text-align: center;                                
+                                color: #4081D6;
+                                width: 200rpx;
+                                margin: 0 9rpx;
+                                
+                                font-size: 30rpx;
+                                display: inline-block;
+                                box-sizing: border-box;
+                                input {
+                                    height: 66rpx;
+                                    line-height: 1;
+                                }
+                            }  
+
+                            &.button {  
+                                padding: 21rpx 0;
+                                display: inline-block;  
+                                width: 208rpx;
+                                margin-left: 11rpx;
+                                border-radius: 8rpx;                                
+                                background-color: #4081D6;
+                                text-align: center;                                
+                                line-height: 1;    
+                                color: #fff;                                
+                                font-size: 30rpx;                                                                               
+                            }                           
+                        }                           
+                    }
+                }
+            }
+    }    
+
+    .district-metro {
+        &.visible {
+            .flex();
+        }        
+
+        height: 660rpx;
+        .flex();
+        .left {
+            .flex(1);
+            background-color: #F0F0F0;
+            font-size: 30rpx;     
+            overflow: auto;
+
+            .item {
+                line-height: 1;
+                padding: 29rpx 0 29rpx 40rpx;
+                color: #000;
+                &.active {
+                    background-color: #fff;
+                    color: #4081D6;
+                }  
+            }                 
+        }
+        .right{
+            .flex(1);
+            font-size: 30rpx;
+            background-color: #fff;
+            overflow: auto;
+
+            .item {
+                line-height: 1;
+                color: #000;
+                padding: 29rpx 0 29rpx 40rpx;
+                &.active {                    
+                    color: #4081D6;
+                } 
+            }
+        }
+    }
+
+    .esf-items {
+        position: relative;
+        background-color: #fff;                     
+        .house-count {      
+            overflow: hidden;      
+            line-height: 1;
+            color: #4081D6;
+            text-align: center;
+            transition: .5s cubic-bezier(.35,0,.25,1);
+            -webkit-transition: .5s cubic-bezier(.35,0,.25,1); 
+            box-sizing: border-box; 
+            vertical-align: middle;            
+            width: 100%;
+            background-color: #fff;            
+            height: 0;
+            padding: 0;            
+            border-bottom: 0px solid #E4E4E4;
+            font-size: 28rpx;
+            //top: -60rpx;
+            &.expand {               
+               padding: 16rpx 0;               
+               height: 60rpx;
+               border-bottom: 1px solid #E4E4E4;
+            }         
+        }
+
+        .items {
+            padding:0 30rpx;
+            background-color: #fff; 
+        }        
+    }
+
+    page {
+        height: 100%;
+        background-color: #fff;
+    }
+    .error {
+        text-align: center;
+        padding-top: 180rpx;
+        image {
+            width: 313rpx;
+            height: 288rpx;
+        }
+        view {
+            font-size: 36rpx;
+        }
+    }
+
+    .no-data {
+        padding-top: 260rpx;
+        text-align: center;        
+            font-size: 32rpx;
+        .desc {
+            color: #000;
+            line-height: 45rpx;
+        }
+        .recommend {
+            color: #7C7C7C;
+            line-height: 45rpx;
+        }
+
+        .clear {
+            margin-top: 50rpx;
+            width: 690rpx;
+            color: #92A7C3;
+            background-color: #F0F0F0;
+            font-size: 28rpx;
+            line-height: 1;
+            padding-top: 31rpx;
+            padding-bottom: 31rpx;
+
+            &::after {
+                border: none;
+            }
+        }
+    }
+
+    .no-open {
+        height: 100%;
+        font-size: 32rpx;
+        line-height: 45rpx;
+        text-align: center;        
+        background-color: #fff;
+        .flex();
+        .align-items(center);
+        .justify-content(center);
+        .switch-city {
+            margin-top: 50rpx;
+            width: 690rpx;
+            color: #92A7C3;
+            background-color: #F0F0F0;
+            font-size: 28rpx;
+            line-height: 1;
+            padding-top: 31rpx;
+            padding-bottom: 31rpx;
+        }
+    }
+
+    .cover {
+            background-color: rgba(0,0,0,.2);            
+            position: fixed;            
+            bottom: 0;
+            right: 0;
+            left: 0;
+            top: 0;
+            z-index: 4;
+            &.invisible {
+                display: none;
+            }            
+        }
+
+    .noscroll {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .header{
+        position: relative; 
+        z-index: 5;
+        &.fixed{
+            width: 100%;
+            position: fixed;
+            top: 0;
+            .current-price {
+                //display: none;                
+                padding: 0;
+                height: 0rpx;
+                .title, price, .detail {
+                    font-size: 0;
+                }
+            }
+        }
+    }
+
+</style>

@@ -1,0 +1,284 @@
+<!--
+    @组件名称：单个经纪人条目组件
+    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @业务逻辑说明：
+        1. 头像的lazy-load这个属性在微信基础库1.5.0以上兼容
+        2. 
+-->
+<template lang="wxml">
+     <repeat for="{{ items }}" key="index" index="index" item="agent">
+        <view class="agent">
+            <view class="tel" @tap="phoning" data-agentid="{{ agent.agentId }}">
+                <text class="iconfont icon-tel"></text>
+                <text class="memo">电话咨询</text>
+            </view>
+            <view class="wechat" @tap="addWechat({{agent}})" wx:if="{{ agent.agentWChatId }}">
+                <text class="iconfont icon-wechat"></text>
+                <text class="memo">添加微信</text>
+            </view>
+            <navigator @tap="traceAgent({{ agent.agentId }})" url="/pages/agent/index?agentId={{ agent.agentId }}" class="{{ ! agent.agentWChatId ? 'no-wechat' : '' }}">
+                <image src="{{ agent.agentHeadImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
+                <view class="summary">
+                    <text class="name">{{ agent.agentName }}</text>
+                    <text class="seniority">加入悟空：{{ agent.serviceYears }}</text>
+                </view>
+            </navigator>
+        </view>
+    </repeat>
+    <!--添加微信的modal框-->
+    <addWechatModal :visibility.sync="addWechatModalVisibility" title="添加微信">
+       <view slot="body">
+           <view>方法一：</view>
+            <view>将{{ currentAgent.agentName }}的二维码保存到相册</view>
+           <image src="{{ currentAgent.agentWChartQRImgUrl }}" mode="aspectFill" lazy-load="true" class="qrcode"></image>
+           <view>方法二：</view>
+           <view>复制{{ currentAgent.agentName }}的微信号添加微信号：{{ currentAgent.agentWChatId }}</view>
+        </view>
+        <view slot="footer" class="modal-footer">
+               <view class="wk-btn wk-btn-transparent" @tap="saveToAlbum" data-src="{{ currentAgent.agentWChartQRImgUrl }}">保存到相册</view>
+               <view class="wk-btn wk-btn-transparent" @tap="copyWechat" data-wechatid="{{ currentAgent.agentWChatId }}">复制微信号</view>
+        </view>
+    </addWechatModal>
+    <!--tips框-->
+    <tips :visibility.sync="tipsVisibility" :msg.sync="tipsMsg"></tips>
+    <!--拨打电话的modal框-->
+    <phoningModal :visibility.sync="phoningModalVisibility" title="确定拨打电话" hasCloseBtn="false">
+        <view slot="body">
+            <view>电话号码：{{ dial }} 转 {{ digits }}</view>
+            <view>分机号：<text class="digits">{{ digits }}</text>（可能需要拨分机号）</view>
+        </view>
+        <view slot="footer" class="modal-footer">
+            <view class="cancel wk-btn wk-btn-transparent" @tap="closePhoningModal">取消</view>
+            <view class="wk-btn wk-btn-transparent" @tap="confirmPhoning" data-union="{{ dial + ',' + digits }}">呼叫</view>
+        </view>
+    </phoningModal>
+</template>
+
+<script>
+    import wepy from "wepy" ;
+    import Modal from "./modal" ;
+    import Tips from "./tips" ;
+    import adf from "../mixins/apiDataFilter" ;
+    import Trace  from "../mixins/trace"
+    export default class Com extends wepy.component {
+        props = {
+            items : {
+                type : Array ,
+                default : []
+            } ,
+            wechatEventName : String ,
+            telEventName : String
+        } ;
+        components = {
+            phoningModal : Modal ,
+            addWechatModal : Modal ,
+            tips : Tips
+        } ;
+        data = {
+            addWechatModalVisibility : false ,  //添加微信modal框的显示状态
+            phoningModalVisibility : false ,  //拨打电话弹框的显示状态
+            tipsVisibility : false ,  //tips框的显示状态
+            tipsMsg : "" , 
+            currentAgent : {} ,  //当前操作经纪人
+            dial : "" ,  //当前操作经纪人总机号码
+            digits : "" ,  //当前操作经纪人分机号
+            trace : new Trace,  //埋点api
+            isIOS: false,
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+         提示信息
+         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        tips = (msg) => {
+            this.tipsVisibility = true ;
+            this.tipsMsg = msg ;
+            this.$apply() ;
+        };
+        methods = {      
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            点击电话咨询调用的方法
+            1. 埋点            
+            2. 显示拨打电话弹框并通过调用短接号的接口拿到经纪人的短接号码并显示
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            phoning : (event)=> {   
+                this.trace.uv({ eventName : this.telEventName }) ;                  
+                adf.request({
+                    apiPath : "common.dial" ,
+                    data : { "agentId" : event.currentTarget.dataset.agentid } ,
+                    successCallback : (res)=> {
+                        if(this.isIOS){//iOS直接拨打
+                            wx.makePhoneCall({ phoneNumber : res.data.dial + ',' + res.data.digits }) ;
+                        }else{//Android弹框后再拨打
+                            this.phoningModalVisibility = true ;
+                            this.dial = res.data.dial ;
+                            this.digits = res.data.digits ;
+                            this.$apply() ;
+                        }                        
+                    } ,
+                    errorCallback : (res)=> {                        
+                        this.tips(res) ;
+                    }
+                }) ;
+                
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            点击添加微信调用的方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            addWechat : (agent)=> {
+                this.addWechatModalVisibility = true ;
+                this.currentAgent = agent ;
+                this.trace.uv({ eventName : this.wechatEventName }) ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            保存到相册调用方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            saveToAlbum : function(event) {                
+                let self = this ;
+                wx.getSetting({
+                    success(res) {
+                        if (!res["scope.writePhotosAlbum"]) {
+                            wx.authorize({
+                                scope : "scope.writePhotosAlbum" ,
+                                success() {
+                                    wx.downloadFile({
+                                        url : event.target.dataset.src ,
+                                        success : function(res) {
+                                            wx.saveImageToPhotosAlbum({
+                                                filePath : res.tempFilePath ,
+                                                success(res) { self.tips("已保存到手机相册！") ; } ,
+                                                fail(res) { self.tips("保存到相册失败，请复制经纪人微信号添加") ; }
+                                            }) ;
+                                        } ,
+                                        fail : function() { self.tips("保存到相册失败，请复制经纪人微信号添加") ; }
+                                    }) ;
+                                } ,
+                                fail(res) { self.tips("保存到相册失败，请复制经纪人微信号添加") ; }
+                            }) ;
+                        }
+                    }
+                }) ;
+                /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                事件埋点
+                -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/                
+                this.trace.uv({ eventName : 1218004 , eventParam : { agent_id : this.currentAgent.agentId } }) ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            复制微信号调用方法
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            copyWechat : (event)=> {
+                wx.setClipboardData({
+                    data : event.target.dataset.wechatid ,
+                    success : (res)=> {
+                        this.tips("经纪人微信号已复制，请前往微信添加") ;
+                    } ,
+                    fail : (res)=> {
+                        this.tips("经纪人微信号复制失败！") ;
+                    }
+                }) ;
+                this.trace.uv({ eventName : 1218005 , eventParam : { agent_id : this.currentAgent.agentId } }) ;
+            }  ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            拨打电话弹框里面点击了取消按钮关闭当前弹框的事件监听
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            closePhoningModal : ()=> {
+                this.phoningModalVisibility = false ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            确认拨出电话的事件监听
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            confirmPhoning : (event)=> {
+                wx.makePhoneCall({ phoneNumber : event.currentTarget.dataset.union }) ;
+                this.phoningModalVisibility = false ;
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            点击条目的埋点函数
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+           traceAgent(agent_id){
+             this.trace.uv({ eventName : 1208003 , eventParam : { agent_id : agent_id } }) ;
+           }
+        } ;
+        onLoad() {
+            //获取当前系统的类型：iOS或Android，iOS直接拨打电话，Android弹框
+            let iOSReg = /ios/i;
+            let androidReg = /android/i;
+            let systemInfo = wx.getSystemInfoSync();
+            this.isIOS = iOSReg.test(systemInfo.system) && !androidReg.test(systemInfo.system);
+        }
+    }
+</script>
+
+<style lang="less">
+    @import "../less/variables.less" ;
+    @import "../less/mixins.less" ;
+    .agent {
+        border-bottom : 1rpx solid @light-line-gray-color ;
+        .clearfix() ;
+        padding : @common-margin 0 @common-margin 0 ;
+        navigator {
+            .clearfix() ;
+             margin-right : 240rpx ;
+             &.no-wechat {
+                 margin-right : 120rpx ;
+             }
+            &>image {
+                display : block ;
+                float : left ;
+                height : 120rpx ;
+                width : 120rpx ;
+            }
+            .summary {
+                margin-left : 150rpx ;
+                text {
+                    display : block ;
+                }
+                .name {
+                    font-size : @large-font-size ;
+                    line-height : 70rpx ;
+                }
+                .seniority {
+                    color : @light-font-color ;
+                    font-size : @default-font-size ;
+                }
+            }
+        }        
+        .tel , .wechat {
+            float : right ;
+            margin-top : @gap-dimension ;
+            text-align : center ;
+            width : 120rpx ;
+            text {
+                display : block ;
+                &.iconfont {
+                    font-size : @great-font-size ;
+                }
+            }
+            &>.memo {
+                font-size : @smaller-font-size ;
+                line-height : 40rpx ;
+            }
+        }
+        .tel {            
+            color : @primary-color ;
+        }
+        .wechat {
+            border-right : 1rpx solid @primary-color ;
+            color : @success-color ;
+        }
+        
+    }
+    .wk-modal {
+        .modal-body {
+            &>view {               
+                text-align : center ;
+                text.digits {
+                    color : @primary-color ;
+                }
+            }
+            .qrcode {
+                .center-block() ;
+                height : 300rpx ;
+                margin : 30rpx auto ;
+                width : 300rpx ;
+            }
+        }
+    }
+</style>

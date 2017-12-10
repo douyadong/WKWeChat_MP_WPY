@@ -1,0 +1,103 @@
+<!--
+    @页面名称：小区评论模块
+    @作者：李杨 (liyang@lifang.com)
+    @业务逻辑说明：
+        1.
+        2.
+-->
+<template lang="wxml">
+    <view class="comments">
+       <repeat for="{{commentList}}" key="index" index="index" item="item">
+         <view class="comment-single">
+             <view class="pic">
+                 <image src="{{item.guest.avatar.url }}"></image>
+             </view>
+              <view class="comment-content">
+                  <view class="phoneNum">{{item.guest.guestPhoneNum}}</view>
+                   <view class="time">{{item.createTimeStr}}</view>
+                    <view class="content">{{item.comment}}</view>
+              </view>
+         </view>
+       </repeat>
+    </view>
+</template>
+
+
+<script>
+    import wepy from "wepy" ;
+    export default class Comments extends wepy.component {
+        props = {
+            commentList : {
+                type: Array,
+                default: 'null'
+            }
+        };
+        data = {};
+        methods = {
+            phoning() {
+                console.log("打我电话干嘛？") ;
+            },
+            addWechat() {
+                console.log("想撩我吗？") ;
+            }
+        } ;
+        onLoad() {
+
+        }
+
+    }
+
+</script>
+
+<style lang="less">
+    @import "../../../less/variables.less" ;
+    @import "../../../less/mixins.less" ;
+     .comment-single{
+         .flex;
+         .flex-direction(row);
+         width: 100%;
+
+         .pic{
+             width: 11.6%;
+             image{
+                width:60rpx;
+                 height: 60rpx;
+             }
+         }
+         .comment-content{
+             width: 88.4%;
+
+             position: relative;
+             .phoneNum{
+                 font-size: @small-font-size;
+                 color: @default-font-color;
+             }
+             .time{
+                 font-size: 18rpx;
+                 color: @light-font-color;
+                 margin-bottom: 17rpx;
+             }
+             .content{
+                 font-size: @default-font-size;
+                 color: @default-font-color;
+                 line-height: 50rpx;
+             }
+         }
+         &:not(:last-child){
+             margin-bottom: 30rpx;
+             .comment-content{
+                 padding-bottom: 30rpx;
+                 &:after{
+                     content: '';
+                     height: 1px;
+                     width: 100%;
+                     position: absolute;
+                     bottom: 0;
+                     left: 0;
+                     border-top: 1px solid @light-line-gray-color;
+                     -webkit-transform: scaleY(0.5);
+                 }
+             }
+         }
+     }
+</style>

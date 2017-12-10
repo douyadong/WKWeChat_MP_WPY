@@ -1,0 +1,145 @@
+<!--
+    @页面名称：小区介绍模块
+    @作者：李杨 (liyangh@lifang.com)
+    @业务逻辑说明：
+        1.
+        2.
+-->
+
+
+<template lang="wxml">
+<view class="wk-panel summary">
+    <view class="panel-bd">
+        <view class="row">
+            <view class="row-hd">所属板块</view>
+            <view class="row-bd">{{estateInfo.district}} {{estateInfo.town}}</view>
+        </view>
+        <view class="row">
+            <view class="row-hd">产权年限</view>
+            <view class="row-bd">{{estateInfo.propertyRight}}</view>
+        </view>
+        <view class="row">
+            <view class="row-hd">竣工年代</view>
+            <view class="row-bd">{{estateInfo.completed}}年</view>
+        </view>
+        <view class="row">
+            <view class="row-hd">房屋总数</view>
+            <view class="row-bd">{{estateInfo.totalHouse}}</view>
+        </view>
+        <view class="row">
+            <view class="row-hd">物业类型</view>
+            <view class="row-bd">{{estateInfo.propertyType}}</view>
+        </view>
+        <view class="row">
+            <view class="row-hd">物业费</view>
+            <view class="row-bd">{{estateInfo.propertyCharges}}</view>
+        </view>
+        <view class="row">
+            <view class="row-hd">绿化率</view>
+            <view class="row-bd">{{estateInfo.greenRate}}</view>
+        </view>
+        <view class="row">
+            <view class="row-hd">容积率</view>
+            <view class="row-bd">{{estateInfo.volumeRate}}</view>
+        </view>
+        <view class="row">
+            <view class="row-hd">物业公司</view>
+            <view class="row-bd">{{estateInfo.propertyCompany}}</view>
+        </view>
+        <view class="row">
+            <view class="row-hd">开发商</view>
+            <view class="row-bd">{{estateInfo.developers}}</view>
+        </view>
+        <view class="row underline" wx:if="{{ estateInfo.subwayName }}">
+            <view class="row-hd">地铁</view>
+            <view class="row-bd">{{ estateInfo.subwayName }}</view>
+        </view>
+        <view class="row" wx:if="{{ estateInfo.schoolName }}">
+            <view class="row-hd">学校</view>
+            <view class="row-bd bd">{{ estateInfo.schoolName }}</view>
+        </view>
+    </view>
+    <!--<block wx:if="{{ estateInfo.sameEstateHouseAmount > 0 }}">
+        <view class="underline"></view>
+        <view class="extendable" hidden="{{estateInfo.sameEstateHouseAmount > 0 ? false:true }}" >
+            <view class="head">在售房源</view>
+            <navigator url="/pages/esf/list?subEstateId={{subEstateId}}&type=2&agentId={{agentId}}" class="assistant">
+                <text>{{estateInfo.sameEstateHouseAmount}} 套</text>
+                <text class="iconfont icon-arrow-r"></text>
+            </navigator>
+        </view>
+    </block>-->
+</view>
+</template>
+
+<script>
+    import wepy from "wepy" ;
+    export default class Detail extends wepy.component {
+        props = {
+            estateInfo: {
+                type: Object,
+                default: 'null'
+            },
+        } ;
+        data = {
+        } ;
+        onLoad() {
+        }
+    }
+
+</script>
+
+<style lang="less">
+    @import "../../../less/variables.less" ;
+    @import "../../../less/mixins.less" ;
+
+    .summary{
+        padding : 30rpx 30rpx 25rpx 30rpx;
+       /* background-color: @white-font-color;*/
+        .panel-bd{
+            .row{
+                .flex();
+                .flex-direction(row);
+                &:not(:last-child){
+                    margin-bottom: 30rpx;
+                }
+               .row-hd{
+                   .flex(2);
+                   font-size: @default-font-size;
+                   color: #7C7C7C;
+                   letter-spacing: 0;
+                   line-height: 32rpx;
+               }
+                .row-bd{
+                    .flex(8);
+                    font-size: @default-font-size;
+                    color: @default-font-color;
+                    line-height: 32rpx;
+                    padding-left: 20rpx;
+                    display: inline-block;
+                }
+                .bd{
+                    line-height: 40rpx;
+                }
+            }
+            >.underline{
+                position: relative;
+                padding-top: 30rpx;
+                width: 100%;
+                &:before{
+                    content: '';
+                    height: 1px;
+                    width: 100%;
+                    position: absolute;
+                    top:0;
+                    left: 0;
+                    right: 0;
+                    margin: 0 auto;
+                    border-top: 1px solid @light-line-gray-color;
+                    -webkit-transform: scalY(0.5);
+                }
+            }
+        }
+    }
+
+</style>

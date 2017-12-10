@@ -1,0 +1,41 @@
+/*-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 1. 项目名称：悟空找房+微信小程序
+ 2. 文件名称：button.less (按钮)
+ 3. 作者：zhaohuagang@lifang.com
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+@import "../variables.less" ;
+@import "../mixins.less" ;
+.wk-btn {
+    background-color : @light-gray-color ;
+    .border-radius(6rpx) ; 
+    color : @navigator-active-color ;
+    display : inline-block ;
+    font-size : @default-font-size ; 
+    line-height : 72rpx ;
+    padding : 0 40rpx ;
+    text-align : center ;    
+    &.wk-btn-lg {
+        font-size : @larger-font-size ;
+        line-height : 100rpx ;
+    }
+    &.wk-btn-sm {
+        font-size : @small-font-size ;
+        line-height : 56rpx ;
+    }
+    &.wk-btn-xs {
+        font-size : @mini-font-size ;
+        line-height : 40rpx ;
+    }
+    &.wk-btn-transparent {
+        .transparent() ;        
+    }
+    &.wk-btn-block {
+        display : block ;
+        width : 100% ;
+    }    
+    &.wk-btn-primary {
+        background-color : @blue-color ;        
+        color : #fff ;
+    }   
+}
+
