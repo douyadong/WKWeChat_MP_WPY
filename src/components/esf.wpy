@@ -28,12 +28,14 @@
 import wepy from "wepy" ;
 import apiDataFilter from "../mixins/apiDataFilter";
 import Trace from "../mixins/trace";
+let navigating = false;
 export default class Com extends wepy.component {
     components = {
 
     } ;
     data = {
-        trace: new Trace
+        trace: new Trace,
+        navigating: false,
     } ;
     props = {
         openType: String,        
@@ -41,16 +43,26 @@ export default class Com extends wepy.component {
         agentId: String       
     };
     methods = {
-        click:function(e){                                
+        click:function(e){ 
+            //console.log(navigating); 
+            if(navigating){
+                return;
+            }      
+            navigating = true;
+            //console.log('post:',navigating);                        
             if(this.item.bigDataParam) this.trace.uv(this.item.bigDataParam) ;
             let url = "/pages/esf/detail?houseId=" + e.currentTarget.dataset.id;
             if(this.agentId){
                 url += "&agentId=" + this.agentId;
             }
             if(this.openType == 1){
-                wx.navigateTo({url: url});
+                wx.navigateTo({url: url, complete: ()=>{
+                    setTimeout(()=>{navigating = false;},2000);
+                }});
             } else {
-                wx.redirectTo({url: url});
+                wx.redirectTo({url: url, complete: ()=>{
+                    setTimeout(()=>{navigating = false;},2000);
+                }});
             }
         }
     } ;

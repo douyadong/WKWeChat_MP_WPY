@@ -780,6 +780,23 @@
            },
            clickCover() {//点击遮罩层隐藏筛选弹框
                this.filter.selectedFilterSection = "";
+               this.filter.districtSection.selectedDistrictId = this.filter.districtSection.innerSelectedDistrictId;
+               this.filter.districtSection.selectedTownId = this.filter.districtSection.innerSelectedTownId;
+               this.filter.districtSection.selectedMetroId = this.filter.districtSection.innerSelectedMetroId;
+               this.filter.districtSection.selectedStationId = this.filter.districtSection.innerSelectedStationId;
+               this.filter.districtSection.selectedDistrictText = this.filter.districtSection.innerSelectedDistrictText;
+               this.filter.districtSection.selectedTownText = this.filter.districtSection.innerSelectedTownText;
+               this.filter.districtSection.selectedMetroText = this.filter.districtSection.innerSelectedMetroText;
+               this.filter.districtSection.selectedStationText = this.filter.districtSection.innerSelectedStationText;
+
+               this.filter.typeSection.selectedIds = this.filter.typeSection.innerSelectedIds;
+               this.filter.typeSection.items.forEach((t)=>{
+                   if(this.filter.typeSection.selectedIds.filter((x)=>{return t.id == x;}).length > 0){
+                       t.active = true;
+                   }else{
+                       t.active = false;
+                   }
+               });
            } 
         } ;
         events = {
@@ -814,7 +831,7 @@
                             wx.setStorageSync("locationCity",data.data);
 
                             this.city = data.data;
-                            wx.setStorageSync('city', this.city);
+                            //wx.setStorageSync('city', this.city);
                             this.showTotal = true;
                             this.showNearText = true;                      
                             this.getDistrictsAndMetro(); 
@@ -877,7 +894,13 @@
             }
             if(city) {
                 if(!this.city || city.cityId != this.city.cityId){//城市发生了变化，重新加载区域地铁和房源
-                    this.city = city;
+                    let locationCity = wx.getStorageSync('locationCity');
+                    if(locationCity && locationCity.cityId == city.cityId){
+                        this.city = locationCity;
+                    }else{
+                        this.city = city;
+                    }
+                    
                     this.showTotal = true;
                     this.getDistrictsAndMetro();
                     return;
@@ -987,6 +1010,8 @@
                                     });
                                     this.filter.districtSection.selectedDistrictId = "-2";
                                     this.filter.districtSection.selectedTownId = "0";
+                                    this.filter.districtSection.innerSelectedDistrictId = "-2";
+                                    this.filter.districtSection.innerSelectedTownId = "0";
                                     this.$apply();
                                 }else{
                                     d.splice(0,0,{
