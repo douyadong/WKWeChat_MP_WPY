@@ -120,8 +120,7 @@
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     只要有了房源数据下次请求就不是第一次请求了，加载样式也不要全屏了
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-                    if(this.houseInfo.secondHouseListModels.length) {
-                        this.firstRequest = false ;
+                    if(this.houseInfo.secondHouseListModels.length) {                        
                         this.loadingFullscreen = "false" ;  //加载条不要全屏
                         this.loadfailFullscreen = "false" ;  //加载失败状态也不要全屏
                     }
@@ -159,7 +158,8 @@
                 apiPath : "agent.index" ,
                 data : { "agentId" : this.pageParams.agentId } ,
                 successCallback : (res)=> {
-                    this.agentInfo = res.data || {} ;                    
+                    this.agentInfo = res.data || {} ;
+                    this.firstRequest = false ;            
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     wepy让数据改变生效
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -208,17 +208,18 @@
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     @import "../../less/variables.less" ;
     @import "../../less/mixins.less" ; 
     // 经纪人信息;
+    
     .agent {
         background-color: #fff;
         //padding-bottom: 130rpx;
         .card {
             border-bottom: 1rpx solid #d8d8d8;
             .clearfix();
-            padding: 30rpx;
+            padding: 30rpx ;
             image {
                 float: left;
                 height: 120rpx;
@@ -256,5 +257,8 @@
     .house-list {
         background-color : #fff ;   
         padding : 0 30rpx;
+    }
+    page {
+        background-color : #fff ;
     }
 </style>

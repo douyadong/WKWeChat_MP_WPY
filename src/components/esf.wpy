@@ -7,7 +7,7 @@
 -->
 <template lang="wxml">
     <view class="esf-item" @tap="click" data-id="{{item.houseId}}">
-        <image src="{{ item.firstImgUrl }}?x-oss-process=image/resize,w_120"></image>
+        <image src="{{ item.firstImgUrl }}?x-oss-process=image/resize,w_360"></image>
         <view class="info">
             <view class="title">{{item.houseTitle}}</view>
             <view class="type-area-district-town">
