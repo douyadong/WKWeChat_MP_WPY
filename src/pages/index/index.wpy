@@ -314,7 +314,7 @@
                         meter: 0,//附近多少米，用于查询
                         isNear: false,//是否附近
                         meters: [{
-                            id: 0,
+                            id: "0",
                             name: "不限（智能范围）", 
                             meter: 5000,
                             type: "near"                                                       
