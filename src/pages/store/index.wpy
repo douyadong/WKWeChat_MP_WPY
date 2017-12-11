@@ -1,267 +1,359 @@
 <!--
     @页面名称：店铺首页
-    @作者：李杨 (liyang@lifang.com)
+    @作者：赵华刚 (zhaohuagang@lifang.com)
     @业务逻辑说明：
         1.
         2.        
 -->
 <template lang="wxml">
-    <view class="store">
-        <view class="store-top" style="position:{{ lessenShow == true? 'fixed':'static'}};top:0;left:0; right:0; z-index:10">
-            <view class="store-pic" style="height:{{ lessenShow == true? 140:240 }}rpx; background-size:100% auto ;  padding-top: {{ lessenShow == true? 50:0}}rpx;">
-                <text wx:if="{{lessenShow == false}}">{{apiData.areaPriceInfo.name || "--"}}</text>
-                <view class="price" style="font-size:{{ lessenShow == true? 36:28 }}rpx ; margin-top: {{ lessenShow == true? 0:50}}rpx;">周边房源均价 <text class="price-show" style="font-size:{{ lessenShow == true? 36:48 }}rpx ;">{{apiData.areaPriceInfo.avgPrice}}</text></view>
+    <!--头部根据滚动条可以变fixed的内容，包括banner和tabs-handle-->
+    <view class="header {{ pageStates.pageScrollOffset > 28 ? 'fixed' : '' }}" wx:if="{{ loadStatesFullscreen !== 'true' }}">
+        <view class="banner" style="height : {{ pageStates.bannerHeight }}rpx ; ">
+            <view class="store-name" wx:if="{{ pageStates.bannerHeight >= 165 }}">{{ store.name }}</view>
+            <view class="market">
+                <text class="hd">周边房源均价</text>
+                <text class="bd">{{ store.avgPrice }}</text>
             </view>
-            <tables :titles="titles" :styles="styles" :eventName="eventName" @childFn.user = "parentFn"></tables>
         </view>
-        <view class="content" style="margin-top: {{ lessenShow == true? 260:0}}rpx;">
-             <view class="store-house" wx:if="{{condition == 0}}">
-                 <repeat for="{{apiData.houseList}}" key="index" index="index" item="item">
-                      <house :item ="item" openType="1"></house>
-                 </repeat>
-             </view>
-             <view class="store-agent" wx:if="{{condition == 1}}">                
-                <agent :items.sync = "agentList" wechatEventName="1208004" telEventName="1208005"></agent>
-             </view>
+        <view class="wk-tabs">
+            <view class="tabs-handle">
+                <view class="{{ pageStates.activeTab === 'house' ? 'on' : '' }}" @tap="swapTab('house')"><text>推荐好房</text></view>
+                <view class="{{ pageStates.activeTab === 'agent' ? 'on' : '' }}" @tap="swapTab('agent')"><text>推荐经纪人</text></view>                
+            </view>
         </view>
-    <view class="base-colors"></view>
     </view>
-
+    <!--两个tabs-frame内容-->
+    <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'house' }}">
+        <repeat for="{{ houseList }}" key="index" index="index" item="item">
+            <esf :item ="item" openType="1"></esf>
+        </repeat>
+    </view>
+    <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'agent' }}">
+        <agent :items.sync = "agentList" wechatEventName="1208004" telEventName="1208005"></agent>
+    </view>
+    <!--加载中组件-->
+    <loading :fullscreen.sync="loadStatesFullscreen" wx:if="{{ pageStates.loadingVisibility }}"></loading>
+    <!--加载失败组件-->
+    <view style="{{ loadStatesFullscreen === 'true' ? 'height : 100% ;' : '' }}" @tap="refreshPage" wx:if="{{ pageStates.loadfailVisibility }}">
+        <loadfail :fullscreen.sync="loadStatesFullscreen"></loadfail>
+    </view>
+    <!--全部内容结束-->
 </template>
 
 <script>
     import wepy from "wepy" ;
-    import Tables from "../../components/tabs" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载组件资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
     import Esf from "../../components/esf" ;
     import Agent from "../../components/agent" ;
-    import apiDataFilter from "../../mixins/apiDataFilter";
-    import Trace  from "../../mixins/trace"
+    import Loading from "../../components/loading" ;
+    import Loadfail from "../../components/loadfail" ;
+    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    加载工具api资源
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+    import adf from "../../mixins/apiDataFilter" ;
+    import Trace  from "../../mixins/trace" ;
+
     export default class Index extends wepy.page {
-        components = {
-            tables : Tables,
-            house: Esf,
-            agent: Agent
+        config = {
+            "navigationBarTitleText" : "悟空找房"
+        } ;
+        components = {            
+            esf : Esf ,
+            agent : Agent ,
+            loading : Loading ,
+            loadfail : Loadfail
         } ; 
         data = {
-            titles:['推荐好房','推荐经纪人'],
-            eventName:['1208006','1208002'],
-            agentEventName:['1208004','1208005'],
-            styles:{
-                positionLeft : '124r'    // tabs传参
-            },
-            condition: 0,     // tabs标识
-            lessenShow:false,    // 头部是否缩进标识
-            apiData:{
-                areaPriceInfo :'',  // 周边房源
-                houseList:[],     // 房源列表
-            },
-            agentList:[],    //  经纪人数据列表
-            pageIndex:0,
-            agentPageIndex:0,
-            pageSize: 20,
-            trace: new Trace(),
-            storeId:'' , // 店铺Id
-            agentTotal:null, // 经纪人总数
-            houseTotal : null // 房源总数
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           页面querystring参数
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            pageParams : {} ,
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           页面状态
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            pageStates : {
+                activeTab : "house" ,  //当前处于活动状态的tab标识，这里可以是house | agent
+                loadingVisibility : true ,  //loading组件显示状态
+                loadfailVisibility : false ,  //loadfail组件显示状态
+                houseRequestable : true , //房源数据是否还可以请求
+                agentRequestable : true , //经纪人数据是否还可以请求
+                houseOffset : 0 ,  //房源数据请求的时候从第几条开始
+                agentOffset : 0 , //经纪人数据请求的时候从第几条开始
+                pageScrollOffset : 0 , //页面滚动距离，单位为px
+                bannerHeight : 220  //banner高度是要随着滚动而改变的，初始值是220rpx，但是最小也不能小于110rpx
+            } ,
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           页面配置
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            pageConfs : {
+                pageSize : 20 //房源和经纪人每次请求最多加载多少条数据
+            } ,
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           模板变量
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            store : {} ,  //店铺信息
+            houseList : [] ,  //房源信息列表
+            agentList : [] ,  //经纪人信息列表
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           自定义组件的props只能放在data下面，不能再深层次，无赖之选，其实是应该放在pageStates下的
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            loadStatesFullscreen : "true" , //loading和loadfail组件是否全屏，页面进入的时候为true，加载过数据就不要全屏了            
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           其他
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+           trace : new Trace
         } ;
         methods = {
-            // tabs获取相应的区块
-            parentFn (index) {
-                this.condition = index;
-            },
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           切换tab
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            swapTab : (tabFlag)=> {
+                this.pageStates.activeTab = tabFlag ;
+                let eventName = (tabFlag === "house") ? "1208006" : "1208002" ;
+                this.trace.uv({ "eventName" : eventName }) ;
+            } ,
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           加载失败画面点击刷新处理
+           1. 如果loadStatesFullscreen为true，就表示先前没有请求成功过，就加载门店、房源、经纪人数据，否则就根据pageStates.activeTab的值来决定调哪个方法
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+           refreshPage : ()=> {               
+               if( this.loadStatesFullscreen === "true" ) {
+                   this.loadStoreData() ;
+                   this.loadHouseData() ;
+                   this.loadAgentData() ;
+               }
+               else this.pageStates.activeTab === "house" ? this.loadHouseData() : this.loadAgentData() ;
+           }            
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-         获取接口数据
-         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        getData(){
-            if(this.storeId){
-                // agent数据获取   10027   43
-                apiDataFilter.request({
-                    apiPath : "store.agent",
-                    data : { "storeId" : this.storeId ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize} ,
-                    successCallback : res => {
-                        let agent = res.data ;
-                        this.agentTotal = agent.total;
-                        if(agent.agentList){
-                            this.agentPageIndex += agent.agentList.length;
-                            this.agentList = agent.agentList;
-                            this.$apply();
-                        }
-                    }
-                }) ;
-                // 周边房价接口调取
-                apiDataFilter.request({
-                    apiPath : "store.index",
-                    data : { "dicId" : this.storeId ,"dicType":5 } ,
-                    successCallback : res => {
-                        let areaPriceInfo = res.data ;
-                        this.apiData.areaPriceInfo = areaPriceInfo;
-                        this.$apply();
-                    }
-                }) ;
-                // 房源接口调取
-                apiDataFilter.request({
-                    apiPath : "store.house",
-                    data : { "storeId" : this.storeId ,"pageSize":this.pageSize ,"pageIndex":this.pageIndex}  ,
-                    successCallback : res => {
-                        let houseList = res.data ;
-                        this.houseTotal = houseList.total;
-                        if(houseList.secondHouseListModels){
-                            this.apiData.houseList = houseList.secondHouseListModels;
-                            this.pageIndex += houseList.secondHouseListModels.length;
-                            this.apiData.houseList.forEach((item)=>{
-                                item.bigDataParam = {eventName:"1208001",eventParam:{house_id:item.houseId}}
-                            });
-                            this.$apply();
-                        }
-                    }
-                }) ;
-            }else {
-                console.log("缺少参数storeId")
-            }
-
-        };
-        onLoad(option) {
-            this.storeId = option.storeId || 10027 ;
-            wx.setNavigationBarTitle({
-                title:"悟空找房"
-            });
-            this.getData() ;            
+        加载门店信息
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        loadStoreData() {
+            adf.request({
+                apiPath : "store.index",
+                data : { "dicId" : this.pageParams.storeId ,"dicType" : 5 } ,
+                successCallback : res => {                    
+                    this.store = res.data ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    只要请求门店信息成功，loading和loadfail样式就不要全屏了
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.loadStatesFullscreen = "false" ;                      
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    wepy让data改变生效
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.$apply() ;
+                }
+            }) ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        加载房源数据信息
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        loadHouseData() {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            如果加载完了或者其他原因不能请求了，就不要发请求
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            if( ! this.pageStates.houseRequestable) return ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            请求房源数据
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            adf.request({
+                apiPath : "store.house",
+                data : { "storeId" : this.pageParams.storeId ,"pageSize" : this.pageConfs.pageSize ,"pageIndex" : this.pageStates.houseOffset }  ,
+                successCallback : res => {
+                    let apiData = res.data ;
+                    let count = apiData.total || 0 ;
+                    let houseList = apiData.secondHouseListModels || [] ;                    
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    将埋点参数追加到房源数据中
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    houseList.forEach((item)=>{
+                        item.bigDataParam = { eventName : "1208001" , eventParam : { house_id : item.houseId } } ;
+                    }) ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    houseOffset累加，为下次请求做准备
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.pageStates.houseOffset += houseList.length ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    数据赋予模板变量
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.houseList = this.houseList.concat(houseList) ;                                     
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    wepy让data改变生效
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.$apply() ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    如果房源数据已经请求完，将pageStates.houseRequestable的值设置为false
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    if( this.houseList.length === count ) this.pageStates.houseRequestable = false ;
+                } ,
+                loadingCallback : ()=> {
+                    this.loadingCallback() ;
+                } ,                
+                errorCallback : ()=> {
+                    this.errorCallback() ;
+                } ,
+                completeCallback : ()=> {
+                    this.completeCallback() ;
+                }
+            }) ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        加载经纪人信息
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        loadAgentData() {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            如果加载完了或者其他原因不能请求了，就不要发请求
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            if( ! this.pageStates.agentRequestable) return ;
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            请求经纪人数据
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            adf.request({
+                apiPath : "store.agent",
+                data : { "storeId" : this.pageParams.storeId ,"pageIndex":this.pageStates.agentOffset ,"pageSize" : this.pageConfs.pageSize } ,
+                successCallback : res => {
+                    let apiData = res.data ;
+                    let count = apiData.total || 0 ;
+                    let agentList = apiData.agentList || [] ;                     
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    agentOffset累加，为下次请求做准备
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.pageStates.agentOffset += agentList.length ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    数据赋予模板变量
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.agentList = this.agentList.concat(agentList) ;                                     
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    wepy让data改变生效
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    this.$apply() ;
+                    /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                    如果经纪人数据已经请求完，将pageStates.agentRequestable的值设置为false
+                    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+                    if( this.agentList.length === count ) this.pageStates.agentRequestable = false ;
+                } ,
+                loadingCallback : ()=> {
+                    this.loadingCallback() ;
+                } ,                
+                errorCallback : ()=> {
+                    this.errorCallback() ;
+                } ,
+                completeCallback : ()=> {
+                    this.completeCallback() ;
+                }
+            }) ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        本页请求loadingCallback定义，包括：显示loading，隐藏loadfail
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        loadingCallback() {            
+            this.pageStates.loadingVisibility = true ;
+            this.pageStates.loadfailVisibility = false ;                        
+            this.$apply() ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        本页请求errorCallback定义，请求出错显示loadfail，loading在complete里面去隐藏
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        errorCallback() {
+            this.pageStates.loadfailVisibility = true ;
+            this.$apply() ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        本页请求completeCallback定义，请求结束，不管成功与否，loading组件肯定不显示
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        completeCallback() {
+            this.pageStates.loadingVisibility = false ;
+            this.$apply() ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        页面加载处理
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        onLoad(options) {
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            将query参数存放到pageParams中
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            this.pageParams = options ;
+            this.pageParams.storeId = this.pageParams.storeId || 10027 ;  //纯调试用，可以用10027 920277 , 10023
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            请求门店、房源、经纪人 3部分信息
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
+            this.loadStoreData() ;
+            this.loadHouseData() ;
+            this.loadAgentData() ;   
         } ;
         onShow() {
-            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             页面埋点
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-            this.trace.pv({ pageName:"1208" , pageParam : { store_id : this.storeId }}) ;
+            this.trace.pv({ pageName : "1208" , pageParam : { store_id : this.pageParams.storeId }}) ;
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-         滚动条滚动函数
-         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-        onPageScroll(Object) {
-           if (Object.scrollTop >4){
-              this.lessenShow = true;
-           }else if(Object.scrollTop < 4){
-               this.lessenShow = false;
-           }
-        };
-        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-         滚动加载
+         上拉加载，根据是哪个tab来决定调哪个方法
          -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         onReachBottom() {
-            if(this.condition == 0){
-                // 房源接口调取
-                if (this.pageIndex < this.houseTotal){
-                    apiDataFilter.request({
-                        apiPath : "store.house",
-                        data : { "storeId" : this.storeId || 10027,"pageSize":this.pageSize ,"pageIndex": this.pageIndex}  ,
-                        successCallback : res => {
-                            let houseList = res.data;
-                            if (houseList.secondHouseListModels){
-                                this.pageIndex += houseList.secondHouseListModels.length;
-                                this.apiData.houseList = this.apiData.houseList.concat(houseList.secondHouseListModels);
-                                this.apiData.houseList.forEach((item)=>{
-                                    item.bigDataParam = {eventName:1208001,eventParam:{house_id:item.houseId}}
-                                });
-                                this.$apply();
-                            }
-                        }
-                    }) ;
-                }
-
-            }else {
-                // agent数据获取
-                if (this.agentPageIndex < this.agentTotal){
-                    apiDataFilter.request({
-                        apiPath : "store.agent",
-                        data : { "storeId" : this.storeId ,"pageIndex":this.agentPageIndex ,"pageSize":this.pageSize } ,
-                        successCallback : res => {
-                            let agent = res.data ;
-                            if(agent.agentList){
-                                this.agentPageIndex += agent.agentList.length;
-                                this.agentList = this.agentList.concat(agent.agentList);
-                                this.$apply();
-                            }
-                        }
-                    }) ;
-                }
-
-            }
-
-        };
+            this.pageStates.activeTab === "house" ? this.loadHouseData() : this.loadAgentData() ;
+        } ;
+        /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        页面滚动处理
+        -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+        onPageScroll(page) {
+            this.pageStates.pageScrollOffset = page.scrollTop ;
+            this.pageStates.bannerHeight = (220 - page.scrollTop * 2) < 110 ? 110 : 220 - page.scrollTop * 2 ;            
+            this.$apply() ;
+        } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
          分享标题
          -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         onShareAppMessage() {
-            return {
-                title: "悟空找房"+this.apiData.areaPriceInfo.name+"房源",
-            }
-        }
+            return { title : "悟空找房" + this.store.name + "房源" } ;
+        } ;    
     }
 </script>
 
 <style lang="less">
     @import "../../less/variables.less" ;
     @import "../../less/mixins.less" ;
-    .store {
-        .store-top{
-            background-color:  @white-font-color;
-            .store-pic {
-                width: 100%;
-                /* height:240rpx;*/
-                background: url("http://img.wkzf.com/b262848128334e3daab102eb97e1b747") no-repeat;    
-                background-position : 0 center ;            
-                transition: .5s cubic-bezier(.35,0,.25,1);
-                -webkit-transition: .5s cubic-bezier(.35,0,.25,1);
-                opacity: 1;
-                box-sizing:border-box;
-                >text{
-                    font-size: @greater-font-size;
-                    color: @white-font-color;
-                    letter-spacing: 1.71rpx;
-                    line-height: 42rpx;
-                    display: inline-block;
-                    margin-top: 53rpx;
-                    margin-left: 60rpx;
+    page {
+        background-color : #fff ;
+    }
+    .header {
+        background-color : #fff ;
+        &.fixed {
+            left : 0 ;
+            position : fixed ;
+            top : 0 ;
+            width : 100% ;
+        }
+        .banner {
+            background-image : url("http://img.wkzf.com/b262848128334e3daab102eb97e1b747") ; 
+            background-repeat : no-repeat ;
+            background-position : 0 center ;
+            background-size : 100% auto ;            
+            padding : 20rpx 60rpx 0 ;
+            overflow : hidden ;
+            &>view {
+                color : #fff ;
+                line-height : 90rpx ;
+                &.store-name {
+                    font-size : @greater-font-size ;
                 }
-                >.price{
-                    /* font-size: 28rpx;*/
-                    color: @white-font-color;
-                    letter-spacing: 1rpx;
-                    line-height: 28rpx;
-                    margin-left: 60rpx;
-                   /* margin-top: 50rpx;*/
-                    .price-show{
-                        /*font-size: 48rpx;*/
-                        color: @white-font-color;
-                        letter-spacing: 1.71rpx;
-                        line-height: 42rpx;
-                        margin-left: 25rpx;
+                &.market {
+                    .hd {
+                        font-size : @default-font-size ;
+                        margin-right : @common-margin ;
+                    }
+                    .bd {
+                        font-size : @greater-font-size ;
                     }
                 }
             }
         }
-        background-color: @white-font-color;
-        .content{
-            width: 100%;
-            background-color: @white-font-color ;
-            .store-house{
-                background-color: @white-font-color;
-                padding-left: 30rpx;
-                padding-right: 30rpx;
-            }
-            .store-agent{
-                padding-left: 30rpx;
-            }
-        }
     }
-    .base-colors{
-        width: 100%;
-        position: fixed;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom:0;
-        background-color: @white-font-color;
-        z-index: -1;
+    .tabs-frame {
+        .esf-item:last-child , .agent:last-child {
+            border : none ;
+        }
     }
 </style>
