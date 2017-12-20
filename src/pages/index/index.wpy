@@ -870,6 +870,7 @@
                     this.lon = res.longitude;
                     this.lat = res.latitude;
                     console.log("定位数据：", res);
+                    this.loadingVisibility = true;
                     apiDataFilter.request({
                         apiPath: "index.findCityInfoByLonAndLat",
                         data: {
@@ -894,6 +895,9 @@
                         },
                         errorCallback: ()=>{
                             this.setErrorReason('locate');
+                        },
+                        completeCallback: ()=>{
+                            //this.loadingVisibility = false;
                         }                      
                     });
                },
@@ -978,6 +982,7 @@
         getDistrictsAndMetro() {//获取当前城市的区域板块和地铁线路数据
             this.isOpenCity = true;
             //判断当前城市是否开通业务
+            this.loadingVisibility = true;
             apiDataFilter.request({
                 apiPath: "index.getAllCityBusiness",
                 successCallback: (data)=>{                                       
@@ -1114,10 +1119,14 @@
                 errorCallback: ()=>{//获取开通业务城市接口失败
                     //this.errorReason = "businessCity";
                     this.setErrorReason('businessCity');
+                },
+                completeCallback: ()=>{
+                    //this.loadingVisibility = false;
                 }
             });            
         };
         getLocationCity(){
+            this.loadingVisibility = true;
             apiDataFilter.request({
                 apiPath: "index.findCityInfoByLonAndLat",
                 data: {
@@ -1142,10 +1151,14 @@
                 },
                 errorCallback: ()=>{
                     this.setErrorReason('locate');
-                }                      
+                },
+                completeCallback: ()=>{
+                    //this.loadingVisibility = false;
+                }               
             });
         };
         getMetro(cb){
+            this.loadingVisibility = true;
             apiDataFilter.request({
                 apiPath: "index.getCitySubwayLines",
                 data: {
@@ -1173,10 +1186,14 @@
                 },
                 errorCallback: (data)=>{
                     this.setErrorReason("metro");
+                },
+                completeCallback: ()=>{
+                    //this.loadingVisibility = false;
                 }
             });
         };
         getDistrict(cb){
+            this.loadingVisibility = true;
             apiDataFilter.request({
                 apiPath: "index.getCityAreasInfo",
                 data: {
@@ -1223,10 +1240,14 @@
                 },
                 errorCallback: ()=>{
                     this.setErrorReason('district');
+                },
+                completeCallback: ()=>{
+                    //this.loadingVisibility = false;
                 }
             });
         };
         getHousePrice(cb){
+            this.loadingVisibility = true;
             apiDataFilter.request({
                 apiPath: "index.getAreaPriceInfo",
                 data: {
@@ -1240,6 +1261,9 @@
                 },
                 errorCallback: ()=>{
                     this.setErrorReason('price');
+                },
+                completeCallback: ()=>{
+                    //this.loadingVisibility = false;
                 }
             });
         };

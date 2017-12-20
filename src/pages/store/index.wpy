@@ -302,8 +302,9 @@
         页面滚动处理
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         onPageScroll(page) {
-            this.pageStates.pageScrollOffset = page.scrollTop ;
-            this.pageStates.bannerHeight = (220 - page.scrollTop * 2) < 110 ? 110 : 220 - page.scrollTop * 2 ;            
+            let scrollTop = page.scrollTop < 0 ? 0 : page.scrollTop ;
+            this.pageStates.pageScrollOffset = scrollTop ;
+            this.pageStates.bannerHeight = (220 - scrollTop * 2) < 110 ? 110 : 220 - scrollTop * 2 ;            
             this.$apply() ;
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
