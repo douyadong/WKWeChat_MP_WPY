@@ -23,13 +23,15 @@
         </view>
     </view>
     <!--两个tabs-frame内容-->
-    <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'house' }}">
-        <repeat for="{{ houseList }}" key="index" index="index" item="item">
-            <esf :item ="item" openType="1"></esf>
-        </repeat>
-    </view>
-    <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'agent' }}">
-        <agent :items.sync = "agentList" wechatEventName="1208004" telEventName="1208005"></agent>
+    <view style="{{pageStates.pageScrollOffset > 28 ? 'margin-top: 240rpx' : ''}}">
+        <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'house' }}">
+            <repeat for="{{ houseList }}" key="index" index="index" item="item">
+                <esf :item ="item" openType="1"></esf>
+            </repeat>
+        </view>
+        <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'agent' }}">
+            <agent :items.sync = "agentList" wechatEventName="1208004" telEventName="1208005"></agent>
+        </view>
     </view>
     <!--加载中组件-->
     <loading :fullscreen.sync="loadStatesFullscreen" wx:if="{{ pageStates.loadingVisibility }}"></loading>
@@ -275,7 +277,7 @@
             将query参数存放到pageParams中
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             this.pageParams = options ;
-            //this.pageParams.storeId = this.pageParams.storeId || 10027 ;  //纯调试用，可以用10027 920277 , 10023
+            this.pageParams.storeId = this.pageParams.storeId || 10477 ;  //纯调试用，可以用10027 920277 , 10023
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             请求门店、房源、经纪人 3部分信息
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
@@ -284,6 +286,7 @@
             this.loadAgentData() ;
         } ;
         onShow() {
+            //console.log("场景值：",options);
            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             页面埋点
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/

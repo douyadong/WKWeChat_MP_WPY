@@ -417,7 +417,9 @@
                 loadingFullscreen: "false",
                 loadingVisibility: false,
                 loadfailFullscreen: "false",
-                loadfailVisibility: false,                              
+                loadfailVisibility: false,    
+                lon: "",
+                lat: ""                          
         } ;
         computed = {
             districtDisplayName(){//区域查询的显示文本
@@ -797,12 +799,62 @@
                        t.active = false;
                    }
                });
-           } 
+           },
+           errorReload(){//接口错误后点击重新加载执行的操作
+            this.loadfailVisibility = false;
+            this.loadingVisibility = true;
+            /*wx.showLoading({
+                title: "失败加载" + this.errorReason
+            });*/
+            switch(this.errorReason){
+                case "locate":
+                    this.getLocationCity();
+                break;
+                case "businessCity":
+                    this.getDistrictsAndMetro();
+                break;
+                case "district":
+                    this.getDistrict(()=>{
+                        this.getHousePrice(()=>{
+                            this.refresh();
+                        });
+                    });
+                break;
+                case "metro":
+                    this.getMetro(()=>{
+                        this.getDistrict(()=>{
+                            this.getHousePrice(()=>{
+                                this.refresh();
+                            });
+                        });
+                    });
+                break;
+                case "price":
+                    this.getHousePrice(()=>{
+                        this.refresh();
+                    });
+                break;
+                case "list":
+                    //第一次接口就失败的reload
+                    if(this.offset == 0){
+                        this.refresh();
+                        return;
+                    }
+                    //非第一次接口失败的reload
+                    this.showTotal = true;                     
+                    this.getEsfList(this.offset,(data)=>{          
+                        this.items = this.items.concat(data.data.secondHouseListModels);
+                        this.$apply();
+                    });
+                break;
+            }                    
+        }
         } ;
         events = {
 
         } ;
-        onLoad() {        
+        onLoad(options) {   
+           console.log(options);     
            this.firstTime = true; 
            let opened = wx.getStorageSync('opened'); //是否打开过  
            //首次读取storage中是否有city，否则就是默认城市
@@ -815,6 +867,9 @@
            wx.getLocation({
                success: (res)=>{//定位成功
                    //根据经纬度获取城市信息
+                    this.lon = res.longitude;
+                    this.lat = res.latitude;
+                    console.log("定位数据：", res);
                     apiDataFilter.request({
                         apiPath: "index.findCityInfoByLonAndLat",
                         data: {
@@ -836,6 +891,9 @@
                             this.showNearText = true;                      
                             this.getDistrictsAndMetro(); 
                             this.$apply();            
+                        },
+                        errorCallback: ()=>{
+                            this.setErrorReason('locate');
                         }                      
                     });
                },
@@ -954,7 +1012,14 @@
                         this.$apply();
                         
                         //地铁数据
-                        apiDataFilter.request({
+                        this.getMetro(()=>{
+                            this.getDistrict(()=>{
+                                this.getHousePrice(()=>{
+                                    this.refresh();
+                                });
+                            });
+                        });
+                        /*apiDataFilter.request({
                             apiPath: "index.getCitySubwayLines",
                             data: {
                                 cityId: this.city.cityId
@@ -1036,17 +1101,177 @@
                                 this.$apply();
                             }
 
-                        });
-
+                        });*/
+                
                         if(this.city.isLocated){
                             this.filter.districtSection.isNear = true;
                             this.filter.districtSection.meter = 5000;
                         }
                         this.showTotal = true;
-                        this.refresh();
+                        //this.refresh();
                     }
+                },
+                errorCallback: ()=>{//获取开通业务城市接口失败
+                    //this.errorReason = "businessCity";
+                    this.setErrorReason('businessCity');
                 }
             });            
+        };
+        getLocationCity(){
+            apiDataFilter.request({
+                apiPath: "index.findCityInfoByLonAndLat",
+                data: {
+                    lon: this.lon,
+                    lat: this.lat
+                },
+                successCallback: (data)=>{//拿到城市信息成功
+                    data.data.lon = this.longitude;
+                    data.data.lat = this.latitude;
+                    data.data.isLocated = true;//定位成功标志位
+                    this.filter.districtSection.isNear = true;                            
+                    //console.log('定位成功设置isNear为true');
+                    wx.setStorageSync("city",data.data);
+                    wx.setStorageSync("locationCity",data.data);
+
+                    this.city = data.data;
+                    //wx.setStorageSync('city', this.city);
+                    this.showTotal = true;
+                    this.showNearText = true;                      
+                    this.getDistrictsAndMetro(); 
+                    this.$apply();            
+                },
+                errorCallback: ()=>{
+                    this.setErrorReason('locate');
+                }                      
+            });
+        };
+        getMetro(cb){
+            apiDataFilter.request({
+                apiPath: "index.getCitySubwayLines",
+                data: {
+                    cityId: this.city.cityId
+                },
+                successCallback: (data)=>{
+                    //加工数据，添加"不限"
+                    let d = data.data || [];
+                    d.splice(0,0,{
+                        id: "-1",
+                        name: "不限"
+                    });
+                    for(let i = 0; i < d.length; i++){
+                        d[i].subList = d[i].subList || [];
+                        d[i].subList.splice(0,0,{
+                            id: "-1",
+                            name: "不限"
+                        });
+                    }
+                    
+                    this.filter.districtSection.metros = d;                                
+                    this.$apply();
+
+                    cb && cb();
+                },
+                errorCallback: (data)=>{
+                    this.setErrorReason("metro");
+                }
+            });
+        };
+        getDistrict(cb){
+            apiDataFilter.request({
+                apiPath: "index.getCityAreasInfo",
+                data: {
+                    cityId: this.city.cityId
+                },
+                successCallback: (data)=>{
+                    let d = data.data;
+                    d.splice(0,0,{
+                        id: "-1",
+                        name: "不限"
+                    });                                
+                    for(let i = 0; i < d.length; i++){
+                        d[i].subList = d[i].subList || [];
+                        d[i].subList.splice(0,0,{
+                            towns: [{
+                                id: "-1",
+                                name: "不限"
+                            }]
+                        });
+                    }
+                    if(this.city.isLocated){
+                        d.splice(0,0,{
+                            id: "-2",
+                            name: "附近",
+                            subList: [{
+                                towns: this.filter.districtSection.meters
+                            }]
+                        });
+                        this.filter.districtSection.selectedDistrictId = "-2";
+                        this.filter.districtSection.selectedTownId = "0";
+                        this.filter.districtSection.innerSelectedDistrictId = "-2";
+                        this.filter.districtSection.innerSelectedTownId = "0";
+                        this.$apply();
+                    }else{
+                        d.splice(0,0,{
+                            id: "-2",
+                            name: "定位失败"                                        
+                        });
+                    }
+                    this.filter.districtSection.districts = d;
+                    this.$apply();
+
+                    cb && cb();
+                },
+                errorCallback: ()=>{
+                    this.setErrorReason('district');
+                }
+            });
+        };
+        getHousePrice(cb){
+            apiDataFilter.request({
+                apiPath: "index.getAreaPriceInfo",
+                data: {
+                    dicId: this.city.cityId,
+                    dicType: 3
+                },
+                successCallback: (data)=>{
+                    this.unitPrice = data.data.avgPrice;
+                    this.$apply();
+                    cb && cb();
+                },
+                errorCallback: ()=>{
+                    this.setErrorReason('price');
+                }
+            });
+        };
+        setErrorReason(reason){
+            this.errorReason = reason;
+            switch(reason){
+                case "locate":
+                    this.loadfailFullscreen = 'true';
+                break;
+                case "businessCity":
+                    this.loadfailFullscreen = 'true';
+                break;
+                case "metro":
+                    this.loadfailFullscreen = 'true';
+                break;
+                case "district":
+                    this.loadfailFullscreen = 'true';
+                break;
+                case "price":
+                    this.loadfailFullscreen = 'true';
+                break;
+                case "list":
+                    if(this.offset == 0){
+                        this.loadfailFullscreen = 'true';
+                    }else{
+                        this.loadfailFullscreen = 'false';
+                    }
+                break;
+            }
+            this.loadfailVisibility = true;
+            this.loadingVisibility = false;
+            this.$apply();
         };
         getEsfList(offset,cb) {
             if(this.filter.selectedFilterSection != '') {
@@ -1122,14 +1347,15 @@
                 },
                 errorCallback: ()=>{
                     //this.isLoadError = true;
-                    this.loadfailVisibility = true;
-                    this.loadingVisibility = false;
+                    //this.loadfailVisibility = true;
+                    //this.loadingVisibility = false;
                     //this.reachBottom = true;
-                    if(this.offset == 0){
-                        this.loadfailFullscreen = 'true';
-                    }else{
-                        this.loadfailFullscreen = 'false';
-                    }
+                    // if(this.offset == 0){
+                    //     this.loadfailFullscreen = 'true';
+                    // }else{
+                    //     this.loadfailFullscreen = 'false';
+                    // }
+                    this.setErrorReason('list');
                     this.$apply();
                 }
             });     
@@ -1167,20 +1393,7 @@
                 }
                 this.$apply();
             });            
-        };
-        errorReload(){//接口错误后点击重新加载执行的操作
-            //第一次接口就失败的reload
-            if(this.offset == 0){
-                this.refresh();
-                return;
-            }
-            //非第一次接口失败的reload
-            this.showTotal = true;                     
-            this.getEsfList(this.offset,(data)=>{          
-                this.items = this.items.concat(data.data.secondHouseListModels);
-                this.$apply();
-            });            
-        }
+        };        
         onReachBottom() {//触底加载
             if(this.loadfailVisibility){//加载失败直接返回
                 return;
