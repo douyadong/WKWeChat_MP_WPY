@@ -13,7 +13,7 @@
                 <view class="agent-info">
                     <view class="id-info">
                         <text class="name">{{agentInfo.agentName}}</text>
-                        <text class="company">| {{agentInfo.abbreviation}} {{agentInfo.storeName}}</text>
+                        <text class="company">| {{agentInfo.abbreviation || "" }} {{agentInfo.storeName || ""}}</text>
                     </view>
                     <view class="join-long">入住悟空：{{agentInfo.serviceYears}}</view>
                 </view>      
