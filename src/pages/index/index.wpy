@@ -296,7 +296,7 @@
                         metros:[],//当前城市的地铁数据，包括地铁站点
                         selectedDistrictId: DEFAULT.selectedDistrictId,//选中的区域id，用于控制显示
                         selectedTownId: DEFAULT.selectedTownId,//选中的板块id，用于控制显示的
-                        selectedMotroId: DEFAULT.selectedMotroId,//选中的地铁id，用于控制显示
+                        selectedMetroId: DEFAULT.selectedMetroId,//选中的地铁id，用于控制显示
                         selectedStationId: DEFAULT.selectedStationId,//选中的地铁站id，用于控制显示
                         selectedSection: DEFAULT.selectedSection, //区域筛选中有两个一个是区域，另一个是地铁
                         selectedDistrictText: '',//选中的区域的文本内容，暂时记录
@@ -690,6 +690,7 @@
                 this.filter.districtSection.selectedMetroId = metroId;
                 this.filter.districtSection.selectedMetroText = metroText;                
                 this.filter.districtSection.selectedStationId = '';
+
             },
             selectStation(e) {//选择具体地铁站点
                 let stationId = e.currentTarget.dataset.id;
@@ -706,6 +707,10 @@
                 this.filter.districtSection.selectedTownId = "";
                 this.filter.districtSection.selectedDistrictText = '';
                 this.filter.districtSection.selectedTownText = '';
+                this.filter.districtSection.innerSelectedDistrictId = "";
+                this.filter.districtSection.innerSelectedTownId = "";
+                this.filter.districtSection.innerSelectedDistrictText = "";
+                this.filter.districtSection.innerSelectedTownText = "";
                 this.filter.districtSection.isNear = false;
                 //console.log("selectStation中设置isNear为false");              
 
@@ -757,7 +762,8 @@
                this.showTotal = true;      
                this.refresh();
            },   
-           clearFilter() {//清空筛选条件                
+           clearFilter() {//清空筛选条件     
+                this.filter.districtSection.selectedSection = "district";           
                 this.clearDistrictFilter();
                 this.clearMetroFilter();
                 this.clearTypeFilter();
@@ -902,6 +908,7 @@
                     });
                },
                fail: (opts)=>{
+                   this.filter.districtSection.selectedSection = "district";
                    this.clearDistrictFilter();
                    this.showTotal = true;
                    //this.$apply();       
@@ -937,7 +944,8 @@
 
             //获取小区和地址筛选条件
             let estate  = wx.getStorageSync("estate");            
-            if(estate) {//清空区域板块和地铁筛选条件                
+            if(estate) {//清空区域板块和地铁筛选条件        
+                this.filter.districtSection.selectedSection = "district";        
                 this.clearDistrictFilter();
                 this.clearMetroFilter();                
                 if(this.estate && (this.estate.subEstateId == estate.subEstateId && this.estate.showId == estate.showId)){
@@ -998,7 +1006,8 @@
                         this.$apply();                                            
                     }else{        
                         this.isOpenCity = true;
-                        this.cityName = "";         
+                        this.cityName = "";   
+                        this.filter.districtSection.selectedSection = "district";      
                         this.clearDistrictFilter();
                         this.clearMetroFilter();
                         this.clearSortFilter();
@@ -1234,6 +1243,7 @@
                         });
                     }
                     this.filter.districtSection.districts = d;
+                    console.log("区域数据：",d);
                     this.$apply();
 
                     cb && cb();
@@ -1444,6 +1454,7 @@
             return { "title" : "买房就找悟空找房" }
         };
         clearDistrictFilter() {//清除区域板块筛选条件
+            //this.filter.districtSection.selectSection = "district";
             this.filter.districtSection.selectedDistrictId = DEFAULT.selectedDistrictId;
             this.filter.districtSection.selectedTownId = DEFAULT.selectedTownId;
             this.filter.districtSection.selectedDistrictText = '';
@@ -1457,11 +1468,11 @@
             this.filter.districtSection.meter = "";            
         };
         clearMetroFilter() {//清除地铁线路筛选条件            
-            this.filter.districtSection.selectedMotroId = DEFAULT.selectedMetroId;
+            this.filter.districtSection.selectedMetroId = DEFAULT.selectedMetroId;
             this.filter.districtSection.selectedStationId = DEFAULT.selectedStationId;                
             this.filter.districtSection.selectedMetroText = '';
             this.filter.districtSection.selectedStationText = '';                
-            this.filter.districtSection.innerSelectedMotroId = DEFAULT.selectedMetroId;
+            this.filter.districtSection.innerSelectedMetroId = DEFAULT.selectedMetroId;
             this.filter.districtSection.innerSelectedStationId = DEFAULT.selectedStationId;                
             this.filter.districtSection.innerSelectedMetroText = '';
             this.filter.districtSection.innerSelectedStationText = '';
