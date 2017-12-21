@@ -877,6 +877,7 @@
                     this.lat = res.latitude;
                     console.log("定位数据：", res);
                     this.loadingVisibility = true;
+                    this.$apply();
                     apiDataFilter.request({
                         apiPath: "index.findCityInfoByLonAndLat",
                         data: {
