@@ -11,7 +11,7 @@
        <view class="item" wx:if="{{isOpenCity}}">{{city && city.cityName || '定位失败'}}</view>
        <view class="header">全部城市</view>
        <view>
-        <view @tap="selectCity" wx:key="{{item.cityId}}" wx:for-index="idx" class="item {{idx>0?'has-border':''}}" wx:for="{{cities}}" data-city="{{item}}">{{item.cityName}}</view>
+        <view @tap="selectCity" wx:key="{{item.cityId}}" wx:for-index="idx" class="item has-border" wx:for="{{cities}}" data-city="{{item}}">{{item.cityName}}</view>
        </view>
     </view>
 
@@ -122,8 +122,9 @@
         font-size: 32rpx;
         line-height: 45rpx;
 
-        &.has-border {
-            border-top: 1rpx solid #E4E4E4;
-        }
+        //&.has-border {
+            border-top: 2rpx solid rgba(228 , 228 , 228 , .5);
+            //-webkit-border-top: 1rpx solid #E4E4E4;
+        //}
     }
 </style>
