@@ -506,7 +506,7 @@
             totalTipText(){//总房源数条的内容文本，定位成功时第一次自动刷新显示“已为您展示附近xx套房源”，其余都显示“共找到xx套房源”
                 //"共找xx套房源";
                 //"已为您展示附近xx套房源"
-                let str = "共找xx套房源";
+                let str = "共找到xx套房源";
                 if(this.showNearText) str = "已为您展示附近xx套房源";
                 return str.replace('xx',this.total);
             }
