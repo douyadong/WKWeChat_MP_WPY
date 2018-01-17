@@ -9,7 +9,7 @@
     <view class="qqmap">
         <image src="http://apis.map.qq.com/ws/staticmap/v2/?&markers=size:large|{{ estate.latitude }},{{ estate.longitude }}&key={{ qqMapKey }}&size=375*250&center={{ estate.latitude }},{{ estate.longitude }}&zoom=12&scale=2" mode="aspectFill" lazy-load="true" @tap="openLocation"></image>
         <view class="pop">
-            <view class="popover">
+            <view class="popover" wx:if="{{ estate.estateAddr }}">
                 <text class="arrow"></text>
                 <text class="content">{{estate.estateAddr}}</text>
             </view>

@@ -6,11 +6,11 @@
         2. 
 -->
   <template>
-    <swiper interval="2000">
+    <swiper interval="2000" bindchange="updateCurrentIndex">
         <swiper-item wx:for="{{ items }}" wx:key="*this">           
-            <image src="{{ item }}" mode="widthFix" data-src="{{ item }}" @tap="previewImage"></image>
-            <view class="index">{{ index + 1 }}/{{ items.length }}</view>
+            <image src="{{ item }}" mode="widthFix" data-src="{{ item }}" @tap="previewImage"></image>            
         </swiper-item>
+        <view class="index">{{ currentIndex + 1 }} / {{ items.length }}</view>
     </swiper>
 </template>
 
@@ -26,6 +26,7 @@
             eventName : String
         } ;
         data = {
+            currentIndex : 0 ,
             trace : new Trace  //埋点api
         } ;
         methods = {
@@ -41,6 +42,9 @@
                     current : event.target.dataset.src , 
                     urls : this.items
                 }) ;
+            } ,
+            updateCurrentIndex(event) {
+                this.currentIndex = event.detail.current ;                
             }
         } ;        
     }
@@ -56,21 +60,21 @@
             position : relative ;
             image {
                 width : 100% ;
-            }            
-            .index {                
-                bottom : 30rpx ;
-                border-radius : 30rpx ;
-                background-color : #000 ;
-                color : #fff ;
-                font-size : @smaller-font-size ;
-                height : 47rpx ;
-                line-height : 47rpx ;
-                opacity : 0.7 ;
-                position : absolute ;
-                right : 30rpx ;
-                text-align : center ;              
-                width : 94rpx ;                
             }
+        }
+        .index {                
+            bottom : 30rpx ;
+            border-radius : 30rpx ;
+            background-color : #000 ;
+            color : #fff ;
+            font-size : @smaller-font-size ;
+            height : 47rpx ;
+            line-height : 47rpx ;
+            opacity : 0.7 ;
+            position : absolute ;
+            right : 30rpx ;
+            text-align : center ;              
+            width : 94rpx ;                
         }
     }
 </style>

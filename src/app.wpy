@@ -2,9 +2,10 @@
     import wepy from "wepy" ;
     export default class extends wepy.app {
         config = {
-            "pages" : [                    
+            "pages" : [
+                            
                 "pages/index/index" , 
-                "pages/store/index" ,         
+                "pages/store/index" ,       
                  "pages/esf/detail" ,  
                 "pages/agent/index" ,
                 "pages/market/index" ,
@@ -16,7 +17,9 @@
                 "pages/estate/detail" ,
                 "pages/estate/comment" ,
                 "pages/join/index" ,
+                "pages/utils/calculator" , 
                 "pages/hinge/index"
+                
             ] ,
             "window": {
                 "backgroundTextStyle" : "light" ,

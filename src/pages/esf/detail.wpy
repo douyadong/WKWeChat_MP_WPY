@@ -48,7 +48,13 @@
             </view>
             <view class="hr fields-fence"></view>
             <view class="cols1-fields">
-                <view><text class="hd">预算</text><text class="bd">首付{{ house.advancePayment }} 万，月供 {{ house.mortgage }} 元</text></view>
+                <view>
+                    <text class="hd">预算</text>
+                    <navigator open-type="redirect" url="/pages/utils/calculator?money={{ house.totalPrice }}" class="bd">                        
+                        <text>首付{{ house.advancePayment }} 万，月供 {{ house.mortgage }} 元</text>
+                        <text class="iconfont icon-next"></text>
+                    </navigator>
+                </view>
                 <view>
                     <text class="hd">小区</text>
                     <navigator url="/pages/estate/detail?subEstateId={{ estate.subEstateId }}" open-type="redirect" class="bd" @tap="uv( 'estate' , 1213002 )">
@@ -90,8 +96,11 @@
                 <image src="{{ estate.estateImgUrl }}?x-oss-process=image/resize,w_120" mode="aspectFill" lazy-load="true"></image>
                 <text class="name">{{ estate.estateName }}</text>
                 <view class="outline">
-                    <text>{{ estate.completed }} 年竣工 | {{ estate.totalHouse }}</text>
-                    <text class="iconfont icon-next"></text>
+                    <block wx:if="{{ estate.completed || estate.totalHouse }}">
+                        <text wx:if="{{ estate.completed }}">{{ estate.completed }} 年竣工</text>
+                        <text wx:if="{{ estate.totalHouse }}">{{ estate.totalHouse }}</text>
+                        <text class="iconfont icon-next"></text>
+                    </block>
                 </view>
                 <text class="address">{{ estate.estateAddr }}</text>
             </navigator>
@@ -403,14 +412,19 @@
                 .name , .outline , .address {
                     display : block ;
                     font-size : @default-font-size ;
-                    line-height : 50rpx ;
-                    margin-left : 260rpx ;
+                    line-height : 36rpx ;
+                    margin : 7rpx 0 7rpx 260rpx ;
                 }
                 .outline , .address {
                     color : @light-font-color ;
                 }
                 .outline {
                     .fit-height() ;
+                    text:nth-child(2) {
+                        border-left : 1rpx solid @light-line-gray-color ;
+                        margin-left : 16rpx ;
+                        padding-left : 16rpx ;
+                    }
                     .icon-next {
                         color : @blue-font-color ;
                         float : right ;
