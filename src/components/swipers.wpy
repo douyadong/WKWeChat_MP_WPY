@@ -6,12 +6,14 @@
         2. 
 -->
   <template>
-    <swiper interval="2000" bindchange="updateCurrentIndex">
-        <swiper-item wx:for="{{ items }}" wx:key="*this">           
-            <image src="{{ item }}" mode="widthFix" data-src="{{ item }}" @tap="previewImage"></image>            
-        </swiper-item>
+    <view class="carousel">
+        <swiper interval="2000" bindchange="updateCurrentIndex">
+            <swiper-item wx:for="{{ items }}" wx:key="*this">           
+                <image src="{{ item }}" mode="widthFix" data-src="{{ item }}" @tap="previewImage"></image>            
+            </swiper-item> 
+        </swiper>
         <view class="index">{{ currentIndex + 1 }} / {{ items.length }}</view>
-    </swiper>
+    </view>
 </template>
 
 <script>
@@ -53,15 +55,8 @@
 <style lang="less">
     @import "../less/variables.less" ;
     @import "../less/mixins.less" ;
-     swiper {
-        width : 100% ;
-        height : 56.3vw ;
-        swiper-item {
-            position : relative ;
-            image {
-                width : 100% ;
-            }
-        }
+    .carousel{
+        position : relative ;
         .index {                
             bottom : 30rpx ;
             border-radius : 30rpx ;
@@ -75,6 +70,15 @@
             right : 30rpx ;
             text-align : center ;              
             width : 94rpx ;                
+        }
+    }
+     swiper {
+        width : 100% ;
+        height : 56.3vw ;
+        swiper-item {
+            image {
+                width : 100% ;
+            }
         }
     }
 </style>
