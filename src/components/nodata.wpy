@@ -2,15 +2,16 @@
     @组件名称：无数据呈现组件
     @作者：李扬 (liyang@lifang.com)
     @业务逻辑说明：
-        1.
-        2. 
+        1.flags: true,    按钮是否显示 ，默认为true 显示
+          wordOne: String, 第一句话的描述
+          wordTwo: String  第二句话的描述
 -->
 <template lang="wxml">
     <view class="no-data">
        <image src="//img.wkzf.com/7f5d84e32c6f4474b7f7d1b2b35669dc"></image>
        <text>{{wordOne}}</text>
        <text>{{wordTwo}}</text>
-       <button wx:if="{{ flags }}">去看看其他房源</button>
+       <navigator url="/pages/index/index" open-type="redirect" wx:if="{{ flags }}"><button >去看看其他房源</button></navigator>
     </view>
 </template>
 
