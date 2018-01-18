@@ -44,7 +44,7 @@
         <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'agent' && agentList}}">
             <agent :items.sync = "agentList" wechatEventName="1208004" telEventName="1208005"></agent>
         </view>
-        <view class="tabs-frame wk-panel" wx:if="{{ (pageStates.activeTab === 'house' && !houseList) ||  (pageStates.activeTab === 'agent' && !agentList)}}">
+        <view class="tabs-frame wk-panel" wx:if="{{ (pageStates.activeTab === 'house' && !houseList.length) ||  (pageStates.activeTab === 'agent' && !agentList)}}">
             <nodata :flags = "flags" :wordOne = "wordOne" :wordTwo="wordTwo"></nodata>
         </view>
     </view>
@@ -228,7 +228,7 @@
                     数据赋予模板变量
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
                     this.houseList = this.houseList.concat(houseList) ;
-                    console.log("houseList"+this.houseList );
+                    console.log("houseList"+ JSON.stringify(this.houseList) );
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     wepy让data改变生效
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/

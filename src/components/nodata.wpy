@@ -46,19 +46,22 @@ export default class Com extends wepy.component {
             font-size: 28rpx;
             color: @lighter-font-color;
         }
-        >button {
-            width: 92%;
-            height: 90rpx;
-            font-size: 32rpx;
-            color: @white-font-color;
-            line-height: 90rpx;
-            display: inline-block;
-            background: @blue-font-color;
-            border-radius: 6px;
-            position: fixed;
-            bottom: 30rpx;
-            left: 30rpx;
-            right: 30rpx;
+        navigator{
+            >button {
+                width: 92%;
+                height: 90rpx;
+                font-size: 32rpx;
+                color: @white-font-color;
+                line-height: 90rpx;
+                display: inline-block;
+                background: @blue-font-color;
+                border-radius: 6px;
+                position: fixed;
+                bottom: 30rpx;
+                left: 30rpx;
+                right: 30rpx;
+            }
         }
+
     }
 </style>
