@@ -66,29 +66,30 @@
                 <view wx:if="{{ estate.schoolName }}"><text class="hd">学校</text><text class="bd">{{ estate.schoolName }}</text></view>            
             </view>
         </view>
-        <view class="summary wk-panel top-gap" wx:if="{{ ! (house.houseSource === 2 && ! house.sellPoint) }}">
+        <!--自由房源房源信息描述-->
+        <view class="summary wk-panel top-gap" wx:if="{{  (house.houseSource === 1 && house.sellPoint || house.ownerMotivation || house.aroundSupport) }}">
             <view class="panel-header">基本信息</view>
             <view class="panel-body">
-                <text class="hd" wx:if="{{ house.houseSource ===1 }}">主要优势</text>
-                <text class="bd">{{ house.sellPoint }}</text>
-                <block wx:if="{{ house.houseSource ===1 }}">
+                <view wx:if="{{house.sellPoint}}">
+                    <text class="hd">主要优势</text>
+                    <text class="bd">{{ house.sellPoint }}</text>
+                </view>
+                <view wx:if="{{house.ownerMotivation}}">
                     <text class="hd">业主心态</text>
                     <text class="bd">{{ house.ownerMotivation }}</text>
+                </view>
+                <view wx:if="{{house.aroundSupport}}">
                     <text class="hd">周边设施</text>
                     <text class="bd">{{ house.aroundSupport }}</text>
-                    <!--<view class="panel-more" wx:if="{{ ! pageStates.summaryOptional }}" @tap="spreadOptional">查看更多</view>
-                    <view class="optional" wx:if="{{ pageStates.summaryOptional }}">
-                        <text class="hd">户型介绍</text>
-                        <text class="bd">{{ house.houseTypeDesc }}</text>
-                        <text class="hd">小区介绍</text>
-                        <text class="bd">{{ house.estateDesc }}</text>
-                        <text class="hd">税费解析</text>
-                        <text class="bd">{{ house.taxDesc }}</text>
-                        <text class="hd">其他</text>
-                        <text class="bd">{{ house.otherIntroduce }}</text>
-                    </view>-->
-                </block>
+                </view>
             </view>        
+        </view>
+        <!--外来及erp房源信息描述-->
+        <view class="summary wk-panel top-gap" wx:if="{{  (house.houseSource === 2 && house.sellPoint) }}">
+            <view class="panel-header">基本信息</view>
+            <view class="panel-body">
+                <text class="bd">{{ house.sellPoint }}</text>
+            </view>
         </view>
         <view class="estate wk-panel top-gap">
             <view class="panel-header">小区信息</view>
@@ -98,7 +99,7 @@
                 <view class="outline">
                     <block wx:if="{{ estate.completed || estate.totalHouse }}">
                         <text wx:if="{{ estate.completed }}">{{ estate.completed }} 年竣工</text>
-                        <text wx:if="{{ estate.totalHouse }}">{{ estate.totalHouse }}</text>
+                        <text wx:if="{{ estate.totalHouseCount }}">{{ estate.totalHouse }}</text>
                         <text class="iconfont icon-next"></text>
                     </block>
                 </view>
@@ -241,6 +242,7 @@
                 data : requestData ,
                 successCallback : (res)=> {                   
                     let apiData = res.data ;
+                    console.log(apiData);
                     this.house = apiData.house ;
                     this.houseId = apiData.house.houseId ;
                     this.estate = apiData.estate ;
