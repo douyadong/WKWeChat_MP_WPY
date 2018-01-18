@@ -18,13 +18,13 @@
                 </view>
                <view class="market comper-last">
                   <text class="hd">环比上月</text>
-                  <text class="bd">-7.66%</text>
+                  <text class="bd">{{store.increase}}</text>
                </view>
             </view>
             <!--头部缩小之后的样式展示-->
             <view class="small-price" wx:if="{{ pageStates.bannerHeight < 165 }}">
                  <view class="price">{{ store.avgPrice  }}<text>周边</text></view>
-                 <view class="percent">-7.66%<text>环比上月</text></view>
+                 <view class="percent">{{store.increase}}<text>环比上月</text></view>
             </view>
         </view>
         <view class="wk-tabs">
@@ -44,8 +44,8 @@
         <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'agent' && agentList}}">
             <agent :items.sync = "agentList" wechatEventName="1208004" telEventName="1208005"></agent>
         </view>
-        <view class="tabs-frame wk-panel" wx:if="{{ (pageStates.activeTab === 'house' && !houseList.length) ||  (pageStates.activeTab === 'agent' && !agentList)}}">
-            <nodata :flags = "flags" :wordOne = "wordOne" :wordTwo="wordTwo"></nodata>
+        <view class="tabs-frame wk-panel" wx:if="{{ (pageStates.activeTab === 'house' && !houseList.length && !pageStates.loadingVisibility) ||  (pageStates.activeTab === 'agent' && !agentList.length && !pageStates.loadingVisibility)}}">
+            <nodata :flags = "flags" :wordOne.sync = "wordOne" :wordTwo.sync="wordTwo"></nodata>
         </view>
     </view>
     <!--加载中组件-->
@@ -228,7 +228,6 @@
                     数据赋予模板变量
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
                     this.houseList = this.houseList.concat(houseList) ;
-                    console.log("houseList"+ JSON.stringify(this.houseList) );
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     wepy让data改变生效
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -274,7 +273,7 @@
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     数据赋予模板变量
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-                    this.agentList = this.agentList.concat(agentList) ;                                     
+                    this.agentList = this.agentList.concat(agentList) ;
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     wepy让data改变生效
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
