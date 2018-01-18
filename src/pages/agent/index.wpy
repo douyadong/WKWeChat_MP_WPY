@@ -27,7 +27,7 @@
             <esf :item="item" :agentId="agentId"></esf>
         </repeat>
     </view>
-    <view wx:if="{{!houseInfo.secondHouseListModels.length}}">
+    <view wx:if="{{!houseInfo.secondHouseListModels.length}}" class="none-data">
         <nodata :flags = "flags" :wordOne = "wordOne" :wordTwo="wordTwo"></nodata>
     </view>    
     <!--加载中组件-->
@@ -271,5 +271,8 @@
     }
     page {
         background-color : #fff ;
+    }
+    .none-data{
+        margin-top:110rpx;
     }
 </style>
