@@ -10,9 +10,21 @@
     <view class="header {{ pageStates.pageScrollOffset > 28 ? 'fixed' : '' }}" wx:if="{{ loadStatesFullscreen !== 'true' }}">
         <view class="banner" style="height : {{ pageStates.bannerHeight }}rpx ; ">
             <view class="store-name" wx:if="{{ pageStates.bannerHeight >= 165 }}">{{ store.name || "悟空找房门店" }}</view>
-            <view class="market">
-                <text class="hd">周边房源均价</text>
-                <text class="bd">{{ store.avgPrice }}</text>
+            <!--头部缩小之前的样式展示-->
+            <view class="market-price" wx:if="{{ pageStates.bannerHeight >= 165 }}">
+                <view class="market avgPrice">
+                  <text class="hd">周边房源均价</text>
+                  <text class="bd">{{ store.avgPrice  }}</text>
+                </view>
+               <view class="market comper-last">
+                  <text class="hd">环比上月</text>
+                  <text class="bd">-7.66%</text>
+               </view>
+            </view>
+            <!--头部缩小之后的样式展示-->
+            <view class="small-price" wx:if="{{ pageStates.bannerHeight < 165 }}">
+                 <view class="price">{{ store.avgPrice  }}<text>周边</text></view>
+                 <view class="percent">-7.66%<text>环比上月</text></view>
             </view>
         </view>
         <view class="wk-tabs">
@@ -24,13 +36,16 @@
     </view>
     <!--两个tabs-frame内容-->
     <view style="{{pageStates.pageScrollOffset > 28 ? 'margin-top: 240rpx' : ''}}">
-        <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'house' }}">
+        <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'house' && houseList}}">
             <repeat for="{{ houseList }}" key="index" index="index" item="item">
                 <esf :item ="item" openType="1"></esf>
             </repeat>
         </view>
-        <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'agent' }}">
+        <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'agent' && agentList}}">
             <agent :items.sync = "agentList" wechatEventName="1208004" telEventName="1208005"></agent>
+        </view>
+        <view class="tabs-frame wk-panel" wx:if="{{ (pageStates.activeTab === 'house' && !houseList) ||  (pageStates.activeTab === 'agent' && !agentList)}}">
+            <nodata :flags = "flags" :wordOne = "wordOne" :wordTwo="wordTwo"></nodata>
         </view>
     </view>
     <!--加载中组件-->
@@ -51,6 +66,7 @@
     import Agent from "../../components/agent" ;
     import Loading from "../../components/loading" ;
     import Loadfail from "../../components/loadfail" ;
+    import noData from "../../components/nodata" ;
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     加载工具api资源
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -65,7 +81,8 @@
             esf : Esf ,
             agent : Agent ,
             loading : Loading ,
-            loadfail : Loadfail
+            loadfail : Loadfail,
+            nodata: noData
         } ; 
         data = {
            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -110,6 +127,12 @@
            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             loadStatesFullscreen : "true" , //loading和loadfail组件是否全屏，页面进入的时候为true，加载过数据就不要全屏了            
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+           无数据模板参数
+           -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            flags: true,
+            wordOne : "房源正在努力录入中哦~",
+            wordTwo : "晚些再来扫一扫吧",
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
            其他
            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
            trace : new Trace
@@ -122,6 +145,8 @@
                 this.pageStates.activeTab = tabFlag ;
                 let eventName = (tabFlag === "house") ? "1208006" : "1208002" ;
                 this.trace.uv({ "eventName" : eventName }) ;
+                if (tabFlag == "house")  {this.wordOne = "房源正在努力录入中哦~"; this.wordTwo = "晚些再来扫一扫吧"}
+                else {this.wordOne = "经纪人马上就来~"; this.wordTwo = "先去看看其他房源吧"}
             } ,
            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
            加载失败画面点击刷新处理
@@ -202,7 +227,8 @@
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     数据赋予模板变量
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-                    this.houseList = this.houseList.concat(houseList) ;                                     
+                    this.houseList = this.houseList.concat(houseList) ;
+                    console.log("houseList"+this.houseList );
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     wepy让data改变生效
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -300,7 +326,7 @@
             如果用生产环境调试，可以用：236 , 240 , 242 , 244 , 249
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
             this.pageParams = options ;
-            this.pageParams.storeId = this.pageParams.storeId || 244 ;  //纯调试用，可以用10027 920277 , 10023
+            this.pageParams.storeId = this.pageParams.storeId || 10027 ;  //纯调试用，可以用10027 920277 , 10023
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             请求门店、房源、经纪人 3部分信息
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/ 
@@ -362,20 +388,64 @@
             overflow : hidden ;
             &>view {
                 color : #fff ;
-                line-height : 90rpx ;
+               /* line-height : 90rpx ;*/
                 &.store-name {
                     font-size : @greater-font-size ;
                     .text-ellipsis() ;
+                    margin-top: 12rpx;
                 }
-                &.market {
-                    .hd {
-                        font-size : @default-font-size ;
-                        margin-right : @common-margin ;
+                /*banner缩放之前样式*/
+                &.market-price{
+                    .flex();
+                    .flex-direction(row);
+                    .market {
+                        margin-top: 12rpx;
+                        display: inline-block;
+                        .hd {
+                            font-size : @default-font-size ;
+                            margin-right : @common-margin ;
+                            font-weight: 300;
+                        }
+                        .bd {
+                            font-size : @greater-font-size ;
+                            display: block;
+                            margin-top:-10rpx;
+                        }
                     }
-                    .bd {
-                        font-size : @greater-font-size ;
+                    .avgPrice{
+                        .flex(2)
+                    }
+                    .comper-last{
+                        .flex(1)
                     }
                 }
+                /*banner缩放之后样式*/
+                &.small-price{
+                    .flex();
+                    .flex-direction(row);
+                    margin-left: -30rpx;
+                    padding-top: 25rpx;
+                    view{
+                        font-size: 36rpx;
+                        color: @white-font-color;
+                        line-height: 42rpx;
+                        text{
+                            margin-left: 23rpx;
+                            font-size: 22rpx;
+                            color: @white-font-color;
+                            letter-spacing: 0.79rpx;
+                            font-weight: 300;
+                        }
+                    }
+                    .price{
+                        .flex(4);
+
+                    }
+                    .percent{
+                        .flex(3);
+                    }
+                }
+
             }
         }
     }
