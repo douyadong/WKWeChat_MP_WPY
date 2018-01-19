@@ -18,14 +18,17 @@
                     <view class="join-long">入住悟空：{{agentInfo.serviceYears}}</view>
                 </view>      
             </view>
-            <view class="house-number">TA的房源<text class="number">[{{houseInfo.total}}套]</text></view>            
+            <view class="house-number" wx:if="{{houseInfo.secondHouseListModels.length}}">TA的房源<text class="number">[{{houseInfo.total}}套]</text></view>            
         </view>        
         <assistant :agent.sync="agentInfo" portrait="off" wechatEventName="1218002" telEventName="1218003"></assistant>
     </block>
-    <view class="house-list">
+    <view class="house-list" wx:if="{{houseInfo.total}}">
         <repeat for="{{houseInfo.secondHouseListModels}}" key="index" index="index" item="item">
             <esf :item="item" :agentId="agentId"></esf>
         </repeat>
+    </view>
+    <view wx:if="{{!houseInfo.secondHouseListModels.length}}" class="none-data">
+        <nodata :flags = "flags" :wordOne = "wordOne" :wordTwo="wordTwo"></nodata>
     </view>    
     <!--加载中组件-->
     <loading :fullscreen.sync="loadingFullscreen" wx:if="{{ loadingVisibility }}"></loading>
@@ -45,6 +48,7 @@
     import Assistant from "../../components/assistant";
     import Loading from "../../components/loading" ;
     import Loadfail from "../../components/loadfail" ;
+    import NoData from "../../components/nodata";
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     加载工具api资源
     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -56,7 +60,8 @@
             esf : Esf ,
             assistant : Assistant ,
             loading : Loading ,
-            loadfail : Loadfail
+            loadfail : Loadfail,
+            nodata:NoData
         } ;
         data = {
             pageParams : { } ,//页面query参数;
@@ -76,7 +81,13 @@
                 pageIndex : 0 , //评论的起始条数
                 pageSize : 20 , //评论信息每次加载多少条               
                 requestable : true
-            }
+            },
+            /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            无参数模板参数
+            -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
+            flags:false,
+            wordOne : "房源正在努力录入中哦~",
+            wordTwo : "晚些再来扫一扫吧"
         } ;
         methods = {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -100,7 +111,7 @@
                     "pageIndex" : this.pageStates.pageIndex ,
                     "pageSize" : this.pageStates.pageSize
                 } ,
-                successCallback : (res)=> {                   
+                successCallback : (res)=> {                  
                     this.houseInfo.total = res.data.total || 0 ;
                     let houseList = res.data.secondHouseListModels || [] ;                    
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -260,5 +271,8 @@
     }
     page {
         background-color : #fff ;
+    }
+    .none-data{
+        margin-top:110rpx;
     }
 </style>
