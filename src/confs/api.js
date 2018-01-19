@@ -53,7 +53,8 @@ export default {
         "store": {
             "index" : "housePrice/getAreaPriceInfo.rest" , // 门店周边房价
             "house" : "wxmpStore/getHouseList.rest" ,// 房源列表
-            "agent" : "wxmpStore/getAgentList.rest" // 经纪人列表
+            "agent" : "wxmpStore/getAgentList.rest" , // 经纪人列表
+            "location": "wxmpStore/getPosition.rest"  // 获取经纬度
         }
     }
 } ;
