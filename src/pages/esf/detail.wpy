@@ -242,7 +242,6 @@
                 data : requestData ,
                 successCallback : (res)=> {                   
                     let apiData = res.data ;
-                    console.log(apiData);
                     this.house = apiData.house ;
                     this.houseId = apiData.house.houseId ;
                     this.estate = apiData.estate ;

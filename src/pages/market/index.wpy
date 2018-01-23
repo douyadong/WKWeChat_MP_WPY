@@ -21,7 +21,7 @@
             <text class="city-price">{{ info.avgPrice }}</text>
             <text class="ratio">
                 <text class="compare">环比上月</text>
-                <text class="iconfont icon-desc" wx:if="{{ info.flag == '0' }}"></text>
+                <text class="iconfont icon-desc" wx:if="{{ info.flag == '-1' }}"></text>
                 <text class="iconfont icon-asc" wx:if="{{ info.flag == '1' }}"></text>
                 <text>{{ info.increase }}</text>
             </text>
