@@ -1,17 +1,24 @@
 <!--
     @页面名称：选择城市页面
-    @作者：赵华刚 (zhaohuagang@lifang.com)
+    @作者：唐旭阳 (tangxuyang@lifang.com)
     @业务逻辑说明：
         1.
         2.        
 -->
 <template lang="wxml">
     <view>
-       <view class="header" wx:if="{{isOpenCity}}">定位城市</view>
-       <view class="item" wx:if="{{isOpenCity}}">{{city && city.cityName || '定位失败'}}</view>
-       <view class="header">全部城市</view>
+       <view class="city-group" wx:if="{{isOpenCity}}">
+        <view class="group-header">定位城市</view>
+        <view class="item">{{city && city.cityName || '定位失败'}}</view>
+       </view>
        <view>
-        <view @tap="selectCity" wx:key="{{item.cityId}}" wx:for-index="idx" class="item has-border" wx:for="{{cities}}" data-city="{{item}}">{{item.cityName}}</view>
+        <view wx:key="{{idx}}" wx:for-index="idx" class="city-group" wx:for="{{cityGroups}}" data-city="{{item}}">
+            <view class="group-header">{{idx}}</view>
+            <view @tap="selectCity" wx:for-index="index" class="item has-border" wx:for="{{item}}" wx:for-item="city" >
+                {{city.cityName}}
+                <view class="esf">二手房</view>
+            </view>   
+        </view>
        </view>
     </view>
 
@@ -47,6 +54,7 @@
 
             },
             cities: [],
+            cityGroups: {},
             trace: new Trace,
             isOpenCity: true
         } ;
@@ -68,12 +76,8 @@
         onLoad() {
         };
         onShow() {    
-            this.city = wx.getStorageSync('city');
-
-            //setTimeout(()=>{
-            this.fetchData();
-            //},3000);                      
-
+            this.city = wx.getStorageSync('city');            
+            this.fetchData();            
             this.trace.pv({pageName: "1210"});              
         };
         fetchData() {
@@ -83,10 +87,21 @@
             apiDataFilter.request({
                 apiPath: "index.getAllCityBusiness",
                 successCallback: (data)=>{         
+                    let cityGroups = {};
                     let cities =  (data.data || []).filter((item)=>{
                         return item.oldBusiness;
+                    });//只要支持二手房的城市
+                    cities.forEach((city)=>{//按照拼音首字母分组
+                        let firstLetter = city.cityPinyin[0].toUpperCase();
+                        if(cityGroups[firstLetter]){
+                            cityGroups[firstLetter].push(city);
+                        }else{                            
+                            cityGroups[firstLetter] = [city];
+                        }
                     });
                     this.cities = cities;
+                    this.cityGroups = cityGroups;
+
                     if(this.city){                        
                         if(this.cities.filter((t)=>{return t.cityId == this.city.cityId;}).length == 0){ 
                             this.isOpenCity = false;
@@ -109,22 +124,46 @@
 
 <style lang="less">
     .header {
-        padding: 5rpx 0 5rpx 30rpx;        
-        font-size: 28rpx;
+        background-color: #F0F0F0;                
         color: #7C7C7C;
-        background-color: #F0F0F0;
+        font-size: 28rpx;
         line-height: 40rpx;
+        padding: 5rpx 0 5rpx 30rpx;
     }
 
-    .item {        
-        padding: 23rpx 0 24rpx 30rpx;
-        background-color: #fff;
-        font-size: 32rpx;
-        line-height: 45rpx;
-
-        //&.has-border {
+    .city-group { 
+        .group-header {
+            background-color: #F0F0F0; 
+            color: #7C7C7C;
+            font-size: 28rpx;
+            line-height: 50rpx;
+            padding-left: 30rpx;
+        }       
+        
+        .item {                
             border-top: 2rpx solid rgba(228 , 228 , 228 , .5);
-            //-webkit-border-top: 1rpx solid #E4E4E4;
-        //}
+            background-color: #fff;
+            font-size: 32rpx;
+            line-height: 45rpx;        
+            padding: 23rpx 30rpx 24rpx;   
+
+            .esf{        
+                font-size: 24rpx;
+                float: right;
+                &::before{
+                    border: 1rpx solid #4081D6;
+                    border-radius: 50%;        
+                    content: "";
+                    display: inline-block;
+                    height: 16rpx;
+                    margin-right: 10rpx;
+                    width: 16rpx;
+                }
+            }           
+        }
+    
+        
     }
+
+
 </style>
