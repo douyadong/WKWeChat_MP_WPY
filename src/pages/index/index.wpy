@@ -8,17 +8,28 @@
 <template lang="wxml">    
     <view @tap="clickCover" class="cover {{filter.selectedFilterSection!=''?'':'invisible'}}">
     </view> 
-    <block wx:if="{{isOpenCity}}"><view class="header {{fixed || filter.selectedFilterSection?'fixed':''}}">
+    <block wx:if="{{isOpenCity}}">
+    <view class="header {{fixed || filter.selectedFilterSection?'fixed':''}}">
         <view class="city-search" >
             <view class="city" @tap="switchCity">{{city.cityName}}</view>
             <view class="search-box">
                 <text class="iconfont icon-search"></text><view class="estate-address {{estate&&estate.keyword ? '':'empty'}}" @tap="searchEstate">{{estate && estate.keyword || '搜索小区或地址'}}</view><text class="iconfont icon-clear {{estate && estate.keyword ? '':'invisible'}}" @tap="clearEstate"></text>
             </view>
         </view>
-        <view class="current-price">
-            <view class="title">今日{{city && city.cityName||''}}房价</view>
-            <view class="price">{{unitPrice||'--'}}</view>
-            <view class="detail" @tap="gotoPriceList">查看 <text class="iconfont icon-next"></text></view>
+        <view @tap="gotoPriceList" class="current-price">
+            <view class="title">
+                今日{{city && city.cityName||''}}房价
+                <view class="detail">查看<text class="iconfont icon-next"></text></view>
+                <view style="clear:both;"></view>
+            </view>
+            <view class="price">
+                {{unitPrice||'--'}}
+                <view class="ratio">
+                    <text class="label">环比上月</text>
+                    <text class="value">{{increase || '--'}}</text>
+                </view>
+                <view style="clear:both;"></view>
+            </view>            
         </view>
         <view class="filter">
             <view class="district-total-type-sort">
@@ -402,7 +413,8 @@
                 offset: DEFAULT.offset,//请求的开始位置
                 pageSize: 20,//请求的页大小
                 total: 0,//总房源数
-                unitPrice: 0,//城市单价     
+                unitPrice: 0,//城市单价  
+                increase: '--',   
                 reachBottom: false,//是否到底了
                 items: [],//二手房源列表数据
                 tipsVisibility: false,//控制tips显示
@@ -419,7 +431,9 @@
                 loadfailFullscreen: "false",
                 loadfailVisibility: false,    
                 lon: "",
-                lat: ""                          
+                lat: "",
+                fixedModifiable: true,
+                preScrollTop: 0                    
         } ;
         computed = {
             districtDisplayName(){//区域查询的显示文本
@@ -523,7 +537,9 @@
                this.filter.selectedFilterSection = name;
                if(name == 'sort') {
                    this.trace.uv({eventName: "1209008"});
-               }               
+               }
+               this.fixed = true;
+               this.fixedModifiable = false;
            },
            selectSort(e) {//切换排序规则
                 let sortId = e.currentTarget.dataset.id;
@@ -647,6 +663,17 @@
                 this.filter.districtSection.selectedDistrictText = districtText;
                 this.filter.districtSection.selectedTownId = '';
                 this.filter.districtSection.selectedTownText = '';
+                if(districtId == '-1') {//选择不限直接刷新页面，不在出现子"不限"
+                    this.methods.selectTown.call(this, {
+                        currentTarget:{
+                            dataset: {
+                                id: '-1',
+                                text: '不限',
+                                type: ''
+                            }
+                        }
+                    });
+                }
             },
             selectTown(e) {//选择具体板块     
                 this.estate = null;
@@ -690,6 +717,16 @@
                 this.filter.districtSection.selectedMetroId = metroId;
                 this.filter.districtSection.selectedMetroText = metroText;                
                 this.filter.districtSection.selectedStationId = '';
+                if(metroId == '-1') {
+                    this.methods.selectStation.call(this,{
+                        currentTarget: {
+                            dataset: {
+                                id: '-1',
+                                text: '不限'                                
+                            }
+                        }
+                    });
+                }
 
             },
             selectStation(e) {//选择具体地铁站点
@@ -1033,90 +1070,7 @@
                                     this.refresh();
                                 });
                             });
-                        });
-                        /*apiDataFilter.request({
-                            apiPath: "index.getCitySubwayLines",
-                            data: {
-                                cityId: this.city.cityId
-                            },
-                            successCallback: (data)=>{
-                                //加工数据，添加"不限"
-                                let d = data.data || [];
-                                d.splice(0,0,{
-                                    id: "-1",
-                                    name: "不限"
-                                });
-                                for(let i = 0; i < d.length; i++){
-                                    d[i].subList = d[i].subList || [];
-                                    d[i].subList.splice(0,0,{
-                                        id: "-1",
-                                        name: "不限"
-                                    });
-                                }
-                                
-                                this.filter.districtSection.metros = d;                                
-                                this.$apply();
-                            }
-                        });
-
-                        //区域板块数据
-                        apiDataFilter.request({
-                            apiPath: "index.getCityAreasInfo",
-                            data: {
-                                cityId: this.city.cityId
-                            },
-                            successCallback: (data)=>{
-                                let d = data.data;
-                                d.splice(0,0,{
-                                    id: "-1",
-                                    name: "不限"
-                                });                                
-                                for(let i = 0; i < d.length; i++){
-                                    d[i].subList = d[i].subList || [];
-                                    d[i].subList.splice(0,0,{
-                                        towns: [{
-                                            id: "-1",
-                                            name: "不限"
-                                        }]
-                                    });
-                                }
-                                if(this.city.isLocated){
-                                    d.splice(0,0,{
-                                        id: "-2",
-                                        name: "附近",
-                                        subList: [{
-                                            towns: this.filter.districtSection.meters
-                                        }]
-                                    });
-                                    this.filter.districtSection.selectedDistrictId = "-2";
-                                    this.filter.districtSection.selectedTownId = "0";
-                                    this.filter.districtSection.innerSelectedDistrictId = "-2";
-                                    this.filter.districtSection.innerSelectedTownId = "0";
-                                    this.$apply();
-                                }else{
-                                    d.splice(0,0,{
-                                        id: "-2",
-                                        name: "定位失败"                                        
-                                    });
-                                }
-                                this.filter.districtSection.districts = d;
-                                this.$apply();
-                            }
-                        });
-
-                        //当前城市的房价信息
-                        apiDataFilter.request({
-                            apiPath: "index.getAreaPriceInfo",
-                            data: {
-                                dicId: this.city.cityId,
-                                dicType: 3
-                            },
-                            successCallback: (data)=>{
-                                this.unitPrice = data.data.avgPrice;
-                                this.$apply();
-                            }
-
-                        });*/
+                        });                        
                 
                         if(this.city.isLocated){
                             this.filter.districtSection.isNear = true;
@@ -1177,10 +1131,7 @@
                 successCallback: (data)=>{
                     //加工数据，添加"不限"
                     let d = data.data || [];
-                    d.splice(0,0,{
-                        id: "-1",
-                        name: "不限"
-                    });
+                    
                     for(let i = 0; i < d.length; i++){
                         d[i].subList = d[i].subList || [];
                         d[i].subList.splice(0,0,{
@@ -1188,6 +1139,10 @@
                             name: "不限"
                         });
                     }
+                    d.splice(0,0,{
+                        id: "-1",
+                        name: "不限"
+                    });
                     
                     this.filter.districtSection.metros = d;                                
                     this.$apply();
@@ -1211,10 +1166,7 @@
                 },
                 successCallback: (data)=>{
                     let d = data.data;
-                    d.splice(0,0,{
-                        id: "-1",
-                        name: "不限"
-                    });                                
+                                                   
                     for(let i = 0; i < d.length; i++){
                         d[i].subList = d[i].subList || [];
                         d[i].subList.splice(0,0,{
@@ -1224,6 +1176,10 @@
                             }]
                         });
                     }
+                    d.splice(0,0,{
+                        id: "-1",
+                        name: "不限"
+                    }); 
                     if(this.city.isLocated){
                         d.splice(0,0,{
                             id: "-2",
@@ -1267,6 +1223,7 @@
                 },
                 successCallback: (data)=>{
                     this.unitPrice = data.data.avgPrice;
+                    this.increase = data.data.increase;
                     this.$apply();
                     cb && cb();
                 },
@@ -1401,6 +1358,7 @@
             this.items = [];         
             this.$apply();
             this.getEsfList(this.offset,(data)=>{
+                this.fixedModifiable = false;
                 this.items = data.data.secondHouseListModels || [];      
                 if(this.showTotal){
                     setTimeout(()=>{
@@ -1445,11 +1403,18 @@
             });
         };
         onPageScroll(opt) {            
-            if(opt.scrollTop > 10) {            
-                this.fixed = true;                    
-            } else {                
-                this.fixed = false;                
-            }            
+            if(this.fixedModifiable){
+                if(opt.scrollTop > 10) {            
+                    this.fixed = true;                    
+                } else {                
+                    this.fixed = false;                
+                }
+            }else{
+                if(opt.scrollTop > 10 && this.preScrollTop < opt.scrollTop){
+                    this.fixedModifiable = true;
+                }
+            }
+            this.preScrollTop = opt.scrollTop;
         };    
         onShareAppMessage() {
             return { "title" : "买房就找悟空找房" }
@@ -1557,30 +1522,73 @@
 
     .current-price {
         color: #fff;
-        padding: 63rpx 30rpx;
+        padding: 63rpx 30rpx;        
         background-image: linear-gradient(90deg, #64BCF0 6%, rgba(0,125,255,0.82) 91%);
         position: relative;
-        height: 144rpx;
-        transition: .5s cubic-bezier(.35,0,.25,1);
-        -webkit-transition: .5s cubic-bezier(.35,0,.25,1);      
-        .title {
+        height: 270rpx;
+        transition: all .5s cubic-bezier(.35,0,.25,1);
+        -webkit-transition: all .5s cubic-bezier(.35,0,.25,1);     
+        box-sizing: border-box; 
+        //border: 1px solid transparent;
+        .title {            
             font-size: 50rpx;
             line-height: 1;
+            font-family: PingFangSC-Regular;
+
+            &::after{
+                content: "";
+                clear: both;
+                display: block;                
+            }
         }
 
         .price {
-            font-size: 64rpx;
+            font-size: 40rpx;
             line-height: 1;
-            margin-top: 30rpx;
+            margin-top: 66rpx;
+
+            .ratio {
+                float: right;
+
+                .label {
+                    font-size: 28rpx;                    
+                }
+
+                .value {
+                    font-size: 36rpx;
+                    letter-spacing: 1.29rpx;
+                    margin-left: 20rpx;
+                }
+            }
+
+            &::after{
+                content: "";
+                clear: both;
+                display: block;
+            }
         }
 
         .detail {
+            font-family: PingFangSC-Regular;
+            float: right;
             font-size: 32rpx;
-            line-height: 28rpx;
-            position: absolute;
-            top: 171rpx;
-            right: 24rpx;
-        }        
+
+            .iconfont {
+                font-size: 40rpx;
+                vertical-align: -3rpx;
+                //margin-left: 8rpx;
+            }
+            //line-height: 28rpx;
+            //position: absolute;
+            //top: 171rpx;
+            //right: 24rpx;
+        }     
+
+        &::after {
+            content: "";
+            display: block;
+            clear: both;
+        }   
     }
 
     .filter {
@@ -1593,8 +1601,7 @@
             padding: 28rpx 0;
             box-shadow: 0 4rpx 4rpx #E4E4E4;
             margin-bottom: 4rpx;
-            //padding-right: 26rpx;
-                     
+            width: 100%;
             .flex();            
 
             .district-section, .total-section, .type-section, .sort-section {
@@ -1938,12 +1945,14 @@
             position: fixed;
             top: 0;
             .current-price {
-                //display: none;                
-                padding: 0;
+                padding-top: 0;
+                padding-bottom: 0;
                 height: 0rpx;
-                .title, price, .detail {
-                    font-size: 0;
+                .detail, .ratio {
+                    height: 0rpx;
+                    overflow: hidden;
                 }
+                overflow: hidden;
             }
         }
     }
