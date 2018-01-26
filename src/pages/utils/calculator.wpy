@@ -6,7 +6,7 @@
         2.        
 -->
 <template lang="wxml">
-<web-view src="https://m.wkzf.com/houseLoanCalculator.html?totalPrice={{ pageParams.money }}"></web-view>
+<web-view src="{{src}}"></web-view>
 </template>
 
 <script>
@@ -18,13 +18,16 @@
         components = {
         } ; 
         data = {
-            pageParams : {}           
+            pageParams : {} ,
+            src:''          
         } ;       
         onLoad(options) {
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             将所有的页面参数存放到pageParams里面
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-            this.pageParams = options ;   
+            this.pageParams = options ;  
+            // 跳转计算器页面地址及参数;
+            this.src="https://m.wkzf.com/houseLoanCalculator.html?isShowBack=0&totalPrice="+this.pageParams.money ;
         } ;
         onShow() {
 

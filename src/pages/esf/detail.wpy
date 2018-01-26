@@ -99,7 +99,7 @@
                 <view class="outline">
                     <block wx:if="{{ estate.completed || estate.totalHouse }}">
                         <text wx:if="{{ estate.completed }}">{{ estate.completed }} 年竣工</text>
-                        <text wx:if="{{ estate.totalHouseCount }}">{{ estate.totalHouse }}</text>
+                        <text wx:if="{{ estate.totalHouseCount }}" class="{{estate.completed?'house-total':''}}">{{ estate.totalHouse }}</text>
                         <text class="iconfont icon-next"></text>
                     </block>
                 </view>
@@ -421,7 +421,7 @@
                 }
                 .outline {
                     .fit-height() ;
-                    text:nth-child(2) {
+                    .house-total {
                         border-left : 1rpx solid @light-line-gray-color ;
                         margin-left : 16rpx ;
                         padding-left : 16rpx ;
