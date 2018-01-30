@@ -50,7 +50,7 @@
             <view class="cols1-fields">
                 <view>
                     <text class="hd">预算</text>
-                    <navigator open-type="redirect" url="/pages/utils/calculator?money={{ house.totalPrice }}" class="bd">                        
+                    <navigator open-type="navigate" url="/pages/utils/calculator?money={{ house.totalPrice }}" class="bd">                        
                         <text>首付{{ house.advancePayment }} 万，月供 {{ house.mortgage }} 元</text>
                         <text class="iconfont icon-next"></text>
                     </navigator>
@@ -103,7 +103,7 @@
                         <text class="iconfont icon-next"></text>
                     </block>
                 </view>
-                <text class="address">{{ estate.estateAddr }}</text>
+                <text class="address" wx:if="{{ estate.estateAddr }}" >{{ estate.estateAddr }}</text>
             </navigator>
             <block wx:if="{{ estate.sameEstateHouseAmount }}">
                 <view class="hr"></view>
@@ -396,6 +396,9 @@
             &.hd {
                 color : @light-font-color ;
                 line-height : 60rpx ;
+            }
+            &.bd{
+                word-wrap: break-word;
             }
         }
     }

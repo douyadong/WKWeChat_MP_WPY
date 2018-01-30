@@ -40,7 +40,8 @@ export default class Com extends wepy.component {
     props = {
         openType: String,        
         item: Object,
-        agentId: String       
+        agentId: String,
+        storeId:String       
     };
     methods = {
         click:function(e){ 
@@ -54,6 +55,9 @@ export default class Com extends wepy.component {
             let url = "/pages/esf/detail?houseId=" + e.currentTarget.dataset.id;
             if(this.agentId){
                 url += "&agentId=" + this.agentId;
+            };
+            if(this.storeId){
+                url += "&storeId=" + this.storeId;
             }
             if(this.openType == 1){
                 wx.navigateTo({url: url, complete: ()=>{

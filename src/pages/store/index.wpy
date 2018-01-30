@@ -38,7 +38,7 @@
     <view style="{{pageStates.pageScrollOffset > 28 ? 'margin-top: 240rpx' : ''}}">
         <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'house' && houseList}}">
             <repeat for="{{ houseList }}" key="index" index="index" item="item">
-                <esf :item ="item" openType="1"></esf>
+                <esf :item ="item" :storeId="pageParams.storeId" openType="1"></esf>
             </repeat>
         </view>
         <view class="tabs-frame wk-panel" wx:if="{{ pageStates.activeTab === 'agent' && agentList}}">

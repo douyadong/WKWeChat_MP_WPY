@@ -14,7 +14,7 @@
        <view>
         <view wx:key="{{idx}}" wx:for-index="idx" class="city-group" wx:for="{{cityGroups}}" data-city="{{item}}">
             <view class="group-header">{{idx}}</view>
-            <view @tap="selectCity" wx:for-index="index" class="item has-border" wx:for="{{item}}" wx:for-item="city" >
+            <view @tap="selectCity" wx:for-index="index" class="item has-border" wx:for="{{item}}" wx:for-item="city" data-city="{{city}}">
                 {{city.cityName}}
                 <view class="esf">二手房</view>
             </view>   
