@@ -9,14 +9,13 @@
     <view>
        <view class="city-group" wx:if="{{isOpenCity}}">
         <view class="group-header">定位城市</view>
-        <view class="item">{{city && city.cityName || '定位失败'}}</view>
+        <view class="item">{{ locationCity || '定位失败'}}</view>
        </view>
        <view>
         <view wx:key="{{idx}}" wx:for-index="idx" class="city-group" wx:for="{{cityGroups}}" data-city="{{item}}">
             <view class="group-header">{{idx}}</view>
             <view @tap="selectCity" wx:for-index="index" class="item has-border" wx:for="{{item}}" wx:for-item="city" data-city="{{city}}">
                 {{city.cityName}}
-                <view class="esf">二手房</view>
             </view>   
         </view>
        </view>
@@ -49,7 +48,7 @@
             loadingVisibility: true,
             loadfailFullscreen: "false",
             loadfailVisibility: false,
-
+            locationCity:'',
             city: {
 
             },
@@ -73,7 +72,8 @@
         events = {
 
         } ;
-        onLoad() {
+        onLoad(options) {
+            this.locationCity=options.locationCity;
         };
         onShow() {    
             this.city = wx.getStorageSync('city');            
@@ -145,21 +145,7 @@
             background-color: #fff;
             font-size: 32rpx;
             line-height: 45rpx;        
-            padding: 23rpx 30rpx 24rpx;   
-
-            .esf{        
-                font-size: 24rpx;
-                float: right;
-                &::before{
-                    border: 1rpx solid #4081D6;
-                    border-radius: 50%;        
-                    content: "";
-                    display: inline-block;
-                    height: 16rpx;
-                    margin-right: 10rpx;
-                    width: 16rpx;
-                }
-            }           
+            padding: 23rpx 30rpx 24rpx;             
         }
     
         

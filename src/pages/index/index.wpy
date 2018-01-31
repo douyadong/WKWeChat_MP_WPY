@@ -298,7 +298,8 @@
                 cityName: "",//用来显示未开通城市名称的
                 nodata: false,                       
                 showCustomPrice: true,//是否显示自定义价格框，为了清空自定义价格中的文本用的。因为双向绑定输入会延迟，因此借助wx:if把input重新加载来清空其中的内容，我也是醉了！
-                city: null,          
+                city: null,
+                locationCity:'',//跳转至城市选择页时的定位城市，定位城市不变;          
                 estate: null,//小区或地址查询条件
                 filter : {//筛选
                     selectedFilterSection: "",//当前选中的筛选模块，有district、type、total和sort，对应区域、户型、总价和排序
@@ -784,7 +785,7 @@
            switchCity() {//切换城市
                this.filter.selectedFilterSection = "";
                this.modalVisibility = false;
-               wx.navigateTo({url:'/pages/index/city'});
+               wx.navigateTo({url:'/pages/index/city?locationCity='+this.locationCity});
            },
            searchEstate() {//去小区和地址选择页面            
                this.filter.selectedFilterSection = '';
@@ -896,8 +897,7 @@
         events = {
 
         } ;
-        onLoad(options) {   
-           console.log(options);     
+        onLoad(options) {        
            this.firstTime = true; 
            let opened = wx.getStorageSync('opened'); //是否打开过  
            //首次读取storage中是否有city，否则就是默认城市
@@ -931,6 +931,7 @@
                             wx.setStorageSync("locationCity",data.data);
 
                             this.city = data.data;
+                            this.locationCity=data.data.cityName;
                             //wx.setStorageSync('city', this.city);
                             this.showTotal = true;
                             this.showNearText = true;                      
