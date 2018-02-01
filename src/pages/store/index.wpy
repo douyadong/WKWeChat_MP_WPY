@@ -453,7 +453,8 @@
                         .bd {
                             font-size : @greater-font-size ;
                             display: block;
-                            margin-top:-10rpx;
+                            line-height: 1;
+                            margin-top:10rpx;
                         }
                     }
                     .avgPrice{
