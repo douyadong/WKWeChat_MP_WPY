@@ -3,7 +3,7 @@
     export default class extends wepy.app {
         config = {
             "pages" : [
-                // "pages/index/index" , 
+                "pages/index/index" , 
                 "pages/storeIntro/storeIntro",
                 "pages/store/index" ,
                 "pages/esf/detail" ,  
