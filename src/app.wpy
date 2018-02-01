@@ -4,6 +4,7 @@
         config = {
             "pages" : [
                 "pages/index/index" , 
+                "pages/storeIntro/storeIntro",
                 "pages/store/index" ,
                 "pages/esf/detail" ,  
                 "pages/agent/index" ,
