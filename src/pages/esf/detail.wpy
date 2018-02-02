@@ -138,7 +138,7 @@
                 <navigator url="/pages/esf/list?type=similar&houseId={{ house.houseId }}">查看更多</navigator>
             </view>
         </view>
-        <view class="bottom-gap"></view>
+        <view class="bottom-gap" wx:if="{{ agent.agentId }}"></view>
         <assistant :agent.sync="agent" portraitEventName="1213009" wechatEventName="1213011" telEventName="1213010" :houseId.sync="houseId"></assistant>
     </block>
     <!--加载中组件-->
@@ -216,7 +216,7 @@
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             将所有的页面参数存放到pageParams里面
             -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
-            this.pageParams = options ;   
+            this.pageParams = options ;  
             this.loadData() ;        
         } ; 
         onShow() {
@@ -228,7 +228,7 @@
             //this.loadData() ;
         } ;
         loadData() {
-            let requestData = { "houseId" : this.pageParams.houseId || 1000679246 } ;
+            let requestData = { "houseId" : this.pageParams.houseId || 1000679246,"storeId" :this.pageParams.storeId||0 } ;
             if(this.pageParams.agentId) requestData.agentId = this.pageParams.agentId ;
             /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
             从api接口读取数据
