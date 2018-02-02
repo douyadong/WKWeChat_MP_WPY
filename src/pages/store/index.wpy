@@ -422,6 +422,7 @@
     }
     .header {
         background-color : #fff ;
+        z-index: 9999;
         &.fixed {
             left : 0 ;
             position : fixed ;
