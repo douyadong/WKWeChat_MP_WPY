@@ -8,10 +8,30 @@
 <template lang="wxml">
     <!--头部根据滚动条可以变fixed的内容，包括banner和tabs-handle-->
     <view class="header {{ pageStates.pageScrollOffset > 28 ? 'fixed' : '' }}" wx:if="{{ loadStatesFullscreen !== 'true' }}">
-        <view class="banner" style="height : {{ pageStates.bannerHeight }}rpx ; ">
-            <view class="store-name" wx:if="{{ pageStates.bannerHeight >= 165 }}">{{ store.name || "悟空找房门店" }}</view>
+        <!--<view class="banner" style="height : {{ pageStates.bannerHeight }}rpx ; ">
+            <view class="store-name" wx:if="{{ pageStates.bannerHeight >= 165 }}">{{ store.name || "悟空找房门店" }}</view>-->
             <!--头部缩小之前的样式展示-->
-            <view class="market-price" wx:if="{{ pageStates.bannerHeight >= 165 }}">
+            <!--<view class="market-price" wx:if="{{ pageStates.bannerHeight >= 165 }}">
+                <view class="market avgPrice">
+                  <text class="hd">周边房源均价</text>
+                  <text class="bd">{{ store.avgPrice  }}</text>
+                </view>
+               <view class="market comper-last">
+                  <text class="hd">环比上月</text>
+                  <text class="bd">{{store.increase}}</text>
+               </view>
+            </view>-->
+            <!--头部缩小之后的样式展示-->
+            <!--<view class="small-price" wx:if="{{ pageStates.bannerHeight < 165 }}">
+                 <view class="price">{{ store.avgPrice  }}<text>周边</text></view>
+                 <view class="percent">{{store.increase}}<text>环比上月</text></view>
+            </view>
+        </view>-->
+        <!--修改banner图动画start-->
+            <view class="banner">
+            <view class="store-name" wx:if="{{ pageStates.pageScrollOffset < 28 }}">{{ store.name || "悟空找房门店" }}</view>
+            <!--头部缩小之前的样式展示-->
+            <view class="market-price" wx:if="{{ pageStates.pageScrollOffset < 28 }}">
                 <view class="market avgPrice">
                   <text class="hd">周边房源均价</text>
                   <text class="bd">{{ store.avgPrice  }}</text>
@@ -22,11 +42,12 @@
                </view>
             </view>
             <!--头部缩小之后的样式展示-->
-            <view class="small-price" wx:if="{{ pageStates.bannerHeight < 165 }}">
+            <view class="small-price" wx:if="{{ pageStates.pageScrollOffset > 28 }}">
                  <view class="price">{{ store.avgPrice  }}<text>周边</text></view>
                  <view class="percent">{{store.increase}}<text>环比上月</text></view>
             </view>
         </view>
+        <!--修改banner图动画end-->
         <view class="wk-tabs">
             <view class="tabs-handle">
                 <view class="{{ pageStates.activeTab === 'house' ? 'on' : '' }}" @tap="swapTab('house')"><text>推荐好房</text></view>
@@ -57,7 +78,7 @@
     <!--全部内容结束-->
 </template>
 
-<script>
+<script>                                                                                  
     import wepy from "wepy" ;
     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
     加载组件资源
@@ -433,8 +454,8 @@
             background-image : url("http://img.wkzf.com/b262848128334e3daab102eb97e1b747") ; 
             background-repeat : no-repeat ;
             background-position : 0 center ;
-            background-size : 100% auto ;            
-            padding : 20rpx 60rpx 0 ;
+            background-size : 100% 100% ;            
+            padding : 40rpx 60rpx 0 ;
             overflow : hidden ;
             &>view {
                 color : #fff ;
@@ -442,12 +463,12 @@
                 &.store-name {
                     font-size : @greater-font-size ;
                     .text-ellipsis() ;
-                    margin-top: 12rpx;
                 }
                 /*banner缩放之前样式*/
                 &.market-price{
                     .flex();
                     .flex-direction(row);
+                    margin-bottom: 35rpx;
                     .market {
                         margin-top: 12rpx;
                         display: inline-block;
@@ -475,11 +496,12 @@
                     .flex();
                     .flex-direction(row);
                     margin-left: -30rpx;
-                    padding-top: 25rpx;
+                    padding-bottom: 50rpx;
+                    padding-top: 10rpx;
                     view{
                         font-size: 36rpx;
                         color: @white-font-color;
-                        line-height: 42rpx;
+                        // line-height: 42rpx;
                         text{
                             margin-left: 23rpx;
                             font-size: 22rpx;
