@@ -5,6 +5,7 @@
             "pages" : [
                 // "pages/index/index" , 
                 "pages/storeIntro/storeIntro",
+                "pages/index/index" ,
                 "pages/store/index" ,
                 "pages/esf/detail" ,  
                 "pages/agent/index" ,
