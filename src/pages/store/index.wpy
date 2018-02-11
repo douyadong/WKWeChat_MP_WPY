@@ -194,6 +194,7 @@
                 data : { "storeId" : this.pageParams.storeId } ,
                 successCallback : (res) => {
                     let Data = res.data ;
+                    this.pageStates.loadingVisibility = false ;
                     if (Data) {
                         this.explorerStates.longitude = Data.lon ;
                         this.explorerStates.latitude =  Data.lat ;
@@ -247,6 +248,7 @@
                 data : { "dicId" : this.pageParams.storeId ,"dicType" : 5 } ,
                 successCallback : res => {                    
                     this.store = res.data ;
+                    this.pageStates.loadingVisibility = false ;
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     只要请求门店信息成功，loading和loadfail样式就不要全屏了
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -275,7 +277,8 @@
                 successCallback : res => {
                     let apiData = res.data ;
                     let count = apiData.total || 0 ;
-                    let houseList = apiData.secondHouseListModels || [] ;                    
+                    let houseList = apiData.secondHouseListModels || [] ;   
+                    this.pageStates.loadingVisibility = false ;                 
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     将埋点参数追加到房源数据中
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -331,7 +334,9 @@
                 successCallback : res => {
                     let apiData = res.data ;
                     let count = apiData.total || 0 ;
-                    let agentList = apiData.agentList || [] ;                     
+                    let agentList = apiData.agentList || [] ; 
+                    // 只有在加载信息成功后加载框才消失;
+                    this.pageStates.loadingVisibility = false ;                    
                     /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     agentOffset累加，为下次请求做准备
                     -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
@@ -383,8 +388,8 @@
         本页请求completeCallback定义，请求结束，不管成功与否，loading组件肯定不显示
         -----------------------------------------------------------------------------------------------------------------------------------------------------------------------++*/
         completeCallback() {
-            this.pageStates.loadingVisibility = false ;
-            this.$apply() ;
+            // this.pageStates.loadingVisibility = false ;
+            // this.$apply() ;
         } ;
         /*++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
         页面加载处理
