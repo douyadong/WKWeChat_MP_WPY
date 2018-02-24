@@ -41,7 +41,7 @@ export default class Com extends wepy.component {
         openType: String,        
         item: Object,
         agentId: String,
-        storeId:String       
+        storeId: String       
     };
     methods = {
         click:function(e){ 

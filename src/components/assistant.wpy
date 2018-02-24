@@ -6,7 +6,7 @@
         2. 
 -->
 <template lang="wxml">
-    <view class="assistant">        
+    <view class="assistant" wx:if="{{ agent.agentId }}">        
         <navigator  url="/pages/agent/index?agentId={{ agent.agentId }}" wx:if="{{ portrait ==='on' }}" open-type="redirect" @tap="uv({{ portraitEventName }})">
             <image class="img-circle" src="{{ agent.headRoundImgUrl }}?x-oss-process=image/resize,w_70" mode="aspectFill" lazy-load="true"></image>
             <text class="name">{{ agent.agentName }}</text>
