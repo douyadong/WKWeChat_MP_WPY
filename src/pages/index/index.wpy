@@ -928,7 +928,7 @@
                             //console.log('定位成功设置isNear为true');
                             wx.setStorageSync("city",data.data);
                             wx.setStorageSync("locationCity",data.data);
-
+                            wx.hideLoading();//定位完成（不论成功失败），隐藏loading
                             this.city = data.data;
                             //wx.setStorageSync('city', this.city);
                             this.showTotal = true;
@@ -951,6 +951,7 @@
                    //this.$apply();       
                    this.isOpenCity = true;
                    this.$apply();
+                   wx.hideLoading();//定位完成（不论成功失败），隐藏loading
                    if(opts && opts.errMsg.indexOf('auth') > 0){//用户选择了拒绝定位导致定位失败   
                         this.city = this.city || DEFAULT.city;
                         wx.setStorageSync('city', this.city);
@@ -967,7 +968,7 @@
                    }                   
                },
                complete: ()=>{
-                   wx.hideLoading();//定位完成（不论成功失败），隐藏loading
+                   
                    this.firstTime = false;
                    wx.setStorageSync('opened', true);                  
                }
