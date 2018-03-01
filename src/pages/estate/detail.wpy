@@ -22,7 +22,7 @@
                 <view class="hr" wx:if="{{ commentList && commentList.length }}"></view>
              </block>
              <view wx:if="{{ commentList && commentList.length }}">
-                <view class="panel-header">小区评论  <view class="amount"  @tap="navigatorUrl">{{estateInfo.comment.amount}}条<text class="iconfont icon-next"></text></view></view>
+                <view class="panel-header">小区评论  <view class="amount"  @tap="navigatorUrl">{{estateInfo.comment.amount}} 条<text class="iconfont icon-next"></text></view></view>
                 <view class="panel-body">
                     <view >
                         <comments  :commentList.sync="commentList"></comments>
@@ -184,7 +184,7 @@
     }
     .amount{
         float: right;
-        font-size: @default-font-size;
+        font-size: @large-font-size;
         color: @blue-color;
         display: inline-block;
     }

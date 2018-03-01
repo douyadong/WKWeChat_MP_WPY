@@ -493,7 +493,7 @@
                         .hd {
                             font-size : @default-font-size ;
                             margin-right : @common-margin ;
-                            font-weight: 300;
+                            font-weight: normal;
                         }
                         .bd {
                             font-size : @greater-font-size ;
@@ -526,7 +526,7 @@
                             font-size: 22rpx;
                             color: @white-font-color;
                             letter-spacing: 0.79rpx;
-                            font-weight: 300;
+                            font-weight: normal;
                         }
                     }
                     .price{
