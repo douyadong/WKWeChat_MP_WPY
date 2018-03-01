@@ -113,7 +113,7 @@
                 .row-bd{
                     .flex(8);
                     font-size: @default-font-size;
-                    color: @default-font-color;
+                    color: #000000;
                     line-height: 32rpx;
                     padding-left: 20rpx;
                     display: inline-block;

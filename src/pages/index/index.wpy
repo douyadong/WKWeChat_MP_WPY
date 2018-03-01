@@ -1523,7 +1523,10 @@
     .current-price {
         color: #fff;
         padding: 63rpx 30rpx;        
-        background-image: linear-gradient(90deg, #64BCF0 6%, rgba(0,125,255,0.82) 91%);
+        background-image: url("http://img.wkzf.com/b262848128334e3daab102eb97e1b747");
+        background-repeat : no-repeat ;
+        background-position : 0 center ;
+        background-size : 100% 100% ;
         position: relative;
         height: 270rpx;
         transition: all .5s cubic-bezier(.35,0,.25,1);
@@ -1544,6 +1547,7 @@
 
         .price {
             font-size: 40rpx;
+            font-weight: bold ;
             line-height: 1;
             margin-top: 66rpx;
 
@@ -1551,7 +1555,8 @@
                 float: right;
 
                 .label {
-                    font-size: 28rpx;                    
+                    font-size: 28rpx; 
+                    font-weight: normal ;                    
                 }
 
                 .value {
@@ -1599,7 +1604,7 @@
             color: #000;
             font-size: 28rpx;
             padding: 28rpx 0;
-            box-shadow: 0 4rpx 4rpx #E4E4E4;
+            border-bottom: 1px solid #E4E4E4;
             margin-bottom: 4rpx;
             width: 100%;
             .flex();            

@@ -479,6 +479,7 @@
                /* line-height : 90rpx ;*/
                 &.store-name {
                     font-size : @greater-font-size ;
+                    font-weight: bold ;
                     .text-ellipsis() ;
                 }
                 /*banner缩放之前样式*/
@@ -496,6 +497,7 @@
                         }
                         .bd {
                             font-size : @greater-font-size ;
+                            font-weight: bold ;
                             display: block;
                             line-height: 1;
                             margin-top:10rpx;
@@ -528,10 +530,11 @@
                         }
                     }
                     .price{
+                        font-weight: bold ;
                         .flex(4);
-
                     }
                     .percent{
+                        font-weight: bold ;
                         .flex(3);
                     }
                 }

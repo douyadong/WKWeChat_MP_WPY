@@ -55,7 +55,7 @@ export default class Com extends wepy.component {
                 line-height: 90rpx;
                 display: inline-block;
                 background: @blue-font-color;
-                border-radius: 6px;
+                border-radius: 6rpx;
                 position: fixed;
                 bottom: 30rpx;
                 left: 30rpx;
