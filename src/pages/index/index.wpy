@@ -33,17 +33,17 @@
         </view>
         <view class="filter">
             <view class="district-total-type-sort">
-                <view class="district-section {{districtDisplayName != '区域' ? 'active' : ''}}">
-                    <view class="sn {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" @tap="switchFilter" data-name="district">{{districtDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}"></view>                         
+                <view @tap="switchFilter" data-name="district" class="district-section {{districtDisplayName != '区域' ? 'active' : ''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}" >{{districtDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'district'? 'open' : 'closed'}}"></view>                         
                 </view>            
-                <view class="total-section {{totalDisplayName !== '总价' ?'active':''}}">
-                    <view class="sn {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}" @tap="switchFilter" data-name="total">{{totalDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}"></view>             
+                <view @tap="switchFilter" data-name="total" class="total-section {{totalDisplayName !== '总价' ?'active':''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}" >{{totalDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'total'? 'open' : 'closed'}}"></view>             
                 </view>
-                <view class="type-section {{typeDisplayName !== '户型' ?'active':''}}">
-                    <view class="sn {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}" @tap="switchFilter" data-name="type">{{typeDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}"></view>                
+                <view @tap="switchFilter" data-name="type" class="type-section {{typeDisplayName !== '户型' ?'active':''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}" >{{typeDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'type'? 'open' : 'closed'}}"></view>                
                 </view>
-                <view class="sort-section {{filter.sortSection.selectedId != '' ? 'active': ''}}">
-                    <view class="sn {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" @tap="switchFilter" data-name="sort">{{sortDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}"></view> 
+                <view @tap="switchFilter" data-name="sort" class="sort-section {{filter.sortSection.selectedId != '' ? 'active': ''}}">
+                    <view class="sn {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}" >{{sortDisplayName}}</view><view class="triangle {{filter.selectedFilterSection == 'sort'? 'open' : 'closed'}}"></view> 
                 </view>            
             </view>    
             <view class="content {{filter.selectedFilterSection == '' ? 'invisible': ''}}">
@@ -540,6 +540,7 @@
                }
                this.fixed = true;
                this.fixedModifiable = false;
+               this.$apply();
            },
            selectSort(e) {//切换排序规则
                 let sortId = e.currentTarget.dataset.id;
@@ -1598,7 +1599,7 @@
             background-color: #fff;
             color: #000;
             font-size: 28rpx;
-            padding: 28rpx 0;
+            //padding: 28rpx 0;
             box-shadow: 0 4rpx 4rpx #E4E4E4;
             margin-bottom: 4rpx;
             width: 100%;
@@ -1607,6 +1608,7 @@
             .district-section, .total-section, .type-section, .sort-section {
                 text-align: center;
                 vertical-align: middle;
+                padding: 28rpx 0;
                 .flex(1);                
                 view.sn{                    
                     max-width: 80%;                                       
